@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\FlyCam.cs" />
     <Compile Include="Assets\Scripts\Matrix2D.cs" />
     <Compile Include="Assets\Scripts\PointCloudLoader.cs" />
+    <Compile Include="Assets\Scripts\PointCloudPart.cs" />
     <None Include="Assets\Materials\UnityStandardShaderVertexColor\StandardVertColorShader\CGIncludesVC\UnityStandardCoreForward.cginc" />
     <None Include="Assets\Materials\UnityStandardShaderVertexColor\StandardVertColorShader\StandardVertColor.shader" />
     <None Include="Assets\Materials\UnityStandardShaderVertexColor\StandardVertColorShader\CGIncludesVC\UnityStandardMeta.cginc" />

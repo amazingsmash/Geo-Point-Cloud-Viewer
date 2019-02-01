@@ -147,6 +147,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
+  - {fileID: 2100000, guid: 0e63093d0dc4f44ea9ffed7628b9309b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -184,7 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7689bc65bbe83406dae9a821d1d524dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LASByteFolderName: 7
 --- !u!4 &1349960461
 Transform:
   m_ObjectHideFlags: 0
@@ -269,8 +269,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1533746840}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0.03857953, y: 0.9051482, z: 0.084167235, w: 0.4148906}
+  m_LocalPosition: {x: 2649, y: -84.80199, z: 5900.2905}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

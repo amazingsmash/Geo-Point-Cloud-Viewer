@@ -8,11 +8,17 @@ public class PointCloudPart : MonoBehaviour {
 
     Mesh mesh = null;
     string filePath = null;
-    Material material = null;
+    Material hdMaterial = null;
+    Material ldMaterial = null;
+    BoxCollider coll = null;
+    MeshRenderer meshRenderer = null;
 
-    public void initWithFilePath(string filePath, Material material){
+    public float hdMaxDistance = 5000.0f;
+
+    public void initWithFilePath(string filePath, Material hdMaterial, Material ldMaterial){
         this.filePath = filePath;
-        this.material = material;
+        this.hdMaterial = hdMaterial;
+        this.ldMaterial = ldMaterial;
         byte[] buffer = File.ReadAllBytes(filePath);
         Matrix2D m = Matrix2D.readFromBytes(buffer);
         mesh = createMeshFromLASMatrix(m.values);
@@ -22,23 +28,35 @@ public class PointCloudPart : MonoBehaviour {
     void Start () {
         gameObject.name = (new FileInfo(filePath)).Name;
         gameObject.AddComponent<MeshFilter>();
-        gameObject.AddComponent<MeshRenderer>();
+        meshRenderer = gameObject.AddComponent<MeshRenderer>();
         gameObject.GetComponent<MeshFilter>().mesh = mesh;
-        gameObject.GetComponent<MeshRenderer>().material = material;
+        meshRenderer.material = ldMaterial;
 
         gameObject.AddComponent<BoxCollider>();
         Bounds b = gameObject.GetComponent<MeshFilter>().mesh.bounds;
-        gameObject.GetComponent<BoxCollider>().center = b.center;
-        gameObject.GetComponent<BoxCollider>().size = b.size;
+        coll = gameObject.GetComponent<BoxCollider>();
+        coll.center = b.center;
+        coll.size = b.size;
     }
 	
 	// Update is called once per frame
 	void Update () {
+        Vector3 camPos = Camera.main.gameObject.transform.position;
+        Vector3 boxCenter = gameObject.transform.TransformPoint(coll.center);
+        float distanceToCam = (camPos - boxCenter).magnitude;
+
+        if (distanceToCam < hdMaxDistance)
+        {
+            meshRenderer.material = hdMaterial;
+        }else{
+            meshRenderer.material = ldMaterial;
+        }
 		
 	}
+
     //-------------
 
-    Dictionary<float, Color> classColor = null;
+    static Dictionary<float, Color> classColor = null;
     Color getColorForClass(float classification)
     {
 
@@ -91,7 +109,6 @@ public class PointCloudPart : MonoBehaviour {
 
     public void getClosestPointOnRay(Ray ray, Vector2 screenPos, ref float maxDist, ref Vector3 closestHit)
     {
-        Collider coll = gameObject.GetComponent<Collider>();
         RaycastHit hit;
         if (coll.bounds.Contains(ray.origin) || coll.Raycast(ray, out hit, maxDist))
         {

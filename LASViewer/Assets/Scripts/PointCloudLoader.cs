@@ -77,12 +77,18 @@ public class PointCloudLoader : MonoBehaviour
 
     //}
 
-    DirectoryInfo getModelDirectory(){
+    DirectoryInfo getModelDirectory()
+    {
+#if UNITY_EDITOR
         string path = EditorUtility.OpenFolderPanel("Select Model Folder", "", "");
-        if (path.Length > 0){
+        if (path.Length > 0)
+        {
             return new DirectoryInfo(path);
         }
         return null;
+#else
+        return new DirectoryInfo("../Models/7");
+#endif
     }
 
     // Use this for initialization
@@ -102,7 +108,10 @@ public class PointCloudLoader : MonoBehaviour
 
                 GameObject child = new GameObject("PointCloud");
                 child.AddComponent<PointCloudPart>();
-                child.GetComponent<PointCloudPart>().initWithFilePath(f.FullName, GetComponent<MeshRenderer>().material);
+                Material hdMaterial = GetComponent<MeshRenderer>().materials[0];
+                Material ldMaterial = GetComponent<MeshRenderer>().materials[1];
+
+                child.GetComponent<PointCloudPart>().initWithFilePath(f.FullName, hdMaterial, ldMaterial);
                 child.transform.SetParent(this.transform, false);
             }
         }

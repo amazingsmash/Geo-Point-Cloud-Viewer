@@ -139,15 +139,13 @@ MeshRenderer:
   m_GameObject: {fileID: 1349960457}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
-  - {fileID: 2100000, guid: 0e63093d0dc4f44ea9ffed7628b9309b, type: 2}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -185,6 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7689bc65bbe83406dae9a821d1d524dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hdMaxDistance: 3000
+  hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
+  ldMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
 --- !u!4 &1349960461
 Transform:
   m_ObjectHideFlags: 0

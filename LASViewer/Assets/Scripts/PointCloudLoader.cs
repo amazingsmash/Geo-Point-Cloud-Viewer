@@ -6,8 +6,18 @@ using UnityEditor;
 using System.IO;
 //http://www.kamend.com/2014/05/rendering-a-point-cloud-inside-unity/
 
-public class PointCloudLoader : MonoBehaviour
+public class PointCloudLoader : MonoBehaviour, IMaterialProvider
 {
+
+    public float hdMaxDistance = 5000.0f;
+    public Material hdMaterial = null;
+    public Material ldMaterial = null;
+
+    Material IMaterialProvider.getMaterialForDistance(float distance)
+    {
+        return (distance < hdMaxDistance) ? hdMaterial : ldMaterial;
+    }
+
 
     //public string LASByteFolderName = "7";
 
@@ -108,10 +118,10 @@ public class PointCloudLoader : MonoBehaviour
 
                 GameObject child = new GameObject("PointCloud");
                 child.AddComponent<PointCloudPart>();
-                Material hdMaterial = GetComponent<MeshRenderer>().materials[0];
-                Material ldMaterial = GetComponent<MeshRenderer>().materials[1];
+                //Material hdMaterial = GetComponent<MeshRenderer>().materials[0];
+                //Material ldMaterial = GetComponent<MeshRenderer>().materials[1];
 
-                child.GetComponent<PointCloudPart>().initWithFilePath(f.FullName, hdMaterial, ldMaterial);
+                child.GetComponent<PointCloudPart>().initWithFilePath(f.FullName, this);
                 child.transform.SetParent(this.transform, false);
             }
         }
@@ -269,4 +279,6 @@ public class PointCloudLoader : MonoBehaviour
 
         }
     }
+
+
 }

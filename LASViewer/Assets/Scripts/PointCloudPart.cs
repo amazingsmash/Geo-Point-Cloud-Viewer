@@ -4,21 +4,27 @@ using UnityEngine;
 
 using System.IO;
 
+public interface IMaterialProvider{
+    Material getMaterialForDistance(float distance);
+}
+
 public class PointCloudPart : MonoBehaviour {
 
     Mesh mesh = null;
     string filePath = null;
-    Material hdMaterial = null;
-    Material ldMaterial = null;
+    //Material hdMaterial = null;
+    //Material ldMaterial = null;
     BoxCollider coll = null;
     MeshRenderer meshRenderer = null;
 
     public float hdMaxDistance = 5000.0f;
 
-    public void initWithFilePath(string filePath, Material hdMaterial, Material ldMaterial){
+    IMaterialProvider matProvider = null;
+
+
+    public void initWithFilePath(string filePath, IMaterialProvider matProvider){
         this.filePath = filePath;
-        this.hdMaterial = hdMaterial;
-        this.ldMaterial = ldMaterial;
+        this.matProvider = matProvider;
         byte[] buffer = File.ReadAllBytes(filePath);
         Matrix2D m = Matrix2D.readFromBytes(buffer);
         mesh = createMeshFromLASMatrix(m.values);
@@ -30,7 +36,7 @@ public class PointCloudPart : MonoBehaviour {
         gameObject.AddComponent<MeshFilter>();
         meshRenderer = gameObject.AddComponent<MeshRenderer>();
         gameObject.GetComponent<MeshFilter>().mesh = mesh;
-        meshRenderer.material = ldMaterial;
+        meshRenderer.material = matProvider.getMaterialForDistance(1000000.0f);
 
         gameObject.AddComponent<BoxCollider>();
         Bounds b = gameObject.GetComponent<MeshFilter>().mesh.bounds;
@@ -44,14 +50,7 @@ public class PointCloudPart : MonoBehaviour {
         Vector3 camPos = Camera.main.gameObject.transform.position;
         Vector3 boxCenter = gameObject.transform.TransformPoint(coll.center);
         float distanceToCam = (camPos - boxCenter).magnitude;
-
-        if (distanceToCam < hdMaxDistance)
-        {
-            meshRenderer.material = hdMaterial;
-        }else{
-            meshRenderer.material = ldMaterial;
-        }
-		
+        meshRenderer.material = matProvider.getMaterialForDistance(distanceToCam);
 	}
 
     //-------------
@@ -72,14 +71,7 @@ public class PointCloudPart : MonoBehaviour {
             classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
         }
 
-        if (classColor.ContainsKey(classification))
-        {
-            return classColor[classification];
-        }
-        else
-        {
-            return Color.gray;
-        }
+        return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
     }
 
     Mesh createMeshFromLASMatrix(float[,] matrix)

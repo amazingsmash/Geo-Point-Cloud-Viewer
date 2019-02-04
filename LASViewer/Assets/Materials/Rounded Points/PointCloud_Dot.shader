@@ -1,7 +1,4 @@
-﻿//Shader "Unlit/PointCloud_Dot"
-//{
-//	Properties
-Shader "Unlit/PointCloud_Dot"
+﻿Shader "Unlit/PointCloud_Dot"
 {
     SubShader
     {

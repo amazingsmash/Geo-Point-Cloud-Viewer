@@ -18,6 +18,20 @@ public class PointCloudLoader : MonoBehaviour, IMaterialProvider
         return (distance < hdMaxDistance) ? hdMaterial : ldMaterial;
     }
 
+    Material IMaterialProvider.getMaterialForBoundingBox(BoxCollider box){
+        Vector3 camPos = Camera.main.transform.position;
+        if (box.bounds.Contains(camPos))
+        {
+            return hdMaterial;
+        }
+        else
+        {
+            Vector3 p = box.ClosestPoint(camPos);
+            float sqrDist = (p - camPos).sqrMagnitude;
+            return (sqrDist < (hdMaxDistance * hdMaxDistance)) ? hdMaterial : ldMaterial;
+        }
+    }
+
 
     //public string LASByteFolderName = "7";
 

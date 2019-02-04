@@ -6,14 +6,13 @@ using System.IO;
 
 public interface IMaterialProvider{
     Material getMaterialForDistance(float distance);
+    Material getMaterialForBoundingBox(BoxCollider box);
 }
 
 public class PointCloudPart : MonoBehaviour {
 
     Mesh mesh = null;
     string filePath = null;
-    //Material hdMaterial = null;
-    //Material ldMaterial = null;
     BoxCollider coll = null;
     MeshRenderer meshRenderer = null;
 
@@ -47,11 +46,13 @@ public class PointCloudPart : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 camPos = Camera.main.gameObject.transform.position;
-        Vector3 boxCenter = gameObject.transform.TransformPoint(coll.center);
-        float distanceToCam = (camPos - boxCenter).magnitude;
-        meshRenderer.material = matProvider.getMaterialForDistance(distanceToCam);
-	}
+        //Vector3 camPos = Camera.main.gameObject.transform.position;
+        //Vector3 boxCenter = gameObject.transform.TransformPoint(coll.center);
+        //float distanceToCam = (camPos - boxCenter).magnitude;
+        //meshRenderer.material = matProvider.getMaterialForDistance(distanceToCam);
+
+        meshRenderer.material = matProvider.getMaterialForBoundingBox(coll);
+    }
 
     //-------------
 

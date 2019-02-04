@@ -2,7 +2,6 @@
 {
 	Properties
 	{
-		_MainTex ("Texture (RGB)", 2D) = "white" {}
 		_Size ("Size", Float) = 0.1
 	}
 	SubShader
@@ -57,47 +56,40 @@
                 //float3 camUp = normalize(UNITY_MATRIX_IT_MV[1].xyz);
                 //float3 camLeft = normalize(UNITY_MATRIX_IT_MV[0].xyz);
             
-            
 				FS_INPUT pIn = (FS_INPUT)0;
-				//pIn.normal = mul(unity_ObjectToWorld, tri[0].normal);
                 pIn.normal = mul(unity_ObjectToWorld, viewDir);
 				pIn.color = tri[0].color;
 
 				float4 vertex = mul(unity_ObjectToWorld, tri[0].vertex);
 				float3 tangent = normalize(cross(float3(0,1,0), pIn.normal));
 				float3 up = normalize(cross(tangent, pIn.normal));
-               
                 
+                up = (up * _Size/2.0);
+                tangent = (tangent* _Size/2.0);
+                float3 p = vertex.xyz;
                 
-                //float3 tangent = camLeft;
-                //float3 up = camUp;
+                //V1
+                pIn.vertex = mul(UNITY_MATRIX_VP, float4(p + up, 1.0));
+                pIn.texcoord = float2(0, 2.0);;
+                triStream.Append(pIn);
                 
-               
-
-				pIn.vertex = mul(UNITY_MATRIX_VP, vertex + float4(tangent * -_Size / 1.5, 0));
-				pIn.texcoord = float2(-0.5,0);
-				triStream.Append(pIn);
-
-				pIn.vertex = mul(UNITY_MATRIX_VP, vertex + float4(up * _Size, 0));
-				pIn.texcoord = float2(0.5,1.5);
-				triStream.Append(pIn);
-
-				pIn.vertex = mul(UNITY_MATRIX_VP, vertex + float4(tangent * _Size / 1.5, 0));
-				pIn.texcoord = float2(1.5,0);
-				triStream.Append(pIn);
+                //V2
+                pIn.vertex = mul(UNITY_MATRIX_VP, float4(p - up + tangent, 1.0));
+                pIn.texcoord = float2(1.73205080757, -1.0);;
+                triStream.Append(pIn);
+                
+                //V3
+                pIn.vertex = mul(UNITY_MATRIX_VP, float4(p - up - tangent, 1.0));
+                pIn.texcoord = float2(-1.73205080757, -1.0);;
+                triStream.Append(pIn);
 			}
 
 			float4 frag (FS_INPUT i) : COLOR
 			{
-				float4 color = i.color;
-                float textAlpha = tex2D(_MainTex, i.texcoord).a;
-                if (textAlpha < 0.5){
-                    discard;
+                if (length(i.texcoord) > 1.0){
+                    discard; //return float4(1.0,0.0,0.0,1.0);
                 }
-				color.a = step(0.5, textAlpha);
-				return color;
-                
-                //return float4(1.0,0.0,0.0,1.0);
+                return i.color;
 			}
 			ENDCG
 		}

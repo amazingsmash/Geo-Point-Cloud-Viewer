@@ -53,13 +53,26 @@
 			[maxvertexcount(3)]
 			void geom (point GS_INPUT tri[1], inout TriangleStream<FS_INPUT> triStream)
 			{
+                float3 viewDir = normalize(UNITY_MATRIX_IT_MV[2].xyz);
+                //float3 camUp = normalize(UNITY_MATRIX_IT_MV[1].xyz);
+                //float3 camLeft = normalize(UNITY_MATRIX_IT_MV[0].xyz);
+            
+            
 				FS_INPUT pIn = (FS_INPUT)0;
-				pIn.normal = mul(unity_ObjectToWorld, tri[0].normal);
+				//pIn.normal = mul(unity_ObjectToWorld, tri[0].normal);
+                pIn.normal = mul(unity_ObjectToWorld, viewDir);
 				pIn.color = tri[0].color;
 
 				float4 vertex = mul(unity_ObjectToWorld, tri[0].vertex);
 				float3 tangent = normalize(cross(float3(0,1,0), pIn.normal));
 				float3 up = normalize(cross(tangent, pIn.normal));
+               
+                
+                
+                //float3 tangent = camLeft;
+                //float3 up = camUp;
+                
+               
 
 				pIn.vertex = mul(UNITY_MATRIX_VP, vertex + float4(tangent * -_Size / 1.5, 0));
 				pIn.texcoord = float2(-0.5,0);
@@ -83,6 +96,8 @@
                 }
 				color.a = step(0.5, textAlpha);
 				return color;
+                
+                //return float4(1.0,0.0,0.0,1.0);
 			}
 			ENDCG
 		}

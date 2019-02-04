@@ -89,7 +89,7 @@ public class PointCloudLoader : MonoBehaviour, IMaterialProvider
 
     DirectoryInfo getModelDirectory()
     {
-        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/7_mini");
+        //return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/7_mini");
 #if UNITY_EDITOR
         string path = EditorUtility.OpenFolderPanel("Select Model Folder", "", "");
         if (path.Length > 0)

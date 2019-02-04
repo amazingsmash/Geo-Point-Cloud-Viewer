@@ -183,9 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7689bc65bbe83406dae9a821d1d524dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hdMaxDistance: 3000
+  hdMaxDistance: 1000
   hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
-  ldMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
+  ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
 --- !u!4 &1349960461
 Transform:
   m_ObjectHideFlags: 0

@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{FE7AD86C-619D-70DB-2836-FF2F2CCCF427}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Materials/Rounded Points/PointCloud.shader">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Materials/Rounded Points/PointCloud_Dot.shader">
     <Files>
-      <File FileName="Assets/Scripts/PointCloudLoader.cs" Line="23" Column="1" />
-      <File FileName="Assets/Materials/Rounded Points/PointCloud.shader" Line="62" Column="36" />
+      <File FileName="Assets/Scripts/PointCloudLoader.cs" Line="207" Column="71" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud.shader" Line="81" Column="21" />
       <File FileName="Assets/Scripts/PointCloudPart.cs" Line="80" Column="38" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot.shader" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -80,7 +80,7 @@ classdef LASConverter
             end
         end
         
-        function voxelIndex = LASData2Bytes_Octree(xyzClass, lasName, folder, pointsPerFile, clearFolder)
+        function voxelIndex = LASData2Bytes_Octree(xyzClass, lasName, folder, pointsPerFile, initIndex, clearFolder)
             
             function [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(pc)
                 x = pc(:,1);
@@ -104,9 +104,9 @@ classdef LASConverter
                 pc8 = ~px & ~py & ~pz;
             end
             
-            function voxelIndex = saveOctree(xyzClass, folder, pointsPerFile, voxelName)
+            function voxelIndex = saveOctree(xyzClass, folder, pointsPerFile, voxelName, indices)
                 if isempty(xyzClass)
-                    voxelIndex = {};
+                    voxelIndex = [];
                     return
                 end
 
@@ -114,29 +114,39 @@ classdef LASConverter
                     outFN = sprintf("%s/%s.bytes", folder, voxelName);
                     LASConverter.save2DMatrixToBinary(outFN, xyzClass);
                     
-                    voxel.filename = outFN;
+                    voxel.filename = sprintf("%s.bytes", voxelName);
                     voxel.min = min(xyzClass(:, 1:3));
                     voxel.max = max(xyzClass(:, 1:3));
-                    voxelIndex = {voxel};
+                    voxel.indices = [indices];
+                    voxelIndex = voxel;
                 else
                     [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(xyzClass); 
                     voxels = {pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8};
                     
-                    voxelIndex = {};
+                    children = [];
+                    
+                    voxelIndex = struct();
+                    voxelIndex.indices = indices;
+                    voxelIndex.children = [];
                     for i = 1:length(voxels)
                         newVoxelName = sprintf("%s_%d", voxelName, i);
-                        newVI = saveOctree(xyzClass(voxels{i}, :), folder, pointsPerFile, newVoxelName);
+                        newVI = saveOctree(xyzClass(voxels{i}, :), folder, pointsPerFile, newVoxelName, [indices i]);
+                        voxelIndex.children = [voxelIndex.children newVI];
                         
-                        voxelIndex = {voxelIndex newVI};
+                        %Test
+                        if ~isempty(voxelIndex.children)
+                            return
+                        end
                     end
-
+                    
+                    
                 end
             end
             
             if clearFolder
                 LASConverter.resetFolder(folder);
             end
-            saveOctree(xyzClass, folder, pointsPerFile, lasName)
+            voxelIndex = saveOctree(xyzClass, folder, pointsPerFile, lasName, [initIndex]);
         end
         
         function LASData2Bytes_Octree_MultiFile(filenames, modelName, pointsPerFile)
@@ -144,10 +154,10 @@ classdef LASConverter
             
             LASConverter.resetFolder(modelName);
             pMin = nan;
-            voxelIndex = {};
-            for i = 1:length(filenames)
+            voxelIndex = [];
+            for lasIndex = 1:length(filenames)
                 
-                filename = filenames{i};
+                filename = filenames{lasIndex};
                 load(filename);
                 
                 %Compute min of first
@@ -157,9 +167,24 @@ classdef LASConverter
                 
                 %Bringing cloud to zero
                 xyzClass = [points(:,1) - pMin(1), points(:,2) - pMin(2), points(:,3) - pMin(3), points(:,5)];
-                newVoxelIndex = LASConverter.LASData2Bytes_Octree(xyzClass, filename, modelName, pointsPerFile, false);
-                voxelIndex = {voxelIndex, newVoxelIndex};
+                newVoxelIndex = LASConverter.LASData2Bytes_Octree(xyzClass, filename, modelName, pointsPerFile, lasIndex, false);
+                voxelIndex = [voxelIndex, newVoxelIndex];
             end
+            
+            viFile = sprintf("%s/voxelIndex.json", modelName);
+            LASConverter.saveJSON(viFile, voxelIndex);
+        end
+        
+        function saveJSON(filename, data)
+            json = jsonencode(data);
+            
+            json = strrep(json, ',', sprintf(',\r'));
+            json = strrep(json, '[{', sprintf('[\r{\r'));
+            json = strrep(json, '}]', sprintf('\r}\r]'));
+            
+            fid = fopen(filename,'wt');
+            fprintf(fid, json);
+            fclose(fid);
         end
         
         function resetFolder(folder)

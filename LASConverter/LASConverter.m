@@ -109,40 +109,40 @@ classdef LASConverter
                     voxelIndex = [];
                     return
                 end
+                
+                %Test
+                if nNodes > 5
+                    voxelIndex = [];
+                    return
+                end
+                
+                voxelIndex = struct();
+                voxelIndex.filename = sprintf("%s.bytes", voxelName);
+                voxelIndex.min = min(xyzClass(:, 1:3));
+                voxelIndex.max = max(xyzClass(:, 1:3));
+                voxelIndex.indices = indices;    
+                voxelIndex.children = [];
 
                 if length(xyzClass) < pointsPerFile
                     outFN = sprintf("%s/%s.bytes", folder, voxelName);
                     LASConverter.save2DMatrixToBinary(outFN, xyzClass);
+                    voxelIndex.filename = sprintf("%s.bytes", voxelName);
                     
-                    voxel.filename = sprintf("%s.bytes", voxelName);
-                    voxel.min = min(xyzClass(:, 1:3));
-                    voxel.max = max(xyzClass(:, 1:3));
-                    voxel.indices = [indices];
-                    voxelIndex = voxel;
+                    nNodes = nNodes + 1;
                 else
                     [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(xyzClass); 
                     voxels = {pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8};
                     
-                    children = [];
-                    
-                    voxelIndex = struct();
-                    voxelIndex.indices = indices;
-                    voxelIndex.children = [];
+                    voxelIndex.filename = "";
                     for i = 1:length(voxels)
                         newVoxelName = sprintf("%s_%d", voxelName, i);
                         newVI = saveOctree(xyzClass(voxels{i}, :), folder, pointsPerFile, newVoxelName, [indices i]);
-                        voxelIndex.children = [voxelIndex.children newVI];
-                        
-                        %Test
-                        if ~isempty(voxelIndex.children)
-                            return
-                        end
+                        voxelIndex.children = [voxelIndex newVI];
                     end
-                    
-                    
                 end
             end
             
+            nNodes = 0;
             if clearFolder
                 LASConverter.resetFolder(folder);
             end

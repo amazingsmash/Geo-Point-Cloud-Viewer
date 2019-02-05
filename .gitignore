@@ -4,3 +4,4 @@ LASViewer/obj/Debug/
 LASViewer/Temp/
 LASConverter/*.mat
 LASConverter/*.las
+*.m~

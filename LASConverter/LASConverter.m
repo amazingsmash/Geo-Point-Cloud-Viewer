@@ -80,7 +80,7 @@ classdef LASConverter
             end
         end
         
-        function LASData2Bytes_Octree(xyzClass, lasName, pointsPerFile, clearFolder)
+        function LASData2Bytes_Octree(xyzClass, lasName, folder, pointsPerFile, clearFolder)
             
             function [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(pc)
                 x = pc(:,1);
@@ -104,13 +104,13 @@ classdef LASConverter
                 pc8 = ~px & ~py & ~pz;
             end
             
-            function saveOctree(xyzClass, lasName, pointsPerFile, voxelName)
+            function saveOctree(xyzClass, folder, pointsPerFile, voxelName)
                 if isempty(xyzClass)
                     return
                 end
 
                 if length(xyzClass) < pointsPerFile
-                    outFN = sprintf("%s/Points_Voxel_%s.bytes", lasName, voxelName);
+                    outFN = sprintf("%s/%s.bytes", folder, voxelName);
                     LASConverter.save2DMatrixToBinary(outFN, xyzClass);
                 else
                     [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(xyzClass); 
@@ -118,27 +118,27 @@ classdef LASConverter
 
                     for i = 1:length(voxels)
                         newVoxelName = sprintf("%s_%d", voxelName, i);
-                        saveOctree(xyzClass(voxels{i}, :), lasName, pointsPerFile, newVoxelName)
+                        saveOctree(xyzClass(voxels{i}, :), folder, pointsPerFile, newVoxelName)
                     end
 
                 end
             end
             
             if clearFolder
-                LASConverter.resetFolder(lasName);
+                LASConverter.resetFolder(folder);
             end
-            saveOctree(xyzClass, lasName, pointsPerFile, "")
+            saveOctree(xyzClass, folder, pointsPerFile, lasName)
         end
         
-        function LASData2Bytes_Octree_MultiFile(filenames, lasName, pointsPerFile)
+        function LASData2Bytes_Octree_MultiFile(filenames, modelName, pointsPerFile)
             
             
-            LASConverter.resetFolder(lasName);
+            LASConverter.resetFolder(modelName);
             pMin = nan;
             for i = 1:length(filenames)
                 
-                fn = filenames{i};
-                load(fn);
+                filename = filenames{i};
+                load(filename);
                 
                 %Compute min of first
                 if isnan(pMin)
@@ -147,7 +147,7 @@ classdef LASConverter
                 
                 %Bringing cloud to zero
                 xyzClass = [points(:,1) - pMin(1), points(:,2) - pMin(2), points(:,3) - pMin(3), points(:,5)];
-                LASConverter.LASData2Bytes_Octree(xyzClass, lasName, pointsPerFile, false)
+                LASConverter.LASData2Bytes_Octree(xyzClass, filename, modelName, pointsPerFile, false);
                 
             end
         end

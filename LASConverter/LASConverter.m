@@ -80,7 +80,7 @@ classdef LASConverter
             end
         end
         
-        function LASData2Bytes_Octree(xyzClass, lasName, folder, pointsPerFile, clearFolder)
+        function voxelIndex = LASData2Bytes_Octree(xyzClass, lasName, folder, pointsPerFile, clearFolder)
             
             function [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(pc)
                 x = pc(:,1);
@@ -104,21 +104,30 @@ classdef LASConverter
                 pc8 = ~px & ~py & ~pz;
             end
             
-            function saveOctree(xyzClass, folder, pointsPerFile, voxelName)
+            function voxelIndex = saveOctree(xyzClass, folder, pointsPerFile, voxelName)
                 if isempty(xyzClass)
+                    voxelIndex = {};
                     return
                 end
 
                 if length(xyzClass) < pointsPerFile
                     outFN = sprintf("%s/%s.bytes", folder, voxelName);
                     LASConverter.save2DMatrixToBinary(outFN, xyzClass);
+                    
+                    voxel.filename = outFN;
+                    voxel.min = min(xyzClass(:, 1:3));
+                    voxel.max = max(xyzClass(:, 1:3));
+                    voxelIndex = {voxel};
                 else
                     [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(xyzClass); 
                     voxels = {pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8};
-
+                    
+                    voxelIndex = {};
                     for i = 1:length(voxels)
                         newVoxelName = sprintf("%s_%d", voxelName, i);
-                        saveOctree(xyzClass(voxels{i}, :), folder, pointsPerFile, newVoxelName)
+                        newVI = saveOctree(xyzClass(voxels{i}, :), folder, pointsPerFile, newVoxelName);
+                        
+                        voxelIndex = {voxelIndex newVI};
                     end
 
                 end
@@ -135,6 +144,7 @@ classdef LASConverter
             
             LASConverter.resetFolder(modelName);
             pMin = nan;
+            voxelIndex = {};
             for i = 1:length(filenames)
                 
                 filename = filenames{i};
@@ -147,8 +157,8 @@ classdef LASConverter
                 
                 %Bringing cloud to zero
                 xyzClass = [points(:,1) - pMin(1), points(:,2) - pMin(2), points(:,3) - pMin(3), points(:,5)];
-                LASConverter.LASData2Bytes_Octree(xyzClass, filename, modelName, pointsPerFile, false);
-                
+                newVoxelIndex = LASConverter.LASData2Bytes_Octree(xyzClass, filename, modelName, pointsPerFile, false);
+                voxelIndex = {voxelIndex, newVoxelIndex};
             end
         end
         

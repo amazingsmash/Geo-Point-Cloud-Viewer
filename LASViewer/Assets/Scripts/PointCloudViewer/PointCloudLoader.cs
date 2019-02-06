@@ -34,7 +34,7 @@ public class PointCloudLoader : MonoBehaviour, IMaterialProvider
 
     DirectoryInfo getModelDirectory()
     {
-        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL MINI");
+        //return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL MINI");
 #if UNITY_EDITOR
         string path = EditorUtility.OpenFolderPanel("Select Model Folder", "", "");
         if (path.Length > 0)
@@ -52,8 +52,6 @@ public class PointCloudLoader : MonoBehaviour, IMaterialProvider
     {
         //DirectoryInfo dir = new DirectoryInfo(getAssetsPath() + "/" + LASByteFolderName);
         DirectoryInfo dir = getModelDirectory();
-
-        PointCloudOctree pointCloudOctree = new PointCloudOctree(dir);
 
         if (dir != null){
             FileInfo[] info = dir.GetFiles("*.bytes");

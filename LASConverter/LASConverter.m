@@ -80,7 +80,18 @@ classdef LASConverter
             end
         end
         
+        
         function voxelIndex = LASData2Bytes_Octree(xyzClass, lasName, folder, pointsPerFile, initIndex, clearFolder)
+            
+%             function [minXYZ, maxXYZ] = minMax(xyz)
+%                 if size(xyzClass,1) == 1
+%                     minXYZ = xyz;
+%                     maxXYZ = xyz;
+%                 else
+%                     minXYZ = min(xyz);
+%                     maxXYZ = max(xyz);
+%                 end
+%             end
             
             function [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(pc)
                 x = pc(:,1);
@@ -106,22 +117,29 @@ classdef LASConverter
             
             function voxelIndex = saveOctree(xyzClass, folder, pointsPerFile, voxelName, indices)
                 if isempty(xyzClass)
-                    voxelIndex = [];
+                    voxelIndex = {};
                     return
                 end
                 
                 %Test
-                if nNodes > 5
-                    voxelIndex = [];
-                    return
-                end
+%                 if nNodes > 5
+%                     voxelIndex = {};
+%                     return
+%                 end
                 
                 voxelIndex = struct();
-                voxelIndex.filename = sprintf("%s.bytes", voxelName);
-                voxelIndex.min = min(xyzClass(:, 1:3));
-                voxelIndex.max = max(xyzClass(:, 1:3));
+                voxelIndex.filename = "";
+%                 [voxelIndex.min, voxelIndex.max] = minMax(xyzClass(:, 1:3));
+%                 xyz = xyzClass(:, 1:3);
+%                 if (size(xyz)
+                voxelIndex.min = min(xyzClass(:, 1:3), [], 1);
+                voxelIndex.max = max(xyzClass(:, 1:3), [], 1);
                 voxelIndex.indices = indices;    
-                voxelIndex.children = [];
+                voxelIndex.children = {};
+                
+                if length(voxelIndex.min) ~= 3
+                    disp("Error");
+                end
 
                 if length(xyzClass) < pointsPerFile
                     outFN = sprintf("%s/%s.bytes", folder, voxelName);
@@ -137,7 +155,9 @@ classdef LASConverter
                     for i = 1:length(voxels)
                         newVoxelName = sprintf("%s_%d", voxelName, i);
                         newVI = saveOctree(xyzClass(voxels{i}, :), folder, pointsPerFile, newVoxelName, [indices i]);
-                        voxelIndex.children = [voxelIndex newVI];
+                        if ~isempty(newVI)
+                            voxelIndex.children = {voxelIndex newVI};
+                        end
                     end
                 end
             end

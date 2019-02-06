@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657856, g: 0.49641234, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 1349960460}
   - component: {fileID: 1349960459}
   - component: {fileID: 1349960458}
+  - component: {fileID: 1349960462}
   m_Layer: 0
   m_Name: LASModel
   m_TagString: Untagged
@@ -178,7 +179,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1349960457}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7689bc65bbe83406dae9a821d1d524dc, type: 3}
   m_Name: 
@@ -199,6 +200,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &1349960462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1349960457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35fc98fc975c54351bfebe57c7670343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hdMaxDistance: 5000
+  hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
+  ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
 --- !u!1 &1533746840
 GameObject:
   m_ObjectHideFlags: 0

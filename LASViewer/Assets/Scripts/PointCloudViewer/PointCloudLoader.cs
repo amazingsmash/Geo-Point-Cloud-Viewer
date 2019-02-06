@@ -6,19 +6,19 @@ using UnityEditor;
 using System.IO;
 //http://www.kamend.com/2014/05/rendering-a-point-cloud-inside-unity/
 
-public class PointCloudLoader : MonoBehaviour, IMaterialProvider
+public class PointCloudLoader : MonoBehaviour, IPointCloudManager
 {
 
     public float hdMaxDistance = 5000.0f;
     public Material hdMaterial = null;
     public Material ldMaterial = null;
 
-    Material IMaterialProvider.getMaterialForDistance(float distance)
+    Material IPointCloudManager.getMaterialForDistance(float distance)
     {
         return (distance < hdMaxDistance) ? hdMaterial : ldMaterial;
     }
 
-    Material IMaterialProvider.getMaterialForBoundingBox(BoxCollider box){
+    Material IPointCloudManager.getMaterialForBoundingBox(BoxCollider box){
         Vector3 camPos = Camera.main.transform.position;
         if (box.bounds.Contains(camPos))
         {
@@ -98,6 +98,24 @@ public class PointCloudLoader : MonoBehaviour, IMaterialProvider
             }
 
         }
+    }
+
+    static Dictionary<float, Color> classColor = null;
+    Color IPointCloudManager.getColorForClass(float classification)
+    {
+        if (classColor == null)
+        {
+            classColor = new Dictionary<float, Color>();
+            classColor[16] = Color.blue;
+            classColor[19] = Color.blue;
+            classColor[17] = Color.red;
+            classColor[20] = Color.green;
+            classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
+            classColor[29] = Color.black;
+            classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
+        }
+
+        return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
     }
 
 

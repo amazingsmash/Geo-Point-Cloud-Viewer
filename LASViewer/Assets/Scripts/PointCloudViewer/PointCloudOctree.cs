@@ -9,20 +9,10 @@ using UnityEditor;
 class PointCloudOctreeNode : MonoBehaviour
 {
 
-    BoxCollider box;
+    protected BoxCollider box;
 
-    //public PointCloudOctreeNode(JSONNode node)
-    //{
-    //    Vector3 min = JSONNode2Vector3(node["min"]);
-    //    Vector3 max = JSONNode2Vector3(node["max"]);
-
-    //    gameObject.AddComponent<BoxCollider>();
-    //    box = gameObject.GetComponent<BoxCollider>();
-    //    box.center = (min + max) / 2.0f;
-    //    box.size = max - min;
-    //}
-
-    public void initBoxCollider(JSONNode node){
+    public void initBoxCollider(JSONNode node)
+    {
         Vector3 min = JSONNode2Vector3(node["min"]);
         Vector3 max = JSONNode2Vector3(node["max"]);
 
@@ -37,20 +27,12 @@ class PointCloudOctreeNode : MonoBehaviour
         return new Vector3(node[0].AsFloat, node[1].AsFloat, node[2].AsFloat);
     }
 
-    public static bool isLeaf(JSONNode node){
+    public static bool isLeaf(JSONNode node)
+    {
         return node["children"].AsArray.Count == 0 && !node["filename"].Equals("");
     }
 
-    //public static PointCloudOctreeNode parse(JSONNode node, DirectoryInfo directory){
-    //    if (node["filename"] != ""){
-    //        return new PointCloudOctreeLeafNode(node, directory);
-    //    }else{
-    //        Debug.Log(node);
-    //        return new PointCloudOctreeParentNode(node["children"], directory);
-    //    }
-    //}
-
-    public static void addNode(JSONNode node, DirectoryInfo directory, GameObject gameObject, IMaterialProvider materialProvider)
+    public static void addNode(JSONNode node, DirectoryInfo directory, GameObject gameObject, IPointCloudManager materialProvider)
     {
         GameObject child = new GameObject("PC Node");
         child.transform.SetParent(gameObject.transform, false);
@@ -68,43 +50,12 @@ class PointCloudOctreeNode : MonoBehaviour
     }
 }
 
-class PointCloudOctreeLeafNode : PointCloudOctreeNode
-{
-    FileInfo fileInfo;
-    //public PointCloudOctreeLeafNode(JSONNode node, DirectoryInfo directory):
-    //base(node)
-    //{
-    //    fileInfo = directory.GetFiles(node["filename"])[0];
-    //    Debug.Assert(fileInfo != null, "File not found:" + node["filename"]);
-    //}
 
-    public void init(JSONNode node, DirectoryInfo directory, IMaterialProvider materialProvider)
-    {
-        string filename = node["filename"];
-        fileInfo = directory.GetFiles(filename)[0];
-        Debug.Assert(fileInfo != null, "File not found:" + node["filename"]);
-        initBoxCollider(node);
 
-        PointCloudPart pc = gameObject.AddComponent<PointCloudPart>();
-        pc.initWithFilePath(fileInfo.FullName, materialProvider);
-    }
-}
-
-class PointCloudOctreeParentNode: PointCloudOctreeNode
+class PointCloudOctreeParentNode : PointCloudOctreeNode
 {
 
-    //readonly PointCloudOctreeNode[] children;
-    //public PointCloudOctreeParentNode(JSONNode node, DirectoryInfo directory):
-    //base(node)
-    //{
-    //    JSONArray childrenJSON = node["children"].AsArray;
-    //    children = new PointCloudOctreeNode[childrenJSON.Count];
-    //    for (int i = 0; i < childrenJSON.Count; i++){
-    //        children[i] = PointCloudOctreeNode.parse(childrenJSON, directory);
-    //    }
-    //}
-
-    public void init(JSONNode node, DirectoryInfo directory, IMaterialProvider materialProvider)
+    public void init(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider)
     {
         JSONArray childrenJSON = node["children"].AsArray;
         for (int i = 0; i < childrenJSON.Count; i++)
@@ -114,7 +65,7 @@ class PointCloudOctreeParentNode: PointCloudOctreeNode
     }
 }
 
-public class PointCloudOctree : MonoBehaviour, IMaterialProvider
+public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 {
     DirectoryInfo directory = null;
 
@@ -129,7 +80,7 @@ public class PointCloudOctree : MonoBehaviour, IMaterialProvider
         }
         return null;
 #else
-        return new DirectoryInfo("../Models/7");
+        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL");
 #endif
     }
 
@@ -154,18 +105,21 @@ public class PointCloudOctree : MonoBehaviour, IMaterialProvider
         }
     }
 
-    //------------------------------------------------------------
+}
 
+//IPointCloudManager
+public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
+{
     public float hdMaxDistance = 5000.0f;
     public Material hdMaterial = null;
     public Material ldMaterial = null;
 
-    Material IMaterialProvider.getMaterialForDistance(float distance)
+    Material IPointCloudManager.getMaterialForDistance(float distance)
     {
         return (distance < hdMaxDistance) ? hdMaterial : ldMaterial;
     }
 
-    Material IMaterialProvider.getMaterialForBoundingBox(BoxCollider box)
+    Material IPointCloudManager.getMaterialForBoundingBox(BoxCollider box)
     {
         Vector3 camPos = Camera.main.transform.position;
         if (box.bounds.Contains(camPos))
@@ -179,7 +133,23 @@ public class PointCloudOctree : MonoBehaviour, IMaterialProvider
             return (sqrDist < (hdMaxDistance * hdMaxDistance)) ? hdMaterial : ldMaterial;
         }
     }
+
+    static Dictionary<float, Color> classColor = null;
+    Color IPointCloudManager.getColorForClass(float classification)
+    {
+        if (classColor == null)
+        {
+            classColor = new Dictionary<float, Color>();
+            classColor[16] = Color.blue;
+            classColor[19] = Color.blue;
+            classColor[17] = Color.red;
+            classColor[20] = Color.green;
+            classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
+            classColor[29] = Color.black;
+            classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
+        }
+
+        return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
+    }
+
 }
-
-
-

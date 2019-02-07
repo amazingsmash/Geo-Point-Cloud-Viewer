@@ -6,7 +6,7 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
-class PointCloudNode : MonoBehaviour
+abstract class PointCloudNode : MonoBehaviour
 {
     public enum PCNodeRenderState
     {
@@ -14,24 +14,50 @@ class PointCloudNode : MonoBehaviour
         INVISIBLE
     };
 
-    protected Bounds bounds;
+    //protected Bounds bounds;
     protected BoundingSphere boundingSphere;
 
     static public int nVisibleNodes = 0;
     static public int nInvisibleNodes = 0;
 
     private PCNodeRenderState _state = PCNodeRenderState.INVISIBLE;
-    protected PCNodeRenderState state{
+    protected PCNodeRenderState State
+    {
         get { return _state; }
-        set{
+        set
+        {
             _state = value;
-            if (value == PCNodeRenderState.VISIBLE){
+            if (value == PCNodeRenderState.VISIBLE)
+            {
                 nVisibleNodes++;
-            } else{
+            }
+            else
+            {
                 nInvisibleNodes++;
             }
         }
-    } 
+    }
+
+    protected PointCloudNode[] ChildNodes{
+        get
+        {
+            PointCloudNode[] nodes = new PointCloudNode[transform.childCount];
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                GameObject child = transform.GetChild(i).gameObject;
+                nodes[i] = child.GetComponent<PointCloudNode>();
+            }
+            return nodes;
+        }
+    }
+
+    public abstract Bounds getBoundsInWorldCoordinates();
+
+    public abstract void GetClosestPointOnRay(Ray ray,
+                                     Vector2 screenPos,
+                                     ref float maxDist,
+                                     ref Vector3 closestHit,
+                                              float sqrMaxScreenDistance);
 
     public void initBounds(JSONNode node)
     {
@@ -39,12 +65,13 @@ class PointCloudNode : MonoBehaviour
         Vector3 max = JSONNode2Vector3(node["max"]);
         Vector3 center = (min + max) / 2.0f;
         Vector3 size = max - min;
-        bounds = new Bounds(center, size);
+        //bounds = new Bounds(center, size);
         //Debug.Log(box);
 
         boundingSphere = new BoundingSphere(center, size.magnitude);
     }
-    public bool closerThan(Vector3 position, float minDistance){
+    public bool closerThan(Vector3 position, float minDistance)
+    {
         //TODO: Bounding volumes must resize with cloud transformations
         float distSphere = ((boundingSphere.position - position).magnitude) - boundingSphere.radius;
         if (distSphere <= minDistance) return true;
@@ -53,8 +80,8 @@ class PointCloudNode : MonoBehaviour
         return false;
     }
 
-    public void testRenderState(PCNodeRenderState parentState, 
-                                Vector3 cameraInObjSpacePosition, 
+    public void testRenderState(PCNodeRenderState parentState,
+                                Vector3 cameraInObjSpacePosition,
                                 float sqrVisibleDistance)
     {
         //if (this is PointCloudLeafNode){
@@ -65,9 +92,10 @@ class PointCloudNode : MonoBehaviour
 
         if (parentState == PCNodeRenderState.INVISIBLE)
         {
-            state = PCNodeRenderState.INVISIBLE;
+            State = PCNodeRenderState.INVISIBLE;
         }
-        else{
+        else
+        {
             //float sqrDist = box.sqrDistance(cameraInObjSpacePosition);
             //state = (sqrDist <= sqrVisibleDistance) ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
 
@@ -77,17 +105,13 @@ class PointCloudNode : MonoBehaviour
 
             float maxDist = Mathf.Sqrt(sqrVisibleDistance);
             bool close = closerThan(cameraInObjSpacePosition, maxDist);
-            state = close ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
+            State = close ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
         }
 
-        //if (state == PCNodeRenderState.VISIBLE){
-        //    Debug.Log("Visible Node");
-        //}
-
-        for (int i = 0; i < transform.childCount; i++){
-            GameObject child = transform.GetChild(i).gameObject;
-            PointCloudNode node = child.GetComponent<PointCloudNode>();
-            node.testRenderState(state, cameraInObjSpacePosition, sqrVisibleDistance);
+        PointCloudNode[] children = ChildNodes;
+        foreach (PointCloudNode node in children)
+        {
+            node.testRenderState(State, cameraInObjSpacePosition, sqrVisibleDistance);
         }
     }
 
@@ -124,6 +148,20 @@ class PointCloudNode : MonoBehaviour
 class PointCloudParentNode : PointCloudNode
 {
 
+    public override Bounds getBoundsInWorldCoordinates(){
+        Bounds b = new Bounds(transform.position, Vector3.zero);
+        PointCloudNode[] children = ChildNodes;
+        foreach (PointCloudNode node in children)
+        {
+            Bounds cb = node.getBoundsInWorldCoordinates();
+            if (cb.size.sqrMagnitude > 0)
+            {
+                cb.Encapsulate(cb);
+            }
+        }
+        return b;
+    }
+
     public void init(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider)
     {
         initBounds(node);
@@ -132,6 +170,24 @@ class PointCloudParentNode : PointCloudNode
         for (int i = 0; i < childrenJSON.Count; i++)
         {
             PointCloudNode.addNode(childrenJSON[i], directory, gameObject, materialProvider);
+        }
+    }
+
+    public override void GetClosestPointOnRay(Ray ray,
+                             Vector2 screenPos,
+                             ref float maxDist,
+                             ref Vector3 closestHit,
+                                      float sqrMaxScreenDistance)
+    {
+
+    PointCloudNode[] children = ChildNodes;
+        foreach (PointCloudNode node in children)
+        {
+            node.GetClosestPointOnRay(ray,
+                                      screenPos,
+                                      ref maxDist,
+                                      ref closestHit,
+                                      sqrMaxScreenDistance);
         }
     }
 }
@@ -177,15 +233,18 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
             {
                 PointCloudNode.addNode(node, this.directory, gameObject, this);
             }
-        } else{
+        }
+        else
+        {
             PointCloudNode.addNode(json, this.directory, gameObject, this);
         }
     }
 
-    
+
     void Update()
     {
         checkNodeRenderState();
+        selectPoint();
     }
 
     private void checkNodeRenderState()
@@ -193,9 +252,6 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         secondsSinceLastVisibilityCheck += Time.deltaTime;
         if (secondsSinceLastVisibilityCheck > 0.25f)
         {
-            PointCloudNode.nVisibleNodes = 0;
-            PointCloudNode.nInvisibleNodes = 0;
-
             float sqrVisibleDistance = (float)(Camera.main.farClipPlane * 1.2);
             sqrVisibleDistance = sqrVisibleDistance * sqrVisibleDistance;
 
@@ -207,14 +263,64 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
                 PointCloudNode node = child.GetComponent<PointCloudNode>();
                 if (node != null)
                 {
-                    node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE, cameraInObjSpacePosition, sqrVisibleDistance);
+                    node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE, 
+                                         cameraInObjSpacePosition, 
+                                         sqrVisibleDistance);
                 }
             }
 
-            Debug.Log("N Vis-Inv Nodes" + PointCloudNode.nVisibleNodes + " " + PointCloudNode.nInvisibleNodes);
+            //Debug.Log("N Vis-Inv Nodes" + PointCloudNode.nVisibleNodes + " " + PointCloudNode.nInvisibleNodes);
+            PointCloudNode.nVisibleNodes = 0;
+            PointCloudNode.nInvisibleNodes = 0;
 
             secondsSinceLastVisibilityCheck = 0.0f;
         }
+    }
+
+
+    void selectPoint()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Finding selected point.");
+
+            float maxScreenDistance = 20.0f;
+
+            Vector3 mousePosition = Input.mousePosition;
+            MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
+            float maxDist = 10000000.0f;
+
+            Vector3 closestHit = Vector3.negativeInfinity;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                GameObject child = transform.GetChild(i).gameObject;
+                PointCloudNode node = child.GetComponent<PointCloudNode>();
+                if (node != null)
+                {
+                    node.GetClosestPointOnRay(ray,
+                                              mousePosition,
+                                              ref maxDist, 
+                                              ref closestHit, 
+                                              maxScreenDistance * maxScreenDistance);
+                }
+            }
+
+            if (!closestHit.Equals(Vector3.negativeInfinity))
+            {
+                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                sphere.transform.position = closestHit;
+                sphere.transform.localScale = new Vector3(4.0f, 4.0f, 4.0f);
+            }
+
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Bounds b = new Bounds(Vector3.zero, new Vector3(1000.0f, 1000.0f, 1000.0f));
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(b.center, b.size);
     }
 }
 

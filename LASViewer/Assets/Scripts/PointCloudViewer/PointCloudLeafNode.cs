@@ -24,13 +24,6 @@ public static class BoxColliderExtension
         Vector3 p = box.ClosestPoint(position);
         return Vector3.Distance(position, p);
     }
-
-    //public static float distanceToMainCamera(this BoxCollider box)
-    //{
-    //    Vector3 c = Camera.main.transform.position;
-    //    Vector3 p = box.ClosestPoint(Camera.main.transform.position);
-    //    return (c - p).magnitude;
-    //}
 }
 
 public static class BoundsExtension
@@ -89,18 +82,28 @@ class PointCloudLeafNode : PointCloudNode
     // Update is called once per frame
     void Update()
     {
-        if (state == PCNodeRenderState.VISIBLE)
+        if (State == PCNodeRenderState.VISIBLE)
         {
             if (!isMeshInitialized)
             {
                 initMesh();
-            } 
+            }
 
+            Bounds bounds = getBoundsInWorldCoordinates();
             meshRenderer.material = manager.getMaterialForBoundingBox(bounds);
-        }else{
+        }
+        else
+        {
             //Debug.Log("NO VISIBLE");
         }
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        Bounds b = getBoundsInWorldCoordinates();
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(b.center, b.size);
     }
 
     //-------------
@@ -130,11 +133,30 @@ class PointCloudLeafNode : PointCloudNode
         return pointCloud;
     }
 
-    public void getClosestPointOnRay(Ray ray, Vector2 screenPos, ref float maxDist, ref Vector3 closestHit)
+    public override Bounds getBoundsInWorldCoordinates()
     {
-        if (bounds.Contains(ray.origin) || bounds.IntersectRay(ray, out maxDist))
+        Mesh mesh = meshFilter.mesh;
+        if (mesh == null)
         {
-            Mesh mesh = meshFilter.mesh;
+            return new Bounds(Vector3.zero, Vector3.zero);
+        }
+        return meshRenderer.bounds;
+    }
+
+    public override void GetClosestPointOnRay(Ray ray,
+                                                Vector2 screenPos,
+                                                ref float maxDist,
+                                                ref Vector3 closestHit,
+                                            float sqrMaxScreenDistance)
+    {
+        Mesh mesh = meshFilter.mesh;
+        if (mesh == null){
+            return;
+        }
+        Bounds meshBounds = meshRenderer.bounds;
+        if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
+        {
+
             print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
             foreach (Vector3 p in mesh.vertices)
             {
@@ -144,7 +166,7 @@ class PointCloudLeafNode : PointCloudNode
                 if (distancePointToCamera < maxDist)
                 {
                     float sqrDistance = (new Vector2(v.x, v.y) - screenPos).sqrMagnitude;
-                    if (sqrDistance < 25.0f)
+                    if (sqrDistance < sqrMaxScreenDistance)
                     {
                         closestHit = pWorld;
                         maxDist = distancePointToCamera;

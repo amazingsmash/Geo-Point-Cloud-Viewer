@@ -14,9 +14,24 @@ class PointCloudNode : MonoBehaviour
         INVISIBLE
     };
 
-    protected Bounds box;
-    protected PCNodeRenderState state = PCNodeRenderState.INVISIBLE;
-    protected float distanceToCameraUpperBound = float.PositiveInfinity;
+    protected Bounds bounds;
+    protected BoundingSphere boundingSphere;
+
+    static public int nVisibleNodes = 0;
+    static public int nInvisibleNodes = 0;
+
+    private PCNodeRenderState _state = PCNodeRenderState.INVISIBLE;
+    protected PCNodeRenderState state{
+        get { return _state; }
+        set{
+            _state = value;
+            if (value == PCNodeRenderState.VISIBLE){
+                nVisibleNodes++;
+            } else{
+                nInvisibleNodes++;
+            }
+        }
+    } 
 
     public void initBounds(JSONNode node)
     {
@@ -24,14 +39,28 @@ class PointCloudNode : MonoBehaviour
         Vector3 max = JSONNode2Vector3(node["max"]);
         Vector3 center = (min + max) / 2.0f;
         Vector3 size = max - min;
-        box = new Bounds(center, size);
+        bounds = new Bounds(center, size);
         //Debug.Log(box);
+
+        boundingSphere = new BoundingSphere(center, size.magnitude);
+    }
+    public bool closerThan(Vector3 position, float minDistance){
+        //TODO: Bounding volumes must resize with cloud transformations
+        float distSphere = ((boundingSphere.position - position).magnitude) - boundingSphere.radius;
+        if (distSphere <= minDistance) return true;
+
+        //TODO: Check with box
+        return false;
     }
 
     public void testRenderState(PCNodeRenderState parentState, 
                                 Vector3 cameraInObjSpacePosition, 
                                 float sqrVisibleDistance)
     {
+        //if (this is PointCloudLeafNode){
+        //    Debug.Log("Leaf Node");
+        //}
+
         //Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
 
         if (parentState == PCNodeRenderState.INVISIBLE)
@@ -42,10 +71,18 @@ class PointCloudNode : MonoBehaviour
             //float sqrDist = box.sqrDistance(cameraInObjSpacePosition);
             //state = (sqrDist <= sqrVisibleDistance) ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
 
-            float dist = box.distance(cameraInObjSpacePosition);
+            //float dist = bounds.distance(cameraInObjSpacePosition);
+            //float maxDist = Mathf.Sqrt(sqrVisibleDistance);
+            //state = (dist <= maxDist) ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
+
             float maxDist = Mathf.Sqrt(sqrVisibleDistance);
-            state = (dist <= maxDist) ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
+            bool close = closerThan(cameraInObjSpacePosition, maxDist);
+            state = close ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
         }
+
+        //if (state == PCNodeRenderState.VISIBLE){
+        //    Debug.Log("Visible Node");
+        //}
 
         for (int i = 0; i < transform.childCount; i++){
             GameObject child = transform.GetChild(i).gameObject;
@@ -106,7 +143,7 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 
     DirectoryInfo getModelDirectory()
     {
-        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL");
+        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/MINI OCTREE");
 #if UNITY_EDITOR
         string path = EditorUtility.OpenFolderPanel("Select Model Folder", "", "");
         if (path.Length > 0)
@@ -134,9 +171,14 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         string s = reader.ReadToEnd();
         JSONNode json = JSON.Parse(s);
 
-        foreach (JSONNode node in json.AsArray)
+        if (json.IsArray)
         {
-            PointCloudNode.addNode(node, this.directory, gameObject, this);
+            foreach (JSONNode node in json.AsArray)
+            {
+                PointCloudNode.addNode(node, this.directory, gameObject, this);
+            }
+        } else{
+            PointCloudNode.addNode(json, this.directory, gameObject, this);
         }
     }
 
@@ -149,12 +191,16 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     private void checkNodeRenderState()
     {
         secondsSinceLastVisibilityCheck += Time.deltaTime;
-        if (secondsSinceLastVisibilityCheck > 1.0f)
+        if (secondsSinceLastVisibilityCheck > 0.25f)
         {
+            PointCloudNode.nVisibleNodes = 0;
+            PointCloudNode.nInvisibleNodes = 0;
+
             float sqrVisibleDistance = (float)(Camera.main.farClipPlane * 1.2);
             sqrVisibleDistance = sqrVisibleDistance * sqrVisibleDistance;
 
-            Vector3 cameraInObjSpacePosition = gameObject.transform.TransformPoint(Camera.main.transform.position);
+            Vector3 camPos = Camera.main.transform.position;
+            Vector3 cameraInObjSpacePosition = gameObject.transform.TransformPoint(camPos);
             for (int i = 0; i < transform.childCount; i++)
             {
                 GameObject child = transform.GetChild(i).gameObject;
@@ -164,6 +210,8 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
                     node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE, cameraInObjSpacePosition, sqrVisibleDistance);
                 }
             }
+
+            Debug.Log("N Vis-Inv Nodes" + PointCloudNode.nVisibleNodes + " " + PointCloudNode.nInvisibleNodes);
 
             secondsSinceLastVisibilityCheck = 0.0f;
         }

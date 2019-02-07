@@ -96,9 +96,9 @@ class PointCloudLeafNode : PointCloudNode
                 initMesh();
             } 
 
-            meshRenderer.material = manager.getMaterialForBoundingBox(box);
+            meshRenderer.material = manager.getMaterialForBoundingBox(bounds);
         }else{
-            Debug.Log("NO VISIBLE");
+            //Debug.Log("NO VISIBLE");
         }
 
     }
@@ -132,7 +132,7 @@ class PointCloudLeafNode : PointCloudNode
 
     public void getClosestPointOnRay(Ray ray, Vector2 screenPos, ref float maxDist, ref Vector3 closestHit)
     {
-        if (box.Contains(ray.origin) || box.IntersectRay(ray, out maxDist))
+        if (bounds.Contains(ray.origin) || bounds.IntersectRay(ray, out maxDist))
         {
             Mesh mesh = meshFilter.mesh;
             print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");

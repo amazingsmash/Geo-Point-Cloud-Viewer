@@ -11,39 +11,6 @@ public interface IPointCloudManager
     Color getColorForClass(float classification);
 }
 
-public static class BoxColliderExtension
-{
-    public static float sqrDistance(this BoxCollider box, Vector3 position)
-    {
-        Vector3 p = box.ClosestPoint(position);
-        return (position - p).sqrMagnitude;
-    }
-
-    public static float distance(this BoxCollider box, Vector3 position)
-    {
-        Vector3 p = box.ClosestPoint(position);
-        return Vector3.Distance(position, p);
-    }
-}
-
-public static class BoundsExtension
-{
-    public static float sqrDistance(this Bounds box, Vector3 position)
-    {
-        Vector3 p = box.ClosestPoint(position);
-        if (p == position)
-        {
-            return 0.0f; //Inside
-        }
-        return (position - p).sqrMagnitude;
-    }
-
-    public static float distance(this Bounds box, Vector3 position)
-    {
-        Vector3 p = box.ClosestPoint(position);
-        return Vector3.Distance(position, p);
-    }
-}
 
 
 class PointCloudLeafNode : PointCloudNode
@@ -65,7 +32,7 @@ class PointCloudLeafNode : PointCloudNode
         string filename = node["filename"];
         fileInfo = directory.GetFiles(filename)[0];
         Debug.Assert(fileInfo != null, "File not found:" + node["filename"]);
-        initBounds(node);
+        InitializeFromJSON(node);
 
         //initMesh();
     }
@@ -89,7 +56,7 @@ class PointCloudLeafNode : PointCloudNode
                 initMesh();
             }
 
-            Bounds bounds = getBoundsInWorldCoordinates();
+            Bounds bounds = GetBoundsInWorldSpace();
             meshRenderer.material = manager.getMaterialForBoundingBox(bounds);
         }
         else
@@ -101,7 +68,7 @@ class PointCloudLeafNode : PointCloudNode
 
     private void OnDrawGizmos()
     {
-        Bounds b = getBoundsInWorldCoordinates();
+        Bounds b = GetBoundsInWorldSpace();
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(b.center, b.size);
     }
@@ -133,7 +100,7 @@ class PointCloudLeafNode : PointCloudNode
         return pointCloud;
     }
 
-    public override Bounds getBoundsInWorldCoordinates()
+    public override Bounds GetBoundsInWorldSpace()
     {
         Mesh mesh = meshFilter.mesh;
         if (mesh == null)
@@ -176,115 +143,3 @@ class PointCloudLeafNode : PointCloudNode
         }
     }
 }
-
-//public class PointCloudPart : MonoBehaviour {
-
-//    Mesh mesh = null;
-//    string filePath = null;
-//    BoxCollider coll = null;
-//    MeshRenderer meshRenderer = null;
-//    IPointCloudManager matProvider = null;
-
-//    public void initWithFilePath(string filePath, IPointCloudManager matProvider){
-//        this.filePath = filePath;
-//        this.matProvider = matProvider;
-//        byte[] buffer = File.ReadAllBytes(filePath);
-//        Matrix2D m = Matrix2D.readFromBytes(buffer);
-//        mesh = createMeshFromLASMatrix(m.values);
-//    }
-
-//    // Use this for initialization
-//    void Start () {
-//        gameObject.name = (new FileInfo(filePath)).Name;
-//        gameObject.AddComponent<MeshFilter>();
-//        meshRenderer = gameObject.AddComponent<MeshRenderer>();
-//        gameObject.GetComponent<MeshFilter>().mesh = mesh;
-//        meshRenderer.material = matProvider.getMaterialForDistance(1000000.0f);
-
-//        gameObject.AddComponent<BoxCollider>();
-//        Bounds b = gameObject.GetComponent<MeshFilter>().mesh.bounds;
-//        coll = gameObject.GetComponent<BoxCollider>();
-//        coll.center = b.center;
-//        coll.size = b.size;
-//    }
-
-//	// Update is called once per frame
-//	void Update () {
-//        //Vector3 camPos = Camera.main.gameObject.transform.position;
-//        //Vector3 boxCenter = gameObject.transform.TransformPoint(coll.center);
-//        //float distanceToCam = (camPos - boxCenter).magnitude;
-//        //meshRenderer.material = matProvider.getMaterialForDistance(distanceToCam);
-
-//        meshRenderer.material = matProvider.getMaterialForBoundingBox(coll);
-//    }
-
-//    //-------------
-
-//    static Dictionary<float, Color> classColor = null;
-//    Color getColorForClass(float classification)
-//    {
-
-//        if (classColor == null)
-//        {
-//            classColor = new Dictionary<float, Color>();
-//            classColor[16] = Color.blue;
-//            classColor[19] = Color.blue;
-//            classColor[17] = Color.red;
-//            classColor[20] = Color.green;
-//            classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
-//            classColor[29] = Color.black;
-//            classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
-//        }
-
-//        return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
-//    }
-
-//    Mesh createMeshFromLASMatrix(float[,] matrix)
-//    {
-//        int nPoints = matrix.GetLength(0);
-//        Mesh pointCloud = new Mesh();
-//        Vector3[] points = new Vector3[nPoints];
-//        int[] indices = new int[nPoints];
-//        Color[] colors = new Color[nPoints];
-
-//        for (int i = 0; i < nPoints; i++)
-//        {
-//            points[i] = new Vector3(matrix[i, 0], matrix[i, 1], matrix[i, 2]);
-//            indices[i] = i;
-//            float classification = matrix[i, 3];
-//            colors[i] = getColorForClass(classification);
-//        }
-
-//        pointCloud.vertices = points;
-//        pointCloud.colors = colors;
-//        pointCloud.SetIndices(indices, MeshTopology.Points, 0);
-
-//        Debug.Log("Generated Point Cloud Mesh with " + nPoints + " points.");
-
-//        return pointCloud;
-//    }
-
-//    public void getClosestPointOnRay(Ray ray, Vector2 screenPos, ref float maxDist, ref Vector3 closestHit)
-//    {
-//        RaycastHit hit;
-//        if (coll.bounds.Contains(ray.origin) || coll.Raycast(ray, out hit, maxDist))
-//        {
-//            print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
-//            foreach (Vector3 p in mesh.vertices)
-//            {
-//                Vector3 pWorld = transform.TransformPoint(p);
-//                Vector3 v = Camera.main.WorldToScreenPoint(pWorld);
-//                float distancePointToCamera = Mathf.Abs(v.z);
-//                if (distancePointToCamera < maxDist)
-//                {
-//                    float sqrDistance = (new Vector2(v.x, v.y) - screenPos).sqrMagnitude;
-//                    if (sqrDistance < 25.0f)
-//                    {
-//                        closestHit = pWorld;
-//                        maxDist = distancePointToCamera;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

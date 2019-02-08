@@ -65,8 +65,10 @@
     <Compile Include="Assets\Scripts\CSVReader.cs" />
     <Compile Include="Assets\Scripts\FlyCam.cs" />
     <Compile Include="Assets\Scripts\PointCloudLoader.cs" />
+    <Compile Include="Assets\Scripts\PointCloudViewer\Extensions.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Matrix2D.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudLeafNode.cs" />
+    <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudNode.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudOctree.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\SimpleJSON.cs" />
     <None Include="Assets\Materials\UnityStandardShaderVertexColor\StandardVertColorShader\CGIncludesVC\UnityStandardCoreForward.cginc" />

@@ -1,0 +1,73 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+//public class Extensions : MonoBehaviour {
+
+//	// Use this for initialization
+//	void Start () {
+		
+//	}
+	
+//	// Update is called once per frame
+//	void Update () {
+		
+//	}
+//}
+
+public static class BoxColliderExtension
+{
+    public static float sqrDistance(this BoxCollider box, Vector3 position)
+    {
+        Vector3 p = box.ClosestPoint(position);
+        return (position - p).sqrMagnitude;
+    }
+
+    public static float distance(this BoxCollider box, Vector3 position)
+    {
+        Vector3 p = box.ClosestPoint(position);
+        return Vector3.Distance(position, p);
+    }
+}
+
+public static class BoundsExtension
+{
+    public static float sqrDistance(this Bounds box, Vector3 position)
+    {
+        Vector3 p = box.ClosestPoint(position);
+        if (p == position)
+        {
+            return 0.0f; //Inside
+        }
+        return (position - p).sqrMagnitude;
+    }
+
+    public static float distance(this Bounds box, Vector3 position)
+    {
+        Vector3 p = box.ClosestPoint(position);
+        return Vector3.Distance(position, p);
+    }
+}
+
+public static class Vector3Extensions{
+    public static float LargestDimension(this Vector3 v){
+        return Mathf.Max(v.x, Mathf.Max(v.y, v.z));
+    }
+}
+
+public static class BoundingSphereExtensions
+{
+    public static BoundingSphere Transform(this BoundingSphere sphere, Transform transform)
+    {
+        Vector3 center = transform.TransformPoint(sphere.position);
+        float radius = transform.localScale.LargestDimension() * sphere.radius;
+        return new BoundingSphere(center, radius);
+    }
+
+    public static float DistanceTo(this BoundingSphere sphere, Vector3 position)
+    {
+        return ((sphere.position - position).magnitude) - sphere.radius;
+    }
+}
+
+

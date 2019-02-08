@@ -6,196 +6,11 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
-abstract class PointCloudNode : MonoBehaviour
-{
-    public enum PCNodeRenderState
-    {
-        VISIBLE,
-        INVISIBLE
-    };
-
-    //protected Bounds bounds;
-    protected BoundingSphere boundingSphere;
-
-    static public int nVisibleNodes = 0;
-    static public int nInvisibleNodes = 0;
-
-    private PCNodeRenderState _state = PCNodeRenderState.INVISIBLE;
-    protected PCNodeRenderState State
-    {
-        get { return _state; }
-        set
-        {
-            _state = value;
-            if (value == PCNodeRenderState.VISIBLE)
-            {
-                nVisibleNodes++;
-            }
-            else
-            {
-                nInvisibleNodes++;
-            }
-        }
-    }
-
-    protected PointCloudNode[] ChildNodes{
-        get
-        {
-            PointCloudNode[] nodes = new PointCloudNode[transform.childCount];
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                GameObject child = transform.GetChild(i).gameObject;
-                nodes[i] = child.GetComponent<PointCloudNode>();
-            }
-            return nodes;
-        }
-    }
-
-    public abstract Bounds getBoundsInWorldCoordinates();
-
-    public abstract void GetClosestPointOnRay(Ray ray,
-                                     Vector2 screenPos,
-                                     ref float maxDist,
-                                     ref Vector3 closestHit,
-                                              float sqrMaxScreenDistance);
-
-    public void initBounds(JSONNode node)
-    {
-        Vector3 min = JSONNode2Vector3(node["min"]);
-        Vector3 max = JSONNode2Vector3(node["max"]);
-        Vector3 center = (min + max) / 2.0f;
-        Vector3 size = max - min;
-        //bounds = new Bounds(center, size);
-        //Debug.Log(box);
-
-        boundingSphere = new BoundingSphere(center, size.magnitude);
-    }
-    public bool closerThan(Vector3 position, float minDistance)
-    {
-        //TODO: Bounding volumes must resize with cloud transformations
-        float distSphere = ((boundingSphere.position - position).magnitude) - boundingSphere.radius;
-        if (distSphere <= minDistance) return true;
-
-        //TODO: Check with box
-        return false;
-    }
-
-    public void testRenderState(PCNodeRenderState parentState,
-                                Vector3 cameraInObjSpacePosition,
-                                float sqrVisibleDistance)
-    {
-        //if (this is PointCloudLeafNode){
-        //    Debug.Log("Leaf Node");
-        //}
-
-        //Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-
-        if (parentState == PCNodeRenderState.INVISIBLE)
-        {
-            State = PCNodeRenderState.INVISIBLE;
-        }
-        else
-        {
-            //float sqrDist = box.sqrDistance(cameraInObjSpacePosition);
-            //state = (sqrDist <= sqrVisibleDistance) ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
-
-            //float dist = bounds.distance(cameraInObjSpacePosition);
-            //float maxDist = Mathf.Sqrt(sqrVisibleDistance);
-            //state = (dist <= maxDist) ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
-
-            float maxDist = Mathf.Sqrt(sqrVisibleDistance);
-            bool close = closerThan(cameraInObjSpacePosition, maxDist);
-            State = close ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
-        }
-
-        PointCloudNode[] children = ChildNodes;
-        foreach (PointCloudNode node in children)
-        {
-            node.testRenderState(State, cameraInObjSpacePosition, sqrVisibleDistance);
-        }
-    }
-
-    public static Vector3 JSONNode2Vector3(JSONNode node)
-    {
-        return new Vector3(node[0].AsFloat, node[1].AsFloat, node[2].AsFloat);
-    }
-
-    public static bool isLeaf(JSONNode node)
-    {
-        return node["children"].AsArray.Count == 0 && !node["filename"].Equals("");
-    }
-
-    public static void addNode(JSONNode node, DirectoryInfo directory, GameObject gameObject, IPointCloudManager materialProvider)
-    {
-        GameObject child = new GameObject("PC Node");
-        child.transform.SetParent(gameObject.transform, false);
-
-        if (isLeaf(node))
-        {
-            PointCloudLeafNode leaf = child.AddComponent<PointCloudLeafNode>();
-            leaf.init(node, directory, materialProvider);
-        }
-        else
-        {
-            PointCloudParentNode parent = child.AddComponent<PointCloudParentNode>();
-            parent.init(node, directory, materialProvider);
-        }
-    }
-}
-
-
-
-class PointCloudParentNode : PointCloudNode
-{
-
-    public override Bounds getBoundsInWorldCoordinates(){
-        Bounds b = new Bounds(transform.position, Vector3.zero);
-        PointCloudNode[] children = ChildNodes;
-        foreach (PointCloudNode node in children)
-        {
-            Bounds cb = node.getBoundsInWorldCoordinates();
-            if (cb.size.sqrMagnitude > 0)
-            {
-                cb.Encapsulate(cb);
-            }
-        }
-        return b;
-    }
-
-    public void init(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider)
-    {
-        initBounds(node);
-
-        JSONArray childrenJSON = node["children"].AsArray;
-        for (int i = 0; i < childrenJSON.Count; i++)
-        {
-            PointCloudNode.addNode(childrenJSON[i], directory, gameObject, materialProvider);
-        }
-    }
-
-    public override void GetClosestPointOnRay(Ray ray,
-                             Vector2 screenPos,
-                             ref float maxDist,
-                             ref Vector3 closestHit,
-                                      float sqrMaxScreenDistance)
-    {
-
-    PointCloudNode[] children = ChildNodes;
-        foreach (PointCloudNode node in children)
-        {
-            node.GetClosestPointOnRay(ray,
-                                      screenPos,
-                                      ref maxDist,
-                                      ref closestHit,
-                                      sqrMaxScreenDistance);
-        }
-    }
-}
-
 public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 {
     DirectoryInfo directory = null;
     float secondsSinceLastVisibilityCheck = 0;
+    PointCloudNode[] topNodes = null;
 
     DirectoryInfo getModelDirectory()
     {
@@ -229,14 +44,16 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 
         if (json.IsArray)
         {
-            foreach (JSONNode node in json.AsArray)
+            topNodes = new PointCloudNode[json.AsArray.Count];
+            for (int i = 0; i < json.AsArray.Count; i++)
             {
-                PointCloudNode.addNode(node, this.directory, gameObject, this);
+                PointCloudNode.addNode(json.AsArray[i], this.directory, gameObject, this);
             }
         }
         else
         {
-            PointCloudNode.addNode(json, this.directory, gameObject, this);
+            topNodes = new PointCloudNode[1];
+            topNodes[0] = PointCloudNode.addNode(json, this.directory, gameObject, this);
         }
     }
 
@@ -256,18 +73,23 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
             sqrVisibleDistance = sqrVisibleDistance * sqrVisibleDistance;
 
             Vector3 camPos = Camera.main.transform.position;
-            Vector3 cameraInObjSpacePosition = gameObject.transform.TransformPoint(camPos);
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                GameObject child = transform.GetChild(i).gameObject;
-                PointCloudNode node = child.GetComponent<PointCloudNode>();
-                if (node != null)
-                {
-                    node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE, 
-                                         cameraInObjSpacePosition, 
-                                         sqrVisibleDistance);
-                }
+            foreach(PointCloudNode node in topNodes){
+                node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE,
+                                       camPos,
+                                       sqrVisibleDistance);
             }
+            //Vector3 cameraInObjSpacePosition = gameObject.transform.TransformPoint(camPos);
+            //for (int i = 0; i < transform.childCount; i++)
+            //{
+            //    GameObject child = transform.GetChild(i).gameObject;
+            //    PointCloudNode node = child.GetComponent<PointCloudNode>();
+            //    if (node != null)
+            //    {
+            //        node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE, 
+            //                             cameraInObjSpacePosition, 
+            //                             sqrVisibleDistance);
+            //    }
+            //}
 
             //Debug.Log("N Vis-Inv Nodes" + PointCloudNode.nVisibleNodes + " " + PointCloudNode.nInvisibleNodes);
             PointCloudNode.nVisibleNodes = 0;

@@ -1,18 +1,18 @@
 ﻿<Properties StartupConfiguration="{FE7AD86C-619D-70DB-2836-FF2F2CCCF427}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/Extensions.cs">
     <Files>
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" Line="241" Column="10" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="26" Column="6" />
-      <File FileName="Assets/Scripts/PointCloudLoader.cs" Line="69" Column="1" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" Line="152" Column="1" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="14" Column="1" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudNode.cs" Line="63" Column="72" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Extensions.cs" Line="30" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/CSVManager.cs" relfile="Assets/Scripts/CSVManager.cs" line="36" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudLoader.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudLoader.cs" line="9" column="48" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" line="176" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudNode.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudNode.cs" line="173" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudNode.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudNode.cs" line="60" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -20,6 +20,8 @@ class PointCloudLeafNode : PointCloudNode
     Renderer meshRenderer = null;
     MeshFilter meshFilter = null;
 
+    MeshLoaderJob job = null;
+
 
     private enum MeshState{
         LOADED, NOT_LOADED, LOADING
@@ -50,6 +52,20 @@ class PointCloudLeafNode : PointCloudNode
         currentMeshState = MeshState.LOADED;
     }
 
+    private void startLoadingJob(){
+        currentMeshState = MeshState.LOADING;
+        job = new MeshLoaderJob(fileInfo, manager);
+        job.Start();
+    }
+
+    private void checkLoadingJob(){
+        if (job.IsDone){
+            meshFilter.mesh = job.createMesh();
+            job = null;
+            currentMeshState = MeshState.LOADED;
+        }
+    }
+
     private void removeMesh(){
         meshFilter.mesh = null;
         currentMeshState = MeshState.NOT_LOADED;
@@ -62,7 +78,11 @@ class PointCloudLeafNode : PointCloudNode
         {
             if (currentMeshState == MeshState.NOT_LOADED)
             {
-                initMesh();
+                //initMesh();
+                startLoadingJob();
+            }
+            if (currentMeshState == MeshState.LOADING){
+                checkLoadingJob();
             }
 
             Bounds bounds = GetBoundsInWorldSpace();

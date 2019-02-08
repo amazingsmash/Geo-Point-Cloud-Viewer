@@ -14,7 +14,7 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 
     DirectoryInfo getModelDirectory()
     {
-        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/MINI OCTREE");
+        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL");
 #if UNITY_EDITOR
         string path = EditorUtility.OpenFolderPanel("Select Model Folder", "", "");
         if (path.Length > 0)
@@ -67,11 +67,11 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 
     void Update()
     {
-        checkNodeRenderState();
+        CheckNodeRenderState();
         selectPoint();
     }
 
-    private void checkNodeRenderState()
+    private void CheckNodeRenderState()
     {
         secondsSinceLastVisibilityCheck += Time.deltaTime;
         if (secondsSinceLastVisibilityCheck > 0.25f)

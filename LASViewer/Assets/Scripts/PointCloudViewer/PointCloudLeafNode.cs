@@ -42,16 +42,6 @@ class PointCloudLeafNode : PointCloudNode
         InitializeFromJSON(node);
     }
 
-
-    private void initMesh()
-    {
-        currentMeshState = MeshState.LOADING;
-        byte[] buffer = File.ReadAllBytes(fileInfo.FullName);
-        Matrix2D m = Matrix2D.readFromBytes(buffer);
-        meshFilter.mesh = createMeshFromLASMatrix(m.values);
-        currentMeshState = MeshState.LOADED;
-    }
-
     private void startLoadingJob(){
         currentMeshState = MeshState.LOADING;
         job = new MeshLoaderJob(fileInfo, manager);
@@ -60,7 +50,7 @@ class PointCloudLeafNode : PointCloudNode
 
     private void checkLoadingJob(){
         if (job.IsDone){
-            meshFilter.mesh = job.createMesh();
+            meshFilter.mesh = job.CreateMesh();
             job = null;
             currentMeshState = MeshState.LOADED;
         }
@@ -78,7 +68,6 @@ class PointCloudLeafNode : PointCloudNode
         {
             if (currentMeshState == MeshState.NOT_LOADED)
             {
-                //initMesh();
                 startLoadingJob();
             }
             if (currentMeshState == MeshState.LOADING){
@@ -94,7 +83,6 @@ class PointCloudLeafNode : PointCloudNode
                 removeMesh();
             }
         }
-
     }
 
     private void OnDrawGizmos()
@@ -106,30 +94,6 @@ class PointCloudLeafNode : PointCloudNode
 
     //-------------
 
-    Mesh createMeshFromLASMatrix(float[,] matrix)
-    {
-        int nPoints = matrix.GetLength(0);
-        Mesh pointCloud = new Mesh();
-        Vector3[] points = new Vector3[nPoints];
-        int[] indices = new int[nPoints];
-        Color[] colors = new Color[nPoints];
-
-        for (int i = 0; i < nPoints; i++)
-        {
-            points[i] = new Vector3(matrix[i, 0], matrix[i, 1], matrix[i, 2]);
-            indices[i] = i;
-            float classification = matrix[i, 3];
-            colors[i] = manager.getColorForClass(classification);
-        }
-
-        pointCloud.vertices = points;
-        pointCloud.colors = colors;
-        pointCloud.SetIndices(indices, MeshTopology.Points, 0);
-
-        Debug.Log("Loaded Point Cloud Mesh with " + nPoints + " points.");
-
-        return pointCloud;
-    }
 
     public override Bounds GetBoundsInWorldSpace()
     {

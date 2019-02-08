@@ -7,7 +7,7 @@ using System.IO;
 
 abstract class PointCloudNode : MonoBehaviour
 {
-    public enum PCNodeRenderState
+    public enum PCNodeState
     {
         VISIBLE,
         INVISIBLE
@@ -21,14 +21,14 @@ abstract class PointCloudNode : MonoBehaviour
 
     protected PointCloudNode[] children = null;
 
-    private PCNodeRenderState _state = PCNodeRenderState.INVISIBLE;
-    public PCNodeRenderState State
+    private PCNodeState _state = PCNodeState.INVISIBLE;
+    public PCNodeState State
     {
         get { return _state; }
         set
         {
             _state = value;
-            if (value == PCNodeRenderState.VISIBLE)
+            if (value == PCNodeState.VISIBLE)
             {
                 nVisibleNodes++;
             }
@@ -50,38 +50,25 @@ abstract class PointCloudNode : MonoBehaviour
 
     public bool closerThan(Vector3 position, float minDistance)
     {
-        //Bounds bounds = GetBoundsInWorldCoordinates();
-        //float sqrDist = bounds.SqrDistance(position);
-
-        ////return (sqrDist < (minDistance * minDistance));
-
-        //float dist = Mathf.Sqrt(sqrDist);
-        //return dist < minDistance;
-
-
-        //TODO: Bounding volumes must resize with cloud transformations
-
         BoundingSphere boundingSphereWorldSpace = boundingSphere.Transform(gameObject.transform);
         float distSphere = boundingSphereWorldSpace.DistanceTo(position);
         if (distSphere <= minDistance) return true;
-
-        //TODO: Check with box
         return false;
     }
 
-    public void testRenderState(PCNodeRenderState parentState,
+    public void testRenderState(PCNodeState parentState,
                                 Vector3 camPosWorldSpace,
                                 float sqrVisibleDistance)
     {
-        if (parentState == PCNodeRenderState.INVISIBLE)
+        if (parentState == PCNodeState.INVISIBLE)
         {
-            State = PCNodeRenderState.INVISIBLE;
+            State = PCNodeState.INVISIBLE;
         }
         else
         {
             float maxDist = Mathf.Sqrt(sqrVisibleDistance);
             bool close = closerThan(camPosWorldSpace, maxDist);
-            State = close ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
+            State = close ? PCNodeState.VISIBLE : PCNodeState.INVISIBLE;
         }
 
         if (children != null)
@@ -93,19 +80,19 @@ abstract class PointCloudNode : MonoBehaviour
         }
     }
 
-    public void checkVisibility(PCNodeRenderState parentState,
+    public void checkVisibility(PCNodeState parentState,
                         Vector3 cameraInObjSpacePosition,
                         float sqrVisibleDistance)
     {
-        if (parentState == PCNodeRenderState.INVISIBLE)
+        if (parentState == PCNodeState.INVISIBLE)
         {
-            State = PCNodeRenderState.INVISIBLE;
+            State = PCNodeState.INVISIBLE;
         }
         else
         {
             float maxDist = Mathf.Sqrt(sqrVisibleDistance);
             bool close = closerThan(cameraInObjSpacePosition, maxDist);
-            State = close ? PCNodeRenderState.VISIBLE : PCNodeRenderState.INVISIBLE;
+            State = close ? PCNodeState.VISIBLE : PCNodeState.INVISIBLE;
         }
 
         foreach (PointCloudNode node in children)
@@ -165,7 +152,7 @@ class PointCloudParentNode : PointCloudNode
         Bounds b = new Bounds();
         foreach (PointCloudNode node in children)
         {
-            if (node.State == PCNodeRenderState.VISIBLE)
+            if (node.State == PCNodeState.VISIBLE)
             {
                 Bounds cb = node.GetBoundsInWorldSpace();
                 b.Encapsulate(cb);

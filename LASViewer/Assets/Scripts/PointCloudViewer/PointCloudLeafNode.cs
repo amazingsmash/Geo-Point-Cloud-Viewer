@@ -19,7 +19,7 @@ class PointCloudLeafNode : PointCloudNode
     IPointCloudManager manager = null;
     Renderer meshRenderer = null;
     MeshFilter meshFilter = null;
-    bool isMeshInitialized = false;
+    bool hasMesh = false;
 
     public void init(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
@@ -38,20 +38,25 @@ class PointCloudLeafNode : PointCloudNode
     }
 
 
-    public void initMesh()
+    private void initMesh()
     {
         byte[] buffer = File.ReadAllBytes(fileInfo.FullName);
         Matrix2D m = Matrix2D.readFromBytes(buffer);
         meshFilter.mesh = createMeshFromLASMatrix(m.values);
-        isMeshInitialized = true;
+        hasMesh = true;
     }
+
+    private void removeMesh(){
+        meshFilter.mesh = null;
+        hasMesh = false;
+    } 
 
     // Update is called once per frame
     void Update()
     {
         if (State == PCNodeRenderState.VISIBLE)
         {
-            if (!isMeshInitialized)
+            if (!hasMesh)
             {
                 initMesh();
             }
@@ -61,6 +66,9 @@ class PointCloudLeafNode : PointCloudNode
         }
         else
         {
+            if (hasMesh){
+                removeMesh();
+            }
             //Debug.Log("NO VISIBLE");
         }
 

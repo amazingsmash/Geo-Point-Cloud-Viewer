@@ -53,6 +53,19 @@ public static class Vector3Extensions{
     public static float LargestDimension(this Vector3 v){
         return Mathf.Max(v.x, Mathf.Max(v.y, v.z));
     }
+
+    private static bool NearlyEqual(float a, float b)
+    {
+        float diff = Mathf.Abs(a - b);
+        return (diff < 0.000001);//float.Epsilon);
+    }
+
+    public static bool NearlyEquals(this Vector3 v, Vector3 v2){
+        if (!NearlyEqual(v.x, v2.x)) return false;
+        if (!NearlyEqual(v.y, v2.y)) return false;
+        if (!NearlyEqual(v.z, v2.z)) return false;
+        return true;
+    }
 }
 
 public static class BoundingSphereExtensions
@@ -68,6 +81,8 @@ public static class BoundingSphereExtensions
     {
         return ((sphere.position - position).magnitude) - sphere.radius;
     }
+
+
 }
 
 

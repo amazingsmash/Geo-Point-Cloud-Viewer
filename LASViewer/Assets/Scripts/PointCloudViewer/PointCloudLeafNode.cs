@@ -19,7 +19,12 @@ class PointCloudLeafNode : PointCloudNode
     IPointCloudManager manager = null;
     Renderer meshRenderer = null;
     MeshFilter meshFilter = null;
-    bool hasMesh = false;
+
+
+    private enum MeshState{
+        LOADED, NOT_LOADED, LOADING
+    }
+    private MeshState currentMeshState = MeshState.NOT_LOADED;
 
     public void init(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
@@ -33,30 +38,29 @@ class PointCloudLeafNode : PointCloudNode
         fileInfo = directory.GetFiles(filename)[0];
         Debug.Assert(fileInfo != null, "File not found:" + node["filename"]);
         InitializeFromJSON(node);
-
-        //initMesh();
     }
 
 
     private void initMesh()
     {
+        currentMeshState = MeshState.LOADING;
         byte[] buffer = File.ReadAllBytes(fileInfo.FullName);
         Matrix2D m = Matrix2D.readFromBytes(buffer);
         meshFilter.mesh = createMeshFromLASMatrix(m.values);
-        hasMesh = true;
+        currentMeshState = MeshState.LOADED;
     }
 
     private void removeMesh(){
         meshFilter.mesh = null;
-        hasMesh = false;
+        currentMeshState = MeshState.NOT_LOADED;
     } 
 
     // Update is called once per frame
     void Update()
     {
-        if (State == PCNodeRenderState.VISIBLE)
+        if (State == PCNodeState.VISIBLE)
         {
-            if (!hasMesh)
+            if (currentMeshState == MeshState.NOT_LOADED)
             {
                 initMesh();
             }
@@ -66,10 +70,9 @@ class PointCloudLeafNode : PointCloudNode
         }
         else
         {
-            if (hasMesh){
+            if (currentMeshState == MeshState.LOADED){
                 removeMesh();
             }
-            //Debug.Log("NO VISIBLE");
         }
 
     }

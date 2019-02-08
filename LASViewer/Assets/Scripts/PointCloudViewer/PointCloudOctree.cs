@@ -36,6 +36,13 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 
     public void init(DirectoryInfo directory)
     {
+        if (!transform.lossyScale.NearlyEquals(Vector3.one))
+        {
+            Debug.LogError("PointCloud must be not to scale.");
+            return;
+        }
+
+
         this.directory = directory;
         FileInfo index = directory.GetFiles("voxelIndex.json")[0];
         StreamReader reader = new StreamReader(index.FullName);
@@ -47,7 +54,7 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
             topNodes = new PointCloudNode[json.AsArray.Count];
             for (int i = 0; i < json.AsArray.Count; i++)
             {
-                PointCloudNode.addNode(json.AsArray[i], this.directory, gameObject, this);
+                topNodes[i] = PointCloudNode.addNode(json.AsArray[i], this.directory, gameObject, this);
             }
         }
         else
@@ -74,7 +81,7 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 
             Vector3 camPos = Camera.main.transform.position;
             foreach(PointCloudNode node in topNodes){
-                node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE,
+                node.testRenderState(PointCloudNode.PCNodeState.VISIBLE,
                                        camPos,
                                        sqrVisibleDistance);
             }

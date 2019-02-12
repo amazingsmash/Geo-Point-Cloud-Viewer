@@ -62,6 +62,8 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
             topNodes = new PointCloudNode[1];
             topNodes[0] = PointCloudNode.addNode(json, this.directory, gameObject, this);
         }
+
+        System.GC.Collect(); //Garbage Collection
     }
 
 
@@ -143,13 +145,6 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
             }
 
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Bounds b = new Bounds(Vector3.zero, new Vector3(1000.0f, 1000.0f, 1000.0f));
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(b.center, b.size);
     }
 }
 

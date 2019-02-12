@@ -16,47 +16,44 @@ public interface IPointCloudManager
 class PointCloudLeafNode : PointCloudNode
 {
     FileInfo fileInfo = null;
-    IPointCloudManager manager = null;
+    IPointCloudManager pointCloudManager = null;
     Renderer meshRenderer = null;
     MeshFilter meshFilter = null;
 
-    MeshLoaderJob job = null;
-
-
     private enum MeshState{
-        LOADED, NOT_LOADED, LOADING
+        LOADED, NOT_LOADED
     }
     private MeshState currentMeshState = MeshState.NOT_LOADED;
 
-    public void init(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
+    public void Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
         gameObject.name = "PointCloudOctreeLeafNode";
         meshFilter = gameObject.AddComponent<MeshFilter>();
         meshFilter.mesh = null;
         meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
-        this.manager = manager;
+        this.pointCloudManager = manager;
         string filename = node["filename"];
         fileInfo = directory.GetFiles(filename)[0];
-        Debug.Assert(fileInfo != null, "File not found:" + node["filename"]);
+        Debug.Assert(this.fileInfo != null, "File not found:" + node["filename"]);
+        Debug.Assert(this.pointCloudManager != null, "No PCManager");
         InitializeFromJSON(node);
     }
 
-    private void startLoadingJob(){
-        currentMeshState = MeshState.LOADING;
-        job = new MeshLoaderJob(fileInfo, manager);
-        job.Start();
-    }
+    void FetchMesh(){
+        float dist = boundingSphere.DistanceTo(Camera.main.transform.position);
+        float priority = Camera.main.farClipPlane - dist;
 
-    private void checkLoadingJob(){
-        if (job.IsDone){
-            meshFilter.mesh = job.CreateMesh();
-            job = null;
+        Mesh mesh = MeshManager.CreateMesh(fileInfo, pointCloudManager, priority);
+        if (mesh != null)
+        {
+            meshFilter.mesh = mesh;
             currentMeshState = MeshState.LOADED;
         }
     }
 
-    private void removeMesh(){
+    private void RemoveMesh(){
+        MeshManager.ReleaseMesh(meshFilter.mesh); //Returning Mesh
         meshFilter.mesh = null;
         currentMeshState = MeshState.NOT_LOADED;
     } 
@@ -68,28 +65,26 @@ class PointCloudLeafNode : PointCloudNode
         {
             if (currentMeshState == MeshState.NOT_LOADED)
             {
-                startLoadingJob();
+                FetchMesh();
             }
-            if (currentMeshState == MeshState.LOADING){
-                checkLoadingJob();
-            }
-
             Bounds bounds = GetBoundsInWorldSpace();
-            meshRenderer.material = manager.getMaterialForBoundingBox(bounds);
+            meshRenderer.material = pointCloudManager.getMaterialForBoundingBox(bounds);
         }
         else
         {
             if (currentMeshState == MeshState.LOADED){
-                removeMesh();
+                RemoveMesh();
             }
         }
     }
 
     private void OnDrawGizmos()
     {
-        Bounds b = GetBoundsInWorldSpace();
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(b.center, b.size);
+        Gizmos.color = (State == PCNodeState.VISIBLE)? Color.red : Color.blue;
+        //Bounds b = GetBoundsInWorldSpace();
+        //Gizmos.DrawWireCube(b.center, b.size);
+
+        Gizmos.DrawWireSphere(boundingSphere.position, boundingSphere.radius);
     }
 
     //-------------
@@ -97,8 +92,7 @@ class PointCloudLeafNode : PointCloudNode
 
     public override Bounds GetBoundsInWorldSpace()
     {
-        Mesh mesh = meshFilter.mesh;
-        if (mesh == null)
+        if (currentMeshState == MeshState.NOT_LOADED)
         {
             return new Bounds(Vector3.zero, Vector3.zero);
         }
@@ -118,7 +112,6 @@ class PointCloudLeafNode : PointCloudNode
         Bounds meshBounds = meshRenderer.bounds;
         if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
         {
-
             print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
             foreach (Vector3 p in mesh.vertices)
             {

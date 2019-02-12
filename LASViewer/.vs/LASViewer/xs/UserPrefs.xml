@@ -1,21 +1,20 @@
 ﻿<Properties StartupConfiguration="{FE7AD86C-619D-70DB-2836-FF2F2CCCF427}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/MeshLoaderJob.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/ObjectPool.cs">
     <Files>
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" Line="29" Column="5" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="41" Column="5" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudNode.cs" Line="163" Column="5" />
-      <File FileName="Assets/Scripts/PointCloudViewer/Extensions.cs" Line="68" Column="1" />
-      <File FileName="Assets/Scripts/PointCloudViewer/MeshLoaderJob.cs" Line="5" Column="28" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" Line="22" Column="44" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="57" Column="13" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudNode.cs" Line="12" Column="16" />
+      <File FileName="Assets/Scripts/PointCloudViewer/MeshLoaderJob.cs" Line="4" Column="17" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Extensions.cs" Line="83" Column="6" />
+      <File FileName="Assets/Scripts/PointCloudViewer/ObjectPool.cs" Line="5" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" line="84" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" line="83" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" line="39" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Extensions.cs" relfile="Assets/Scripts/PointCloudViewer/Extensions.cs" line="64" column="1" />
+      <Breakpoint enabled="false" file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudOctree.cs" line="39" column="1" />
+      <Breakpoint enabled="false" file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Extensions.cs" relfile="Assets/Scripts/PointCloudViewer/Extensions.cs" line="64" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

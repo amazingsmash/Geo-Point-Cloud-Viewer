@@ -130,7 +130,7 @@ abstract class PointCloudNode : MonoBehaviour
         if (isLeaf(node))
         {
             PointCloudLeafNode leaf = child.AddComponent<PointCloudLeafNode>();
-            leaf.init(node, directory, materialProvider);
+            leaf.Initialize(node, directory, materialProvider);
             return leaf;
         }
         else

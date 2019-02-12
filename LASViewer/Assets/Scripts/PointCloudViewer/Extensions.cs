@@ -81,8 +81,6 @@ public static class BoundingSphereExtensions
     {
         return ((sphere.position - position).magnitude) - sphere.radius;
     }
-
-
 }
 
 

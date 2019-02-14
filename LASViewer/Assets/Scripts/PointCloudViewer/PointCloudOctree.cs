@@ -31,17 +31,18 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     void Start()
     {
         DirectoryInfo dir = getModelDirectory();
-        init(dir);
+        Initialize(dir);
+
+        InvokeRepeating("CheckNodeRenderState", 0.0f, 0.3f);
     }
 
-    public void init(DirectoryInfo directory)
+    public void Initialize(DirectoryInfo directory)
     {
         if (!transform.lossyScale.NearlyEquals(Vector3.one))
         {
             Debug.LogError("PointCloud must be not to scale.");
             return;
         }
-
 
         this.directory = directory;
         FileInfo index = directory.GetFiles("voxelIndex.json")[0];
@@ -54,13 +55,13 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
             topNodes = new PointCloudNode[json.AsArray.Count];
             for (int i = 0; i < json.AsArray.Count; i++)
             {
-                topNodes[i] = PointCloudNode.addNode(json.AsArray[i], this.directory, gameObject, this);
+                topNodes[i] = PointCloudNode.AddNode(json.AsArray[i], this.directory, gameObject, this);
             }
         }
         else
         {
             topNodes = new PointCloudNode[1];
-            topNodes[0] = PointCloudNode.addNode(json, this.directory, gameObject, this);
+            topNodes[0] = PointCloudNode.AddNode(json, this.directory, gameObject, this);
         }
 
         System.GC.Collect(); //Garbage Collection
@@ -73,39 +74,33 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         selectPoint();
     }
 
+    List<PointCloudLeafNode.NodeAndDistance> distanceVisibleNodeList = new List<PointCloudLeafNode.NodeAndDistance>();
+    void UpdateVisibleLeafNodesList()
+    {
+        distanceVisibleNodeList.Clear();
+        Vector3 camPos = Camera.main.transform.position;
+        float zFar = Camera.main.farClipPlane;
+        foreach (PointCloudNode node in topNodes)
+        {
+            node.ComputeNodeState(ref distanceVisibleNodeList, camPos, zFar);
+        }
+
+        distanceVisibleNodeList.Sort();
+    }
+
     private void CheckNodeRenderState()
     {
-        secondsSinceLastVisibilityCheck += Time.deltaTime;
-        if (secondsSinceLastVisibilityCheck > 0.25f)
-        {
-            float sqrVisibleDistance = (float)(Camera.main.farClipPlane * 1.2);
-            sqrVisibleDistance = sqrVisibleDistance * sqrVisibleDistance;
+        UpdateVisibleLeafNodesList();
 
-            Vector3 camPos = Camera.main.transform.position;
-            foreach(PointCloudNode node in topNodes){
-                node.testRenderState(PointCloudNode.PCNodeState.VISIBLE,
-                                       camPos,
-                                       sqrVisibleDistance);
-            }
-            //Vector3 cameraInObjSpacePosition = gameObject.transform.TransformPoint(camPos);
-            //for (int i = 0; i < transform.childCount; i++)
-            //{
-            //    GameObject child = transform.GetChild(i).gameObject;
-            //    PointCloudNode node = child.GetComponent<PointCloudNode>();
-            //    if (node != null)
-            //    {
-            //        node.testRenderState(PointCloudNode.PCNodeRenderState.VISIBLE, 
-            //                             cameraInObjSpacePosition, 
-            //                             sqrVisibleDistance);
-            //    }
-            //}
+        int visibleMeshesCount = 0;
+        int nMeshes = MeshManager.NAvailableMeshes;
+        for (int i = distanceVisibleNodeList.Count-1; i > -1; i--) { 
 
-            //Debug.Log("N Vis-Inv Nodes" + PointCloudNode.nVisibleNodes + " " + PointCloudNode.nInvisibleNodes);
-            PointCloudNode.nVisibleNodes = 0;
-            PointCloudNode.nInvisibleNodes = 0;
-
-            secondsSinceLastVisibilityCheck = 0.0f;
+            var n = ((PointCloudLeafNode.NodeAndDistance)distanceVisibleNodeList[i]);
+            n.node.State = (visibleMeshesCount < nMeshes) ? PointCloudNode.PCNodeState.VISIBLE : PointCloudNode.PCNodeState.INVISIBLE;
+            visibleMeshesCount++;
         }
+        secondsSinceLastVisibilityCheck = 0.0f;
     }
 
 

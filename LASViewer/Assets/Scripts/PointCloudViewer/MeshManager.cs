@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-
 class MeshManager
 {
-    static ObjectPool<Mesh> meshPool = new ObjectPool<Mesh>(700);
-    static ObjectPool<MeshLoaderJob> jobPool = new ObjectPool<MeshLoaderJob>(100);
+    static ObjectPool<Mesh> meshPool = new ObjectPool<Mesh>(250);
+    static ObjectPool<MeshLoaderJob> jobPool = new ObjectPool<MeshLoaderJob>(20);
     static AsyncJobThread thread = new AsyncJobThread();
     static Dictionary<string, MeshLoaderJob> jobs = new Dictionary<string, MeshLoaderJob>();
+
+    static public int NAvailableMeshes
+    {
+        get
+        {
+            return meshPool.Size;
+        }
+    }
 
     public static Mesh CreateMesh(FileInfo fileInfo, IPointCloudManager manager, float priority)
     {
@@ -30,7 +37,7 @@ class MeshManager
                 Mesh mesh = meshPool.GetInstance();
                 if (mesh != null)
                 {
-                    Debug.Log("Remaining Meshes: " + meshPool.remaining);
+                    //Debug.Log("Remaining Meshes: " + meshPool.remaining);
                     job.LoadMeshData(mesh);
                     if (mesh != null)
                     {
@@ -186,7 +193,7 @@ public class MeshLoaderJob: AsyncJobThread.Job
 
         for (int i = 0; i < nPoints; i++)
         {
-            points[i] = new Vector3(matrix[i, 0], matrix[i, 1], matrix[i, 2]);
+            points[i] = new Vector3(matrix[i, 0], matrix[i, 2], matrix[i, 1]); //XZY
             indices[i] = i;
             float classification = matrix[i, 3];
             colors[i] = manager.getColorForClass(classification);

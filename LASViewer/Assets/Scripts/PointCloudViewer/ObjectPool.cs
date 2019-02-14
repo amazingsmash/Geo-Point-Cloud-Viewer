@@ -6,6 +6,13 @@ class ObjectPool<T> where T : class, new()
 {
     T[] instances = null;
     public int remaining { get; private set; }
+    public int Size
+    {
+        get
+        {
+            return instances.Length;
+        }
+    }
 
     public ObjectPool(int count)
     {

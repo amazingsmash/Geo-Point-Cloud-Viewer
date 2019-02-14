@@ -67,7 +67,7 @@
     <Compile Include="Assets\Scripts\PointCloudLoader.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Extensions.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Matrix2D.cs" />
-    <Compile Include="Assets\Scripts\PointCloudViewer\MeshLoaderJob.cs" />
+    <Compile Include="Assets\Scripts\PointCloudViewer\MeshManager.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudLeafNode.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudNode.cs" />

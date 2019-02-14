@@ -11,19 +11,28 @@ public interface IPointCloudManager
     Color getColorForClass(float classification);
 }
 
-
-
 class PointCloudLeafNode : PointCloudNode
 {
     FileInfo fileInfo = null;
     IPointCloudManager pointCloudManager = null;
     Renderer meshRenderer = null;
     MeshFilter meshFilter = null;
+    private MeshState currentMeshState = MeshState.NOT_LOADED;
 
     private enum MeshState{
         LOADED, NOT_LOADED
     }
-    private MeshState currentMeshState = MeshState.NOT_LOADED;
+
+    public struct NodeAndDistance : System.IComparable<NodeAndDistance>
+    {
+        public PointCloudLeafNode node;
+        public float estimatedDistanceToCamera;
+
+        public int CompareTo(NodeAndDistance other)
+        {
+            return other.estimatedDistanceToCamera.CompareTo(estimatedDistanceToCamera);
+        }
+    }
 
     public void Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
@@ -67,8 +76,8 @@ class PointCloudLeafNode : PointCloudNode
             {
                 FetchMesh();
             }
-            Bounds bounds = GetBoundsInWorldSpace();
-            meshRenderer.material = pointCloudManager.getMaterialForBoundingBox(bounds);
+            //Bounds bounds = boundsInModelSpace;
+            //meshRenderer.material = pointCloudManager.getMaterialForBoundingBox(bounds);
         }
         else
         {
@@ -81,22 +90,39 @@ class PointCloudLeafNode : PointCloudNode
     private void OnDrawGizmos()
     {
         Gizmos.color = (State == PCNodeState.VISIBLE)? Color.red : Color.blue;
-        //Bounds b = GetBoundsInWorldSpace();
-        //Gizmos.DrawWireCube(b.center, b.size);
+        Bounds b = boundsInModelSpace;// GetBoundsInWorldSpace();
+        Gizmos.DrawWireCube(b.center, b.size);
 
-        Gizmos.DrawWireSphere(boundingSphere.position, boundingSphere.radius);
+        //Gizmos.DrawWireSphere(boundingSphere.position, boundingSphere.radius);
     }
 
-    //-------------
-
-
-    public override Bounds GetBoundsInWorldSpace()
+    public override void ComputeNodeState(ref List<PointCloudLeafNode.NodeAndDistance> visibleLeafNodesAndDistances, Vector3 camPosition, float zFar)
     {
-        if (currentMeshState == MeshState.NOT_LOADED)
+        float dist = EstimatedDistance(camPosition);
+        if (dist <= zFar)
         {
-            return new Bounds(Vector3.zero, Vector3.zero);
+            NodeAndDistance nodeAndDistance = new NodeAndDistance();
+            nodeAndDistance.node = this;
+            nodeAndDistance.estimatedDistanceToCamera = dist;
+            visibleLeafNodesAndDistances.Add(nodeAndDistance);
+
+            //Material
+            meshRenderer.material = pointCloudManager.getMaterialForDistance(dist);
         }
-        return meshRenderer.bounds;
+    }
+
+
+    public override void OnStateChanged()
+    {
+        //switch (State)
+        //{
+        //    case PCNodeState.INVISIBLE:
+        //        Debug.Log("Leaf Node set invisible.");
+        //        break;
+        //    case PCNodeState.VISIBLE:
+        //        Debug.Log("Leaf Node set invisible.");
+        //        break;
+        //}
     }
 
     public override void GetClosestPointOnRay(Ray ray,

@@ -6,8 +6,16 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
+public interface IPointCloudListener
+{
+    void onPointSelected(Vector3 point);
+}
+
 public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 {
+    public IPointCloudListener pointCloudListener = null;
+
+
     DirectoryInfo directory = null;
     PointCloudNode[] topNodes = null;
 
@@ -28,8 +36,10 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     // Use this for initialization
     void Start()
     {
+        pointCloudListener = new PointCloudListener();
+
         //DirectoryInfo dir = getModelDirectoryFromDialog();
-        DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/EXTREMELY LARGE LAS MODEL");
+        DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
         Initialize(dir);
 
         InvokeRepeating("CheckNodeRenderState", 0.0f, 0.3f);
@@ -71,7 +81,7 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     void Update()
     {
         CheckNodeRenderState();
-        selectPoint();
+        SelectPoint();
     }
 
     List<PointCloudLeafNode.NodeAndDistance> distanceVisibleNodeList = new List<PointCloudLeafNode.NodeAndDistance>();
@@ -107,8 +117,13 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     }
 
 
-    void selectPoint()
+    void SelectPoint()
     {
+        if (pointCloudListener == null)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Finding selected point.");
@@ -129,17 +144,15 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
                 {
                     node.GetClosestPointOnRay(ray,
                                               mousePosition,
-                                              ref maxDist, 
-                                              ref closestHit, 
+                                              ref maxDist,
+                                              ref closestHit,
                                               maxScreenDistance * maxScreenDistance);
                 }
             }
 
             if (!closestHit.Equals(Vector3.negativeInfinity))
             {
-                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                sphere.transform.position = closestHit;
-                sphere.transform.localScale = new Vector3(4.0f, 4.0f, 4.0f);
+                pointCloudListener.onPointSelected(closestHit);
             }
 
         }

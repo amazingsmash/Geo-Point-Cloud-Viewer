@@ -80,26 +80,32 @@ classdef LASConverter
         
         function voxelIndex = LASData2Bytes_Octree(xyzClass, lasName, folder, pointsPerFile, initIndex, clearFolder)
             
-            function [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(pc)
-                x = pc(:,1);
-                y = pc(:,2);
-                z = pc(:,3);
-                cx = (max(x) + min(x)) / 2;
-                cy = (max(y) + min(y)) / 2;
-                cz = (max(z) + min(z)) / 2;
-
-                px = x > cx;
-                py = y > cy;
-                pz = z > cz;
-
-                pc1 = px & py & pz;
-                pc2 = px & py & ~pz;
-                pc3 = px & ~py & pz;
-                pc4 = px & ~py & ~pz;
-                pc5 = ~px & py & pz;
-                pc6 = ~px & py & ~pz;
-                pc7 = ~px & ~py & pz;
-                pc8 = ~px & ~py & ~pz;
+%             function [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(pc)
+%                 x = pc(:,1);
+%                 y = pc(:,2);
+%                 z = pc(:,3);
+%                 
+%                 cx = median(x);
+%                 cy = median(y);
+%                 cz = median(z);
+% 
+%                 px = x > cx;
+%                 py = y > cy;
+%                 pz = z > cz;
+% 
+%                 pc1 = px & py & pz;
+%                 pc2 = px & py & ~pz;
+%                 pc3 = px & ~py & pz;
+%                 pc4 = px & ~py & ~pz;
+%                 pc5 = ~px & py & pz;
+%                 pc6 = ~px & py & ~pz;
+%                 pc7 = ~px & ~py & pz;
+%                 pc8 = ~px & ~py & ~pz;
+%             end
+            
+            function threshold = splitInTwo(pc, dim)
+                c = median(pc(:,dim));
+                threshold = pc(:,dim) > c;
             end
             
             function voxelIndex = saveOctree(xyzClass, folder, pointsPerFile, voxelName, indices)
@@ -132,19 +138,27 @@ classdef LASConverter
                     
                     nNodes = nNodes + 1;
                 else
-                    [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(xyzClass); 
-                    voxels = {pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8};
-                    
+%                     [pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8] = splitInOctree(xyzClass); 
+%                     voxels = {pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8};
+%                     
+%                     voxelIndex.filename = "";
+%                     for i = 1:length(voxels)
+%                         newVoxelName = sprintf("%s_%d", voxelName, i);
+%                         xyzClassI = xyzClass(voxels{i}, :);
+% %                         fprintf("Processing Cloud with %d points\n", length(xyzClassI));
+%                         newVI = saveOctree(xyzClassI, folder, pointsPerFile, newVoxelName, [indices i]);
+%                         if ~isempty(newVI)
+%                             voxelIndex.children = {voxelIndex newVI};
+%                         end
+%                     end
+                    dim = mod(length(indices), 3) + 1; 
+                    threshold = splitInTwo(xyzClass, dim);
                     voxelIndex.filename = "";
-                    for i = 1:length(voxels)
-                        newVoxelName = sprintf("%s_%d", voxelName, i);
-                        xyzClassI = xyzClass(voxels{i}, :);
-%                         fprintf("Processing Cloud with %d points\n", length(xyzClassI));
-                        newVI = saveOctree(xyzClassI, folder, pointsPerFile, newVoxelName, [indices i]);
-                        if ~isempty(newVI)
-                            voxelIndex.children = {voxelIndex newVI};
-                        end
-                    end
+                    newVoxelName = sprintf("%s_1", voxelName);
+                    voxels1 = saveOctree(xyzClass(threshold, :), folder, pointsPerFile, newVoxelName, [indices 1]);
+                    newVoxelName = sprintf("%s_2", voxelName);
+                    voxels2 = saveOctree(xyzClass(~threshold, :), folder, pointsPerFile, newVoxelName, [indices 2]);
+                    voxelIndex.children = {voxelIndex voxels1 voxels2};
                 end
             end
             
@@ -153,6 +167,7 @@ classdef LASConverter
                 LASConverter.resetFolder(folder);
             end
             voxelIndex = saveOctree(xyzClass, folder, pointsPerFile, lasName, initIndex);
+            fprintf("Generated %d nodes for file %s", nNodes, lasName);
         end
         
         function PointCloudFiles2BinaryOctree(filenames, modelName, pointsPerFile)

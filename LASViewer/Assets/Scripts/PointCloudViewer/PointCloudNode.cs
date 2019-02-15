@@ -150,6 +150,11 @@ class PointCloudParentNode : PointCloudNode
                              ref Vector3 closestHit,
                                       float sqrMaxScreenDistance)
     {
+        if (State == PCNodeState.INVISIBLE)
+        {
+            return;
+        }
+
 
         Bounds bounds = boundsInModelSpace;  //GetBoundsInWorldSpace();
         if (bounds.Contains(ray.origin) || bounds.IntersectRay(ray))

@@ -133,6 +133,11 @@ class PointCloudLeafNode : PointCloudNode
                                                 ref Vector3 closestHit,
                                             float sqrMaxScreenDistance)
     {
+        if (State == PCNodeState.INVISIBLE || currentMeshState != MeshState.LOADED)
+        {
+            return;
+        }
+
         Mesh mesh = meshFilter.mesh;
         if (mesh == null){
             return;

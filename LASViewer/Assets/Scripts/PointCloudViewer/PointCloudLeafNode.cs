@@ -9,6 +9,8 @@ public interface IPointCloudManager
     Material getMaterialForDistance(float distance);
     Material getMaterialForBoundingBox(Bounds box);
     Color getColorForClass(float classification);
+
+    MeshManager GetMeshManager();
 }
 
 class PointCloudLeafNode : PointCloudNode
@@ -53,7 +55,7 @@ class PointCloudLeafNode : PointCloudNode
         float dist = boundingSphere.DistanceTo(Camera.main.transform.position);
         float priority = Camera.main.farClipPlane - dist;
 
-        Mesh mesh = MeshManager.CreateMesh(fileInfo, pointCloudManager, priority);
+        Mesh mesh = pointCloudManager.GetMeshManager().CreateMesh(fileInfo, pointCloudManager, priority);
         if (mesh != null)
         {
             meshFilter.mesh = mesh;
@@ -62,7 +64,7 @@ class PointCloudLeafNode : PointCloudNode
     }
 
     private void RemoveMesh(){
-        MeshManager.ReleaseMesh(meshFilter.mesh); //Returning Mesh
+        pointCloudManager.GetMeshManager().ReleaseMesh(meshFilter.mesh); //Returning Mesh
         meshFilter.mesh = null;
         currentMeshState = MeshState.NOT_LOADED;
     } 

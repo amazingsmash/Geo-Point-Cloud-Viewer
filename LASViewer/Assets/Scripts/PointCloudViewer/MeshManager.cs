@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-class MeshManager
+public class MeshManager
 {
-    static ObjectPool<Mesh> meshPool = new ObjectPool<Mesh>(250);
-    static ObjectPool<MeshLoaderJob> jobPool = new ObjectPool<MeshLoaderJob>(20);
-    static AsyncJobThread thread = new AsyncJobThread();
-    static Dictionary<string, MeshLoaderJob> jobs = new Dictionary<string, MeshLoaderJob>();
+    private ObjectPool<Mesh> meshPool = null;
+    private ObjectPool<MeshLoaderJob> jobPool = null;
+    private readonly AsyncJobThread thread = new AsyncJobThread();
+    private Dictionary<string, MeshLoaderJob> jobs = new Dictionary<string, MeshLoaderJob>();
 
-    static public int NAvailableMeshes
+    public int NAvailableMeshes
     {
         get
         {
@@ -18,7 +18,13 @@ class MeshManager
         }
     }
 
-    public static Mesh CreateMesh(FileInfo fileInfo, IPointCloudManager manager, float priority)
+    public MeshManager(int nMeshes, int nJobs)
+    {
+        meshPool = new ObjectPool<Mesh>(nMeshes);
+        jobPool = new ObjectPool<MeshLoaderJob>(nJobs);
+    }
+
+    public Mesh CreateMesh(FileInfo fileInfo, IPointCloudManager manager, float priority)
     {
         if (!jobs.ContainsKey(fileInfo.FullName))
         {
@@ -56,7 +62,7 @@ class MeshManager
         return null;
     }
 
-    public static void ReleaseMesh(Mesh mesh)
+    public void ReleaseMesh(Mesh mesh)
     {
         mesh.Clear();
         meshPool.ReleaseInstance(mesh);

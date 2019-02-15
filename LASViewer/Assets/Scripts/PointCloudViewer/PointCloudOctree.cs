@@ -9,12 +9,10 @@ using UnityEditor;
 public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 {
     DirectoryInfo directory = null;
-    float secondsSinceLastVisibilityCheck = 0;
     PointCloudNode[] topNodes = null;
 
-    DirectoryInfo getModelDirectory()
+    DirectoryInfo getModelDirectoryFromDialog()
     {
-        return new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL");
 #if UNITY_EDITOR
         string path = EditorUtility.OpenFolderPanel("Select Model Folder", "", "");
         if (path.Length > 0)
@@ -30,7 +28,8 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     // Use this for initialization
     void Start()
     {
-        DirectoryInfo dir = getModelDirectory();
+        //DirectoryInfo dir = getModelDirectoryFromDialog();
+        DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/EXTREMELY LARGE LAS MODEL");
         Initialize(dir);
 
         InvokeRepeating("CheckNodeRenderState", 0.0f, 0.3f);
@@ -45,6 +44,7 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         }
 
         this.directory = directory;
+        meshManager = new MeshManager(numberOfMeshes, numberOfMeshLoadingJobs);
         FileInfo index = directory.GetFiles("voxelIndex.json")[0];
         StreamReader reader = new StreamReader(index.FullName);
         string s = reader.ReadToEnd();
@@ -93,14 +93,17 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         UpdateVisibleLeafNodesList();
 
         int visibleMeshesCount = 0;
-        int nMeshes = MeshManager.NAvailableMeshes;
-        for (int i = distanceVisibleNodeList.Count-1; i > -1; i--) { 
+        if (meshManager != null)
+        {
+            int nMeshes = meshManager.NAvailableMeshes;
+            for (int i = distanceVisibleNodeList.Count - 1; i > -1; i--)
+            {
 
-            var n = ((PointCloudLeafNode.NodeAndDistance)distanceVisibleNodeList[i]);
-            n.node.State = (visibleMeshesCount < nMeshes) ? PointCloudNode.PCNodeState.VISIBLE : PointCloudNode.PCNodeState.INVISIBLE;
-            visibleMeshesCount++;
+                var n = ((PointCloudLeafNode.NodeAndDistance)distanceVisibleNodeList[i]);
+                n.node.State = (visibleMeshesCount < nMeshes) ? PointCloudNode.PCNodeState.VISIBLE : PointCloudNode.PCNodeState.INVISIBLE;
+                visibleMeshesCount++;
+            }
         }
-        secondsSinceLastVisibilityCheck = 0.0f;
     }
 
 
@@ -150,6 +153,10 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     public Material hdMaterial = null;
     public Material ldMaterial = null;
 
+    public int numberOfMeshes = 400;
+    public int numberOfMeshLoadingJobs = 20;
+    private MeshManager meshManager = null;
+
     Material IPointCloudManager.getMaterialForDistance(float distance)
     {
         return (distance < hdMaxDistance) ? hdMaterial : ldMaterial;
@@ -186,5 +193,10 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         }
 
         return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
+    }
+
+    MeshManager IPointCloudManager.GetMeshManager()
+    {
+        return meshManager;
     }
 }

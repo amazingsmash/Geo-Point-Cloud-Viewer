@@ -208,7 +208,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1349960461}
-  - component: {fileID: 1349960460}
   - component: {fileID: 1349960459}
   - component: {fileID: 1349960458}
   - component: {fileID: 1349960462}
@@ -260,17 +259,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1349960457}
   m_Mesh: {fileID: 0}
---- !u!114 &1349960460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1349960457}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7689bc65bbe83406dae9a821d1d524dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1349960461
 Transform:
   m_ObjectHideFlags: 0
@@ -298,6 +286,8 @@ MonoBehaviour:
   hdMaxDistance: 150
   hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
   ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
+  numberOfMeshes: 400
+  numberOfMeshLoadingJobs: 30
 --- !u!1 &1533746840
 GameObject:
   m_ObjectHideFlags: 0

@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35fc98fc975c54351bfebe57c7670343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hdMaxDistance: 150
+  hdMaxDistance: 50
   hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
   ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
   numberOfMeshes: 400

@@ -14,7 +14,7 @@ abstract class PointCloudNode : MonoBehaviour
     };
 
     protected BoundingSphere boundingSphere;
-    protected Bounds boundsInModelSpace;
+    public Bounds boundsInModelSpace { get; private set; }
     protected PointCloudNode[] children = null;
 
     private PCNodeState _state = PCNodeState.INVISIBLE;

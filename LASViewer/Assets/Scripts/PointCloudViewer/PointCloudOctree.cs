@@ -14,6 +14,7 @@ public interface IPointCloudListener
 public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 {
     public IPointCloudListener pointCloudListener = null;
+    public bool moveCameraToCenter = false;
 
 
     DirectoryInfo directory = null;
@@ -72,6 +73,11 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         {
             topNodes = new PointCloudNode[1];
             topNodes[0] = PointCloudNode.AddNode(json, this.directory, gameObject, this);
+        }
+
+        if (moveCameraToCenter)
+        {
+            Camera.main.transform.position = topNodes[0].boundsInModelSpace.center;
         }
 
         System.GC.Collect(); //Garbage Collection
@@ -211,5 +217,15 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
     MeshManager IPointCloudManager.GetMeshManager()
     {
         return meshManager;
+    }
+
+
+    Material IPointCloudManager.getHDMaterial()
+    {
+        return hdMaterial;
+    }
+    Material IPointCloudManager.getLDMaterial()
+    {
+        return ldMaterial;
     }
 }

@@ -7,8 +7,8 @@
 	SubShader
 	{
 		Tags { "Queue"="AlphaTest" "RenderType"="Transparent" "IgnoreProjector"="True" }
-		Blend One OneMinusSrcAlpha
-		AlphaToMask On
+        Blend One OneMinusSrcAlpha
+		//AlphaToMask On
 		Cull Off
 
 		Pass
@@ -86,9 +86,14 @@
 
 			float4 frag (FS_INPUT i) : COLOR
 			{
-                if (length(i.texcoord) > 1.0){
+                float sqrDist = dot((i.texcoord), (i.texcoord));
+                if (sqrDist > 1.0){
                     discard; //return float4(1.0,0.0,0.0,1.0);
-                }
+                } 
+                //else{
+                //    float dist = sqrt(sqrDist);
+                //    i.color = float4(i.color.r,i.color.g,i.color.b,a);
+                //}
                 return i.color;
 			}
 			ENDCG

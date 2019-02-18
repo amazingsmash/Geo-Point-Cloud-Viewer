@@ -11,15 +11,23 @@ public interface IPointCloudManager
     Color getColorForClass(float classification);
 
     MeshManager GetMeshManager();
+
+    Material getHDMaterial();
+    Material getLDMaterial();
 }
 
 class PointCloudLeafNode : PointCloudNode
 {
     FileInfo fileInfo = null;
     IPointCloudManager pointCloudManager = null;
-    Renderer meshRenderer = null;
-    MeshFilter meshFilter = null;
+    //Renderer meshRenderer = null;
+    //MeshFilter meshFilter = null;
     private MeshState currentMeshState = MeshState.NOT_LOADED;
+
+    GameObject hdChild = null;
+    GameObject ldChild = null;
+
+    public LODGroup LoDGroup;
 
     private enum MeshState{
         LOADED, NOT_LOADED
@@ -39,9 +47,9 @@ class PointCloudLeafNode : PointCloudNode
     public void Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
         gameObject.name = "PointCloudOctreeLeafNode";
-        meshFilter = gameObject.AddComponent<MeshFilter>();
-        meshFilter.mesh = null;
-        meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        //meshFilter = gameObject.AddComponent<MeshFilter>();
+        //meshFilter.mesh = null;
+        //meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
         this.pointCloudManager = manager;
         string filename = node["filename"];
@@ -49,6 +57,27 @@ class PointCloudLeafNode : PointCloudNode
         Debug.Assert(this.fileInfo != null, "File not found:" + node["filename"]);
         Debug.Assert(this.pointCloudManager != null, "No PCManager");
         InitializeFromJSON(node);
+
+
+        //Creating LODS
+        LoDGroup = gameObject.AddComponent<LODGroup>();
+        LOD[] lods = new LOD[2];
+        lods[0] = CreateLoD("HD Version", manager.getHDMaterial(), out hdChild);
+        lods[1] = CreateLoD("LD Version", manager.getLDMaterial(), out ldChild);
+        LoDGroup.SetLODs(lods);
+    }
+
+    LOD CreateLoD(string childName, Material material, out GameObject child)
+    {
+        child = new GameObject(childName);
+        child.transform.SetParent(gameObject.transform, false);
+        MeshFilter meshFilter = child.AddComponent<MeshFilter>();
+        meshFilter.mesh = null;
+        MeshRenderer meshRenderer = child.AddComponent<MeshRenderer>();
+        meshRenderer.material = material;
+
+        LOD lod = new LOD(0.8f, new Renderer[] { meshRenderer });
+        return lod;
     }
 
     void FetchMesh(){
@@ -58,14 +87,18 @@ class PointCloudLeafNode : PointCloudNode
         Mesh mesh = pointCloudManager.GetMeshManager().CreateMesh(fileInfo, pointCloudManager, priority);
         if (mesh != null)
         {
-            meshFilter.mesh = mesh;
+            hdChild.GetComponent<MeshFilter>().mesh = mesh;
+            ldChild.GetComponent<MeshFilter>().mesh = mesh;
+            LoDGroup.RecalculateBounds();
+
             currentMeshState = MeshState.LOADED;
         }
     }
 
     private void RemoveMesh(){
-        pointCloudManager.GetMeshManager().ReleaseMesh(meshFilter.mesh); //Returning Mesh
-        meshFilter.mesh = null;
+        pointCloudManager.GetMeshManager().ReleaseMesh(hdChild.GetComponent<MeshFilter>().mesh); //Returning Mesh
+        hdChild.GetComponent<MeshFilter>().mesh = null;
+        ldChild.GetComponent<MeshFilter>().mesh = null;
         currentMeshState = MeshState.NOT_LOADED;
     } 
 
@@ -109,7 +142,7 @@ class PointCloudLeafNode : PointCloudNode
             visibleLeafNodesAndDistances.Add(nodeAndDistance);
 
             //Material
-            meshRenderer.material = pointCloudManager.getMaterialForDistance(dist);
+            //meshRenderer.material = pointCloudManager.getMaterialForDistance(dist);
         }
     }
 
@@ -138,11 +171,11 @@ class PointCloudLeafNode : PointCloudNode
             return;
         }
 
-        Mesh mesh = meshFilter.mesh;
+        Mesh mesh = hdChild.GetComponent<MeshFilter>().mesh;
         if (mesh == null){
             return;
         }
-        Bounds meshBounds = meshRenderer.bounds;
+        Bounds meshBounds = boundsInModelSpace;
         if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
         {
             print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");

@@ -11,6 +11,15 @@ public interface IPointCloudListener
     void onPointSelected(Vector3 point);
 }
 
+public interface IPointCloudManager
+{
+    Color GetColorForClass(float classification);
+    MeshManager GetMeshManager();
+    float HDHorizontalRelativeScreenSize { get; }
+    Material HDMaterial { get; }
+    Material LDMaterial { get; }
+}
+
 public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
     public IPointCloudListener pointCloudListener = null;
@@ -42,6 +51,7 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
         //DirectoryInfo dir = getModelDirectoryFromDialog();
         //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
         DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/18 - BITREE");
+        //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL MINI");
 
         Initialize(dir);
 
@@ -93,6 +103,8 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     }
 
     List<PointCloudLeafNode.NodeAndDistance> distanceVisibleNodeList = new List<PointCloudLeafNode.NodeAndDistance>();
+
+
     void UpdateVisibleLeafNodesList()
     {
         distanceVisibleNodeList.Clear();
@@ -170,7 +182,6 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 //IPointCloudManager
 public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
-    public float hdMaxDistance = 5000.0f;
     public Material hdMaterial = null;
     public Material ldMaterial = null;
 
@@ -178,28 +189,8 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     public int numberOfMeshLoadingJobs = 20;
     private MeshManager meshManager = null;
 
-    Material IPointCloudManager.getMaterialForDistance(float distance)
-    {
-        return (distance < hdMaxDistance) ? hdMaterial : ldMaterial;
-    }
-
-    Material IPointCloudManager.getMaterialForBoundingBox(Bounds box)
-    {
-        Vector3 camPos = Camera.main.transform.position;
-        if (box.Contains(camPos))
-        {
-            return hdMaterial;
-        }
-        else
-        {
-            Vector3 p = box.ClosestPoint(camPos);
-            float sqrDist = (p - camPos).sqrMagnitude;
-            return (sqrDist < (hdMaxDistance * hdMaxDistance)) ? hdMaterial : ldMaterial;
-        }
-    }
-
     static Dictionary<float, Color> classColor = null;
-    Color IPointCloudManager.getColorForClass(float classification)
+    Color IPointCloudManager.GetColorForClass(float classification)
     {
         if (classColor == null)
         {
@@ -221,13 +212,8 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
         return meshManager;
     }
 
-
-    Material IPointCloudManager.getHDMaterial()
-    {
-        return hdMaterial;
-    }
-    Material IPointCloudManager.getLDMaterial()
-    {
-        return ldMaterial;
-    }
+    float hDRelativeScreenSize = 0.9f;
+    float IPointCloudManager.HDHorizontalRelativeScreenSize { get { return hDRelativeScreenSize; } }
+    Material IPointCloudManager.HDMaterial { get { return hdMaterial; } }
+    Material IPointCloudManager.LDMaterial { get { return ldMaterial; } }
 }

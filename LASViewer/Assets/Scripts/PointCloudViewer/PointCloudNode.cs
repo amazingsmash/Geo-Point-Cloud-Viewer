@@ -4,7 +4,6 @@ using UnityEngine;
 using SimpleJSON;
 using System.IO;
 
-
 abstract class PointCloudNode : MonoBehaviour
 {
     public enum PCNodeState
@@ -33,6 +32,7 @@ abstract class PointCloudNode : MonoBehaviour
 
     public abstract void ComputeNodeState(ref List<PointCloudLeafNode.NodeAndDistance> visibleLeafNodesAndDistances, Vector3 camPosition, float zFar);
     public abstract void OnStateChanged();
+    public abstract bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider);
 
     public float EstimatedDistance(Vector3 position)
     {
@@ -80,40 +80,54 @@ abstract class PointCloudNode : MonoBehaviour
     public static PointCloudNode AddNode(JSONNode node, DirectoryInfo directory, GameObject gameObject, IPointCloudManager materialProvider)
     {
         GameObject child = new GameObject("PC Node");
-        child.transform.SetParent(gameObject.transform, false);
 
+
+        PointCloudNode pcNode = null;
         if (JSONOfLeaf(node))
         {
-            PointCloudLeafNode leaf = child.AddComponent<PointCloudLeafNode>();
-            leaf.Initialize(node, directory, materialProvider);
-            return leaf;
+            pcNode = child.AddComponent<PointCloudLeafNode>();
         }
         else
         {
-            PointCloudParentNode parent = child.AddComponent<PointCloudParentNode>();
-            parent.Initialize(node, directory, materialProvider);
-            return parent;
+            pcNode = child.AddComponent<PointCloudParentNode>();
         }
+
+        if (pcNode.Initialize(node, directory, materialProvider))
+        {
+            child.transform.SetParent(gameObject.transform, false);
+            return pcNode;
+        }
+        else
+        {
+            Destroy(child);
+            return null;
+        }
+
     }
     #endregion
 }
 
 class PointCloudParentNode : PointCloudNode
 {
-    public void Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider)
+    public override bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider)
     {
         InitializeFromJSON(node);
         gameObject.name = "PC Parent Node";
 
         JSONArray childrenJSON = node["children"].AsArray;
-        children = new PointCloudNode[childrenJSON.Count];
-        if (children != null)
+        ArrayList childrenList = new ArrayList();
+        //Debug.Log("N Children: " + childrenJSON.Count);
+        for (int i = 0; i < childrenJSON.Count; i++)
         {
-            for (int i = 0; i < childrenJSON.Count; i++)
+            PointCloudNode pcNode = PointCloudNode.AddNode(childrenJSON[i], directory, gameObject, materialProvider);
+            if (pcNode != null)
             {
-                children[i] = PointCloudNode.AddNode(childrenJSON[i], directory, gameObject, materialProvider);
+                childrenList.Add(pcNode);
             }
         }
+        children = (PointCloudNode[])childrenList.ToArray(typeof(PointCloudNode));
+
+        return childrenJSON.Count > 0;
     }
 
     public override void ComputeNodeState(ref List<PointCloudLeafNode.NodeAndDistance> visibleLeafNodesAndDistances, Vector3 camPosition, float zFar)
@@ -156,8 +170,7 @@ class PointCloudParentNode : PointCloudNode
             return;
         }
 
-
-        Bounds bounds = boundsInModelSpace;  //GetBoundsInWorldSpace();
+        Bounds bounds = boundsInModelSpace;
         if (bounds.Contains(ray.origin) || bounds.IntersectRay(ray))
         {
             if (children != null)

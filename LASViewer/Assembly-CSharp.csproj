@@ -61,10 +61,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CSVManager.cs" />
-    <Compile Include="Assets\Scripts\CSVReader.cs" />
     <Compile Include="Assets\Scripts\FlyCam.cs" />
-    <Compile Include="Assets\Scripts\PointCloudLoader.cs" />
+    <Compile Include="Assets\Scripts\OLD\CSVManager.cs" />
+    <Compile Include="Assets\Scripts\OLD\CSVReader.cs" />
+    <Compile Include="Assets\Scripts\OLD\PointCloudLoader.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Extensions.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Matrix2D.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\MeshManager.cs" />

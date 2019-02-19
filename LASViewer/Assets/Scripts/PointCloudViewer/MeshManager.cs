@@ -202,7 +202,7 @@ public class MeshLoaderJob: AsyncJobThread.Job
             points[i] = new Vector3(matrix[i, 0], matrix[i, 2], matrix[i, 1]); //XZY
             indices[i] = i;
             float classification = matrix[i, 3];
-            colors[i] = manager.getColorForClass(classification);
+            colors[i] = manager.GetColorForClass(classification);
         }
         IsDone = true;
     }

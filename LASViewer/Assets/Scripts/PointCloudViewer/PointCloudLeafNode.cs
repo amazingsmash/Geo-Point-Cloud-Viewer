@@ -4,18 +4,6 @@ using UnityEngine;
 using SimpleJSON;
 using System.IO;
 
-public interface IPointCloudManager
-{
-    Material getMaterialForDistance(float distance);
-    Material getMaterialForBoundingBox(Bounds box);
-    Color getColorForClass(float classification);
-
-    MeshManager GetMeshManager();
-
-    Material getHDMaterial();
-    Material getLDMaterial();
-}
-
 class PointCloudLeafNode : PointCloudNode
 {
     FileInfo fileInfo = null;
@@ -27,7 +15,8 @@ class PointCloudLeafNode : PointCloudNode
 
     public LODGroup LoDGroup;
 
-    private enum MeshState{
+    private enum MeshState
+    {
         LOADED, NOT_LOADED
     }
 
@@ -42,7 +31,7 @@ class PointCloudLeafNode : PointCloudNode
         }
     }
 
-    public void Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
+    public override bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
         gameObject.name = "PointCloudOctreeLeafNode";
         this.pointCloudManager = manager;
@@ -52,16 +41,24 @@ class PointCloudLeafNode : PointCloudNode
         Debug.Assert(this.pointCloudManager != null, "No PCManager");
         InitializeFromJSON(node);
 
-
         //Creating LODS
         LoDGroup = gameObject.AddComponent<LODGroup>();
         LoDGroup.animateCrossFading = true;
         LODGroup.crossFadeAnimationDuration = 3.0f;
-        LoDGroup.fadeMode = LODFadeMode.SpeedTree;
+        LoDGroup.fadeMode = LODFadeMode.CrossFade;
+
         LOD[] lods = new LOD[2];
-        lods[0] = CreateLoD("HD Version", 0.9999f, manager.getHDMaterial(), out hdChild);
-        lods[1] = CreateLoD("LD Version", 0.0f, manager.getLDMaterial(), out ldChild);
+        lods[0] = CreateLoD("HD Version",
+                            manager.HDHorizontalRelativeScreenSize,
+                            manager.HDMaterial,
+                            out hdChild);
+        lods[1] = CreateLoD("LD Version", 
+                            0.0f, 
+                            manager.LDMaterial, 
+                            out ldChild);
         LoDGroup.SetLODs(lods);
+
+        return true;
     }
 
     LOD CreateLoD(string childName, float screenHeight, Material material, out GameObject child)
@@ -77,7 +74,8 @@ class PointCloudLeafNode : PointCloudNode
         return lod;
     }
 
-    void FetchMesh(){
+    void FetchMesh()
+    {
         float dist = boundingSphere.DistanceTo(Camera.main.transform.position);
         float priority = Camera.main.farClipPlane - dist;
 
@@ -92,12 +90,13 @@ class PointCloudLeafNode : PointCloudNode
         }
     }
 
-    private void RemoveMesh(){
+    private void RemoveMesh()
+    {
         pointCloudManager.GetMeshManager().ReleaseMesh(hdChild.GetComponent<MeshFilter>().mesh); //Returning Mesh
         hdChild.GetComponent<MeshFilter>().mesh = null;
         ldChild.GetComponent<MeshFilter>().mesh = null;
         currentMeshState = MeshState.NOT_LOADED;
-    } 
+    }
 
     // Update is called once per frame
     void Update()
@@ -111,7 +110,8 @@ class PointCloudLeafNode : PointCloudNode
         }
         else
         {
-            if (currentMeshState == MeshState.LOADED){
+            if (currentMeshState == MeshState.LOADED)
+            {
                 RemoveMesh();
             }
         }
@@ -119,7 +119,7 @@ class PointCloudLeafNode : PointCloudNode
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = (State == PCNodeState.VISIBLE)? Color.red : Color.blue;
+        Gizmos.color = (State == PCNodeState.VISIBLE) ? Color.red : Color.blue;
         Bounds b = boundsInModelSpace;// GetBoundsInWorldSpace();
         Gizmos.DrawWireCube(b.center, b.size);
 
@@ -170,7 +170,8 @@ class PointCloudLeafNode : PointCloudNode
         }
 
         Mesh mesh = hdChild.GetComponent<MeshFilter>().mesh;
-        if (mesh == null){
+        if (mesh == null)
+        {
             return;
         }
         Bounds meshBounds = boundsInModelSpace;

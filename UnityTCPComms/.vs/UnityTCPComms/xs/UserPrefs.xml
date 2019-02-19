@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{2504D415-E2DC-46A4-A597-27B2C31FD54B}|Default">
+  <MonoDevelop.Ide.ItemProperties.UnityTCPComms PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Source Not Available">
+    <Files>
+      <File FileName="UnityTCPComms/Program.cs" Line="17" Column="43" />
+      <File FileName="UnityTCPComms/TCPServer.cs" Line="60" Column="1" />
+      <File FileName="Source Not Available" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

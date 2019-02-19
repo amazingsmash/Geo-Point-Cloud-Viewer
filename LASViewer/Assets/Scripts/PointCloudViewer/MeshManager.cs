@@ -176,7 +176,7 @@ public class MeshLoaderJob: AsyncJobThread.Job
         pointCloud.colors = colors;
         pointCloud.SetIndices(indices, MeshTopology.Points, 0);
 
-        Debug.Log("Loaded Point Cloud Mesh with " + points.Length + " points.");
+        //Debug.Log("Loaded Point Cloud Mesh with " + points.Length + " points.");
 
         ReleaseData();
 

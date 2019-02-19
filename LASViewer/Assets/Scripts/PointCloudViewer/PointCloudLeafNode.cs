@@ -20,8 +20,6 @@ class PointCloudLeafNode : PointCloudNode
 {
     FileInfo fileInfo = null;
     IPointCloudManager pointCloudManager = null;
-    //Renderer meshRenderer = null;
-    //MeshFilter meshFilter = null;
     private MeshState currentMeshState = MeshState.NOT_LOADED;
 
     GameObject hdChild = null;
@@ -47,10 +45,6 @@ class PointCloudLeafNode : PointCloudNode
     public void Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
         gameObject.name = "PointCloudOctreeLeafNode";
-        //meshFilter = gameObject.AddComponent<MeshFilter>();
-        //meshFilter.mesh = null;
-        //meshRenderer = gameObject.AddComponent<MeshRenderer>();
-
         this.pointCloudManager = manager;
         string filename = node["filename"];
         fileInfo = directory.GetFiles(filename)[0];
@@ -61,13 +55,16 @@ class PointCloudLeafNode : PointCloudNode
 
         //Creating LODS
         LoDGroup = gameObject.AddComponent<LODGroup>();
+        LoDGroup.animateCrossFading = true;
+        LODGroup.crossFadeAnimationDuration = 3.0f;
+        LoDGroup.fadeMode = LODFadeMode.SpeedTree;
         LOD[] lods = new LOD[2];
-        lods[0] = CreateLoD("HD Version", manager.getHDMaterial(), out hdChild);
-        lods[1] = CreateLoD("LD Version", manager.getLDMaterial(), out ldChild);
+        lods[0] = CreateLoD("HD Version", 0.9999f, manager.getHDMaterial(), out hdChild);
+        lods[1] = CreateLoD("LD Version", 0.0f, manager.getLDMaterial(), out ldChild);
         LoDGroup.SetLODs(lods);
     }
 
-    LOD CreateLoD(string childName, Material material, out GameObject child)
+    LOD CreateLoD(string childName, float screenHeight, Material material, out GameObject child)
     {
         child = new GameObject(childName);
         child.transform.SetParent(gameObject.transform, false);
@@ -76,7 +73,7 @@ class PointCloudLeafNode : PointCloudNode
         MeshRenderer meshRenderer = child.AddComponent<MeshRenderer>();
         meshRenderer.material = material;
 
-        LOD lod = new LOD(0.8f, new Renderer[] { meshRenderer });
+        LOD lod = new LOD(screenHeight, new Renderer[] { meshRenderer });
         return lod;
     }
 
@@ -111,8 +108,6 @@ class PointCloudLeafNode : PointCloudNode
             {
                 FetchMesh();
             }
-            //Bounds bounds = boundsInModelSpace;
-            //meshRenderer.material = pointCloudManager.getMaterialForBoundingBox(bounds);
         }
         else
         {
@@ -141,8 +136,11 @@ class PointCloudLeafNode : PointCloudNode
             nodeAndDistance.estimatedDistanceToCamera = dist;
             visibleLeafNodesAndDistances.Add(nodeAndDistance);
 
-            //Material
-            //meshRenderer.material = pointCloudManager.getMaterialForDistance(dist);
+            //int activeLoD = LoDGroup.ActiveLoD();
+            //if (activeLoD > -1)
+            //{
+            //    Debug.Log("LoD " + LoDGroup.ActiveLoD());
+            //}
         }
     }
 

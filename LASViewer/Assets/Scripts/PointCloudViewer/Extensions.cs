@@ -83,4 +83,20 @@ public static class BoundingSphereExtensions
     }
 }
 
+public static class LoDGroupExtensions
+{
+    public static int ActiveLoD(this LODGroup g)
+    {
+        LOD[] lods = g.GetLODs();
+        for (int i = 0; i < lods.Length; i++)
+        {
+            if (lods[i].renderers[0].isVisible)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
 

@@ -103,6 +103,7 @@ class PointCloudParentNode : PointCloudNode
     public void Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider)
     {
         InitializeFromJSON(node);
+        gameObject.name = "PC Parent Node";
 
         JSONArray childrenJSON = node["children"].AsArray;
         children = new PointCloudNode[childrenJSON.Count];

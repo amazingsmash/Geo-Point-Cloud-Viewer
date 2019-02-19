@@ -11,7 +11,7 @@ public interface IPointCloudListener
     void onPointSelected(Vector3 point);
 }
 
-public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
+public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
     public IPointCloudListener pointCloudListener = null;
     public bool moveCameraToCenter = false;
@@ -40,7 +40,9 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
         pointCloudListener = new PointCloudListener();
 
         //DirectoryInfo dir = getModelDirectoryFromDialog();
-        DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
+        //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
+        DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/18 - BITREE");
+
         Initialize(dir);
 
         InvokeRepeating("CheckNodeRenderState", 0.0f, 0.3f);
@@ -166,7 +168,7 @@ public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
 }
 
 //IPointCloudManager
-public partial class PointCloudOctree : MonoBehaviour, IPointCloudManager
+public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
     public float hdMaxDistance = 5000.0f;
     public Material hdMaterial = null;

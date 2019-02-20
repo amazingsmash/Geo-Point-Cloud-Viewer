@@ -2,19 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//public class Extensions : MonoBehaviour {
-
-//	// Use this for initialization
-//	void Start () {
-		
-//	}
-	
-//	// Update is called once per frame
-//	void Update () {
-		
-//	}
-//}
-
 public static class BoxColliderExtension
 {
     public static float sqrDistance(this BoxCollider box, Vector3 position)

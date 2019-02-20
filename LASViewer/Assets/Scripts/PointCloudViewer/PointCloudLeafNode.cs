@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
 using System.IO;
+using UnityEditor;
 
 class PointCloudLeafNode : PointCloudNode
 {
@@ -43,8 +44,8 @@ class PointCloudLeafNode : PointCloudNode
 
         //Creating LODS
         LoDGroup = gameObject.AddComponent<LODGroup>();
-        LoDGroup.animateCrossFading = true;
-        LODGroup.crossFadeAnimationDuration = 3.0f;
+        LoDGroup.animateCrossFading = false;
+        LODGroup.crossFadeAnimationDuration = 6.0f;
         LoDGroup.fadeMode = LODFadeMode.CrossFade;
 
         LOD[] lods = new LOD[2];
@@ -64,6 +65,7 @@ class PointCloudLeafNode : PointCloudNode
     LOD CreateLoD(string childName, float screenHeight, Material material, out GameObject child)
     {
         child = new GameObject(childName);
+        child.isStatic = true;
         child.transform.SetParent(gameObject.transform, false);
         MeshFilter meshFilter = child.AddComponent<MeshFilter>();
         meshFilter.mesh = null;
@@ -82,9 +84,14 @@ class PointCloudLeafNode : PointCloudNode
         Mesh mesh = pointCloudManager.GetMeshManager().CreateMesh(fileInfo, pointCloudManager, priority);
         if (mesh != null)
         {
+
             hdChild.GetComponent<MeshFilter>().mesh = mesh;
             ldChild.GetComponent<MeshFilter>().mesh = mesh;
             LoDGroup.RecalculateBounds();
+
+            LoDGroup.enabled = true;
+            hdChild.SetActive(true);
+            ldChild.SetActive(true);
 
             currentMeshState = MeshState.LOADED;
         }
@@ -92,6 +99,10 @@ class PointCloudLeafNode : PointCloudNode
 
     private void RemoveMesh()
     {
+        LoDGroup.enabled = false;
+        hdChild.SetActive(false);
+        ldChild.SetActive(false);
+
         pointCloudManager.GetMeshManager().ReleaseMesh(hdChild.GetComponent<MeshFilter>().mesh); //Returning Mesh
         hdChild.GetComponent<MeshFilter>().mesh = null;
         ldChild.GetComponent<MeshFilter>().mesh = null;
@@ -120,6 +131,12 @@ class PointCloudLeafNode : PointCloudNode
     private void OnDrawGizmos()
     {
         Gizmos.color = (State == PCNodeState.VISIBLE) ? Color.red : Color.blue;
+
+        if (Selection.Contains(gameObject) || Selection.Contains(hdChild) || Selection.Contains(ldChild))
+        {
+            Gizmos.color = Color.green;
+        }
+
         Bounds b = boundsInModelSpace;// GetBoundsInWorldSpace();
         Gizmos.DrawWireCube(b.center, b.size);
 
@@ -177,7 +194,7 @@ class PointCloudLeafNode : PointCloudNode
         Bounds meshBounds = boundsInModelSpace;
         if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
         {
-            print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
+            //print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
             foreach (Vector3 p in mesh.vertices)
             {
                 Vector3 pWorld = transform.TransformPoint(p);

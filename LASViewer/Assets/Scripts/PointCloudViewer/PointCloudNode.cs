@@ -80,6 +80,7 @@ abstract class PointCloudNode : MonoBehaviour
     public static PointCloudNode AddNode(JSONNode node, DirectoryInfo directory, GameObject gameObject, IPointCloudManager materialProvider)
     {
         GameObject child = new GameObject("PC Node");
+        child.isStatic = true;
 
 
         PointCloudNode pcNode = null;

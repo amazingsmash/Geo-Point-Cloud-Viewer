@@ -72,9 +72,9 @@
     <Compile Include="Assets\Scripts\PointCloudViewer\MeshManager.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudLeafNode.cs" />
-    <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudListener.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudNode.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\PointCloudViewer.cs" />
+    <Compile Include="Assets\Scripts\PointCloudViewer\RemoteServerPointCloudListener.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\SimpleJSON.cs" />
     <None Include="Assets\Materials\UnityStandardShaderVertexColor\StandardVertColorShader\CGIncludesVC\UnityStandardCoreForward.cginc" />
     <None Include="Assets\Materials\UnityStandardShaderVertexColor\StandardVertColorShader\StandardVertColor.shader" />

@@ -22,8 +22,21 @@ public interface IPointCloudManager
 
 public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
-    public IPointCloudListener pointCloudListener = null;
+    public string folderPath = null;
+    public GameObject pointCloudListenerGameObject = null;
     public bool moveCameraToCenter = false;
+
+    private IPointCloudListener pointCloudListener
+    {
+        get
+        {
+            if (pointCloudListenerGameObject != null)
+            {
+                return pointCloudListenerGameObject.GetComponent<IPointCloudListener>();
+            }
+            return null;
+        }
+    }
 
 
     DirectoryInfo directory = null;
@@ -46,13 +59,11 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     // Use this for initialization
     void Start()
     {
-        pointCloudListener = new PointCloudListener();
-
         //DirectoryInfo dir = getModelDirectoryFromDialog();
         //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
-        DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/18 - BITREE");
+        DirectoryInfo dir = (folderPath == null)? getModelDirectoryFromDialog() : new DirectoryInfo(folderPath);
         //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL MINI");
-
+        //"/Users/josemiguelsn/Desktop/repos/LASViewer/Models/18 - BITREE";
         Initialize(dir);
 
         InvokeRepeating("CheckNodeRenderState", 0.0f, 0.3f);
@@ -99,12 +110,15 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     void Update()
     {
         CheckNodeRenderState();
-        SelectPoint();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            SelectPoint(mousePosition, 10.0f);
+        }
     }
 
     List<PointCloudLeafNode.NodeAndDistance> distanceVisibleNodeList = new List<PointCloudLeafNode.NodeAndDistance>();
-
-
     void UpdateVisibleLeafNodesList()
     {
         distanceVisibleNodeList.Clear();
@@ -128,7 +142,6 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
             int nMeshes = meshManager.NAvailableMeshes;
             for (int i = distanceVisibleNodeList.Count - 1; i > -1; i--)
             {
-
                 var n = ((PointCloudLeafNode.NodeAndDistance)distanceVisibleNodeList[i]);
                 n.node.State = (visibleMeshesCount < nMeshes) ? PointCloudNode.PCNodeState.VISIBLE : PointCloudNode.PCNodeState.INVISIBLE;
                 visibleMeshesCount++;
@@ -137,44 +150,37 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     }
 
 
-    void SelectPoint()
+    void SelectPoint(Vector2 screenPosition, float maxScreenDistance)
     {
         if (pointCloudListener == null)
         {
             return;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        //Debug.Log("Finding selected point.");
+
+        MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
+        float maxDist = 10000000.0f;
+
+        Vector3 closestHit = Vector3.negativeInfinity;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Debug.Log("Finding selected point.");
-
-            float maxScreenDistance = 20.0f;
-
-            Vector3 mousePosition = Input.mousePosition;
-            MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
-            float maxDist = 10000000.0f;
-
-            Vector3 closestHit = Vector3.negativeInfinity;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            for (int i = 0; i < transform.childCount; i++)
+            GameObject child = transform.GetChild(i).gameObject;
+            PointCloudNode node = child.GetComponent<PointCloudNode>();
+            if (node != null)
             {
-                GameObject child = transform.GetChild(i).gameObject;
-                PointCloudNode node = child.GetComponent<PointCloudNode>();
-                if (node != null)
-                {
-                    node.GetClosestPointOnRay(ray,
-                                              mousePosition,
-                                              ref maxDist,
-                                              ref closestHit,
-                                              maxScreenDistance * maxScreenDistance);
-                }
+                node.GetClosestPointOnRay(ray,
+                                          screenPosition,
+                                          ref maxDist,
+                                          ref closestHit,
+                                          maxScreenDistance * maxScreenDistance);
             }
+        }
 
-            if (!closestHit.Equals(Vector3.negativeInfinity))
-            {
-                pointCloudListener.onPointSelected(closestHit);
-            }
-
+        if (!closestHit.Equals(Vector3.negativeInfinity))
+        {
+            pointCloudListener.onPointSelected(closestHit);
         }
     }
 }
@@ -186,6 +192,7 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     public Material ldMaterial = null;
 
     public int numberOfMeshes = 400;
+    public float hDRelativeScreenSize = 0.9f;
     public int numberOfMeshLoadingJobs = 20;
     private MeshManager meshManager = null;
 
@@ -212,7 +219,6 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
         return meshManager;
     }
 
-    float hDRelativeScreenSize = 0.9f;
     float IPointCloudManager.HDHorizontalRelativeScreenSize { get { return hDRelativeScreenSize; } }
     Material IPointCloudManager.HDMaterial { get { return hdMaterial; } }
     Material IPointCloudManager.LDMaterial { get { return ldMaterial; } }

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointCloudListener : IPointCloudListener, ITCPListener
+public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener, ITCPListener
 {
     readonly TCPServer server;
 
-    public PointCloudListener()
+    public RemoteServerPointCloudListener()
     {
         server = new TCPServer(this);
     }

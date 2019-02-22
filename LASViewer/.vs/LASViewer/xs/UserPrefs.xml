@@ -2,10 +2,11 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs">
     <Files>
       <File FileName="Assets/Scripts/PointCloudViewer/PointCloudNode.cs" Line="83" Column="31" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="60" Column="32" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" Line="225" Column="2" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="71" Column="26" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" Line="148" Column="14" />
       <File FileName="Assets/Scripts/Communications/NetworkCommand.cs" Line="11" Column="26" />
       <File FileName="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" Line="19" Column="29" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Extensions.cs" Line="51" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,6 +14,7 @@
           <Node name="LASViewer" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
+                <Node name="Communications" expanded="True" />
                 <Node name="PointCloudViewer" expanded="True">
                   <Node name="PointCloudViewer.cs" selected="True" />
                 </Node>
@@ -32,6 +34,7 @@
       <Breakpoint enabled="false" file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Extensions.cs" relfile="Assets/Scripts/PointCloudViewer/Extensions.cs" line="51" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPTestServer.cs" relfile="Assets/Scripts/Communications/TCPTestServer.cs" line="77" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPTestClient.cs" relfile="Assets/Scripts/Communications/TCPTestClient.cs" line="54" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" relfile="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" line="80" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

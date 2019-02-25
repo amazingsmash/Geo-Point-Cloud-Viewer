@@ -61,11 +61,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Camera Control\CameraControl.cs" />
+    <Compile Include="Assets\Scripts\Camera Control\FlyCam.cs" />
     <Compile Include="Assets\Scripts\Communications\NetworkCommand.cs" />
     <Compile Include="Assets\Scripts\Communications\RemoteServerPointCloudListener.cs" />
-    <Compile Include="Assets\Scripts\Communications\TCPClient.cs" />
-    <Compile Include="Assets\Scripts\Communications\TCPServer.cs" />
-    <Compile Include="Assets\Scripts\FlyCam.cs" />
+    <Compile Include="Assets\Scripts\Communications\TCPEnd.cs" />
     <Compile Include="Assets\Scripts\OLD\CSVManager.cs" />
     <Compile Include="Assets\Scripts\OLD\CSVReader.cs" />
     <Compile Include="Assets\Scripts\OLD\PointCloudLoader.cs" />

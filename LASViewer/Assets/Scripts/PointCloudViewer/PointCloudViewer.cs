@@ -23,16 +23,16 @@ public interface IPointCloudManager
 public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
     public string folderPath = null;
-    public GameObject pointCloudListenerGameObject = null;
+    public GameObject listenerGO = null;
     public bool moveCameraToCenter = false;
 
-    private IPointCloudListener pointCloudListener
+    private IPointCloudListener pcListener
     {
         get
         {
-            if (pointCloudListenerGameObject != null)
+            if (listenerGO != null)
             {
-                return pointCloudListenerGameObject.GetComponent<IPointCloudListener>();
+                return listenerGO.GetComponent<IPointCloudListener>();
             }
             return null;
         }
@@ -152,7 +152,7 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 
     void SelectPoint(Vector2 screenPosition, float maxScreenDistance)
     {
-        if (pointCloudListener == null)
+        if (pcListener == null)
         {
             return;
         }
@@ -180,7 +180,7 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 
         if (!closestHit.Equals(Vector3.negativeInfinity))
         {
-            pointCloudListener.onPointSelected(closestHit);
+            pcListener.onPointSelected(closestHit);
         }
     }
 }

@@ -177,15 +177,15 @@ classdef LASConverter
 
                 if length(xyzClass) < pointsPerFile
                     outFN = sprintf("%s/%s.bytes", folder, voxelName);
-                    LASConverter.save2DMatrixToBinary(outFN, xyzClass);
+                    %LASConverter.save2DMatrixToBinary(outFN, xyzClass);
                     voxelIndex.filename = sprintf("%s.bytes", voxelName);
                     
                     totalLeafNodesVolume = totalLeafNodesVolume + vol;
                     nLeafNodes = nLeafNodes + 1;
                 else
-                    %division = splitInTwoAlternatively(xyzClass, indices);
+                    division = splitInTwoAlternatively(xyzClass, indices);
                     %division = splitInTwoBalanced(xyzClass(:, 1:3));
-                    division = splitInTwoByLargestAxis(xyzClass, voxelIndex.max - voxelIndex.min);
+                    %division = splitInTwoByLargestAxis(xyzClass, voxelIndex.max - voxelIndex.min);
                     %division = splitInTwoByPCA(xyzClass(:, 1:3));
                     
                     

@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener, ITCPListener
+public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener, ITCPEndListener
 {
-    readonly TCPServer server;
+    static TCPServer server = null;
+
+    public int port = 3333;
 
     public RemoteServerPointCloudListener()
     {
-        server = new TCPServer(this);
+        if (server != null)
+        {
+            server = new TCPServer("127.0.0.1", port, this);
+        }
+        Debug.Log("Server generated.");
     }
 
     public void OnMessageReceived(string msg)
@@ -26,6 +32,11 @@ public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener
         SelectPointCmd selectPointCmd = new SelectPointCmd(0, 0, 0);
 
         server.SendMessage("Point Selected: " + point.ToString());
+    }
+
+    public void OnStatusChanged(TCPEnd.Status status)
+    {
+
     }
 
     public void OnStatusMessage(string msg)

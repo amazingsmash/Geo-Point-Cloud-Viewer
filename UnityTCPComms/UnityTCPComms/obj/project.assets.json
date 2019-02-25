@@ -698,7 +698,7 @@
       "projectName": "UnityTCPComms",
       "projectPath": "/Users/josemiguelsn/Desktop/repos/LASViewer/UnityTCPComms/UnityTCPComms/UnityTCPComms.csproj",
       "packagesPath": "/Users/josemiguelsn/.nuget/packages/",
-      "outputPath": "/Users/josemiguelsn/Desktop/repos/LASViewer/UnityTCPComms/UnityTCPComms/obj",
+      "outputPath": "/Users/josemiguelsn/Desktop/repos/LASViewer/UnityTCPComms/UnityTCPComms/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
@@ -727,7 +727,6 @@
       "netcoreapp2.1": {
         "dependencies": {
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

@@ -72,6 +72,12 @@ Only one class at any one time should set defaultBrush to true.</para>
       <param name="brushTarget">Target of box fill operation. By default the currently selected GameObject.</param>
       <param name="position">The bounds to box fill data to.</param>
     </member>
+    <member name="M:UnityEngine.GridBrushBase.ChangeZPosition(System.Int32)">
+      <summary>
+        <para>Changes the Z position of the GridBrushBase.</para>
+      </summary>
+      <param name="change">Modify the Z position of GridBrushBase by this value.</param>
+    </member>
     <member name="M:UnityEngine.GridBrushBase.Erase(UnityEngine.GridLayout,UnityEngine.GameObject,UnityEngine.Vector3Int)">
       <summary>
         <para>Erases data on a grid within the given bounds.</para>
@@ -158,12 +164,17 @@ Only one class at any one time should set defaultBrush to true.</para>
       <param name="pivot">Pivot of the picking brush.</param>
       <param name="gridLayout"></param>
     </member>
+    <member name="M:UnityEngine.GridBrushBase.ResetZPosition">
+      <summary>
+        <para>Resets Z position changes of the GridBrushBase.</para>
+      </summary>
+    </member>
     <member name="M:UnityEngine.GridBrushBase.Rotate(UnityEngine.GridBrushBase/RotationDirection,UnityEngine.GridLayout/CellLayout)">
       <summary>
         <para>Rotates all tiles on the grid brush with the given RotationDirection.</para>
       </summary>
       <param name="direction">Direction to rotate by.</param>
-      <param name="layout">Cell Layout for rotating.</param>
+      <param name="layout">CellLayout for rotating.</param>
     </member>
     <member name="T:UnityEngine.GridBrushBase.RotationDirection">
       <summary>
@@ -439,7 +450,7 @@ Only one class at any one time should set defaultBrush to true.</para>
     </member>
     <member name="M:UnityEngine.Tilemaps.TileBase.StartUp(UnityEngine.Vector3Int,UnityEngine.Tilemaps.ITilemap,UnityEngine.GameObject)">
       <summary>
-        <para>StartUp is called on the first frame of the running scene.</para>
+        <para>StartUp is called on the first frame of the running Scene.</para>
       </summary>
       <param name="position">Position of the Tile on the Tilemap.</param>
       <param name="tilemap">The Tilemap the tile is present on.</param>
@@ -896,6 +907,11 @@ Only one class at any one time should set defaultBrush to true.</para>
         <para>Maximum number of frames the TilemapRenderer keeps unused chunks in memory.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Tilemaps.TilemapRenderer.mode">
+      <summary>
+        <para>The mode in which the TileMapRenderer batches the for rendering.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Tilemaps.TilemapRenderer.sortOrder">
       <summary>
         <para>Active sort order for the TilemapRenderer.</para>
@@ -914,6 +930,21 @@ Only one class at any one time should set defaultBrush to true.</para>
     <member name="F:UnityEngine.Tilemaps.TilemapRenderer.DetectChunkCullingBounds.Manual">
       <summary>
         <para>The user adds in the values used for extend the bounds for culling of Tilemap chunks.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Tilemaps.TilemapRenderer.Mode">
+      <summary>
+        <para>Determines how the TilemapRenderer should batch the for rendering.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Tilemaps.TilemapRenderer.Mode.Chunk">
+      <summary>
+        <para>Batches each Sprite from the Tilemap into grouped chunks to be rendered.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Tilemaps.TilemapRenderer.Mode.Individual">
+      <summary>
+        <para>Sends each Sprite from the Tilemap to be rendered individually.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Tilemaps.TilemapRenderer.SortOrder">

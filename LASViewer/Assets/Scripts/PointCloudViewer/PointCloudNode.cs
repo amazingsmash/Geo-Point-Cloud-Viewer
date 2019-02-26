@@ -50,6 +50,7 @@ abstract class PointCloudNode : MonoBehaviour
                                      Vector2 screenPos,
                                      ref float maxDist,
                                      ref Vector3 closestHit,
+                                     ref Color colorClosestHit,
                                      float sqrMaxScreenDistance);
 
     //--------------------------------
@@ -164,6 +165,7 @@ class PointCloudParentNode : PointCloudNode
                              Vector2 screenPos,
                              ref float maxDist,
                              ref Vector3 closestHit,
+                             ref Color colorClosestHit,
                                       float sqrMaxScreenDistance)
     {
         if (State == PCNodeState.INVISIBLE)
@@ -182,6 +184,7 @@ class PointCloudParentNode : PointCloudNode
                                               screenPos,
                                               ref maxDist,
                                               ref closestHit,
+                                              ref colorClosestHit,
                                               sqrMaxScreenDistance);
                 }
             }

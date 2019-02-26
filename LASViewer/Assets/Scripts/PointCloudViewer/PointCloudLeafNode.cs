@@ -131,11 +131,12 @@ class PointCloudLeafNode : PointCloudNode
     private void OnDrawGizmos()
     {
         Gizmos.color = (State == PCNodeState.VISIBLE) ? Color.red : Color.blue;
-
+#if UNITY_EDITOR
         if (Selection.Contains(gameObject) || Selection.Contains(hdChild) || Selection.Contains(ldChild))
         {
             Gizmos.color = Color.green;
         }
+#endif
 
         Bounds b = boundsInModelSpace;// GetBoundsInWorldSpace();
         Gizmos.DrawWireCube(b.center, b.size);
@@ -179,6 +180,7 @@ class PointCloudLeafNode : PointCloudNode
                                                 Vector2 screenPos,
                                                 ref float maxDist,
                                                 ref Vector3 closestHit,
+                                                ref Color colorClosestHit,
                                             float sqrMaxScreenDistance)
     {
         if (State == PCNodeState.INVISIBLE || currentMeshState != MeshState.LOADED)
@@ -195,8 +197,11 @@ class PointCloudLeafNode : PointCloudNode
         if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
         {
             //print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
+            int i = 0;
             foreach (Vector3 p in mesh.vertices)
+            //for(int i = 0; i < mesh.vertices.Length; i++)
             {
+                //Vector3 p = mesh.vertices[i];
                 Vector3 pWorld = transform.TransformPoint(p);
                 Vector3 v = Camera.main.WorldToScreenPoint(pWorld);
                 float distancePointToCamera = Mathf.Abs(v.z);
@@ -206,9 +211,11 @@ class PointCloudLeafNode : PointCloudNode
                     if (sqrDistance < sqrMaxScreenDistance)
                     {
                         closestHit = pWorld;
+                        colorClosestHit = mesh.colors[i];
                         maxDist = distancePointToCamera;
                     }
                 }
+                i++;
             }
         }
     }

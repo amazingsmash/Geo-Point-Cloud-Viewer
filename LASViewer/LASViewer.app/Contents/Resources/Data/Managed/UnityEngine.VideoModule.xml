@@ -214,7 +214,7 @@
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.audioTrackCount">
       <summary>
-        <para>Number of audio tracks found in the data source currently configured.</para>
+        <para>Number of audio tracks found in the data source currently configured. (Read Only)</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.canSetDirectAudioVolume">
@@ -229,7 +229,7 @@
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.canSetSkipOnDrop">
       <summary>
-        <para>Determines whether the VideoPlayer skips frames to catch up with current time. (Read Only)</para>
+        <para>Whether frame-skipping to maintain synchronization can be controlled. (Read Only)</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.canSetTime">
@@ -254,19 +254,23 @@
     </member>
     <member name="?:UnityEngine.Video.VideoPlayer.clockResyncOccurred(UnityEngine.Video.VideoPlayer/TimeEventHandler)">
       <summary>
-        <para>Invoked when the VideoPlayer's clock is synced back to its Video.VideoTimeReference.</para>
+        <para>Invoked when the VideoPlayer clock is synced back to its Video.VideoTimeReference.</para>
       </summary>
       <param name="value"></param>
     </member>
+    <member name="P:UnityEngine.Video.VideoPlayer.clockTime">
+      <summary>
+        <para>The clock time that the VideoPlayer follows to schedule its samples. The clock time is expressed in seconds. (Read Only)</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Video.VideoPlayer.controlledAudioTrackCount">
       <summary>
-        <para>Number of audio tracks that this VideoPlayer will take control of. The other ones will be silenced. A maximum of 64 tracks are allowed.
-The actual number of audio tracks cannot be known in advance when playing URLs, which is why this value is independent of the Video.VideoPlayer.audioTrackCount property.</para>
+        <para>Number of audio tracks that this VideoPlayer will take control of.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.controlledAudioTrackMaxCount">
       <summary>
-        <para>Maximum number of audio tracks that can be controlled.</para>
+        <para>Maximum number of audio tracks that can be controlled. (Read Only)</para>
       </summary>
     </member>
     <member name="?:UnityEngine.Video.VideoPlayer.errorReceived(UnityEngine.Video.VideoPlayer/ErrorEventHandler)">
@@ -282,12 +286,12 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.frame">
       <summary>
-        <para>The frame index currently being displayed by the VideoPlayer.</para>
+        <para>The frame index of the currently available frame in VideoPlayer.texture.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.frameCount">
       <summary>
-        <para>Number of frames in the current video content.</para>
+        <para>Number of frames in the current video content. (Read Only)</para>
       </summary>
     </member>
     <member name="?:UnityEngine.Video.VideoPlayer.frameDropped(UnityEngine.Video.VideoPlayer/EventHandler)">
@@ -298,7 +302,7 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.frameRate">
       <summary>
-        <para>The frame rate of the clip or URL in frames/second. (Read Only).</para>
+        <para>The frame rate of the clip or URL in frames/second. (Read Only)</para>
       </summary>
     </member>
     <member name="?:UnityEngine.Video.VideoPlayer.frameReady(UnityEngine.Video.VideoPlayer/FrameReadyEventHandler)">
@@ -307,9 +311,19 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
       </summary>
       <param name="value"></param>
     </member>
+    <member name="P:UnityEngine.Video.VideoPlayer.height">
+      <summary>
+        <para>The height of the images in the VideoClip, or URL, in pixels. (Read Only)</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Video.VideoPlayer.isLooping">
       <summary>
         <para>Determines whether the VideoPlayer restarts from the beginning when it reaches the end of the clip.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Video.VideoPlayer.isPaused">
+      <summary>
+        <para>Whether playback is paused. (Read Only)</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.isPlaying">
@@ -322,11 +336,26 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
         <para>Whether the VideoPlayer has successfully prepared the content to be played. (Read Only)</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Video.VideoPlayer.length">
+      <summary>
+        <para>The length of the VideoClip, or the URL, in seconds. (Read Only)</para>
+      </summary>
+    </member>
     <member name="?:UnityEngine.Video.VideoPlayer.loopPointReached(UnityEngine.Video.VideoPlayer/EventHandler)">
       <summary>
         <para>Invoked when the VideoPlayer reaches the end of the content to play.</para>
       </summary>
       <param name="value"></param>
+    </member>
+    <member name="P:UnityEngine.Video.VideoPlayer.pixelAspectRatioDenominator">
+      <summary>
+        <para>Denominator of the pixel aspect ratio (num:den) for the VideoClip or the URL. (Read Only)</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Video.VideoPlayer.pixelAspectRatioNumerator">
+      <summary>
+        <para>Numerator of the pixel aspect ratio (num:den) for the VideoClip or the URL. (Read Only)</para>
+      </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.playbackSpeed">
       <summary>
@@ -408,12 +437,12 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.texture">
       <summary>
-        <para>Internal texture in which video content is placed.</para>
+        <para>Internal texture in which video content is placed. (Read Only)</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.time">
       <summary>
-        <para>The VideoPlayer current time in seconds.</para>
+        <para>The presentation time of the currently available frame in VideoPlayer.texture.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.timeReference">
@@ -428,12 +457,17 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.url">
       <summary>
-        <para>The file or HTTP URL that the VideoPlayer will read content from.</para>
+        <para>The file or HTTP URL that the VideoPlayer reads content from.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Video.VideoPlayer.waitForFirstFrame">
       <summary>
         <para>Determines whether the VideoPlayer will wait for the first frame to be loaded into the texture before starting playback when Video.VideoPlayer.playOnAwake is on.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Video.VideoPlayer.width">
+      <summary>
+        <para>The width of the images in the VideoClip, or URL, in pixels. (Read Only)</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Video.VideoPlayer.EnableAudioTrack(System.UInt16,System.Boolean)">
@@ -452,7 +486,7 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="T:UnityEngine.Video.VideoPlayer.EventHandler">
       <summary>
-        <para>Delegate type for all parameter-less events emitted by VideoPlayers.</para>
+        <para>Delegate type for all parameterless events emitted by VideoPlayers.</para>
       </summary>
       <param name="source">The VideoPlayer that is emitting the event.</param>
     </member>
@@ -461,7 +495,7 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
         <para>Delegate type for VideoPlayer events that carry a frame number.</para>
       </summary>
       <param name="source">The VideoPlayer that is emitting the event.</param>
-      <param name="frameNum">The frame the VideoPlayer is now at.</param>
+      <param name="frameNum">The current frame of the VideoPlayer.</param>
       <param name="frameIdx"></param>
     </member>
     <member name="M:UnityEngine.Video.VideoPlayer.GetAudioChannelCount(System.UInt16)">
@@ -482,9 +516,18 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
         <para>Language code.</para>
       </returns>
     </member>
+    <member name="M:UnityEngine.Video.VideoPlayer.GetAudioSampleRate(System.UInt16)">
+      <summary>
+        <para>Gets the audio track sampling rate in Hertz.</para>
+      </summary>
+      <param name="trackIndex">Index of the audio track to query.</param>
+      <returns>
+        <para>The sampling rate in Hertz.</para>
+      </returns>
+    </member>
     <member name="M:UnityEngine.Video.VideoPlayer.GetDirectAudioMute(System.UInt16)">
       <summary>
-        <para>Get the direct-output audio mute status for the specified track.</para>
+        <para>Gets the direct-output audio mute status for the specified track.</para>
       </summary>
       <param name="trackIndex"></param>
     </member>
@@ -508,11 +551,11 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="M:UnityEngine.Video.VideoPlayer.IsAudioTrackEnabled(System.UInt16)">
       <summary>
-        <para>Returns whether decoding for the specified audio track is enabled. See Video.VideoPlayer.EnableAudioTrack for distinction with mute.</para>
+        <para>Whether decoding for the specified audio track is enabled. See Video.VideoPlayer.EnableAudioTrack for distinction with mute.</para>
       </summary>
       <param name="trackIndex">Index of the audio track being queried.</param>
       <returns>
-        <para>True if decoding for the specified audio track is enabled.</para>
+        <para>Returns true if decoding for the specified audio track is enabled.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Video.VideoPlayer.Pause">
@@ -527,7 +570,7 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="M:UnityEngine.Video.VideoPlayer.Prepare">
       <summary>
-        <para>Initiates playback engine prepration.</para>
+        <para>Initiates playback engine preparation.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Video.VideoPlayer.SetDirectAudioMute(System.UInt16,System.Boolean)">
@@ -558,7 +601,7 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="M:UnityEngine.Video.VideoPlayer.Stop">
       <summary>
-        <para>Pauses the playback and sets the current time to 0.</para>
+        <para>Stops the playback and sets the current time to 0.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Video.VideoPlayer.TimeEventHandler">
@@ -580,12 +623,12 @@ The actual number of audio tracks cannot be known in advance when playing URLs, 
     </member>
     <member name="F:UnityEngine.Video.VideoRenderMode.CameraFarPlane">
       <summary>
-        <para>Draw video content behind a camera's scene.</para>
+        <para>Draw video content behind a camera's Scene.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Video.VideoRenderMode.CameraNearPlane">
       <summary>
-        <para>Draw video content in front of a camera's scene.</para>
+        <para>Draw video content in front of a camera's Scene.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Video.VideoRenderMode.MaterialOverride">

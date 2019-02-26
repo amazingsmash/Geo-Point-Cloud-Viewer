@@ -4,6 +4,65 @@
     <assembly>
       <name>UnityEngine.PhysicsModule</name>
     </assembly>
+    <member name="T:UnityEngine.BoxcastCommand">
+      <summary>
+        <para>Use this struct to set up a box cast command to be performed asynchronously during a job.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.BoxcastCommand.center">
+      <summary>
+        <para>Center of the box.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.BoxcastCommand.direction">
+      <summary>
+        <para>The direction in which to sweep the box.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.BoxcastCommand.distance">
+      <summary>
+        <para>The maximum distance of the sweep.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.BoxcastCommand.halfExtents">
+      <summary>
+        <para>Half the size of the box in each dimension.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.BoxcastCommand.layerMask">
+      <summary>
+        <para>A LayerMask that is used to selectively ignore Colliders when casting a box.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.BoxcastCommand.orientation">
+      <summary>
+        <para>Rotation of the box.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.BoxcastCommand.#ctor(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Single,System.Int32)">
+      <summary>
+        <para>Creates a BoxcastCommand.</para>
+      </summary>
+      <param name="center">Center of the box.</param>
+      <param name="halfExtend">Half the size of the box in each dimension.</param>
+      <param name="orientation">Rotation of the box.</param>
+      <param name="direction">The direction in which to sweep the box.</param>
+      <param name="distance">The maximum length of the cast.</param>
+      <param name="layerMask">A that is used to selectively ignore colliders when casting a box.</param>
+      <param name="halfExtents"></param>
+    </member>
+    <member name="M:UnityEngine.BoxcastCommand.ScheduleBatch(Unity.Collections.NativeArray`1&lt;UnityEngine.BoxcastCommand&gt;,Unity.Collections.NativeArray`1&lt;UnityEngine.RaycastHit&gt;,System.Int32,Unity.Jobs.JobHandle)">
+      <summary>
+        <para>Schedules a batch of boxcasts to be performed in a job.</para>
+      </summary>
+      <param name="commands">A NativeArray of the BoxcastCommand to perform.</param>
+      <param name="results">A NativeArray of RaycastHit where the result of commands are stored.</param>
+      <param name="minCommandsPerJob">The minimum number of jobs which should be performed in a single job.</param>
+      <param name="dependsOn">A JobHandle of a job that must be completed before performing the box casts.</param>
+      <returns>
+        <para>Returns a JobHandle of the job that will perform the box casts.</para>
+      </returns>
+    </member>
     <member name="T:UnityEngine.BoxCollider">
       <summary>
         <para>A box-shaped primitive collider.</para>
@@ -18,6 +77,64 @@
       <summary>
         <para>The size of the box, measured in the object's local space.</para>
       </summary>
+    </member>
+    <member name="T:UnityEngine.CapsulecastCommand">
+      <summary>
+        <para>Use this struct to set up a capsule cast command that is performed asynchronously during a job.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.CapsulecastCommand.direction">
+      <summary>
+        <para>The direction of the capsule cast.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.CapsulecastCommand.distance">
+      <summary>
+        <para>The maximum distance the capsule cast checks for collision.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.CapsulecastCommand.layerMask">
+      <summary>
+        <para>A LayerMask that selectively ignores Colliders when casting a capsule.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.CapsulecastCommand.point1">
+      <summary>
+        <para>The center of the sphere at the start of the capsule.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.CapsulecastCommand.point2">
+      <summary>
+        <para>The center of the sphere at the end of the capsule.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.CapsulecastCommand.radius">
+      <summary>
+        <para>The radius of the capsule.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.CapsulecastCommand.#ctor(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEngine.Vector3,System.Single,System.Int32)">
+      <summary>
+        <para>Creates a CapsulecastCommand.</para>
+      </summary>
+      <param name="p1">The center of the sphere at the start of the capsule.</param>
+      <param name="p2">The center of the sphere at the end of the capsule.</param>
+      <param name="radius">The radius of the capsule.</param>
+      <param name="direction">The direction of the capsule cast</param>
+      <param name="distance">The maximum length of the sweep.</param>
+      <param name="layerMask">The LayerMask that selectively ignores Colliders when casting a capsule.</param>
+    </member>
+    <member name="M:UnityEngine.CapsulecastCommand.ScheduleBatch(Unity.Collections.NativeArray`1&lt;UnityEngine.CapsulecastCommand&gt;,Unity.Collections.NativeArray`1&lt;UnityEngine.RaycastHit&gt;,System.Int32,Unity.Jobs.JobHandle)">
+      <summary>
+        <para>Schedules a batch of capsule casts which are performed in a job.</para>
+      </summary>
+      <param name="commands">A NaviveArray of CapsulecastCommands to perform.</param>
+      <param name="results">A NavtiveArray of RaycastHit where the result of commands are stored.</param>
+      <param name="minCommandsPerJob">The minimum number of jobs which should be performed in a single job.</param>
+      <param name="dependsOn">A jobHandle of a job that must be completed before performing capsule casts.</param>
+      <returns>
+        <para>Returns a JobHandle of the job that will performs the capsule casts.</para>
+      </returns>
     </member>
     <member name="T:UnityEngine.CapsuleCollider">
       <summary>
@@ -253,9 +370,14 @@
         <para>The Collider we hit (Read Only).</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Collision.contactCount">
+      <summary>
+        <para>Gets the number of contacts for this collision.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Collision.contacts">
       <summary>
-        <para>The contact points generated by the physics engine.</para>
+        <para>The contact points generated by the physics engine. You should avoid using this as it produces memory garbage. Use GetContact or GetContacts instead.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Collision.gameObject">
@@ -283,6 +405,24 @@
         <para>The Transform of the object we hit (Read Only).</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Collision.GetContact(System.Int32)">
+      <summary>
+        <para>Gets the contact point at the specified index.</para>
+      </summary>
+      <param name="index">The index of the contact to retrieve.</param>
+      <returns>
+        <para>The contact at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Collision.GetContacts(UnityEngine.ContactPoint[])">
+      <summary>
+        <para>Retrieves all contact points for this collision.</para>
+      </summary>
+      <param name="contacts">An array of ContactPoint used to receive the results.</param>
+      <returns>
+        <para>Returns the number of contacts placed in the contacts array.</para>
+      </returns>
+    </member>
     <member name="T:UnityEngine.CollisionDetectionMode">
       <summary>
         <para>The collision detection mode constants used for Rigidbody.collisionDetectionMode.</para>
@@ -296,6 +436,11 @@
     <member name="F:UnityEngine.CollisionDetectionMode.ContinuousDynamic">
       <summary>
         <para>Continuous collision detection is on for colliding with static and dynamic geometry.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.CollisionDetectionMode.ContinuousSpeculative">
+      <summary>
+        <para>Speculative continuous collision detection is on for static and dynamic geometries</para>
       </summary>
     </member>
     <member name="F:UnityEngine.CollisionDetectionMode.Discrete">
@@ -1089,6 +1234,11 @@ Note that there is a special case when the two overlapping colliders have physic
         <para>The default contact offset of the newly created colliders.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Physics.defaultPhysicsScene">
+      <summary>
+        <para>The PhysicsScene automatically created when Unity starts.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Physics.defaultSolverIterations">
       <summary>
         <para>The defaultSolverIterations determines how accurately Rigidbody joints and collision contacts are resolved. (default 6). Must be positive.</para>
@@ -1101,7 +1251,7 @@ Note that there is a special case when the two overlapping colliders have physic
     </member>
     <member name="P:UnityEngine.Physics.gravity">
       <summary>
-        <para>The gravity applied to all rigid bodies in the scene.</para>
+        <para>The gravity applied to all rigid bodies in the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Physics.interCollisionDistance">
@@ -1132,6 +1282,11 @@ Note that there is a special case when the two overlapping colliders have physic
     <member name="P:UnityEngine.Physics.queriesHitTriggers">
       <summary>
         <para>Specifies whether queries (raycasts, spherecasts, overlap tests, etc.) hit Triggers by default.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Physics.reuseCollisionCallbacks">
+      <summary>
+        <para>Determines whether the garbage collector should reuse only a single instance of a Collision type for all collision callbacks.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Physics.sleepAngularVelocity">
@@ -1220,7 +1375,7 @@ Note that there is a special case when the two overlapping colliders have physic
     </member>
     <member name="M:UnityEngine.Physics.CapsuleCast(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEngine.Vector3,System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Casts a capsule against all colliders in the scene and returns detailed information on what was hit.</para>
+        <para>Casts a capsule against all colliders in the Scene and returns detailed information on what was hit.</para>
       </summary>
       <param name="point1">The center of the sphere at the start of the capsule.</param>
       <param name="point2">The center of the sphere at the end of the capsule.</param>
@@ -1264,7 +1419,7 @@ Note that there is a special case when the two overlapping colliders have physic
     </member>
     <member name="M:UnityEngine.Physics.CapsuleCastNonAlloc(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEngine.Vector3,UnityEngine.RaycastHit[],System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Casts a capsule against all colliders in the scene and returns detailed information on what was hit into the buffer.</para>
+        <para>Casts a capsule against all colliders in the Scene and returns detailed information on what was hit into the buffer.</para>
       </summary>
       <param name="point1">The center of the sphere at the start of the capsule.</param>
       <param name="point2">The center of the sphere at the end of the capsule.</param>
@@ -1356,11 +1511,9 @@ Note that there is a special case when the two overlapping colliders have physic
       <summary>
         <para>Makes the collision detection system ignore all collisions between collider1 and collider2.</para>
       </summary>
-      <param name="start">Starting point of the collider.</param>
-      <param name="end">End point of the collider.</param>
+      <param name="collider1">Starting point of the collider.</param>
+      <param name="collider2">End point of the collider.</param>
       <param name="ignore">Ignore collision.</param>
-      <param name="collider1"></param>
-      <param name="collider2"></param>
     </member>
     <member name="M:UnityEngine.Physics.IgnoreLayerCollision(System.Int32,System.Int32,System.Boolean)">
       <summary>
@@ -1475,7 +1628,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="M:UnityEngine.Physics.Raycast(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the scene.</para>
+        <para>Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene.</para>
       </summary>
       <param name="origin">The starting point of the ray in world coordinates.</param>
       <param name="direction">The direction of the ray.</param>
@@ -1488,7 +1641,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="M:UnityEngine.Physics.Raycast(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.RaycastHit&amp;,System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Casts a ray against all colliders in the scene and returns detailed information on what was hit.</para>
+        <para>Casts a ray against all colliders in the Scene and returns detailed information on what was hit.</para>
       </summary>
       <param name="origin">The starting point of the ray in world coordinates.</param>
       <param name="direction">The direction of the ray.</param>
@@ -1527,7 +1680,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="M:UnityEngine.Physics.RaycastAll(UnityEngine.Ray,System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Casts a ray through the scene and returns all hits. Note that order is not guaranteed.</para>
+        <para>Casts a ray through the Scene and returns all hits. Note that order is not guaranteed.</para>
       </summary>
       <param name="ray">The starting point and direction of the ray.</param>
       <param name="maxDistance">The max distance the rayhit is allowed to be from the start of the ray.</param>
@@ -1547,7 +1700,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="M:UnityEngine.Physics.RaycastNonAlloc(UnityEngine.Ray,UnityEngine.RaycastHit[],System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Cast a ray through the scene and store the hits into the buffer.</para>
+        <para>Cast a ray through the Scene and store the hits into the buffer.</para>
       </summary>
       <param name="ray">The starting point and direction of the ray.</param>
       <param name="results">The buffer to store the hits into.</param>
@@ -1560,7 +1713,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="M:UnityEngine.Physics.RaycastNonAlloc(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.RaycastHit[],System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Cast a ray through the scene and store the hits into the buffer.</para>
+        <para>Cast a ray through the Scene and store the hits into the buffer.</para>
       </summary>
       <param name="origin">The starting point and direction of the ray.</param>
       <param name="results">The buffer to store the hits into.</param>
@@ -1582,7 +1735,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="M:UnityEngine.Physics.Simulate(System.Single)">
       <summary>
-        <para>Simulate physics in the scene.</para>
+        <para>Simulate physics in the Scene.</para>
       </summary>
       <param name="step">The time to advance physics by.</param>
     </member>
@@ -1683,6 +1836,91 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
         <para>Apply Transform changes to the physics engine.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.PhysicsScene">
+      <summary>
+        <para>Represents a single instance of a 3D physics Scene.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.PhysicsScene.IsEmpty">
+      <summary>
+        <para>Gets whether the physics Scene is empty or not.</para>
+      </summary>
+      <returns>
+        <para>Is the physics Scene is empty?</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.PhysicsScene.IsValid">
+      <summary>
+        <para>Gets whether the physics Scene is valid or not.</para>
+      </summary>
+      <returns>
+        <para>Is the physics scene valid?</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.PhysicsScene.Raycast(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
+      <summary>
+        <para>Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene.</para>
+      </summary>
+      <param name="origin">The starting point of the ray in world coordinates.</param>
+      <param name="direction">The direction of the ray.</param>
+      <param name="maxDistance">The max distance the ray should check for collisions.</param>
+      <param name="layerMask">A that is used to selectively ignore Colliders when casting a ray.</param>
+      <param name="queryTriggerInteraction">Specifies whether this query should hit Triggers.</param>
+      <returns>
+        <para>True if the ray intersects with a Collider, otherwise false.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.PhysicsScene.Raycast(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.RaycastHit&amp;,System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
+      <summary>
+        <para>Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene.</para>
+      </summary>
+      <param name="origin">The starting point of the ray in world coordinates.</param>
+      <param name="direction">The direction of the ray.</param>
+      <param name="hitInfo">If true is returned, hitInfo will contain more information about where the collider was hit. (See Also: RaycastHit).</param>
+      <param name="maxDistance">The max distance the ray should check for collisions.</param>
+      <param name="layerMask">A that is used to selectively ignore Colliders when casting a ray.</param>
+      <param name="queryTriggerInteraction">Specifies whether this query should hit Triggers.</param>
+      <returns>
+        <para>True if the ray intersects with a Collider, otherwise false.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.PhysicsScene.Raycast(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.RaycastHit[],System.Single,System.Int32,UnityEngine.QueryTriggerInteraction)">
+      <summary>
+        <para>Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the Scene.</para>
+      </summary>
+      <param name="origin">The starting point and direction of the ray.</param>
+      <param name="direction">The direction of the ray.</param>
+      <param name="raycastHits">The buffer to store the hits into.</param>
+      <param name="maxDistance">The max distance the rayhit is allowed to be from the start of the ray.</param>
+      <param name="layerMask">A that is used to selectively ignore colliders when casting a ray.</param>
+      <param name="queryTriggerInteraction">The amount of hits stored into the results buffer.</param>
+      <returns>
+        <para>True if the ray intersects with a Collider, otherwise false.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.PhysicsScene.Simulate(System.Single)">
+      <summary>
+        <para>Simulate physics associated with this PhysicsScene.</para>
+      </summary>
+      <param name="step">The time to advance physics by.</param>
+      <returns>
+        <para>Whether the simulation was run or not.  Running the simulation during physics callbacks will always fail.</para>
+      </returns>
+    </member>
+    <member name="T:UnityEngine.PhysicsSceneExtensions">
+      <summary>
+        <para>Scene extensions to access the underlying physics scene.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.PhysicsSceneExtensions.GetPhysicsScene(UnityEngine.SceneManagement.Scene)">
+      <summary>
+        <para>An extension method that returns the 3D physics Scene from the Scene.</para>
+      </summary>
+      <param name="scene">The Scene from which to return the 3D physics Scene.</param>
+      <returns>
+        <para>The 3D physics Scene used by the Scene.</para>
+      </returns>
+    </member>
     <member name="T:UnityEngine.QueryTriggerInteraction">
       <summary>
         <para>Overrides the global Physics.queriesHitTriggers.</para>
@@ -1708,7 +1946,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
         <para>Struct used to set up a raycast command to be performed asynchronously during a job.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.RaycastCommand.direction">
+    <member name="P:UnityEngine.RaycastCommand.direction">
       <summary>
         <para>The direction of the ray.</para>
       </summary>
@@ -1718,7 +1956,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
         <para>The maximum distance the ray should check for collisions.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.RaycastCommand.from">
+    <member name="P:UnityEngine.RaycastCommand.from">
       <summary>
         <para>The starting point of the ray in world coordinates.</para>
       </summary>
@@ -1748,10 +1986,9 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
         <para>Schedule a batch of raycasts which are performed in a job.</para>
       </summary>
       <param name="commands">A NativeArray of the RaycastCommands to perform.</param>
-      <param name="commands">A NativeArray of the RaycastHits where the results of the commands are stored.</param>
+      <param name="results">A NativeArray of the RaycastHits where the results of the commands are stored.</param>
       <param name="minCommandsPerJob">The minimum number of jobs which should be performed in a single job.</param>
       <param name="dependsOn">A JobHandle of a job which must be completed before the raycast starts.</param>
-      <param name="results"></param>
       <returns>
         <para>The JobHandle of the job which will perform the raycasts.</para>
       </returns>
@@ -1888,7 +2125,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="P:UnityEngine.Rigidbody.maxAngularVelocity">
       <summary>
-        <para>The maximimum angular velocity of the rigidbody. (Default 7) range { 0, infinity }.</para>
+        <para>The maximimum angular velocity of the rigidbody measured in radians per second. (Default 7) range { 0, infinity }.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Rigidbody.maxDepenetrationVelocity">
@@ -2183,7 +2420,7 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
     </member>
     <member name="M:UnityEngine.Rigidbody.SweepTest(UnityEngine.Vector3,UnityEngine.RaycastHit&amp;,System.Single,UnityEngine.QueryTriggerInteraction)">
       <summary>
-        <para>Tests if a rigidbody would collide with anything, if it was moved through the scene.</para>
+        <para>Tests if a rigidbody would collide with anything, if it was moved through the Scene.</para>
       </summary>
       <param name="direction">The direction into which to sweep the rigidbody.</param>
       <param name="hitInfo">If true is returned, hitInfo will contain more information about where the collider was hit (See Also: RaycastHit).</param>
@@ -2343,6 +2580,58 @@ Note that IgnoreLayerCollision will reset the trigger state of affected collider
       <summary>
         <para>The stiffness of the spring limit. When stiffness is zero the limit is hard, otherwise soft.</para>
       </summary>
+    </member>
+    <member name="T:UnityEngine.SpherecastCommand">
+      <summary>
+        <para>Use this struct to set up a sphere cast command that is performed asynchronously during a job.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SpherecastCommand.direction">
+      <summary>
+        <para>The direction of the sphere cast.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SpherecastCommand.distance">
+      <summary>
+        <para>The maximum distance the sphere should check for collisions.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SpherecastCommand.layerMask">
+      <summary>
+        <para>The LayerMask that selectively ignores Colliders when casting a sphere.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SpherecastCommand.origin">
+      <summary>
+        <para>The starting point of the sphere cast in world coordinates.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SpherecastCommand.radius">
+      <summary>
+        <para>The radius of the casting sphere.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.SpherecastCommand.#ctor(UnityEngine.Vector3,System.Single,UnityEngine.Vector3,System.Single,System.Int32)">
+      <summary>
+        <para>Creates a SpherecastCommand.</para>
+      </summary>
+      <param name="origin">The starting point of the sphere cast.</param>
+      <param name="radius">The radius of the casting sphere.</param>
+      <param name="direction">The direction of the sphere cast.</param>
+      <param name="distance">The maximum distance the cast should check for collisions.</param>
+      <param name="layerMask">The LayerMask that selectively ignores Colliders when casting a sphere.</param>
+    </member>
+    <member name="M:UnityEngine.SpherecastCommand.ScheduleBatch(Unity.Collections.NativeArray`1&lt;UnityEngine.SpherecastCommand&gt;,Unity.Collections.NativeArray`1&lt;UnityEngine.RaycastHit&gt;,System.Int32,Unity.Jobs.JobHandle)">
+      <summary>
+        <para>Schedules a batch of sphere casts to perform in a job.</para>
+      </summary>
+      <param name="commands">A NaviveArray of SpherecastCommands to perform.</param>
+      <param name="results">A NavtiveArray of RaycastHit where the result of commands are stored.</param>
+      <param name="minCommandsPerJob">The minimum number of jobs which should be performed in a single job.</param>
+      <param name="dependsOn">A jobHandle of the job that must be completed before performing the sphere casts.</param>
+      <returns>
+        <para>Returns a JobHandle of the job that will perform the sphere casts.</para>
+      </returns>
     </member>
     <member name="T:UnityEngine.SphereCollider">
       <summary>

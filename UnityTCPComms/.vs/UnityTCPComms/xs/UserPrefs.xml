@@ -1,11 +1,20 @@
 ﻿<Properties StartupConfiguration="{2504D415-E2DC-46A4-A597-27B2C31FD54B}|Default">
   <MonoDevelop.Ide.ItemProperties.UnityTCPComms PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Source Not Available">
+  <MonoDevelop.Ide.Workbench ActiveDocument="UnityTCPComms/Program.cs">
     <Files>
-      <File FileName="UnityTCPComms/Program.cs" Line="17" Column="43" />
-      <File FileName="UnityTCPComms/TCPServer.cs" Line="60" Column="1" />
-      <File FileName="Source Not Available" />
+      <File FileName="UnityTCPComms/Program.cs" Line="96" Column="6" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="UnityTCPComms" expanded="True">
+            <Node name="UnityTCPComms" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

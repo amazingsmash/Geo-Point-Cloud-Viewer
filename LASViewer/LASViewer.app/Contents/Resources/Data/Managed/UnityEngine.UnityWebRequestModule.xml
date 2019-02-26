@@ -515,17 +515,87 @@
         <para>If in progress, halts the UnityWebRequest as soon as possible.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Networking.UnityWebRequest.ClearCookieCache">
+      <summary>
+        <para>Clears stored cookies from the cache.</para>
+      </summary>
+      <param name="domain">An optional URL to define which cookies are removed. Only cookies that apply to this URL will be removed from the cache.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.UnityWebRequest.ClearCookieCache">
+      <summary>
+        <para>Clears stored cookies from the cache.</para>
+      </summary>
+      <param name="domain">An optional URL to define which cookies are removed. Only cookies that apply to this URL will be removed from the cache.</param>
+    </member>
     <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor">
       <summary>
         <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
       </summary>
       <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
+      <param name="uri">The target URI to which form data will be transmitted.</param>
+      <param name="method">HTTP GET, POST, etc. methods.</param>
+      <param name="downloadHandler">Replies from the server.</param>
+      <param name="uploadHandler">Upload data to the server.</param>
     </member>
     <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor(System.String)">
       <summary>
         <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
       </summary>
       <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
+      <param name="uri">The target URI to which form data will be transmitted.</param>
+      <param name="method">HTTP GET, POST, etc. methods.</param>
+      <param name="downloadHandler">Replies from the server.</param>
+      <param name="uploadHandler">Upload data to the server.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor(System.Uri)">
+      <summary>
+        <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
+      </summary>
+      <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
+      <param name="uri">The target URI to which form data will be transmitted.</param>
+      <param name="method">HTTP GET, POST, etc. methods.</param>
+      <param name="downloadHandler">Replies from the server.</param>
+      <param name="uploadHandler">Upload data to the server.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor(System.String,System.String)">
+      <summary>
+        <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
+      </summary>
+      <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
+      <param name="uri">The target URI to which form data will be transmitted.</param>
+      <param name="method">HTTP GET, POST, etc. methods.</param>
+      <param name="downloadHandler">Replies from the server.</param>
+      <param name="uploadHandler">Upload data to the server.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor(System.Uri,System.String)">
+      <summary>
+        <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
+      </summary>
+      <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
+      <param name="uri">The target URI to which form data will be transmitted.</param>
+      <param name="method">HTTP GET, POST, etc. methods.</param>
+      <param name="downloadHandler">Replies from the server.</param>
+      <param name="uploadHandler">Upload data to the server.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor(System.String,System.String,UnityEngine.Networking.DownloadHandler,UnityEngine.Networking.UploadHandler)">
+      <summary>
+        <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
+      </summary>
+      <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
+      <param name="uri">The target URI to which form data will be transmitted.</param>
+      <param name="method">HTTP GET, POST, etc. methods.</param>
+      <param name="downloadHandler">Replies from the server.</param>
+      <param name="uploadHandler">Upload data to the server.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor(System.Uri,System.String,UnityEngine.Networking.DownloadHandler,UnityEngine.Networking.UploadHandler)">
+      <summary>
+        <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
+      </summary>
+      <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
+      <param name="uri">The target URI to which form data will be transmitted.</param>
+      <param name="method">HTTP GET, POST, etc. methods.</param>
+      <param name="downloadHandler">Replies from the server.</param>
+      <param name="uploadHandler">Upload data to the server.</param>
     </member>
     <member name="M:UnityEngine.Networking.UnityWebRequest.Delete(System.String)">
       <summary>

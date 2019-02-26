@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class ColorExtension
+{
+    public static bool IsEqualsTo(this Color c1, Color c2)
+    {
+        if (c1.r.CompareTo(c2.r) != 0) return false;
+        if (c1.b.CompareTo(c2.b) != 0) return false;
+        if (c1.g.CompareTo(c2.g) != 0) return false;
+        if (c1.a.CompareTo(c2.a) != 0) return false;
+        return true;
+    }
+}
+
 public static class BoxColliderExtension
 {
     public static float sqrDistance(this BoxCollider box, Vector3 position)

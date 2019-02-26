@@ -8,7 +8,7 @@ using UnityEditor;
 
 public interface IPointCloudListener
 {
-    void onPointSelected(Vector3 point);
+    void onPointSelected(Vector3 point, float classCode);
 }
 
 public interface IPointCloudManager
@@ -23,16 +23,16 @@ public interface IPointCloudManager
 public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
     public string folderPath = null;
-    public GameObject pointCloudListenerGameObject = null;
+    public GameObject listenerGO = null;
     public bool moveCameraToCenter = false;
 
-    private IPointCloudListener pointCloudListener
+    private IPointCloudListener pcListener
     {
         get
         {
-            if (pointCloudListenerGameObject != null)
+            if (listenerGO != null)
             {
-                return pointCloudListenerGameObject.GetComponent<IPointCloudListener>();
+                return listenerGO.GetComponent<IPointCloudListener>();
             }
             return null;
         }
@@ -152,17 +152,18 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 
     void SelectPoint(Vector2 screenPosition, float maxScreenDistance)
     {
-        if (pointCloudListener == null)
+        if (pcListener == null)
         {
             return;
         }
 
-        //Debug.Log("Finding selected point.");
+        Debug.Log("Finding selected point.");
 
         MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
         float maxDist = 10000000.0f;
 
         Vector3 closestHit = Vector3.negativeInfinity;
+        Color colorClosestHit = Color.black;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -170,17 +171,20 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
             PointCloudNode node = child.GetComponent<PointCloudNode>();
             if (node != null)
             {
+                Debug.Log("Finding selected point on node.");
                 node.GetClosestPointOnRay(ray,
                                           screenPosition,
                                           ref maxDist,
                                           ref closestHit,
+                                          ref colorClosestHit,
                                           maxScreenDistance * maxScreenDistance);
             }
         }
 
         if (!closestHit.Equals(Vector3.negativeInfinity))
         {
-            pointCloudListener.onPointSelected(closestHit);
+            float classCode = GetClassCodeForColor(colorClosestHit);
+            pcListener.onPointSelected(closestHit, classCode);
         }
     }
 }
@@ -212,6 +216,18 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
         }
 
         return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
+    }
+
+    float GetClassCodeForColor(Color color)
+    {
+        foreach(var entry in classColor)
+        {
+            if (entry.Value.IsEqualsTo(color))
+            {
+                return entry.Key;
+            }
+        }
+        return 0.0f;
     }
 
     MeshManager IPointCloudManager.GetMeshManager()

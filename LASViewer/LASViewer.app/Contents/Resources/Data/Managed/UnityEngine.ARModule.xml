@@ -27,7 +27,7 @@
     </member>
     <member name="P:UnityEngine.XR.ARBackgroundRenderer.camera">
       <summary>
-        <para>An optional Camera whose background rendering will be overridden by this class. If this property is not set then the main Camera in the scene is used.</para>
+        <para>An optional Camera whose background rendering will be overridden by this class. If this property is not set then the main Camera in the Scene is used.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.XR.ARBackgroundRenderer.mode">

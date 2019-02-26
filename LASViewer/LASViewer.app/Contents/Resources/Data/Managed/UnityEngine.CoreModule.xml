@@ -43,6 +43,56 @@
       <param name="menuName">The path to the component.</param>
       <param name="order">Where in the component menu to add the new item.</param>
     </member>
+    <member name="T:UnityEngine.Android.Permission">
+      <summary>
+        <para>Structure describing a permission that requires user authorization.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Android.Permission.Camera">
+      <summary>
+        <para>Used when requesting permission or checking if permission has been granted to use the camera.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Android.Permission.CoarseLocation">
+      <summary>
+        <para>Used when requesting permission or checking if permission has been granted to use the users location with coarse granularity.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Android.Permission.ExternalStorageRead">
+      <summary>
+        <para>Used when requesting permission or checking if permission has been granted to read from external storage such as a SD card.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Android.Permission.ExternalStorageWrite">
+      <summary>
+        <para>Used when requesting permission or checking if permission has been granted to write to external storage such as a SD card.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Android.Permission.FineLocation">
+      <summary>
+        <para>Used when requesting permission or checking if permission has been granted to use the users location with high precision.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Android.Permission.HasUserAuthorizedPermission(System.String)">
+      <summary>
+        <para>Check if the user has granted access to a device resource or information that requires authorization.</para>
+      </summary>
+      <param name="permission">A string representing the permission to request. For permissions which Unity has not predefined you may also manually provide the constant value obtained from the Android documentation here: https:developer.android.comguidetopicspermissionsoverview#permission-groups such as "android.permission.READ_CONTACTS".</param>
+      <returns>
+        <para>Whether the requested permission has been granted.</para>
+      </returns>
+    </member>
+    <member name="F:UnityEngine.Android.Permission.Microphone">
+      <summary>
+        <para>Used when requesting permission or checking if permission has been granted to use the microphone.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Android.Permission.RequestUserPermission(System.String)">
+      <summary>
+        <para>Request that the user grant access to a device resource or information that requires authorization.</para>
+      </summary>
+      <param name="permission">A string that describes the permission to request. For permissions which Unity has not predefined you may also manually provide the constant value obtained from the Android documentation here: https:developer.android.comguidetopicspermissionsoverview#permission-groups such as "android.permission.READ_CONTACTS".</param>
+    </member>
     <member name="T:UnityEngine.AndroidJavaClass">
       <summary>
         <para>AndroidJavaClass is the Unity representation of a generic instance of java.lang.Class.</para>
@@ -1567,6 +1617,11 @@ Note: Using raw JNI functions requires advanced knowledge of the Android Java Na
         <para>Return application company name (Read Only).</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Application.consoleLogPath">
+      <summary>
+        <para>Returns the path to the console log file, or an empty string if the current platform does not support log files.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Application.dataPath">
       <summary>
         <para>Contains the path to the game data folder (Read Only).</para>
@@ -1634,7 +1689,7 @@ Note: Using raw JNI functions requires advanced knowledge of the Android Java Na
     </member>
     <member name="P:UnityEngine.Application.isPlaying">
       <summary>
-        <para>Returns true when in any kind of player is active.(Read Only).</para>
+        <para>Returns true when called in any kind of built Player, or when called in the Editor in Play Mode (Read Only).</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Application.isShowingSplashScreen">
@@ -1857,6 +1912,15 @@ Here is an example of handling the callback:</para>
       </summary>
       <param name="mode"></param>
     </member>
+    <member name="M:UnityEngine.Application.IsPlaying(UnityEngine.Object)">
+      <summary>
+        <para>Returns true if the given object is part of the playing world either in any kind of built Player or in Play Mode.</para>
+      </summary>
+      <param name="obj">The object to test.</param>
+      <returns>
+        <para>True if the object is part of the playing world.</para>
+      </returns>
+    </member>
     <member name="M:UnityEngine.Application.LoadLevel(System.Int32)">
       <summary>
         <para>Note: This is now obsolete. Use SceneManager.LoadScene instead.</para>
@@ -1936,6 +2000,7 @@ Here is an example of handling the callback:</para>
       <summary>
         <para>Quits the player application.</para>
       </summary>
+      <param name="exitCode">An optional exit code to return when the player application terminates on Windows, Mac and Linux. Defaults to 0.</param>
     </member>
     <member name="M:UnityEngine.Application.RequestAdvertisingIdentifierAsync(UnityEngine.Application/AdvertisingIdentifierCallback)">
       <summary>
@@ -1972,22 +2037,22 @@ Here is an example of handling the callback:</para>
     </member>
     <member name="M:UnityEngine.Application.UnloadLevel(System.Int32)">
       <summary>
-        <para>Unloads all GameObject associated with the given scene. Note that assets are currently not unloaded, in order to free up asset memory call Resources.UnloadAllUnusedAssets.</para>
+        <para>Unloads all GameObject associated with the given Scene. Note that assets are currently not unloaded, in order to free up asset memory call Resources.UnloadAllUnusedAssets.</para>
       </summary>
-      <param name="index">Index of the scene in the PlayerSettings to unload.</param>
-      <param name="scenePath">Name of the scene to Unload.</param>
+      <param name="index">Index of the Scene in the PlayerSettings to unload.</param>
+      <param name="scenePath">Name of the Scene to Unload.</param>
       <returns>
-        <para>Return true if the scene is unloaded.</para>
+        <para>Return true if the Scene is unloaded.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Application.UnloadLevel(System.String)">
       <summary>
-        <para>Unloads all GameObject associated with the given scene. Note that assets are currently not unloaded, in order to free up asset memory call Resources.UnloadAllUnusedAssets.</para>
+        <para>Unloads all GameObject associated with the given Scene. Note that assets are currently not unloaded, in order to free up asset memory call Resources.UnloadAllUnusedAssets.</para>
       </summary>
-      <param name="index">Index of the scene in the PlayerSettings to unload.</param>
-      <param name="scenePath">Name of the scene to Unload.</param>
+      <param name="index">Index of the Scene in the PlayerSettings to unload.</param>
+      <param name="scenePath">Name of the Scene to Unload.</param>
       <returns>
-        <para>Return true if the scene is unloaded.</para>
+        <para>Return true if the Scene is unloaded.</para>
       </returns>
     </member>
     <member name="T:UnityEngine.ApplicationInstallMode">
@@ -2502,7 +2567,7 @@ Note: Every time you call the method with tolerance specified, a new instance of
     </member>
     <member name="P:UnityEngine.AsyncOperation.allowSceneActivation">
       <summary>
-        <para>Allow scenes to be activated as soon as it is ready.</para>
+        <para>Allow Scenes to be activated as soon as it is ready.</para>
       </summary>
     </member>
     <member name="?:UnityEngine.AsyncOperation.completed(System.Action`1&lt;UnityEngine.AsyncOperation&gt;)">
@@ -2654,7 +2719,7 @@ Note: Every time you call the method with tolerance specified, a new instance of
     </member>
     <member name="P:UnityEngine.Behaviour.isActiveAndEnabled">
       <summary>
-        <para>Has the Behaviour had enabled called.</para>
+        <para>Has the Behaviour had active and enabled called?</para>
       </summary>
     </member>
     <member name="T:UnityEngine.BillboardAsset">
@@ -3523,6 +3588,11 @@ Note: Every time you call the method with tolerance specified, a new instance of
         <para>Should camera rendering be forced into a RenderTexture.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Camera.gateFit">
+      <summary>
+        <para>There are two gates for a camera, the sensor gate and the resolution gate. The physical camera sensor gate is defined by the sensorSize property, the resolution gate is defined by the render target area.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Camera.layerCullDistances">
       <summary>
         <para>Per-layer culling distances.</para>
@@ -3746,6 +3816,21 @@ If called outside of a rendering callback and stereo is enabled, it will return 
         <para>Oblique near-plane projection matrix.</para>
       </returns>
     </member>
+    <member name="M:UnityEngine.Camera.CalculateProjectionMatrixFromPhysicalProperties">
+      <summary>
+        <para>
+                    Calculates the projection matrix from focal length, sensor size, lens shift, near plane distance, far plane distance, and Gate fit parameters.
+                    To calculate the projection matrix without taking Gate fit into account, use  Camera.GateFitMode.None . See Also: Camera.GateFitParameters
+                </para>
+      </summary>
+      <param name="output">The calculated matrix.</param>
+      <param name="focalLength">Focal length in millimeters.</param>
+      <param name="sensorSize">Sensor dimensions in Millimeters.</param>
+      <param name="lensShift">Lens offset relative to the sensor size.</param>
+      <param name="nearClip">Near plane distance.</param>
+      <param name="farClip">Far plane distance.</param>
+      <param name="gateFitParameters">Gate fit parameters to use. See Camera.GateFitParameters.</param>
+    </member>
     <member name="T:UnityEngine.Camera.CameraCallback">
       <summary>
         <para>Delegate type for camera callbacks.</para>
@@ -3783,6 +3868,68 @@ If called outside of a rendering callback and stereo is enabled, it will return 
       <returns>
         <para>Focal length in millimeters.</para>
       </returns>
+    </member>
+    <member name="T:UnityEngine.Camera.GateFitMode">
+      <summary>
+        <para>Enum used to specify how the sensor gate (sensor frame) defined by Camera.sensorSize fits into the resolution gate (render frame).</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Camera.GateFitMode.Fill">
+      <summary>
+        <para>
+                    Automatically selects a horizontal or vertical fit so that the sensor gate fits completely inside the resolution gate.
+                </para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Camera.GateFitMode.Horizontal">
+      <summary>
+        <para>
+                    Fit the resolution gate horizontally within the sensor gate.
+                </para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Camera.GateFitMode.None">
+      <summary>
+        <para>
+                    Stretch the sensor gate to fit exactly into the resolution gate.
+                </para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Camera.GateFitMode.Overscan">
+      <summary>
+        <para>
+                    Automatically selects a horizontal or vertical fit so that the render frame fits completely inside the resolution gate.
+                </para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Camera.GateFitMode.Vertical">
+      <summary>
+        <para>
+                    Fit the resolution gate vertically within the sensor gate.
+                </para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Camera.GateFitParameters">
+      <summary>
+        <para>Wrapper for gate fit parameters</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Camera.GateFitParameters.aspect">
+      <summary>
+        <para>Aspect ratio of the resolution gate.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Camera.GateFitParameters.mode">
+      <summary>
+        <para>GateFitMode to use. See Camera.GateFitMode.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Camera.GateFitParameters.#ctor(UnityEngine.Camera/GateFitMode,System.Single)">
+      <summary>
+        <para>Wrapper for gate fit parameters.</para>
+      </summary>
+      <param name="mode"></param>
+      <param name="aspect"></param>
     </member>
     <member name="M:UnityEngine.Camera.GetAllCameras(UnityEngine.Camera[])">
       <summary>
@@ -4267,7 +4414,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       </summary>
       <param name="H">Hue [0..1].</param>
       <param name="S">Saturation [0..1].</param>
-      <param name="V">Value [0..1].</param>
+      <param name="V">Brightness value [0..1].</param>
       <param name="hdr">Output HDR colours. If true, the returned colour will not be clamped to [0..1].</param>
       <returns>
         <para>An opaque colour with HSV matching the input.</para>
@@ -4279,7 +4426,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       </summary>
       <param name="H">Hue [0..1].</param>
       <param name="S">Saturation [0..1].</param>
-      <param name="V">Value [0..1].</param>
+      <param name="V">Brightness value [0..1].</param>
       <param name="hdr">Output HDR colours. If true, the returned colour will not be clamped to [0..1].</param>
       <returns>
         <para>An opaque colour with HSV matching the input.</para>
@@ -5221,6 +5368,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       <param name="nameID">Property name ID, use Shader.PropertyToID to get it.</param>
       <param name="name">Name of the buffer variable in shader code.</param>
       <param name="texture">Texture to set.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
     </member>
     <member name="M:UnityEngine.ComputeShader.SetTexture(System.Int32,System.Int32,UnityEngine.Texture)">
       <summary>
@@ -5230,6 +5378,27 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       <param name="nameID">Property name ID, use Shader.PropertyToID to get it.</param>
       <param name="name">Name of the buffer variable in shader code.</param>
       <param name="texture">Texture to set.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
+    </member>
+    <member name="M:UnityEngine.ComputeShader.SetTexture(System.Int32,System.String,UnityEngine.Texture,System.Int32)">
+      <summary>
+        <para>Set a texture parameter.</para>
+      </summary>
+      <param name="kernelIndex">For which kernel the texture is being set. See FindKernel.</param>
+      <param name="nameID">Property name ID, use Shader.PropertyToID to get it.</param>
+      <param name="name">Name of the buffer variable in shader code.</param>
+      <param name="texture">Texture to set.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
+    </member>
+    <member name="M:UnityEngine.ComputeShader.SetTexture(System.Int32,System.Int32,UnityEngine.Texture,System.Int32)">
+      <summary>
+        <para>Set a texture parameter.</para>
+      </summary>
+      <param name="kernelIndex">For which kernel the texture is being set. See FindKernel.</param>
+      <param name="nameID">Property name ID, use Shader.PropertyToID to get it.</param>
+      <param name="name">Name of the buffer variable in shader code.</param>
+      <param name="texture">Texture to set.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
     </member>
     <member name="M:UnityEngine.ComputeShader.SetTextureFromGlobal(System.Int32,System.String,System.String)">
       <summary>
@@ -5804,7 +5973,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       <summary>
         <para>Specify a custom cursor that you wish to use as a cursor.</para>
       </summary>
-      <param name="texture">The texture to use for the cursor or null to set the default cursor. Note that a texture needs to be imported with "Read/Write enabled" in the texture importer (or using the "Cursor" defaults), in order to be used as a cursor.</param>
+      <param name="texture">The texture to use for the cursor. To use a texture, you must first import it with `Read/Write`enabled. Alternatively, you can use the default cursor import setting. If you created your cursor texture from code, it must be in RGBA32 format, have alphaIsTransparency enabled, and have no mip chain. To use the default cursor, set the texture to `Null`.</param>
       <param name="hotspot">The offset from the top left of the texture to use as the target point (must be within the bounds of the cursor).</param>
       <param name="cursorMode">Allow this cursor to render as a hardware cursor on supported platforms, or force software cursor.</param>
     </member>
@@ -6447,6 +6616,62 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
         <para>Device type is unknown. You should never see this in practice.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Diagnostics.ForcedCrashCategory">
+      <summary>
+        <para>Specifies the category of crash to cause when calling ForceCrash().</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Diagnostics.ForcedCrashCategory.Abort">
+      <summary>
+        <para>Cause a crash by calling the abort() function.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Diagnostics.ForcedCrashCategory.AccessViolation">
+      <summary>
+        <para>Cause a crash by performing an invalid memory access.
+
+The invalid memory access is performed on each platform as follows:</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Diagnostics.ForcedCrashCategory.FatalError">
+      <summary>
+        <para>Cause a crash using Unity's native fatal error implementation.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Diagnostics.ForcedCrashCategory.PureVirtualFunction">
+      <summary>
+        <para>Cause a crash by calling a pure virtual function to raise an exception.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Diagnostics.Utils">
+      <summary>
+        <para>A utility class that you can use for diagnostic purposes.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Diagnostics.Utils.ForceCrash(UnityEngine.Diagnostics.ForcedCrashCategory)">
+      <summary>
+        <para>Manually causes an application crash in the specified category.</para>
+      </summary>
+      <param name="crashCategory"></param>
+    </member>
+    <member name="M:UnityEngine.Diagnostics.Utils.NativeAssert(System.String)">
+      <summary>
+        <para>Manually causes an assert that outputs the specified message to the log and registers an error.</para>
+      </summary>
+      <param name="message"></param>
+    </member>
+    <member name="M:UnityEngine.Diagnostics.Utils.NativeError(System.String)">
+      <summary>
+        <para>Manually causes a native error that outputs the specified message to the log and registers an error.</para>
+      </summary>
+      <param name="message"></param>
+    </member>
+    <member name="M:UnityEngine.Diagnostics.Utils.NativeWarning(System.String)">
+      <summary>
+        <para>Manually causes a warning that outputs the specified message to the log and registers an error.</para>
+      </summary>
+      <param name="message"></param>
+    </member>
     <member name="T:UnityEngine.DisallowMultipleComponent">
       <summary>
         <para>Prevents MonoBehaviour of same type (or subtype) to be added more than once to a GameObject.</para>
@@ -6692,12 +6917,19 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
     </member>
     <member name="P:UnityEngine.DynamicGI.indirectScale">
       <summary>
-        <para>Allows for scaling the contribution coming from realtime &amp; static  lightmaps.</para>
+        <para>Allows for scaling the contribution coming from realtime &amp; baked lightmaps.
+
+Note: this value can be set in the Lighting Window UI and it is serialized, that is not the case for other properties in this class.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.DynamicGI.isConverged">
       <summary>
         <para>Is precomputed realtime Global Illumination output converged?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.DynamicGI.materialUpdateTimeSlice">
+      <summary>
+        <para>The number of milliseconds that can be spent on material updates.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.DynamicGI.synchronousMode">
@@ -6826,7 +7058,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
     </member>
     <member name="T:UnityEngine.Events.UnityEvent">
       <summary>
-        <para>A zero argument persistent callback that can be saved with the scene.</para>
+        <para>A zero argument persistent callback that can be saved with the Scene.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Events.UnityEvent.AddListener(UnityEngine.Events.UnityAction)">
@@ -6948,9 +7180,14 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
         <para>Add this attribute to a class to prevent creating a Preset from the instances of the class.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.ExecuteAlways">
+      <summary>
+        <para>Makes instances of a script always execute, both as part of Play Mode and when editing.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.ExecuteInEditMode">
       <summary>
-        <para>Makes all instances of a script execute in edit mode.</para>
+        <para>Makes all instances of a script execute in Edit Mode.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.GlobalIllumination.DirectionalLight">
@@ -6989,6 +7226,56 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       </summary>
     </member>
     <member name="F:UnityEngine.Experimental.GlobalIllumination.DirectionalLight.shadow">
+      <summary>
+        <para>True if the light casts shadows, otherwise False.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.GlobalIllumination.DiscLight">
+      <summary>
+        <para>A helper structure used to initialize a LightDataGI structure as a disc light.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.color">
+      <summary>
+        <para>The direct light color.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.indirectColor">
+      <summary>
+        <para>The indirect light color.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.instanceID">
+      <summary>
+        <para>The light's instanceID.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.mode">
+      <summary>
+        <para>The lightmode.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.orientation">
+      <summary>
+        <para>The light's orientation.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.position">
+      <summary>
+        <para>The light's position.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.radius">
+      <summary>
+        <para>The radius of the disc light.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.range">
+      <summary>
+        <para>The light's range.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.DiscLight.shadow">
       <summary>
         <para>True if the light casts shadows, otherwise False.</para>
       </summary>
@@ -7199,6 +7486,14 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
         <para>Interface to the light baking backends.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Experimental.GlobalIllumination.Lightmapping.GetDelegate">
+      <summary>
+        <para>Get the currently set conversion delegate.</para>
+      </summary>
+      <returns>
+        <para>Returns the currently set conversion delegate.</para>
+      </returns>
+    </member>
     <member name="T:UnityEngine.Experimental.GlobalIllumination.Lightmapping.RequestLightsDelegate">
       <summary>
         <para>Delegate called when converting lights into a form that the baking backends understand.</para>
@@ -7250,6 +7545,11 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
     <member name="F:UnityEngine.Experimental.GlobalIllumination.LightType.Directional">
       <summary>
         <para>An infinite directional light.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.GlobalIllumination.LightType.Disc">
+      <summary>
+        <para>A light shaped like a disc emitting light into the hemisphere that it is facing.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Experimental.GlobalIllumination.LightType.Point">
@@ -7525,6 +7825,41 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
         <para>A native engine system. To get a valid value for this, you must copy it from one of the PlayerLoopSystems returned by PlayerLoop.GetDefaultPlayerLoop.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Experimental.Networking.PlayerConnection.ConnectionTarget">
+      <summary>
+        <para>The type of the connected target.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Networking.PlayerConnection.ConnectionTarget.Editor">
+      <summary>
+        <para>The connected target is an Editor.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Networking.PlayerConnection.ConnectionTarget.None">
+      <summary>
+        <para>No target is connected, this is only possible in a Player.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Networking.PlayerConnection.ConnectionTarget.Player">
+      <summary>
+        <para>The connected target is a Player.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEngine.Experimental.Networking.PlayerConnection.IConnectionState">
+      <summary>
+        <para>The state of an Editor-to-Player or Editor-to-Editor connection to be used in Experimental.Networking.PlayerConnection.EditorGUI.AttachToPlayerDropdown or Experimental.Networking.PlayerConnection.EditorGUILayout.AttachToPlayerDropdown.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Networking.PlayerConnection.IConnectionState.connectedToTarget">
+      <summary>
+        <para>Supplies the type of the established connection, as in whether the target is a Player or an Editor.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Networking.PlayerConnection.IConnectionState.connectionName">
+      <summary>
+        <para>The name of the connected target.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.Playables.CameraPlayable">
       <summary>
         <para>An implementation of IPlayable that produces a Camera texture.</para>
@@ -7600,17 +7935,17 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
         <para>Update phase in the native player loop.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Experimental.PlayerLoop.EarlyUpdate.AnalyticsCoreStatsUpdate">
+      <summary>
+        <para>Native engine system updated by the native player loop.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.PlayerLoop.EarlyUpdate.ClearIntermediateRenderers">
       <summary>
         <para>Native engine system updated by the native player loop.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.PlayerLoop.EarlyUpdate.ClearLines">
-      <summary>
-        <para>Native engine system updated by the native player loop.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.PlayerLoop.EarlyUpdate.CloudWebServicesUpdate">
       <summary>
         <para>Native engine system updated by the native player loop.</para>
       </summary>
@@ -7706,11 +8041,6 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.PlayerLoop.EarlyUpdate.TangoUpdate">
-      <summary>
-        <para>Native engine system updated by the native player loop.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.PlayerLoop.EarlyUpdate.UnityConnectClientUpdate">
       <summary>
         <para>Native engine system updated by the native player loop.</para>
       </summary>
@@ -7890,6 +8220,11 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
         <para>Native engine system updated by the native player loop.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Experimental.PlayerLoop.PostLateUpdate.EndGraphicsJobsAfterScriptLateUpdate">
+      <summary>
+        <para>Native engine system updated by the native player loop.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.PlayerLoop.PostLateUpdate.EnlightenRuntimeUpdate">
       <summary>
         <para>Native engine system updated by the native player loop.</para>
@@ -7916,11 +8251,6 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.PlayerLoop.PostLateUpdate.MemoryFrameMaintenance">
-      <summary>
-        <para>Native engine system updated by the native player loop.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.PlayerLoop.PostLateUpdate.ParticlesLegacyUpdateAllParticleSystems">
       <summary>
         <para>Native engine system updated by the native player loop.</para>
       </summary>
@@ -8105,7 +8435,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
         <para>Native engine system updated by the native player loop.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.PlayerLoop.PreLateUpdate.EndGraphicsJobsLate">
+    <member name="T:UnityEngine.Experimental.PlayerLoop.PreLateUpdate.EndGraphicsJobsAfterScriptUpdate">
       <summary>
         <para>Native engine system updated by the native player loop.</para>
       </summary>
@@ -8336,7 +8666,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.CullResults.visibleOffscreenVertexLights">
       <summary>
-        <para>Off screen lights that still effect visible scene vertices.</para>
+        <para>Off screen lights that still effect visible Scene vertices.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.CullResults.visibleReflectionProbes">
@@ -8464,7 +8794,7 @@ The default value is Camera.MonoOrStereoscopicEye.Left, so Camera.MonoOrStereosc
       <param name="lightIndex">The index of the shadow-casting light.</param>
       <param name="outBounds">The bounds to be computed.</param>
       <returns>
-        <para>True if the light affects at least one shadow casting object in the scene.</para>
+        <para>True if the light affects at least one shadow casting object in the Scene.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.Rendering.CullResults.SetLightIndexMap(System.Int32[])">
@@ -8567,19 +8897,49 @@ If an element of the array is set to -1, the light corresponding to that element
       <param name="index">Index of the shader pass to use.</param>
       <param name="shaderPassName">Name of the shader pass.</param>
     </member>
+    <member name="T:UnityEngine.Experimental.Rendering.DrawRendererSortMode">
+      <summary>
+        <para>Type of sorting to use while rendering.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortMode.CustomAxis">
+      <summary>
+        <para>Sort objects based on distance along a custom axis.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortMode.Orthographic">
+      <summary>
+        <para>Orthographic sorting mode.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortMode.Perspective">
+      <summary>
+        <para>Perspective sorting mode.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.Rendering.DrawRendererSortSettings">
       <summary>
-        <para>Describes how to sort objects during rendering.</para>
+        <para>This struct describes the methods to sort objects during rendering.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortSettings.cameraCustomSortAxis">
+      <summary>
+        <para>Used to calculate distance to objects, by comparing the positions of objects to this axis.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortSettings.cameraPosition">
       <summary>
-        <para>Camera position, used to determine distances to objects.</para>
+        <para>Used to calculate the distance to objects.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortSettings.flags">
       <summary>
         <para>What kind of sorting to do while rendering.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortSettings.sortMode">
+      <summary>
+        <para>Type of sorting to use while rendering.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.Rendering.DrawRendererSortSettings.sortOrthographic">
@@ -8589,12 +8949,12 @@ If an element of the array is set to -1, the light corresponding to that element
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.DrawRendererSortSettings.worldToCameraMatrix">
       <summary>
-        <para>Camera view matrix, used to determine distances to objects.</para>
+        <para>Used to calculate the distance to objects.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.Rendering.DrawShadowsSettings">
       <summary>
-        <para>Settings for RenderLoop.DrawShadows.</para>
+        <para>Settings for ScriptableRenderContext.DrawShadows.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.Rendering.DrawShadowsSettings.cullResults">
@@ -8622,6 +8982,11 @@ If an element of the array is set to -1, the light corresponding to that element
     <member name="T:UnityEngine.Experimental.Rendering.FilterRenderersSettings">
       <summary>
         <para>Filter settings for ScriptableRenderContext.DrawRenderers.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Rendering.FilterRenderersSettings.excludeMotionVectorObjects">
+      <summary>
+        <para>Set to true to exclude objects that are currently in motion from rendering. The default value is false.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.Rendering.FilterRenderersSettings.layerMask">
@@ -9207,16 +9572,6 @@ See Also: ScriptableRenderContext.DrawRenderers.</para>
         <para>A three-component, block-compressed format where each 128-bit compressed texel block encodes a 4×4 rectangle of unsigned floating-point RGB texel data.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Experimental.Rendering.GraphicsFormat.RGB_DXT1_SRGB">
-      <summary>
-        <para>A three-component, block-compressed format where each 64-bit compressed texel block encodes a 4×4 rectangle of unsigned normalized RGB texel data with sRGB nonlinear encoding. This format has no alpha and is considered opaque.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.GraphicsFormat.RGB_DXT1_UNorm">
-      <summary>
-        <para>A three-component, block-compressed format where each 64-bit compressed texel block encodes a 4×4 rectangle of unsigned normalized RGB texel data. This format has no alpha and is considered opaque.</para>
-      </summary>
-    </member>
     <member name="F:UnityEngine.Experimental.Rendering.GraphicsFormat.RGB_ETC_UNorm">
       <summary>
         <para>A three-component, ETC compressed format where each 64-bit compressed texel block encodes a 4×4 rectangle of unsigned normalized RGB texel data. This format has no alpha and is considered opaque.</para>
@@ -9322,6 +9677,16 @@ See Also: ScriptableRenderContext.DrawRenderers.</para>
         <para>A four-component, block-compressed format where each 128-bit compressed texel block encodes a 4×4 rectangle of unsigned normalized RGBA texel data.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.Experimental.Rendering.GraphicsFormat.RGBA_DXT1_SRGB">
+      <summary>
+        <para>A three-component, block-compressed format. Each 64-bit compressed texel block encodes a 4×4 rectangle of unsigned normalized RGB texel data with sRGB nonlinear encoding. This format has a 1 bit alpha channel.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Rendering.GraphicsFormat.RGBA_DXT1_UNorm">
+      <summary>
+        <para>A three-component, block-compressed format. Each 64-bit compressed texel block encodes a 4×4 rectangle of unsigned normalized RGB texel data. This format has a 1 bit alpha channel.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.Experimental.Rendering.GraphicsFormat.RGBA_DXT3_SRGB">
       <summary>
         <para>A four-component, block-compressed format where each 128-bit compressed texel block encodes a 4×4 rectangle of unsigned normalized RGBA texel data with the first 64 bits encoding alpha values followed by 64 bits encoding RGB values with sRGB nonlinear encoding.</para>
@@ -9411,6 +9776,19 @@ See Also: ScriptableRenderContext.DrawRenderers.</para>
       <summary>
         <para>Override this method to destroy RenderPipeline cached state.</para>
       </summary>
+    </member>
+    <member name="?:UnityEngine.Experimental.Rendering.IScriptableRuntimeReflectionSystem">
+      <summary>
+        <para>Defines the required members for a Runtime Reflection Systems.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.Rendering.IScriptableRuntimeReflectionSystem.TickRealtimeProbes">
+      <summary>
+        <para>Update the reflection probes.</para>
+      </summary>
+      <returns>
+        <para>Whether a reflection probe was updated.</para>
+      </returns>
     </member>
     <member name="T:UnityEngine.Experimental.Rendering.LODParameters">
       <summary>
@@ -9783,6 +10161,30 @@ The RenderPass mechanism has the following limitations:
         <para>Destroys all cached data and created IRenderLoop's.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Experimental.Rendering.RenderPipelineAsset.GetAutodeskInteractiveMaskedShader">
+      <summary>
+        <para>Retrieves the default Autodesk Interactive masked Shader for this pipeline.</para>
+      </summary>
+      <returns>
+        <para>Returns the default shader.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.Rendering.RenderPipelineAsset.GetAutodeskInteractiveShader">
+      <summary>
+        <para>Retrieves the default Autodesk Interactive Shader for this pipeline.</para>
+      </summary>
+      <returns>
+        <para>Returns the default shader.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.Rendering.RenderPipelineAsset.GetAutodeskInteractiveTransparentShader">
+      <summary>
+        <para>Retrieves the default Autodesk Interactive transparent Shader for this pipeline.</para>
+      </summary>
+      <returns>
+        <para>Returns the default shader.</para>
+      </returns>
+    </member>
     <member name="M:UnityEngine.Experimental.Rendering.RenderPipelineAsset.GetDefault2DMaterial">
       <summary>
         <para>Return the default 2D Material for this pipeline.</para>
@@ -9853,6 +10255,14 @@ The RenderPass mechanism has the following limitations:
       </summary>
       <returns>
         <para>Default material.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.Rendering.RenderPipelineAsset.GetRenderingLayerMaskNames">
+      <summary>
+        <para>Returns the list of names used to display Rendering Layer Mask UI for this pipeline.</para>
+      </summary>
+      <returns>
+        <para>Array of 32 Rendering Layer Mask names.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.Rendering.RenderPipelineAsset.InternalCreatePipeline">
@@ -10078,6 +10488,21 @@ The RenderPass mechanism has the following limitations:
     <member name="T:UnityEngine.Experimental.Rendering.ScriptableCullingParameters">
       <summary>
         <para>Parameters controlling culling process in CullResults.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Rendering.ScriptableCullingParameters.accurateOcclusionThreshold">
+      <summary>
+        <para>This parameter determines query distance for occlusion culling.  The accurateOcclusionThreshold controls the distance where the level of detail (LOD) changes.
+
+The default value of this parameter is -1, and any value less than 0 has the same effect. Default values result in automatic calculation of the LOD.
+
+When you use occlusion culling, the occlusion data of the world varies in level of detail. In the occlusion data, there are tiles of various sizes. Each tile contains a cells-and-portals graph. In each cell, visibility is the same. This means that any two points are visible within the cell. Portals are the openings between the cells, which determine the visibility between them.
+
+The tiles are in a k-d tree. The tree contains different sized tiles, where each tile represents a level of detail. When you query a small tile,  you get accurate culling results at the price of query time.
+
+During the culling, the tile size varies with the distance from the camera. This gives finer detail closer to the camera, and coarser detail at further distance.
+
+The higher the value is, the higher the accuracy is far away form the camera. High values can have a negative impact on performance.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.Rendering.ScriptableCullingParameters.cameraProperties">
@@ -10308,6 +10733,29 @@ All of the commands within the buffer are guaranteed to be executed on the same 
         <para>Submit rendering loop for execution.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Experimental.Rendering.ScriptableRuntimeReflectionSystem">
+      <summary>
+        <para>Empty implementation of IScriptableRuntimeReflectionSystem.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.Rendering.ScriptableRuntimeReflectionSystem.TickRealtimeProbes">
+      <summary>
+        <para>Update the reflection probes.</para>
+      </summary>
+      <returns>
+        <para>Whether a reflection probe was updated.</para>
+      </returns>
+    </member>
+    <member name="T:UnityEngine.Experimental.Rendering.ScriptableRuntimeReflectionSystemSettings">
+      <summary>
+        <para>Global settings for the scriptable runtime reflection system.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Rendering.ScriptableRuntimeReflectionSystemSettings.system">
+      <summary>
+        <para>The current scriptable runtime reflection system instance.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.Rendering.ShaderPassName">
       <summary>
         <para>Shader pass name identifier.</para>
@@ -10388,6 +10836,11 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     <member name="F:UnityEngine.Experimental.Rendering.SortFlags.QuantizedFrontToBack">
       <summary>
         <para>Sort objects in rough front-to-back buckets.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.Rendering.SortFlags.RendererPriority">
+      <summary>
+        <para>Sorts objects by renderer priority.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.SortFlags.RenderQueue">
@@ -10545,6 +10998,21 @@ All of the commands within the buffer are guaranteed to be executed on the same 
         <para>Flags for supported reflection probes.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.rendererOverridesEnvironmentLighting">
+      <summary>
+        <para>Determines if the renderer will override the Environment Lighting and will no longer need the built-in UI for it.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.rendererOverridesFog">
+      <summary>
+        <para>Determines if the renderer will override the fog settings in the Lighting Panel and will no longer need the built-in UI for it.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.rendererOverridesOtherLightingSettings">
+      <summary>
+        <para>Determines if the renderer will override halo and flare settings in the Lighting Panel and will no longer need the built-in UI for it.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.rendererSupportsLightProbeProxyVolumes">
       <summary>
         <para>Are light probe proxy volumes supported?</para>
@@ -10563,6 +11031,11 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     <member name="P:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.rendererSupportsReflectionProbes">
       <summary>
         <para>Are reflection probes supported?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.rendererSupportsRendererPriority">
+      <summary>
+        <para>Determines if the renderer supports renderer priority sorting.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.supportedLightmapBakeTypes">
@@ -10597,7 +11070,7 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.LightmapMixedBakeMode.Shadowmask">
       <summary>
-        <para>Same as MixedLightingMode.Shadowmask but determines if it is supported by the pipeline.</para>
+        <para>Determines what is supported by the rendering pipeline. This enum is similar to MixedLightingMode.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.LightmapMixedBakeMode.Subtractive">
@@ -10618,71 +11091,6 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     <member name="F:UnityEngine.Experimental.Rendering.SupportedRenderingFeatures.ReflectionProbeSupportFlags.Rotation">
       <summary>
         <para>Rotated reflection probes are supported.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.Rendering.VertexAttribute">
-      <summary>
-        <para>A list of data channels that describe a vertex in a mesh.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.Color">
-      <summary>
-        <para>The color channel.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.Normal">
-      <summary>
-        <para>The normal channel. The common format is Vector3.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.Position">
-      <summary>
-        <para>The position channel. The common format is Vector3.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.Tangent">
-      <summary>
-        <para>The tangent channel. The common format is Vector4.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord0">
-      <summary>
-        <para>The primary UV channel. The common format is Vector2.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord1">
-      <summary>
-        <para>Additional UV channel. The common format is Vector2.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord2">
-      <summary>
-        <para>Additional UV channel. The common format is Vector2.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord3">
-      <summary>
-        <para>Additional UV channel. The common format is Vector2.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord4">
-      <summary>
-        <para>Additional UV channel. The common format is Vector2.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord5">
-      <summary>
-        <para>Additional UV channel. The common format is Vector2.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord6">
-      <summary>
-        <para>Additional UV channel. The common format is Vector2.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.Rendering.VertexAttribute.TexCoord7">
-      <summary>
-        <para>Additional UV channel. The common format is Vector2.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.Rendering.VisibleLight">
@@ -10891,7 +11299,7 @@ All of the commands within the buffer are guaranteed to be executed on the same 
         <para>A read-only list of indices indicating how the triangles are formed between the vertices. The array is marked as undisposable.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Experimental.U2D.SpriteDataAccessExtensions.GetVertexAttribute(UnityEngine.Sprite,UnityEngine.Experimental.Rendering.VertexAttribute)">
+    <member name="M:UnityEngine.Experimental.U2D.SpriteDataAccessExtensions.GetVertexAttribute(UnityEngine.Sprite,UnityEngine.Rendering.VertexAttribute)">
       <summary>
         <para>Retrieves a strided accessor to the internal vertex attributes.</para>
       </summary>
@@ -10907,7 +11315,7 @@ All of the commands within the buffer are guaranteed to be executed on the same 
       </summary>
       <param name="sprite"></param>
     </member>
-    <member name="M:UnityEngine.Experimental.U2D.SpriteDataAccessExtensions.HasVertexAttribute(UnityEngine.Sprite,UnityEngine.Experimental.Rendering.VertexAttribute)">
+    <member name="M:UnityEngine.Experimental.U2D.SpriteDataAccessExtensions.HasVertexAttribute(UnityEngine.Sprite,UnityEngine.Rendering.VertexAttribute)">
       <summary>
         <para>Checks if a specific channel exists for this Sprite.</para>
       </summary>
@@ -10945,7 +11353,7 @@ All of the commands within the buffer are guaranteed to be executed on the same 
       <param name="src">The list of indices for this Sprite. The array must be disposed of by the caller.</param>
       <param name="sprite"></param>
     </member>
-    <member name="M:UnityEngine.Experimental.U2D.SpriteDataAccessExtensions.SetVertexAttribute(UnityEngine.Sprite,UnityEngine.Experimental.Rendering.VertexAttribute,Unity.Collections.NativeArray`1&lt;T&gt;)">
+    <member name="M:UnityEngine.Experimental.U2D.SpriteDataAccessExtensions.SetVertexAttribute(UnityEngine.Sprite,UnityEngine.Rendering.VertexAttribute,Unity.Collections.NativeArray`1&lt;T&gt;)">
       <summary>
         <para>Sets a specific channel of the VertexAttribute.</para>
       </summary>
@@ -12148,6 +12556,22 @@ All of the commands within the buffer are guaranteed to be executed on the same 
         <para>Return a fixed color, by finding the first key whose time value is greater than the requested evaluation time.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.GradientUsageAttribute">
+      <summary>
+        <para>Attribute used to configure the usage of the GradientField and Gradient Editor for a gradient.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.GradientUsageAttribute.hdr">
+      <summary>
+        <para>If set to true the Gradient uses HDR colors.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.GradientUsageAttribute.#ctor(System.Boolean)">
+      <summary>
+        <para>Attribute for Gradient fields. Used for configuring the GUI for the Gradient Editor.</para>
+      </summary>
+      <param name="hdr">Set to true if the colors should be treated as HDR colors (default value: false).</param>
+    </member>
     <member name="T:UnityEngine.Graphics">
       <summary>
         <para>Raw interface to Unity's drawing functions.</para>
@@ -12331,8 +12755,8 @@ The destination texture format should be uncompressed and correspond to a suppor
       <param name="camera">If null (default), the mesh will be drawn in all cameras. Otherwise it will be rendered in the given camera only.</param>
       <param name="submeshIndex">Which subset of the mesh to draw. This applies only to meshes that are composed of several materials.</param>
       <param name="properties">Additional material properties to apply onto material just before this mesh will be drawn. See MaterialPropertyBlock.</param>
-      <param name="castShadows">Should the mesh cast shadows?</param>
-      <param name="receiveShadows">Should the mesh receive shadows?</param>
+      <param name="castShadows">Determines whether the mesh can cast shadows.</param>
+      <param name="receiveShadows">Determines whether the mesh can receive shadows.</param>
       <param name="useLightProbes">Should the mesh use light probes?</param>
       <param name="probeAnchor">If used, the mesh will use this Transform's position to sample light probes and find the matching reflection probe.</param>
       <param name="lightProbeUsage">LightProbeUsage for the mesh.</param>
@@ -12351,8 +12775,8 @@ The destination texture format should be uncompressed and correspond to a suppor
       <param name="camera">If null (default), the mesh will be drawn in all cameras. Otherwise it will be rendered in the given camera only.</param>
       <param name="submeshIndex">Which subset of the mesh to draw. This applies only to meshes that are composed of several materials.</param>
       <param name="properties">Additional material properties to apply onto material just before this mesh will be drawn. See MaterialPropertyBlock.</param>
-      <param name="castShadows">Should the mesh cast shadows?</param>
-      <param name="receiveShadows">Should the mesh receive shadows?</param>
+      <param name="castShadows">Determines whether the mesh can cast shadows.</param>
+      <param name="receiveShadows">Determines whether the mesh can receive shadows.</param>
       <param name="useLightProbes">Should the mesh use light probes?</param>
       <param name="probeAnchor">If used, the mesh will use this Transform's position to sample light probes and find the matching reflection probe.</param>
       <param name="lightProbeUsage">LightProbeUsage for the mesh.</param>
@@ -12371,8 +12795,8 @@ The destination texture format should be uncompressed and correspond to a suppor
       <param name="camera">If null (default), the mesh will be drawn in all cameras. Otherwise it will be rendered in the given camera only.</param>
       <param name="submeshIndex">Which subset of the mesh to draw. This applies only to meshes that are composed of several materials.</param>
       <param name="properties">Additional material properties to apply onto material just before this mesh will be drawn. See MaterialPropertyBlock.</param>
-      <param name="castShadows">Should the mesh cast shadows?</param>
-      <param name="receiveShadows">Should the mesh receive shadows?</param>
+      <param name="castShadows">Determines whether the mesh can cast shadows.</param>
+      <param name="receiveShadows">Determines whether the mesh can receive shadows.</param>
       <param name="useLightProbes">Should the mesh use light probes?</param>
       <param name="probeAnchor">If used, the mesh will use this Transform's position to sample light probes and find the matching reflection probe.</param>
       <param name="lightProbeUsage">LightProbeUsage for the mesh.</param>
@@ -12391,8 +12815,8 @@ The destination texture format should be uncompressed and correspond to a suppor
       <param name="camera">If null (default), the mesh will be drawn in all cameras. Otherwise it will be rendered in the given camera only.</param>
       <param name="submeshIndex">Which subset of the mesh to draw. This applies only to meshes that are composed of several materials.</param>
       <param name="properties">Additional material properties to apply onto material just before this mesh will be drawn. See MaterialPropertyBlock.</param>
-      <param name="castShadows">Should the mesh cast shadows?</param>
-      <param name="receiveShadows">Should the mesh receive shadows?</param>
+      <param name="castShadows">Determines whether the mesh can cast shadows.</param>
+      <param name="receiveShadows">Determines whether the mesh can receive shadows.</param>
       <param name="useLightProbes">Should the mesh use light probes?</param>
       <param name="probeAnchor">If used, the mesh will use this Transform's position to sample light probes and find the matching reflection probe.</param>
       <param name="lightProbeUsage">LightProbeUsage for the mesh.</param>
@@ -12411,8 +12835,8 @@ The destination texture format should be uncompressed and correspond to a suppor
       <param name="camera">If null (default), the mesh will be drawn in all cameras. Otherwise it will be rendered in the given camera only.</param>
       <param name="submeshIndex">Which subset of the mesh to draw. This applies only to meshes that are composed of several materials.</param>
       <param name="properties">Additional material properties to apply onto material just before this mesh will be drawn. See MaterialPropertyBlock.</param>
-      <param name="castShadows">Should the mesh cast shadows?</param>
-      <param name="receiveShadows">Should the mesh receive shadows?</param>
+      <param name="castShadows">Determines whether the mesh can cast shadows.</param>
+      <param name="receiveShadows">Determines whether the mesh can receive shadows.</param>
       <param name="useLightProbes">Should the mesh use light probes?</param>
       <param name="probeAnchor">If used, the mesh will use this Transform's position to sample light probes and find the matching reflection probe.</param>
       <param name="lightProbeUsage">LightProbeUsage for the mesh.</param>
@@ -12463,8 +12887,8 @@ The destination texture format should be uncompressed and correspond to a suppor
       <param name="bufferWithArgs">The GPU buffer containing the arguments for how many instances of this mesh to draw.</param>
       <param name="argsOffset">The byte offset into the buffer, where the draw arguments start.</param>
       <param name="properties">Additional material properties to apply. See MaterialPropertyBlock.</param>
-      <param name="castShadows">Should the mesh cast shadows?</param>
-      <param name="receiveShadows">Should the mesh receive shadows?</param>
+      <param name="castShadows">Determines whether the mesh can cast shadows.</param>
+      <param name="receiveShadows">Determines whether the mesh can receive shadows.</param>
       <param name="layer"> to use.</param>
       <param name="camera">If null (default), the mesh will be drawn in all cameras. Otherwise it will be drawn in the given camera only.</param>
       <param name="lightProbeUsage">LightProbeUsage for the instances.</param>
@@ -12907,6 +13331,64 @@ All of the commands within the buffer are guaranteed to be executed on the same 
         <para>Convert Hash128 to string.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.HashUnsafeUtilities">
+      <summary>
+        <para>Utilities to compute hashes with unsafe code.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.HashUnsafeUtilities.ComputeHash128(System.Void*,System.UInt64,System.UInt64*,System.UInt64*)">
+      <summary>
+        <para>Compute a 128 bit hash based on a data.</para>
+      </summary>
+      <param name="data">Pointer to the data to hash.</param>
+      <param name="dataSize">The number of bytes to hash.</param>
+      <param name="hash1">A pointer to store the low 64 bits of the computed hash.</param>
+      <param name="hash2">A pointer to store the high 64 bits of the computed hash.</param>
+      <param name="hash">A pointer to the Hash128 to updated with the computed hash.</param>
+    </member>
+    <member name="M:UnityEngine.HashUnsafeUtilities.ComputeHash128(System.Void*,System.UInt64,UnityEngine.Hash128*)">
+      <summary>
+        <para>Compute a 128 bit hash based on a data.</para>
+      </summary>
+      <param name="data">Pointer to the data to hash.</param>
+      <param name="dataSize">The number of bytes to hash.</param>
+      <param name="hash1">A pointer to store the low 64 bits of the computed hash.</param>
+      <param name="hash2">A pointer to store the high 64 bits of the computed hash.</param>
+      <param name="hash">A pointer to the Hash128 to updated with the computed hash.</param>
+    </member>
+    <member name="T:UnityEngine.HashUtilities">
+      <summary>
+        <para>Utilities to compute hashes.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.HashUtilities.AppendHash(UnityEngine.Hash128&amp;,UnityEngine.Hash128&amp;)">
+      <summary>
+        <para>Append inHash in outHash.</para>
+      </summary>
+      <param name="inHash">Hash to append.</param>
+      <param name="outHash">Hash that will be updated.</param>
+    </member>
+    <member name="M:UnityEngine.HashUtilities.ComputeHash128(T&amp;,UnityEngine.Hash128&amp;)">
+      <summary>
+        <para>Compute a 128 bit hash based on a value. the type of the value must be a value type.</para>
+      </summary>
+      <param name="value">A reference to the value to hash.</param>
+      <param name="hash">A reference to the Hash128 to updated with the computed hash.</param>
+    </member>
+    <member name="M:UnityEngine.HashUtilities.QuantisedMatrixHash(UnityEngine.Matrix4x4&amp;,UnityEngine.Hash128&amp;)">
+      <summary>
+        <para>Compute a Hash128 of a Matrix4x4.</para>
+      </summary>
+      <param name="value">The Matrix4x4 to hash.</param>
+      <param name="hash">The computed hash.</param>
+    </member>
+    <member name="M:UnityEngine.HashUtilities.QuantisedVectorHash(UnityEngine.Vector3&amp;,UnityEngine.Hash128&amp;)">
+      <summary>
+        <para>Compute a Hash128 of a Vector3.</para>
+      </summary>
+      <param name="hash">The Vector3 to hash.</param>
+      <param name="value">The computed hash.</param>
+    </member>
     <member name="T:UnityEngine.HeaderAttribute">
       <summary>
         <para>Use this PropertyAttribute to add a header above some fields in the Inspector.</para>
@@ -12946,7 +13428,7 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     </member>
     <member name="F:UnityEngine.HideFlags.DontSave">
       <summary>
-        <para>The object will not be saved to the scene. It will not be destroyed when a new scene is loaded. It is a shortcut for HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor | HideFlags.DontUnloadUnusedAsset.</para>
+        <para>The object will not be saved to the Scene. It will not be destroyed when a new Scene is loaded. It is a shortcut for HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor | HideFlags.DontUnloadUnusedAsset.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.HideFlags.DontSaveInBuild">
@@ -12956,7 +13438,7 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     </member>
     <member name="F:UnityEngine.HideFlags.DontSaveInEditor">
       <summary>
-        <para>The object will not be saved to the scene in the editor.</para>
+        <para>The object will not be saved to the Scene in the editor.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.HideFlags.DontUnloadUnusedAsset">
@@ -13188,7 +13670,7 @@ All of the commands within the buffer are guaranteed to be executed on the same 
     </member>
     <member name="T:UnityEngine.ImageEffectAllowedInSceneView">
       <summary>
-        <para>Any Image Effect with this attribute can be rendered into the scene view camera.</para>
+        <para>Any Image Effect with this attribute can be rendered into the Scene view camera.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.ImageEffectOpaque">
@@ -14952,6 +15434,11 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
         <para>Left Control key.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.KeyCode.LeftCurlyBracket">
+      <summary>
+        <para>Left curly bracket key '{'.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.KeyCode.LeftParen">
       <summary>
         <para>Left Parenthesis key '('.</para>
@@ -15062,9 +15549,19 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
         <para>Pause on PC machines.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.KeyCode.Percent">
+      <summary>
+        <para>Percent '%' key.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.KeyCode.Period">
       <summary>
         <para>Period '.' key.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.KeyCode.Pipe">
+      <summary>
+        <para>Pipe '|' key.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.KeyCode.Plus">
@@ -15132,6 +15629,11 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
         <para>Right Control key.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.KeyCode.RightCurlyBracket">
+      <summary>
+        <para>Right curly bracket key '}'.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.KeyCode.RightParen">
       <summary>
         <para>Right Parenthesis key ')'.</para>
@@ -15185,6 +15687,11 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     <member name="F:UnityEngine.KeyCode.Tab">
       <summary>
         <para>The tab key.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.KeyCode.Tilde">
+      <summary>
+        <para>Tilde '~' key.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.KeyCode.U">
@@ -15408,7 +15915,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="P:UnityEngine.Light.cullingMask">
       <summary>
-        <para>This is used to light certain objects in the scene selectively.</para>
+        <para>This is used to light certain objects in the Scene selectively.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Light.flare">
@@ -15547,9 +16054,9 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
       </summary>
       <param name="evt">When to execute the command buffer during rendering.</param>
     </member>
-    <member name="M:UnityEngine.Light.SetLightDirty">
+    <member name="M:UnityEngine.Light.Reset">
       <summary>
-        <para>Sets a light dirty to notify the light baking backends to update their internal light representation.</para>
+        <para>Revert all light parameters to default.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.LightBakingOutput">
@@ -15624,7 +16131,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="T:UnityEngine.LightmapSettings">
       <summary>
-        <para>Stores lightmaps of the scene.</para>
+        <para>Stores lightmaps of the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.LightmapSettings.lightmaps">
@@ -15849,7 +16356,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="T:UnityEngine.LightProbes">
       <summary>
-        <para>Stores light probes for the scene.</para>
+        <para>Stores light probes for the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.LightProbes.bakedProbes">
@@ -15961,19 +16468,24 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
         <para>The type of a Light.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.LightType.Area">
-      <summary>
-        <para>The light is an area light. It affects only lightmaps and lightprobes.</para>
-      </summary>
-    </member>
     <member name="F:UnityEngine.LightType.Directional">
       <summary>
         <para>The light is a directional light.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.LightType.Disc">
+      <summary>
+        <para>The light is a disc shaped area light. It affects only baked lightmaps and lightprobes.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.LightType.Point">
       <summary>
         <para>The light is a point light.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.LightType.Rectangle">
+      <summary>
+        <para>The light is a rectangle shaped area light. It affects only baked lightmaps and lightprobes.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.LightType.Spot">
@@ -16054,6 +16566,11 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     <member name="P:UnityEngine.LineRenderer.positionCount">
       <summary>
         <para>Set/get the number of vertices.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.LineRenderer.shadowBias">
+      <summary>
+        <para>Apply a shadow bias to prevent self-shadowing artifacts. The specified value is the proportion of the line width at each segment.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.LineRenderer.startColor">
@@ -16296,7 +16813,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
         <para>Returns location service status.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.LocationService.Start()">
+    <member name="M:UnityEngine.LocationService.Start">
       <summary>
         <para>Starts location service updates.  Last location coordinates could be.</para>
       </summary>
@@ -18182,7 +18699,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="M:UnityEngine.Mathf.NextPowerOfTwo(System.Int32)">
       <summary>
-        <para>Returns the next power of two value.</para>
+        <para>Returns the next power of two that is equal to, or greater than, the argument.</para>
       </summary>
       <param name="value"></param>
     </member>
@@ -18620,7 +19137,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="P:UnityEngine.Mesh.isReadable">
       <summary>
-        <para>Returns a bool indicated whether the mesh is read/write enabled.</para>
+        <para>Returns true if the Mesh is read/write enabled, or false if it is not.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Mesh.normals">
@@ -19148,6 +19665,22 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
         <para>Mesh is made from triangles.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.MinAttribute">
+      <summary>
+        <para>Attribute used to make a float or int variable in a script be restricted to a specific minimum value.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.MinAttribute.min">
+      <summary>
+        <para>The minimum allowed value.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.MinAttribute.#ctor(System.Single)">
+      <summary>
+        <para>Attribute used to make a float or int variable in a script be restricted to a specific minimum value.</para>
+      </summary>
+      <param name="min">The minimum allowed value.</param>
+    </member>
     <member name="T:UnityEngine.MixedLightingMode">
       <summary>
         <para>Enum describing what lighting mode to be used with Mixed lights.</para>
@@ -19165,7 +19698,7 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
     </member>
     <member name="F:UnityEngine.MixedLightingMode.Subtractive">
       <summary>
-        <para>Mixed lights provide baked direct and indirect lighting for static objects. Dynamic objects receive realtime direct lighting and cast shadows on static objects using the main directional light in the scene.</para>
+        <para>Mixed lights provide baked direct and indirect lighting for static objects. Dynamic objects receive realtime direct lighting and cast shadows on static objects using the main directional light in the Scene.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.MonoBehaviour">
@@ -19476,9 +20009,9 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)">
       <summary>
-        <para>Makes the object target not be destroyed automatically when loading a new Scene.</para>
+        <para>Do not destroy the target Object when loading a new Scene.</para>
       </summary>
-      <param name="target">The object which is not destroyed on Scene change.</param>
+      <param name="target">An Object not destroyed on Scene change.</param>
     </member>
     <member name="M:UnityEngine.Object.FindObjectOfType(System.Type)">
       <summary>
@@ -19910,12 +20443,32 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="F:UnityEngine.Playables.DirectorUpdateMode.Manual">
       <summary>
-        <para>Update mode is manual. You need to manually call PlayerController.Tick with your own deltaTime. This can be useful for graphs that can be completely disconnected from the rest of the the game. Example: Localized Bullet time.</para>
+        <para>Update mode is manual. You need to manually call PlayableGraph.Evaluate with your own deltaTime. This can be useful for graphs that are completely disconnected from the rest of the game. For example, localized bullet time.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Playables.DirectorUpdateMode.UnscaledGameTime">
       <summary>
         <para>Update is based on Time.unscaledTime. Use this for graphs that need to be updated even when gameplay is paused. Example: Menus transitions need to be updated even when the game is paused.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Playables.DirectorWrapMode">
+      <summary>
+        <para>Wrap mode for Playables.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Playables.DirectorWrapMode.Hold">
+      <summary>
+        <para>Hold the last frame when the playable time reaches it's duration.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Playables.DirectorWrapMode.Loop">
+      <summary>
+        <para>Loop back to zero time and continue playing.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Playables.DirectorWrapMode.None">
+      <summary>
+        <para>Do not keep playing when the time reaches the duration.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Playables.FrameData">
@@ -19938,6 +20491,11 @@ The Player ID is always 1, because only one Editor can be connected.</param>
         <para>The accumulated speed of the parent Playable during the PlayableGraph traversal.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Playables.FrameData.effectivePlayState">
+      <summary>
+        <para>The accumulated play state of this playable.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Playables.FrameData.effectiveSpeed">
       <summary>
         <para>The accumulated speed of the Playable during the PlayableGraph traversal.</para>
@@ -19956,6 +20514,11 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     <member name="P:UnityEngine.Playables.FrameData.frameId">
       <summary>
         <para>The current frame identifier.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Playables.FrameData.output">
+      <summary>
+        <para>The PlayableOutput that initiated this graph traversal.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Playables.FrameData.seekOccurred">
@@ -19992,6 +20555,29 @@ The Player ID is always 1, because only one Editor can be connected.</param>
       <summary>
         <para>Indicates the graph was called by the runtime during normal playback due to PlayableGraph.Play being called.</para>
       </summary>
+    </member>
+    <member name="?:UnityEngine.Playables.INotification">
+      <summary>
+        <para>The base interface for all notifications sent through the playable system.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Playables.INotification.id">
+      <summary>
+        <para>The identifier is a name that identifies this notifications, or class of notifications.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEngine.Playables.INotificationReceiver">
+      <summary>
+        <para>Implement this interface to create a class that will receives notifications from PlayableOutput.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Playables.INotificationReceiver.OnNotify(UnityEngine.Playables.Playable,UnityEngine.Playables.INotification,System.Object)">
+      <summary>
+        <para>The method called when a notification is raised.</para>
+      </summary>
+      <param name="origin">The playable that sent the notification.</param>
+      <param name="notification">The received notification.</param>
+      <param name="context">User defined data that depends on the type of notification. Uses this to pass necessary information that can change with each invocation.</param>
     </member>
     <member name="?:UnityEngine.Playables.IPlayable">
       <summary>
@@ -20033,6 +20619,22 @@ The Player ID is always 1, because only one Editor can be connected.</param>
         <para>Interface implemented by all C# Playable output implementations.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Playables.Notification">
+      <summary>
+        <para>Default implementation for Playable notifications.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Playables.Notification.id">
+      <summary>
+        <para>The name that identifies this notification.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Playables.Notification.#ctor(System.String)">
+      <summary>
+        <para>Creates a new notification with the name specified in the argument.</para>
+      </summary>
+      <param name="name">The name that identifies this notifications.</param>
+    </member>
     <member name="T:UnityEngine.Playables.Playable">
       <summary>
         <para>Playables are customizable runtime objects that can be connected together and are contained in a PlayableGraph to create complex behaviours.</para>
@@ -20045,7 +20647,7 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="T:UnityEngine.Playables.PlayableAsset">
       <summary>
-        <para>An base class for assets that can be used to instatiate a Playable at runtime.</para>
+        <para>A base class for assets that can be used to instantiate a Playable at runtime.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Playables.PlayableAsset.duration">
@@ -20082,7 +20684,10 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="M:UnityEngine.Playables.PlayableBehaviour.OnBehaviourPause(UnityEngine.Playables.Playable,UnityEngine.Playables.FrameData)">
       <summary>
-        <para>This function is called when the Playable play state is changed to Playables.PlayState.Paused.</para>
+        <para>This method is invoked when one of the following situations occurs:
+&lt;br&gt;&lt;br&gt;
+     The effective play state during traversal is changed to Playables.PlayState.Paused. This state is indicated by FrameData.effectivePlayState.&lt;br&gt;&lt;br&gt;
+     The PlayableGraph is stopped while the playable play state is Playing. This state is indicated by PlayableGraph.IsPlaying returning true.</para>
       </summary>
       <param name="playable">The Playable that owns the current PlayableBehaviour.</param>
       <param name="info">A FrameData structure that contains information about the current frame context.</param>
@@ -20138,7 +20743,7 @@ The Player ID is always 1, because only one Editor can be connected.</param>
       </summary>
       <param name="playable">The Playable that owns the current PlayableBehaviour.</param>
       <param name="info">A FrameData structure that contains information about the current frame context.</param>
-      <param name="playerData"></param>
+      <param name="playerData">The user data of the ScriptPlayableOutput that initiated the process pass.</param>
     </member>
     <member name="T:UnityEngine.Playables.PlayableBinding">
       <summary>
@@ -20688,6 +21293,22 @@ The Player ID is always 1, because only one Editor can be connected.</param>
         <para>Extensions for all the types that implements IPlayableOutput.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Playables.PlayableOutputExtensions.AddNotificationReceiver(U,UnityEngine.Playables.INotificationReceiver)">
+      <summary>
+        <para>Registers a new receiver that listens for notifications.</para>
+      </summary>
+      <param name="output">The target output.</param>
+      <param name="receiver">The receiver to register.</param>
+    </member>
+    <member name="M:UnityEngine.Playables.PlayableOutputExtensions.GetNotificationReceivers(U)">
+      <summary>
+        <para>Retrieves the list of notification receivers currently registered on the output.</para>
+      </summary>
+      <param name="output">The output holding the receivers.</param>
+      <returns>
+        <para>Returns the list of registered receivers.</para>
+      </returns>
+    </member>
     <member name="M:UnityEngine.Playables.PlayableOutputExtensions.GetSourceOutputPort(U)">
       <summary>
         <para>Returns the source playable's output connection index.</para>
@@ -20738,6 +21359,22 @@ The Player ID is always 1, because only one Editor can be connected.</param>
       <returns>
         <para>True if the PlayableOutput has not yet been destroyed and false otherwise.</para>
       </returns>
+    </member>
+    <member name="M:UnityEngine.Playables.PlayableOutputExtensions.PushNotification(U,UnityEngine.Playables.Playable,UnityEngine.Playables.INotification,System.Object)">
+      <summary>
+        <para>Queues a notification to be sent through the Playable system.</para>
+      </summary>
+      <param name="output">The output sending the notification.</param>
+      <param name="origin">The originating playable of the notification.</param>
+      <param name="notification">The notification to be sent.</param>
+      <param name="context">Extra information about the state when the notification was fired.</param>
+    </member>
+    <member name="M:UnityEngine.Playables.PlayableOutputExtensions.RemoveNotificationReceiver(U,UnityEngine.Playables.INotificationReceiver)">
+      <summary>
+        <para>Unregisters a receiver on the output.</para>
+      </summary>
+      <param name="output">The target output.</param>
+      <param name="receiver">The receiver to unregister.</param>
     </member>
     <member name="M:UnityEngine.Playables.PlayableOutputExtensions.SetReferenceObject(U,UnityEngine.Object)">
       <summary>
@@ -21005,6 +21642,20 @@ The Player ID is always 1, because only one Editor can be connected.</param>
       </summary>
       <param name="lhs"></param>
     </member>
+    <member name="?:UnityEngine.Pose.op_Equal(UnityEngine.Pose,UnityEngine.Pose)">
+      <summary>
+        <para>Returns true if two poses are equal.</para>
+      </summary>
+      <param name="a"></param>
+      <param name="b"></param>
+    </member>
+    <member name="?:UnityEngine.Pose.op_NotEqual(UnityEngine.Pose,UnityEngine.Pose)">
+      <summary>
+        <para>Returns true if two poses are not equal.</para>
+      </summary>
+      <param name="a"></param>
+      <param name="b"></param>
+    </member>
     <member name="T:UnityEngine.PreferBinarySerialization">
       <summary>
         <para>Prefer ScriptableObject derived type to use binary serialization regardless of project's asset serialization mode.</para>
@@ -21076,9 +21727,90 @@ The Player ID is always 1, because only one Editor can be connected.</param>
         <para>End profiling a piece of code with a custom label.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Profiling.Memory.Experimental.CaptureFlags">
+      <summary>
+        <para>Flags that specify which fields to capture in a snapshot.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.CaptureFlags.ManagedObjects">
+      <summary>
+        <para>Corresponds to the ManagedHeapSections, ManagedStacks, Connections, TypeDescriptions fields in a Memory Snapshot.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.CaptureFlags.NativeAllocations">
+      <summary>
+        <para>Corresponds to the NativeAllocations, NativeMemoryRegions, NativeRootReferences, and NativeMemoryLabels fields in a Memory Snapshot.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.CaptureFlags.NativeAllocationSites">
+      <summary>
+        <para>Corresponds to the NativeAllocationSite field in a Memory Snapshot.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.CaptureFlags.NativeObjects">
+      <summary>
+        <para>Corresponds to the NativeObject and NativeType fields in a Memory Snapshot.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.CaptureFlags.NativeStackTraces">
+      <summary>
+        <para>Corresponds to the NativeCallstackSymbol field in a Memory Snapshot.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Profiling.Memory.Experimental.MemoryProfiler">
+      <summary>
+        <para>Memory profiling API container class.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEngine.Profiling.Memory.Experimental.MemoryProfiler.createMetaData(System.Action`1&lt;UnityEngine.Profiling.Memory.Experimental.MetaData&gt;)">
+      <summary>
+        <para>Event to which meta data collection methods can be subscribed to.</para>
+      </summary>
+      <param name="value"></param>
+    </member>
+    <member name="M:UnityEngine.Profiling.Memory.Experimental.MemoryProfiler.TakeSnapshot(System.String,System.Action`2&lt;System.String,System.Boolean&gt;,UnityEngine.Profiling.Memory.Experimental.CaptureFlags)">
+      <summary>
+        <para>Trigger memory snapshot capture.</para>
+      </summary>
+      <param name="path">Destination path for the memory snapshot file.</param>
+      <param name="finishCallback">Event that is fired once the memory snapshot has finished the process of capturing data.</param>
+      <param name="captureFlags">Flag mask defining the content of the memory snapshot.</param>
+    </member>
+    <member name="M:UnityEngine.Profiling.Memory.Experimental.MemoryProfiler.TakeTempSnapshot(System.Action`2&lt;System.String,System.Boolean&gt;,UnityEngine.Profiling.Memory.Experimental.CaptureFlags)">
+      <summary>
+        <para>Trigger memory snapshot capture to Application.temporaryCachePath folder.</para>
+      </summary>
+      <param name="finishCallback">Event that is fired once the memory snapshot has finished the process of capturing data.</param>
+      <param name="captureFlags">Flag mask defining the content of the memory snapshot.</param>
+    </member>
+    <member name="T:UnityEngine.Profiling.Memory.Experimental.MetaData">
+      <summary>
+        <para>Container for memory snapshot meta data.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.MetaData.content">
+      <summary>
+        <para>User defined meta data.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.MetaData.platform">
+      <summary>
+        <para>Memory snapshot meta data containing platform information.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.Memory.Experimental.MetaData.screenshot">
+      <summary>
+        <para>Screenshot stored in the memory snapshot.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Profiling.Profiler">
       <summary>
         <para>Controls the from script.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Profiling.Profiler.areaCount">
+      <summary>
+        <para>The number of ProfilerArea|Profiler Areas that you can profile.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Profiling.Profiler.enableBinaryLog">
@@ -21099,6 +21831,11 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     <member name="P:UnityEngine.Profiling.Profiler.maxNumberOfSamplesPerFrame">
       <summary>
         <para>Resize the profiler sample buffers to allow the desired amount of samples per thread.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Profiling.Profiler.maxUsedMemory">
+      <summary>
+        <para>Sets the maximum amount of memory that Profiler uses for buffering data. This property is expressed in bytes.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Profiling.Profiler.usedHeapSize">
@@ -21156,8 +21893,19 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
     <member name="M:UnityEngine.Profiling.Profiler.GetAllocatedMemoryForGraphicsDriver">
       <summary>
-        <para>Returns the amount of allocated memory for the graphics driver, in bytes.</para>
+        <para>Returns the amount of allocated memory for the graphics driver, in bytes.
+
+Only available in development players and editor.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.Profiling.Profiler.GetAreaEnabled(UnityEngine.Profiling.ProfilerArea)">
+      <summary>
+        <para>Returns whether or not a given ProfilerArea is currently enabled.</para>
+      </summary>
+      <param name="area">Which area you want to check the state of.</param>
+      <returns>
+        <para>Returns whether or not a given ProfilerArea is currently enabled.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Profiling.Profiler.GetMonoHeapSize">
       <summary>
@@ -21247,6 +21995,13 @@ The Player ID is always 1, because only one Editor can be connected.</param>
         <para>The amount of unused memory in the reserved pools. This returns 0 if the Profiler is not available.</para>
       </returns>
     </member>
+    <member name="M:UnityEngine.Profiling.Profiler.SetAreaEnabled(UnityEngine.Profiling.ProfilerArea,System.Boolean)">
+      <summary>
+        <para>Enable or disable a given ProfilerArea.</para>
+      </summary>
+      <param name="area">The area you want to enable or disable.</param>
+      <param name="enabled">Enable or disable the collection of data for this area.</param>
+    </member>
     <member name="M:UnityEngine.Profiling.Profiler.SetTempAllocatorRequestedSize(System.UInt32)">
       <summary>
         <para>Sets the size of the temp allocator.</para>
@@ -21255,6 +22010,76 @@ The Player ID is always 1, because only one Editor can be connected.</param>
       <returns>
         <para>Returns true if requested size was successfully set. Will return false if value is disallowed (too small).</para>
       </returns>
+    </member>
+    <member name="T:UnityEngine.Profiling.ProfilerArea">
+      <summary>
+        <para>The different areas of profiling, corresponding to the charts in ProfilerWindow.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.Audio">
+      <summary>
+        <para>Audio statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.CPU">
+      <summary>
+        <para>CPU statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.GlobalIllumination">
+      <summary>
+        <para>Global Illumination statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.GPU">
+      <summary>
+        <para>GPU statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.Memory">
+      <summary>
+        <para>Memory statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.NetworkMessages">
+      <summary>
+        <para>Network messages statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.NetworkOperations">
+      <summary>
+        <para>Network operations statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.Physics">
+      <summary>
+        <para>3D Physics statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.Physics2D">
+      <summary>
+        <para>2D physics statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.Rendering">
+      <summary>
+        <para>Rendering statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.UI">
+      <summary>
+        <para>UI statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.UIDetails">
+      <summary>
+        <para>Detailed UI statistics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Profiling.ProfilerArea.Video">
+      <summary>
+        <para>Video playback statistics.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.Profiling.Recorder">
       <summary>
@@ -21279,6 +22104,16 @@ The Player ID is always 1, because only one Editor can be connected.</param>
     <member name="P:UnityEngine.Profiling.Recorder.sampleBlockCount">
       <summary>
         <para>Number of time Begin/End pairs was called during the previous frame. (Read Only)</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Profiling.Recorder.CollectFromAllThreads">
+      <summary>
+        <para>Configures the recorder to collect samples from all threads.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Profiling.Recorder.FilterToCurrentThread">
+      <summary>
+        <para>Configures the recorder to only collect data from the current thread.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Profiling.Recorder.Get(System.String)">
@@ -21470,7 +22305,15 @@ Returns "UnityEngine.PropertyName" in the player.</para>
       <summary>
         <para>Async texture upload provides timesliced async texture upload on the render thread with tight control over memory and timeslicing. There are no allocations except for the ones which driver has to do. To read data and upload texture data a ringbuffer whose size can be controlled is re-used.
 
-Use asyncUploadBufferSize to set the buffer size for asynchronous texture uploads. The size is in megabytes. Minimum value is 2 and maximum is 512. Although the buffer will resize automatically to fit the largest texture currently loading, it is recommended to set the value approximately to the size of biggest texture used in the scene to avoid re-sizing of the buffer which can incur performance cost.</para>
+Use asyncUploadBufferSize to set the buffer size for asynchronous texture uploads. The size is in megabytes. Minimum value is 2 and maximum is 512. Although the buffer will resize automatically to fit the largest texture currently loading, it is recommended to set the value approximately to the size of biggest texture used in the Scene to avoid re-sizing of the buffer which can incur performance cost.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.QualitySettings.asyncUploadPersistentBuffer">
+      <summary>
+        <para>This flag controls if the async upload pipeline's ring buffer remains allocated when there are no active loading operations.
+To make the ring buffer allocation persist after all upload operations have completed, set this to true.
+If you have issues with excessive memory usage, you can set this to false. This means you reduce the runtime memory footprint, but memory fragmentation can occur.
+The default value is true.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.QualitySettings.asyncUploadTimeSlice">
@@ -22437,6 +23280,12 @@ frame. Minimum value is 1 and maximum is 33.</para>
         <para>Whether the position is within the RectInt.</para>
       </returns>
     </member>
+    <member name="M:UnityEngine.RectInt.Equals(UnityEngine.RectInt)">
+      <summary>
+        <para>Returns true if the given RectInt is equal to this RectInt.</para>
+      </summary>
+      <param name="other"></param>
+    </member>
     <member name="T:UnityEngine.RectInt.PositionEnumerator">
       <summary>
         <para>An iterator that allows you to iterate over all positions within the RectInt.</para>
@@ -22775,9 +23624,14 @@ frame. Minimum value is 1 and maximum is 33.</para>
         <para>The near clipping plane distance when rendering the probe.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.ReflectionProbe.realtimeTexture">
+      <summary>
+        <para>Reference to the realtime texture of the reflection probe's surroundings. Use this to assign a RenderTexture to use for realtime reflection.</para>
+      </summary>
+    </member>
     <member name="?:UnityEngine.ReflectionProbe.reflectionProbeChanged(System.Action`2&lt;UnityEngine.ReflectionProbe,UnityEngine.ReflectionProbe/ReflectionProbeEvent&gt;)">
       <summary>
-        <para>Adds a delegate to get notifications when a Reflection Probe is added to a scene or removed from a scene.</para>
+        <para>Adds a delegate to get notifications when a Reflection Probe is added to a Scene or removed from a Scene.</para>
       </summary>
       <param name="value"></param>
     </member>
@@ -22847,17 +23701,17 @@ See Also: ReflectionProbeTimeSlicingMode.</para>
     </member>
     <member name="T:UnityEngine.ReflectionProbe.ReflectionProbeEvent">
       <summary>
-        <para>Types of events that occur when ReflectionProbe components are used in a scene.</para>
+        <para>Types of events that occur when ReflectionProbe components are used in a Scene.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.ReflectionProbe.ReflectionProbeEvent.ReflectionProbeAdded">
       <summary>
-        <para>An event that occurs when a Reflection Probe component is added to a scene or enabled in a scene.</para>
+        <para>An event that occurs when a Reflection Probe component is added to a Scene or enabled in a Scene.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.ReflectionProbe.ReflectionProbeEvent.ReflectionProbeRemoved">
       <summary>
-        <para>An event that occurs when a Reflection Probe component is unloaded from a scene or disabled in a scene.</para>
+        <para>An event that occurs when a Reflection Probe component is unloaded from a Scene or disabled in a Scene.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.ReflectionProbe.RenderProbe(UnityEngine.RenderTexture)">
@@ -22873,6 +23727,11 @@ See Also: ReflectionProbeTimeSlicingMode.</para>
           See Also: timeSlicingMode
         </para>
       </returns>
+    </member>
+    <member name="M:UnityEngine.ReflectionProbe.Reset">
+      <summary>
+        <para>Revert all ReflectionProbe parameters to default.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.RenderBuffer">
       <summary>
@@ -22982,6 +23841,11 @@ See Also: ReflectionProbeTimeSlicingMode.</para>
     <member name="P:UnityEngine.Renderer.reflectionProbeUsage">
       <summary>
         <para>Should reflection probes be used for this Renderer?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Renderer.rendererPriority">
+      <summary>
+        <para>This value sorts renderers by priority. Lower values are rendered first and higher values are rendered last.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Renderer.renderingLayerMask">
@@ -24409,7 +25273,6 @@ InvalidOperationException will be thrown if the current platform doesn't support
       <param name="enableRandomWrite">Should random-write access into the texture be enabled (default is false).</param>
       <param name="desc">Use this RenderTextureDescriptor for the settings when creating the temporary RenderTexture.</param>
       <param name="memorylessMode">Render texture memoryless mode.</param>
-      <param name="useDynamicScale"></param>
     </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.GetTemporaryRT(System.Int32,UnityEngine.RenderTextureDescriptor,UnityEngine.FilterMode)">
       <summary>
@@ -24426,7 +25289,6 @@ InvalidOperationException will be thrown if the current platform doesn't support
       <param name="enableRandomWrite">Should random-write access into the texture be enabled (default is false).</param>
       <param name="desc">Use this RenderTextureDescriptor for the settings when creating the temporary RenderTexture.</param>
       <param name="memorylessMode">Render texture memoryless mode.</param>
-      <param name="useDynamicScale"></param>
     </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.GetTemporaryRTArray(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,UnityEngine.FilterMode,UnityEngine.RenderTextureFormat,UnityEngine.RenderTextureReadWrite,System.Int32,System.Boolean)">
       <summary>
@@ -24442,7 +25304,6 @@ InvalidOperationException will be thrown if the current platform doesn't support
       <param name="readWrite">Color space conversion mode.</param>
       <param name="antiAliasing">Anti-aliasing (default is no anti-aliasing).</param>
       <param name="enableRandomWrite">Should random-write access into the texture be enabled (default is false).</param>
-      <param name="useDynamicScale"></param>
     </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.IssuePluginCustomBlit(System.IntPtr,System.UInt32,UnityEngine.Rendering.RenderTargetIdentifier,UnityEngine.Rendering.RenderTargetIdentifier,System.UInt32,System.UInt32)">
       <summary>
@@ -24457,12 +25318,27 @@ InvalidOperationException will be thrown if the current platform doesn't support
     </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.IssuePluginCustomTextureUpdate(System.IntPtr,UnityEngine.Texture,System.UInt32)">
       <summary>
+        <para>Deprecated. Use CommandBuffer.IssuePluginCustomTextureUpdateV2 instead.</para>
+      </summary>
+      <param name="callback">Native code callback to queue for Unity's renderer to invoke.</param>
+      <param name="targetTexture">Texture resource to be updated.</param>
+      <param name="userData">User data to send to the native plugin.</param>
+    </member>
+    <member name="M:UnityEngine.Rendering.CommandBuffer.IssuePluginCustomTextureUpdateV1(System.IntPtr,UnityEngine.Texture,System.UInt32)">
+      <summary>
+        <para>Deprecated. Use CommandBuffer.IssuePluginCustomTextureUpdateV2 instead.</para>
+      </summary>
+      <param name="callback">Native code callback to queue for Unity's renderer to invoke.</param>
+      <param name="targetTexture">Texture resource to be updated.</param>
+      <param name="userData">User data to send to the native plugin.</param>
+    </member>
+    <member name="M:UnityEngine.Rendering.CommandBuffer.IssuePluginCustomTextureUpdateV2(System.IntPtr,UnityEngine.Texture,System.UInt32)">
+      <summary>
         <para>Send a texture update event to a native code plugin.</para>
       </summary>
       <param name="callback">Native code callback to queue for Unity's renderer to invoke.</param>
       <param name="targetTexture">Texture resource to be updated.</param>
-      <param name="commandParam">User data to send to the native plugin.</param>
-      <param name="userData"></param>
+      <param name="userData">User data to send to the native plugin.</param>
     </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.IssuePluginEvent(System.IntPtr,System.Int32)">
       <summary>
@@ -24604,6 +25480,13 @@ InvalidOperationException will be thrown if the current platform doesn't support
       <param name="height">Height in pixels of the Texture data to be fetched.</param>
       <param name="callback">A delegate System.Action called once the request is fullfilled. The done request is passed as parameter to the System.Action.</param>
     </member>
+    <member name="M:UnityEngine.Rendering.CommandBuffer.ResolveAntiAliasedSurface(UnityEngine.RenderTexture,UnityEngine.RenderTexture)">
+      <summary>
+        <para>Force an antialiased render texture to be resolved.</para>
+      </summary>
+      <param name="rt">The antialiased render texture to resolve.</param>
+      <param name="target">The render texture to resolve into.  If set, the target render texture must have the same dimensions and format as the source.</param>
+    </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.SetComputeBufferParam(UnityEngine.ComputeShader,System.Int32,System.String,UnityEngine.ComputeBuffer)">
       <summary>
         <para>Adds a command to set an input or output buffer parameter on a ComputeShader.</para>
@@ -24741,6 +25624,7 @@ InvalidOperationException will be thrown if the current platform doesn't support
       <param name="name">Name of the texture variable in shader code.</param>
       <param name="nameID">Property name ID. Use Shader.PropertyToID to get this ID.</param>
       <param name="rt">Texture value or identifier to set, see RenderTargetIdentifier.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
     </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.SetComputeTextureParam(UnityEngine.ComputeShader,System.Int32,System.Int32,UnityEngine.Rendering.RenderTargetIdentifier)">
       <summary>
@@ -24751,6 +25635,29 @@ InvalidOperationException will be thrown if the current platform doesn't support
       <param name="name">Name of the texture variable in shader code.</param>
       <param name="nameID">Property name ID. Use Shader.PropertyToID to get this ID.</param>
       <param name="rt">Texture value or identifier to set, see RenderTargetIdentifier.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
+    </member>
+    <member name="M:UnityEngine.Rendering.CommandBuffer.SetComputeTextureParam(UnityEngine.ComputeShader,System.Int32,System.String,UnityEngine.Rendering.RenderTargetIdentifier,System.Int32)">
+      <summary>
+        <para>Adds a command to set a texture parameter on a ComputeShader.</para>
+      </summary>
+      <param name="computeShader">ComputeShader to set parameter for.</param>
+      <param name="kernelIndex">Which kernel the texture is being set for. See ComputeShader.FindKernel.</param>
+      <param name="name">Name of the texture variable in shader code.</param>
+      <param name="nameID">Property name ID. Use Shader.PropertyToID to get this ID.</param>
+      <param name="rt">Texture value or identifier to set, see RenderTargetIdentifier.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
+    </member>
+    <member name="M:UnityEngine.Rendering.CommandBuffer.SetComputeTextureParam(UnityEngine.ComputeShader,System.Int32,System.Int32,UnityEngine.Rendering.RenderTargetIdentifier,System.Int32)">
+      <summary>
+        <para>Adds a command to set a texture parameter on a ComputeShader.</para>
+      </summary>
+      <param name="computeShader">ComputeShader to set parameter for.</param>
+      <param name="kernelIndex">Which kernel the texture is being set for. See ComputeShader.FindKernel.</param>
+      <param name="name">Name of the texture variable in shader code.</param>
+      <param name="nameID">Property name ID. Use Shader.PropertyToID to get this ID.</param>
+      <param name="rt">Texture value or identifier to set, see RenderTargetIdentifier.</param>
+      <param name="mipLevel">Optional mipmap level of the read-write texture.</param>
     </member>
     <member name="M:UnityEngine.Rendering.CommandBuffer.SetComputeVectorArrayParam(UnityEngine.ComputeShader,System.String,UnityEngine.Vector4[])">
       <summary>
@@ -25535,11 +26442,6 @@ Allows for CPU determination of whether the GPU has passed the point in its proc
         <para>PlayStation Mobile (PSM) graphics API.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Rendering.GraphicsDeviceType.PlayStationVita">
-      <summary>
-        <para>PlayStation Vita graphics API.</para>
-      </summary>
-    </member>
     <member name="F:UnityEngine.Rendering.GraphicsDeviceType.Switch">
       <summary>
         <para>Nintendo Switch graphics API.</para>
@@ -25728,7 +26630,7 @@ See Also: Graphics.activeTier.</para>
     </member>
     <member name="F:UnityEngine.Rendering.LightProbeUsage.Off">
       <summary>
-        <para>Light Probes are not used. The scene's ambient probe is provided to the shader.</para>
+        <para>Light Probes are not used. The Scene's ambient probe is provided to the shader.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Rendering.LightProbeUsage.UseProxyVolume">
@@ -26007,7 +26909,7 @@ See Also: ReflectionProbe.RenderProbe.</para>
     <member name="T:UnityEngine.Rendering.ReflectionProbeTimeSlicingMode">
       <summary>
         <para>When a probe's ReflectionProbe.refreshMode is set to ReflectionProbeRefreshMode.EveryFrame, this enum specify whether or not Unity should update the probe's cubemap over several frames or update the whole cubemap in one frame.
-Updating a probe's cubemap is a costly operation. Unity needs to render the entire scene for each face of the cubemap, as well as perform special blurring in order to get glossy reflections. The impact on frame rate can be significant. Time-slicing helps maintaning a more constant frame rate during these updates by performing the rendering over several frames.</para>
+Updating a probe's cubemap is a costly operation. Unity needs to render the entire Scene for each face of the cubemap, as well as perform special blurring in order to get glossy reflections. The impact on frame rate can be significant. Time-slicing helps maintaning a more constant frame rate during these updates by performing the rendering over several frames.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Rendering.ReflectionProbeTimeSlicingMode.AllFacesAtOnce">
@@ -26017,7 +26919,7 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
     </member>
     <member name="F:UnityEngine.Rendering.ReflectionProbeTimeSlicingMode.IndividualFaces">
       <summary>
-        <para>Instructs Unity to spread the rendering of each face over several frames. Using this option, updating the cubemap will take 14 frames. This option greatly reduces the impact on frame rate, however it may produce incorrect results, especially in scenes where lighting conditions change over these 14 frames.</para>
+        <para>Instructs Unity to spread the rendering of each face over several frames. Using this option, updating the cubemap will take 14 frames. This option greatly reduces the impact on frame rate, however it may produce incorrect results, especially in Scenes where lighting conditions change over these 14 frames.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Rendering.ReflectionProbeTimeSlicingMode.NoTimeSlicing">
@@ -26302,9 +27204,14 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
       </summary>
       <param name="keywordName"></param>
     </member>
-    <member name="M:UnityEngine.Rendering.ShaderKeyword.GetName">
+    <member name="M:UnityEngine.Rendering.ShaderKeyword.GetKeywordName">
       <summary>
         <para>Returns the string name of the keyword.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Rendering.ShaderKeyword.GetKeywordType">
+      <summary>
+        <para>Returns the keyword kind: built-in or user defined.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Rendering.ShaderKeyword.IsValid">
@@ -26340,6 +27247,36 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
       </summary>
       <param name="keyword"></param>
     </member>
+    <member name="T:UnityEngine.Rendering.ShaderKeywordType">
+      <summary>
+        <para>Type of a shader keyword, eg: built-in or user defined.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.ShaderKeywordType.BuiltinAutoStripped">
+      <summary>
+        <para>The keyword is built-in the runtime and can be automatically stripped if unusued.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.ShaderKeywordType.BuiltinDefault">
+      <summary>
+        <para>The keyword is built-in the runtime and it is systematically reserved.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.ShaderKeywordType.BuiltinExtra">
+      <summary>
+        <para>The keyword is built-in the runtime and it is optionally reserved depending on the features used.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.ShaderKeywordType.None">
+      <summary>
+        <para>No type is assigned.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.ShaderKeywordType.UserDefined">
+      <summary>
+        <para>The keyword is defined by the user.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Rendering.ShadowCastingMode">
       <summary>
         <para>How shadows are cast from this object.</para>
@@ -26357,7 +27294,7 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
     </member>
     <member name="F:UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly">
       <summary>
-        <para>Object casts shadows, but is otherwise invisible in the scene.</para>
+        <para>Object casts shadows, but is otherwise invisible in the Scene.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Rendering.ShadowCastingMode.TwoSided">
@@ -26676,6 +27613,81 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
         <para>Texture type is not initialized or unknown.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Rendering.VertexAttribute">
+      <summary>
+        <para>A list of data channels that describe a vertex in a mesh.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.BlendIndices">
+      <summary>
+        <para>Blend indices for skinned meshes. The common format is Int.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.BlendWeight">
+      <summary>
+        <para>Blend weights for skinned meshes. The common format is Float.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.Color">
+      <summary>
+        <para>The color channel.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.Normal">
+      <summary>
+        <para>The normal channel. The common format is Vector3.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.Position">
+      <summary>
+        <para>The position channel. The common format is Vector3.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.Tangent">
+      <summary>
+        <para>The tangent channel. The common format is Vector4.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord0">
+      <summary>
+        <para>The primary UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord1">
+      <summary>
+        <para>Additional UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord2">
+      <summary>
+        <para>Additional UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord3">
+      <summary>
+        <para>Additional UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord4">
+      <summary>
+        <para>Additional UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord5">
+      <summary>
+        <para>Additional UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord6">
+      <summary>
+        <para>Additional UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Rendering.VertexAttribute.TexCoord7">
+      <summary>
+        <para>Additional UV channel. The common format is Vector2.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.RenderingPath">
       <summary>
         <para>Rendering path of a Camera.</para>
@@ -26708,7 +27720,7 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
     </member>
     <member name="T:UnityEngine.RenderSettings">
       <summary>
-        <para>The Render Settings contain values for a range of visual elements in your scene, like fog and ambient light.</para>
+        <para>The Render Settings contain values for a range of visual elements in your Scene, like fog and ambient light.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.RenderSettings.ambientEquatorColor">
@@ -26723,7 +27735,7 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
     </member>
     <member name="P:UnityEngine.RenderSettings.ambientIntensity">
       <summary>
-        <para>How much the light from the Ambient Source affects the scene.</para>
+        <para>How much the light from the Ambient Source affects the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.RenderSettings.ambientLight">
@@ -26763,12 +27775,12 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
     </member>
     <member name="P:UnityEngine.RenderSettings.flareFadeSpeed">
       <summary>
-        <para>The fade speed of all flares in the scene.</para>
+        <para>The fade speed of all flares in the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.RenderSettings.flareStrength">
       <summary>
-        <para>The intensity of all flares in the scene.</para>
+        <para>The intensity of all flares in the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.RenderSettings.fog">
@@ -26813,7 +27825,7 @@ Updating a probe's cubemap is a costly operation. Unity needs to render the enti
     </member>
     <member name="P:UnityEngine.RenderSettings.reflectionIntensity">
       <summary>
-        <para>How much the skybox / custom cubemap reflection affects the scene.</para>
+        <para>How much the skybox / custom cubemap reflection affects the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.RenderSettings.skybox">
@@ -27459,9 +28471,14 @@ See RenderTexture.useMipMap.</para>
         <para>A depth render texture format.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.RenderTextureFormat.R16">
+      <summary>
+        <para>Single channel (R) render texture format, 16 bit integer.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.RenderTextureFormat.R8">
       <summary>
-        <para>Scalar (R) render texture format, 8 bit fixed point.</para>
+        <para>Single channel (R) render texture format, 8 bit integer.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.RenderTextureFormat.RFloat">
@@ -27744,12 +28761,12 @@ See RenderTexture.useMipMap.</para>
     </member>
     <member name="F:UnityEngine.RuntimeInitializeLoadType.AfterSceneLoad">
       <summary>
-        <para>After scene is loaded.</para>
+        <para>After Scene is loaded.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad">
       <summary>
-        <para>Before scene is loaded.</para>
+        <para>Before Scene is loaded.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.RuntimeInitializeOnLoadMethodAttribute">
@@ -27765,17 +28782,17 @@ See RenderTexture.useMipMap.</para>
     </member>
     <member name="M:UnityEngine.RuntimeInitializeOnLoadMethodAttribute.#ctor">
       <summary>
-        <para>Creation of the runtime class used when scenes are loaded.</para>
+        <para>Creation of the runtime class used when Scenes are loaded.</para>
       </summary>
       <param name="loadType">Determine whether methods are called before or after the
-        scene is loaded.</param>
+        Scene is loaded.</param>
     </member>
     <member name="M:UnityEngine.RuntimeInitializeOnLoadMethodAttribute.#ctor(UnityEngine.RuntimeInitializeLoadType)">
       <summary>
-        <para>Creation of the runtime class used when scenes are loaded.</para>
+        <para>Creation of the runtime class used when Scenes are loaded.</para>
       </summary>
       <param name="loadType">Determine whether methods are called before or after the
-        scene is loaded.</param>
+        Scene is loaded.</param>
     </member>
     <member name="T:UnityEngine.RuntimePlatform">
       <summary>
@@ -27830,11 +28847,6 @@ See RenderTexture.useMipMap.</para>
     <member name="F:UnityEngine.RuntimePlatform.PS4">
       <summary>
         <para>In the player on the Playstation 4.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.RuntimePlatform.PSP2">
-      <summary>
-        <para>In the player on the PS Vita.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.RuntimePlatform.Switch">
@@ -27904,19 +28916,71 @@ See RenderTexture.useMipMap.</para>
       <param name="widthScale">New scale factor for the width the ScalableBufferManager will use to resize all render textures the user marked as DynamicallyScalable, has to be some value greater than 0.0 and less than or equal to 1.0.</param>
       <param name="heightScale">New scale factor for the height the ScalableBufferManager will use to resize all render textures the user marked as DynamicallyScalable, has to be some value greater than 0.0 and less than or equal to 1.0.</param>
     </member>
+    <member name="T:UnityEngine.SceneManagement.CreateSceneParameters">
+      <summary>
+        <para>This struct collects all the CreateScene parameters in to a single place.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SceneManagement.CreateSceneParameters.localPhysicsMode">
+      <summary>
+        <para>See SceneManagement.LocalPhysicsMode.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.SceneManagement.LoadSceneMode">
       <summary>
-        <para>Used when loading a scene in a player.</para>
+        <para>Used when loading a Scene in a player.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.SceneManagement.LoadSceneMode.Additive">
       <summary>
-        <para>Adds the scene to the current loaded scenes.</para>
+        <para>Adds the Scene to the current loaded Scenes.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.SceneManagement.LoadSceneMode.Single">
       <summary>
-        <para>Closes all current loaded scenes and loads a scene.</para>
+        <para>Closes all current loaded Scenes
+                and loads a Scene.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.SceneManagement.LoadSceneParameters">
+      <summary>
+        <para>This struct collects all the LoadScene parameters in to a single place.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SceneManagement.LoadSceneParameters.loadSceneMode">
+      <summary>
+        <para>See LoadSceneMode.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SceneManagement.LoadSceneParameters.localPhysicsMode">
+      <summary>
+        <para>See SceneManagement.LocalPhysicsMode.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.LoadSceneParameters.#ctor(UnityEngine.SceneManagement.LoadSceneMode)">
+      <summary>
+        <para>Constructor for LoadSceneParameters. See SceneManager.LoadScene.</para>
+      </summary>
+      <param name="mode">See LoadSceneParameters.loadSceneMode.</param>
+    </member>
+    <member name="T:UnityEngine.SceneManagement.LocalPhysicsMode">
+      <summary>
+        <para>Provides options for 2D and 3D local physics.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.SceneManagement.LocalPhysicsMode.None">
+      <summary>
+        <para>No local 2D or 3D physics Scene will be created.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.SceneManagement.LocalPhysicsMode.Physics2D">
+      <summary>
+        <para>A local 2D physics Scene will be created and owned by the Scene.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.SceneManagement.LocalPhysicsMode.Physics3D">
+      <summary>
+        <para>A local 3D physics Scene will be created and owned by the Scene.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.SceneManagement.Scene">
@@ -28000,7 +29064,7 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <summary>
         <para>Subscribe to this event to get notified when the active Scene has changed.</para>
       </summary>
-      <param name="value">Previous active scene and the new active scene.</param>
+      <param name="value">Use a subscription of either a UnityAction&lt;SceneManagement.Scene, SceneManagement.Scene&gt; or a method that takes two SceneManagement.Scene types arguments.</param>
     </member>
     <member name="P:UnityEngine.SceneManagement.SceneManager.sceneCount">
       <summary>
@@ -28016,19 +29080,30 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <summary>
         <para>Add a delegate to this to get notifications when a Scene has loaded.</para>
       </summary>
-      <param name="value"></param>
+      <param name="value">Use a subscription of either a UnityAction&lt;SceneManagement.Scene, SceneManagement.LoadSceneMode&gt; or a method that takes a SceneManagement.Scene and a SceneManagement.LoadSceneMode.</param>
     </member>
     <member name="?:UnityEngine.SceneManagement.SceneManager.sceneUnloaded(UnityEngine.Events.UnityAction`1&lt;UnityEngine.SceneManagement.Scene&gt;)">
       <summary>
-        <para>Add a delegate to this to get notifications when a Scene has unloaded</para>
+        <para>Add a delegate to this to get notifications when a Scene has unloaded.</para>
       </summary>
-      <param name="value"></param>
+      <param name="value">Use a subscription of either a UnityAction&lt;SceneManagement.Scene&gt; or a method that takes a SceneManagement.Scene type argument.</param>
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.CreateScene(System.String)">
       <summary>
         <para>Create an empty new Scene at runtime with the given name.</para>
       </summary>
       <param name="sceneName">The name of the new Scene. It cannot be empty or null, or same as the name of the existing Scenes.</param>
+      <param name="parameters">Various parameters used to create the Scene.</param>
+      <returns>
+        <para>A reference to the new Scene that was created, or an invalid Scene if creation failed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.CreateScene(System.String,UnityEngine.SceneManagement.CreateSceneParameters)">
+      <summary>
+        <para>Create an empty new Scene at runtime with the given name.</para>
+      </summary>
+      <param name="sceneName">The name of the new Scene. It cannot be empty or null, or same as the name of the existing Scenes.</param>
+      <param name="parameters">Various parameters used to create the Scene.</param>
       <returns>
         <para>A reference to the new Scene that was created, or an invalid Scene if creation failed.</para>
       </returns>
@@ -28101,6 +29176,28 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
       <param name="mode">Allows you to specify whether or not to load the Scene additively. See SceneManagement.LoadSceneMode for more information about the options.</param>
     </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.LoadScene(System.Int32,UnityEngine.SceneManagement.LoadSceneParameters)">
+      <summary>
+        <para>Loads the Scene by its name or index in Build Settings.</para>
+      </summary>
+      <param name="sceneName">Name or path of the Scene to load.</param>
+      <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
+      <param name="parameters">Various parameters used to load the Scene.</param>
+      <returns>
+        <para>A handle to the Scene being loaded.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.LoadScene(System.String,UnityEngine.SceneManagement.LoadSceneParameters)">
+      <summary>
+        <para>Loads the Scene by its name or index in Build Settings.</para>
+      </summary>
+      <param name="sceneName">Name or path of the Scene to load.</param>
+      <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
+      <param name="parameters">Various parameters used to load the Scene.</param>
+      <returns>
+        <para>A handle to the Scene being loaded.</para>
+      </returns>
+    </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(System.String,UnityEngine.SceneManagement.LoadSceneMode)">
       <summary>
         <para>Loads the Scene asynchronously in the background.</para>
@@ -28108,6 +29205,7 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <param name="sceneName">Name or path of the Scene to load.</param>
       <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
       <param name="mode">If LoadSceneMode.Single then all current Scenes will be unloaded before loading.</param>
+      <param name="parameters">Struct that collects the various parameters into a single place except for the name and index.</param>
       <returns>
         <para>Use the AsyncOperation to determine if the operation has completed.</para>
       </returns>
@@ -28119,6 +29217,31 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <param name="sceneName">Name or path of the Scene to load.</param>
       <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
       <param name="mode">If LoadSceneMode.Single then all current Scenes will be unloaded before loading.</param>
+      <param name="parameters">Struct that collects the various parameters into a single place except for the name and index.</param>
+      <returns>
+        <para>Use the AsyncOperation to determine if the operation has completed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(System.String,UnityEngine.SceneManagement.LoadSceneParameters)">
+      <summary>
+        <para>Loads the Scene asynchronously in the background.</para>
+      </summary>
+      <param name="sceneName">Name or path of the Scene to load.</param>
+      <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
+      <param name="mode">If LoadSceneMode.Single then all current Scenes will be unloaded before loading.</param>
+      <param name="parameters">Struct that collects the various parameters into a single place except for the name and index.</param>
+      <returns>
+        <para>Use the AsyncOperation to determine if the operation has completed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(System.Int32,UnityEngine.SceneManagement.LoadSceneParameters)">
+      <summary>
+        <para>Loads the Scene asynchronously in the background.</para>
+      </summary>
+      <param name="sceneName">Name or path of the Scene to load.</param>
+      <param name="sceneBuildIndex">Index of the Scene in the Build Settings to load.</param>
+      <param name="mode">If LoadSceneMode.Single then all current Scenes will be unloaded before loading.</param>
+      <param name="parameters">Struct that collects the various parameters into a single place except for the name and index.</param>
       <returns>
         <para>Use the AsyncOperation to determine if the operation has completed.</para>
       </returns>
@@ -28186,6 +29309,7 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <param name="sceneBuildIndex">Index of the Scene in BuildSettings.</param>
       <param name="sceneName">Name or path of the Scene to unload.</param>
       <param name="scene">Scene to unload.</param>
+      <param name="options">Scene unloading options.</param>
       <returns>
         <para>Use the AsyncOperation to determine if the operation has completed.</para>
       </returns>
@@ -28197,6 +29321,7 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <param name="sceneBuildIndex">Index of the Scene in BuildSettings.</param>
       <param name="sceneName">Name or path of the Scene to unload.</param>
       <param name="scene">Scene to unload.</param>
+      <param name="options">Scene unloading options.</param>
       <returns>
         <para>Use the AsyncOperation to determine if the operation has completed.</para>
       </returns>
@@ -28208,6 +29333,43 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <param name="sceneBuildIndex">Index of the Scene in BuildSettings.</param>
       <param name="sceneName">Name or path of the Scene to unload.</param>
       <param name="scene">Scene to unload.</param>
+      <param name="options">Scene unloading options.</param>
+      <returns>
+        <para>Use the AsyncOperation to determine if the operation has completed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(System.Int32,UnityEngine.SceneManagement.UnloadSceneOptions)">
+      <summary>
+        <para>Destroys all GameObjects associated with the given Scene and removes the Scene from the SceneManager.</para>
+      </summary>
+      <param name="sceneBuildIndex">Index of the Scene in BuildSettings.</param>
+      <param name="sceneName">Name or path of the Scene to unload.</param>
+      <param name="scene">Scene to unload.</param>
+      <param name="options">Scene unloading options.</param>
+      <returns>
+        <para>Use the AsyncOperation to determine if the operation has completed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(System.String,UnityEngine.SceneManagement.UnloadSceneOptions)">
+      <summary>
+        <para>Destroys all GameObjects associated with the given Scene and removes the Scene from the SceneManager.</para>
+      </summary>
+      <param name="sceneBuildIndex">Index of the Scene in BuildSettings.</param>
+      <param name="sceneName">Name or path of the Scene to unload.</param>
+      <param name="scene">Scene to unload.</param>
+      <param name="options">Scene unloading options.</param>
+      <returns>
+        <para>Use the AsyncOperation to determine if the operation has completed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.UnloadSceneOptions)">
+      <summary>
+        <para>Destroys all GameObjects associated with the given Scene and removes the Scene from the SceneManager.</para>
+      </summary>
+      <param name="sceneBuildIndex">Index of the Scene in BuildSettings.</param>
+      <param name="sceneName">Name or path of the Scene to unload.</param>
+      <param name="scene">Scene to unload.</param>
+      <param name="options">Scene unloading options.</param>
       <returns>
         <para>Use the AsyncOperation to determine if the operation has completed.</para>
       </returns>
@@ -28219,7 +29381,7 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneUtility.GetBuildIndexByScenePath(System.String)">
       <summary>
-        <para>Get the build index from a scene path.</para>
+        <para>Get the build index from a Scene path.</para>
       </summary>
       <param name="scenePath">Scene path (e.g: "AssetsScenesScene1.unity").</param>
       <returns>
@@ -28228,12 +29390,30 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(System.Int32)">
       <summary>
-        <para>Get the scene path from a build index.</para>
+        <para>Get the Scene path from a build index.</para>
       </summary>
       <param name="buildIndex"></param>
       <returns>
         <para>Scene path (e.g "AssetsScenesScene1.unity").</para>
       </returns>
+    </member>
+    <member name="T:UnityEngine.SceneManagement.UnloadSceneOptions">
+      <summary>
+        <para>Scene unloading options passed to SceneManager.UnloadScene.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.SceneManagement.UnloadSceneOptions.None">
+      <summary>
+        <para>Unload scene without any special options.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.SceneManagement.UnloadSceneOptions.UnloadAllEmbeddedSceneObjects">
+      <summary>
+        <para>Unloads all objects which were loaded from the scene's serialized file. Without this flag, only GameObject and Components within the scene's hierarchy will be unloaded.
+
+Note: Objects that are dynamically created during the build process can be embedded in the scene's serialized file. This can occur is when asset types are created and referenced inside the scene's post-processor callback. Some examples of these types are textures, meshes, and scriptable objects. Assets from your assets folder will not be embedded in the scene's serialized file.
+Note: This flag will not unload assets which can be referenced by other scenes.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.Screen">
       <summary>
@@ -28407,6 +29587,37 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
       <returns>
         <para>The created ScriptableObject.</para>
       </returns>
+    </member>
+    <member name="T:UnityEngine.Scripting.AlwaysLinkAssemblyAttribute">
+      <summary>
+        <para>Ensure an assembly is always processed during managed code stripping.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Scripting.GarbageCollector">
+      <summary>
+        <para>Experimental API to control the garbage collector on the Mono and IL2CPP scripting backends.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Scripting.GarbageCollector.GCMode">
+      <summary>
+        <para>Set and get global garbage collector operation mode.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEngine.Scripting.GarbageCollector.GCModeChanged(System.Action`1&lt;UnityEngine.Scripting.GarbageCollector/Mode&gt;)">
+      <summary>
+        <para>Subscribe to this event to get notified when GarbageCollector.GCMode changes.</para>
+      </summary>
+      <param name="value"></param>
+    </member>
+    <member name="F:UnityEngine.Scripting.GarbageCollector.Mode.Disabled">
+      <summary>
+        <para>Disable garbage collector.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Scripting.GarbageCollector.Mode.Enabled">
+      <summary>
+        <para>Enable garbage collector.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.Scripting.PreserveAttribute">
       <summary>
@@ -29125,6 +30336,11 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
         <para>The bones used to skin the mesh.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.SkinnedMeshRenderer.forceMatrixRecalculationPerRender">
+      <summary>
+        <para>Forces the Skinned Mesh to recalculate its matricies when rendered</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.SkinnedMeshRenderer.localBounds">
       <summary>
         <para>AABB of this Skinned Mesh in its local space.</para>
@@ -29158,16 +30374,19 @@ A Scene may be invalid if, for example, you tried to open a Scene that does not 
     </member>
     <member name="M:UnityEngine.SkinnedMeshRenderer.GetBlendShapeWeight(System.Int32)">
       <summary>
-        <para>Returns weight of BlendShape on this renderer.</para>
+        <para>Returns the weight of a BlendShape for this Renderer.</para>
       </summary>
-      <param name="index"></param>
+      <param name="index">The index of the BlendShape whose weight you want to retrieve. Index must be smaller than the Mesh.blendShapeCount of the Mesh attached to this Renderer.</param>
+      <returns>
+        <para>The weight of the BlendShape.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.SkinnedMeshRenderer.SetBlendShapeWeight(System.Int32,System.Single)">
       <summary>
-        <para>Sets the weight in percent of a BlendShape on this Renderer.</para>
+        <para>Sets the weight of a BlendShape for this Renderer.</para>
       </summary>
-      <param name="index">The index of the BlendShape to modify.</param>
-      <param name="value">The weight in percent for this BlendShape.</param>
+      <param name="index">The index of the BlendShape to modify. Index must be smaller than the Mesh.blendShapeCount of the Mesh attached to this Renderer.</param>
+      <param name="value">The weight for this BlendShape.</param>
     </member>
     <member name="T:UnityEngine.SkinQuality">
       <summary>
@@ -29884,14 +31103,14 @@ Returns NULL if there is no associated alpha texture for the source sprite. This
       <summary>
         <para>StaticBatchingUtility.Combine prepares all children of the staticBatchRoot for static batching.</para>
       </summary>
-      <param name="staticBatchRoot"></param>
+      <param name="staticBatchRoot">The GameObject that should become the root of the combined batch.</param>
     </member>
     <member name="M:UnityEngine.StaticBatchingUtility.Combine(UnityEngine.GameObject[],UnityEngine.GameObject)">
       <summary>
-        <para>StaticBatchingUtility.Combine prepares all gos for static batching. staticBatchRoot is treated as their parent.</para>
+        <para>StaticBatchingUtility.Combine prepares all GameObjects contained in gos for static batching. staticBatchRoot is treated as their parent.</para>
       </summary>
-      <param name="gos"></param>
-      <param name="staticBatchRoot"></param>
+      <param name="gos">The GameObjects to prepare for static batching.</param>
+      <param name="staticBatchRoot">The GameObject that should become the root of the combined batch.</param>
     </member>
     <member name="T:UnityEngine.StereoTargetEyeMask">
       <summary>
@@ -30008,6 +31227,16 @@ Returns NULL if there is no associated alpha texture for the source sprite. This
         <para>Returns true if the texture UV coordinate convention for this platform has Y starting at the top of the image.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.SystemInfo.hasDynamicUniformArrayIndexingInFragmentShaders">
+      <summary>
+        <para>Returns true when the GPU has native support for indexing uniform arrays in fragment shaders without restrictions.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.SystemInfo.hasHiddenSurfaceRemovalOnGPU">
+      <summary>
+        <para>True if the GPU supports hidden surface removal.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.SystemInfo.maxCubemapSize">
       <summary>
         <para>Maximum Cubemap texture size (Read Only).</para>
@@ -30092,7 +31321,7 @@ Note that asynchronous compute queues are only supported on PS4.</para>
     </member>
     <member name="P:UnityEngine.SystemInfo.supportsAudio">
       <summary>
-        <para>Is there an Audio device available for playback?</para>
+        <para>Is there an Audio device available for playback? (Read Only)</para>
       </summary>
     </member>
     <member name="P:UnityEngine.SystemInfo.supportsComputeShaders">
@@ -30172,6 +31401,11 @@ Note that GPUFences are only supported on PS4.</para>
         <para>Are cubemap render textures supported? (Read Only)</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.SystemInfo.supportsSeparatedRenderTargetsBlend">
+      <summary>
+        <para>Returns true when the platform supports different blend modes when rendering to multiple render targets, or false otherwise.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.SystemInfo.supportsShadows">
       <summary>
         <para>Are built-in shadows supported? (Read Only)</para>
@@ -30212,13 +31446,12 @@ Note that GPUFences are only supported on PS4.</para>
         <para>This property is true if the current platform uses a reversed depth buffer (where values range from 1 at the near plane and 0 at far plane), and false if the depth buffer is normal (0 is near, 1 is far). (Read Only)</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.SystemInfo.IsFormatSupported(UnityEngine.Experimental.Rendering.GraphicsFormat,UnityEngine.Experimental.Rendering.FormatUsage)">
+    <member name="M:UnityEngine.SystemInfo.IsFormatSupported">
       <summary>
         <para>Verifies that the specified graphics format is supported for the specified usage.</para>
       </summary>
-      <param name="format">The GraphicsFormat format to look up.</param>
-      <param name="format">The FormatUsage usage to look up.</param>
-      <param name="usage"></param>
+      <param name="Format">The Experimental.Rendering.GraphicsFormat format to look up.</param>
+      <param name="Usage">The Experimental.Rendering.FormatUsage usage to look up.</param>
       <returns>
         <para>Returns true if the format is supported for the specific usage. Returns false otherwise.</para>
       </returns>
@@ -30562,6 +31795,11 @@ This constructor creates a TextAsset, which is not the same as a plain text file
         <para>Height of the texture in pixels. (Read Only)</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Texture.isReadable">
+      <summary>
+        <para>Returns true if the Read/Write Enabled checkbox was checked when the texture was imported; otherwise returns false. For a dynamic Texture created from script, always returns true. For additional information, see TextureImporter.isReadable.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Texture.mipMapBias">
       <summary>
         <para>Mip map bias of the texture.</para>
@@ -30695,6 +31933,11 @@ This constructor creates a TextAsset, which is not the same as a plain text file
     <member name="P:UnityEngine.Texture2D.format">
       <summary>
         <para>The format of the pixel data in the texture (Read Only).</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Texture2D.isReadable">
+      <summary>
+        <para>Returns true if the Read/Write Enabled checkbox was checked when the texture was imported; otherwise returns false. For a dynamic Texture created from script, always returns true. For additional information, see TextureImporter.isReadable.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Texture2D.loadedMipmapLevel">
@@ -31019,6 +32262,11 @@ This constructor creates a TextAsset, which is not the same as a plain text file
         <para>Texture format (Read Only).</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Texture2DArray.isReadable">
+      <summary>
+        <para>Returns true if this texture array is Read/Write Enabled; otherwise returns false. For dynamic textures created from script, always returns true.</para>
+      </summary>
+    </member>
     <member name="M:UnityEngine.Texture2DArray.Apply(System.Boolean,System.Boolean)">
       <summary>
         <para>Actually apply all previous SetPixels changes.</para>
@@ -31101,6 +32349,11 @@ This constructor creates a TextAsset, which is not the same as a plain text file
     <member name="P:UnityEngine.Texture3D.format">
       <summary>
         <para>The format of the pixel data in the texture (Read Only).</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Texture3D.isReadable">
+      <summary>
+        <para>Returns true if this 3D texture is Read/Write Enabled; otherwise returns false. For dynamic textures created from script, always returns true.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Texture3D.Apply(System.Boolean,System.Boolean)">
@@ -31355,12 +32608,12 @@ This constructor creates a TextAsset, which is not the same as a plain text file
     </member>
     <member name="F:UnityEngine.TextureFormat.R16">
       <summary>
-        <para>A 16 bit color texture format that only has a red channel.</para>
+        <para>Single channel (R) texture format, 16 bit integer.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.TextureFormat.R8">
       <summary>
-        <para>Scalar (R) render texture format, 8 bit fixed point.</para>
+        <para>Single channel (R) texture format, 8 bit integer.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.TextureFormat.RFloat">
@@ -31960,7 +33213,7 @@ This constructor creates a TextAsset, which is not the same as a plain text file
     </member>
     <member name="T:UnityEngine.TrailRenderer">
       <summary>
-        <para>The trail renderer is used to make trails behind objects in the scene as they move about.</para>
+        <para>The trail renderer is used to make trails behind objects in the Scene as they move about.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.TrailRenderer.alignment">
@@ -32023,6 +33276,11 @@ This constructor creates a TextAsset, which is not the same as a plain text file
         <para>Get the number of line segments in the trail.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.TrailRenderer.shadowBias">
+      <summary>
+        <para>Apply a shadow bias to prevent self-shadowing artifacts. The specified value is the proportion of the trail width at each segment.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.TrailRenderer.startColor">
       <summary>
         <para>Set the color at the start of the trail.</para>
@@ -32070,7 +33328,7 @@ This constructor creates a TextAsset, which is not the same as a plain text file
         <para>Creates a snapshot of TrailRenderer and stores it in mesh.</para>
       </summary>
       <param name="mesh">A static mesh that will receive the snapshot of the trail.</param>
-      <param name="camera">The camera used for determining which way view space trails will face.</param>
+      <param name="camera">The camera used for determining which way camera-space trails will face.</param>
       <param name="useTransform">Include the rotation and scale of the Transform in the baked mesh.</param>
     </member>
     <member name="M:UnityEngine.TrailRenderer.BakeMesh(UnityEngine.Mesh,System.Boolean)">
@@ -32078,7 +33336,7 @@ This constructor creates a TextAsset, which is not the same as a plain text file
         <para>Creates a snapshot of TrailRenderer and stores it in mesh.</para>
       </summary>
       <param name="mesh">A static mesh that will receive the snapshot of the trail.</param>
-      <param name="camera">The camera used for determining which way view space trails will face.</param>
+      <param name="camera">The camera used for determining which way camera-space trails will face.</param>
       <param name="useTransform">Include the rotation and scale of the Transform in the baked mesh.</param>
     </member>
     <member name="M:UnityEngine.TrailRenderer.BakeMesh(UnityEngine.Mesh,UnityEngine.Camera)">
@@ -32086,7 +33344,7 @@ This constructor creates a TextAsset, which is not the same as a plain text file
         <para>Creates a snapshot of TrailRenderer and stores it in mesh.</para>
       </summary>
       <param name="mesh">A static mesh that will receive the snapshot of the trail.</param>
-      <param name="camera">The camera used for determining which way view space trails will face.</param>
+      <param name="camera">The camera used for determining which way camera-space trails will face.</param>
       <param name="useTransform">Include the rotation and scale of the Transform in the baked mesh.</param>
     </member>
     <member name="M:UnityEngine.TrailRenderer.BakeMesh(UnityEngine.Mesh,UnityEngine.Camera,System.Boolean)">
@@ -32094,7 +33352,7 @@ This constructor creates a TextAsset, which is not the same as a plain text file
         <para>Creates a snapshot of TrailRenderer and stores it in mesh.</para>
       </summary>
       <param name="mesh">A static mesh that will receive the snapshot of the trail.</param>
-      <param name="camera">The camera used for determining which way view space trails will face.</param>
+      <param name="camera">The camera used for determining which way camera-space trails will face.</param>
       <param name="useTransform">Include the rotation and scale of the Transform in the baked mesh.</param>
     </member>
     <member name="M:UnityEngine.TrailRenderer.Clear">
@@ -32206,7 +33464,7 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="P:UnityEngine.Transform.position">
       <summary>
-        <para>The position of the transform in world space.</para>
+        <para>The world space position of the Transform.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Transform.right">
@@ -32594,18 +33852,11 @@ Useful for restarting a trail from a new position.</para>
       </summary>
       <param name="value"></param>
     </member>
-    <member name="?:UnityEngine.U2D.SpriteAtlasManager.atlasRequested(UnityEngine.U2D.SpriteAtlasManager/RequestAtlasCallback)">
+    <member name="?:UnityEngine.U2D.SpriteAtlasManager.atlasRequested(System.Action`2&lt;System.String,System.Action`1&lt;UnityEngine.U2D.SpriteAtlas&gt;&gt;)">
       <summary>
         <para>Trigger when any Sprite was bound to SpriteAtlas but couldn't locate the atlas asset during runtime.</para>
       </summary>
       <param name="value"></param>
-    </member>
-    <member name="T:UnityEngine.U2D.SpriteAtlasManager.RequestAtlasCallback">
-      <summary>
-        <para>Delegate type for atlas request callback.</para>
-      </summary>
-      <param name="tag">Tag of SpriteAtlas that needs to be provided by user.</param>
-      <param name="action">An Action that takes user loaded SpriteAtlas.</param>
     </member>
     <member name="T:Unity.Burst.BurstDiscardAttribute">
       <summary>
@@ -32657,20 +33908,20 @@ Useful for restarting a trail from a new position.</para>
         <para>NativeArray Unsafe Utility.</para>
       </summary>
     </member>
-    <member name="M:Unity.Collections.LowLevel.Unsafe.NativeArrayUnsafeUtility.ConvertExistingDataToNativeArray">
+    <member name="M:Unity.Collections.LowLevel.Unsafe.NativeArrayUnsafeUtility.ConvertExistingDataToNativeArray(System.Void*,System.Int32,Unity.Collections.Allocator)">
       <summary>
-        <para>ConvertExistingDataToNativeArray.</para>
+        <para>Converts an existing buffer to a NativeArray.</para>
       </summary>
-      <param name="dataPointer">Memory pointer.</param>
-      <param name="length">Length.</param>
-      <param name="allocator">Allocator.</param>
+      <param name="dataPointer">Pointer to the preallocated data.</param>
+      <param name="length">Length (in bytes) of the data.</param>
+      <param name="allocator">Allocation strategy to use.</param>
       <returns>
-        <para>Native Array.</para>
+        <para>A new NativeArray, allocated with the given strategy and wrapping the provided data.</para>
       </returns>
     </member>
     <member name="M:Unity.Collections.LowLevel.Unsafe.NativeArrayUnsafeUtility.GetUnsafeBufferPointerWithoutChecks(Unity.Collections.NativeArray`1&lt;T&gt;)">
       <summary>
-        <para>Get NativeArray memory buffer pointer without performing checks.</para>
+        <para>Gets the pointer to the data owner by the NativeArray, without performing checks.</para>
       </summary>
       <param name="nativeArray">NativeArray.</param>
       <returns>
@@ -32679,7 +33930,7 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="M:Unity.Collections.LowLevel.Unsafe.NativeArrayUnsafeUtility.GetUnsafePtr(Unity.Collections.NativeArray`1&lt;T&gt;)">
       <summary>
-        <para>Get NativeArray memory buffer.  Checks whether the native array can be written to.</para>
+        <para>Gets the pointer to the memory buffer owner by the NativeArray, performing checks on whether the native array can be written to.</para>
       </summary>
       <param name="nativeArray">NativeArray.</param>
       <returns>
@@ -32688,7 +33939,7 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="M:Unity.Collections.LowLevel.Unsafe.NativeArrayUnsafeUtility.GetUnsafeReadOnlyPtr(Unity.Collections.NativeArray`1&lt;T&gt;)">
       <summary>
-        <para>Get NativeArray memory buffer pointer.  Checks whether the native array can be read from.</para>
+        <para>Gets the pointer to the memory buffer owner by the NativeArray, performing checks on whether the native array can be read from.</para>
       </summary>
       <param name="nativeArray">NativeArray.</param>
       <returns>
@@ -32920,6 +34171,13 @@ Useful for restarting a trail from a new position.</para>
       <param name="source">Source memory pointer.</param>
       <param name="size">Size.</param>
     </member>
+    <member name="M:Unity.Collections.LowLevel.Unsafe.UnsafeUtility.PinGCArrayAndGetDataAddress">
+      <summary>
+        <para>Keeps a strong GC reference to the object and pins it. The object is guranteed to not move its memory location in a moving GC. Returns the address of the first element of the array.
+
+See Also: UnsafeUtility.ReleaseGCObject.</para>
+      </summary>
+    </member>
     <member name="M:Unity.Collections.LowLevel.Unsafe.UnsafeUtility.PinGCObjectAndGetAddress(System.Object,System.UInt64&amp;)">
       <summary>
         <para>Keeps a strong GC reference to the object and pins it. The object is guranteed to not move its memory location in a moving GC. Returns the address of the memory location of the object.
@@ -32988,8 +34246,98 @@ See Also: UnsafeUtility.ReleaseGCObject.</para>
     </member>
     <member name="T:Unity.Collections.NativeArray`1">
       <summary>
-        <para>A NativeArray exposes a buffer of native memory to managed code, making it possible to share data between managed and native.</para>
+        <para>A NativeArray exposes a buffer of native memory to managed code, making it possible to share data between managed and native without marshalling costs.</para>
       </summary>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(Unity.Collections.NativeArray`1&lt;T&gt;,Unity.Collections.NativeArray`1&lt;T&gt;)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(T[],Unity.Collections.NativeArray`1&lt;T&gt;)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(Unity.Collections.NativeArray`1&lt;T&gt;,T[])">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(Unity.Collections.NativeArray`1&lt;T&gt;,Unity.Collections.NativeArray`1&lt;T&gt;,System.Int32)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(T[],Unity.Collections.NativeArray`1&lt;T&gt;,System.Int32)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(Unity.Collections.NativeArray`1&lt;T&gt;,T[],System.Int32)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(Unity.Collections.NativeArray`1&lt;T&gt;,System.Int32,Unity.Collections.NativeArray`1&lt;T&gt;,System.Int32,System.Int32)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(T[],System.Int32,Unity.Collections.NativeArray`1&lt;T&gt;,System.Int32,System.Int32)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Copy(Unity.Collections.NativeArray`1&lt;T&gt;,System.Int32,T[],System.Int32,System.Int32)">
+      <summary>
+        <para>Copies a range of elements from a source array to a destination array, starting from the source index and copying them to the destination index.</para>
+      </summary>
+      <param name="src">The data to copy.</param>
+      <param name="dst">The array that receives the data.</param>
+      <param name="length">A 32-bit integer that represents the number of elements to copy. The integer must be equal or greater than zero.</param>
+      <param name="srcIndex">A 32-bit integer that represents the index in the srcArray at which copying begins.</param>
+      <param name="dstIndex">A 32-bit integer that represents the index in the dstArray at which storing begins.</param>
     </member>
     <member name="M:Unity.Collections.NativeArray_1.CopyFrom(T[])">
       <summary>
@@ -33015,37 +34363,50 @@ See Also: UnsafeUtility.ReleaseGCObject.</para>
       </summary>
       <param name="array">Destination array.</param>
     </member>
-    <member name="M:Unity.Collections.NativeArray_1.#ctor">
-      <summary>
-        <para>Create NativeArray.</para>
-      </summary>
-      <param name="length">Array length.</param>
-      <param name="allocator">Allocator.</param>
-      <param name="clearMemory">Should clear memory?</param>
-      <param name="array">Source array to copy elements from.</param>
-    </member>
     <member name="M:Unity.Collections.NativeArray_1.#ctor(T[],Unity.Collections.Allocator)">
       <summary>
-        <para>Create NativeArray.</para>
+        <para>Creates a new NativeArray from an existing array of elements.</para>
       </summary>
-      <param name="length">Array length.</param>
-      <param name="allocator">Allocator.</param>
-      <param name="clearMemory">Should clear memory?</param>
-      <param name="array">Source array to copy elements from.</param>
+      <param name="array">An array to copy the data from.</param>
+      <param name="allocator">The allocation strategy used for the data.</param>
     </member>
     <member name="M:Unity.Collections.NativeArray_1.#ctor(Unity.Collections.NativeArray`1&lt;T&gt;,Unity.Collections.Allocator)">
       <summary>
-        <para>Create NativeArray.</para>
+        <para>Creates a new NativeArray from an existing NativeArray.</para>
       </summary>
-      <param name="length">Array length.</param>
-      <param name="allocator">Allocator.</param>
-      <param name="clearMemory">Should clear memory?</param>
-      <param name="array">Source array to copy elements from.</param>
+      <param name="array">NativeArray to copy the data from.</param>
+      <param name="allocator">The allocation strategy used for the data.</param>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.#ctor(System.Int32,Unity.Collections.Allocator,Unity.Collections.NativeArrayOptions)">
+      <summary>
+        <para>Creates a new NativeArray allocating enough memory to fit the provided amount of elements.</para>
+      </summary>
+      <param name="length">Number of elements to be allocated.</param>
+      <param name="allocator">The allocation strategy used for the data.</param>
+      <param name="options">Options to control the behaviour of the NativeArray.</param>
     </member>
     <member name="M:Unity.Collections.NativeArray_1.Dispose">
       <summary>
-        <para>Dispose array.</para>
+        <para>Disposes the NativeArray.</para>
       </summary>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Equals(Unity.Collections.NativeArray`1&lt;T&gt;)">
+      <summary>
+        <para>Compares to NativeArray.</para>
+      </summary>
+      <param name="other">NativeArray to compare against.</param>
+      <returns>
+        <para>True in case the two NativeArray are the same, false otherwise.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.Equals(System.Object)">
+      <summary>
+        <para>Compares to NativeArray.</para>
+      </summary>
+      <param name="obj">Object to compare against.</param>
+      <returns>
+        <para>True in case the two NativeArray are the same, false otherwise.</para>
+      </returns>
     </member>
     <member name="M:Unity.Collections.NativeArray_1.GetEnumerator">
       <summary>
@@ -33053,6 +34414,14 @@ See Also: UnsafeUtility.ReleaseGCObject.</para>
       </summary>
       <returns>
         <para>Enumerator.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.Collections.NativeArray_1.GetHashCode">
+      <summary>
+        <para>Returns a hash code for the current instance.</para>
+      </summary>
+      <returns>
+        <para>Hash code.</para>
       </returns>
     </member>
     <member name="P:Unity.Collections.NativeArray_1.IsCreated">
@@ -33216,6 +34585,12 @@ In performance sensitive code it can make sense to use NativeArrayOptions.Uninit
         <para>Enumerator.</para>
       </returns>
     </member>
+    <member name="?:Unity.Collections.NativeSlice_1.implop_NativeSlice&lt;T&gt;(NativeArray&lt;T&gt;)(Unity.Collections.NativeArray`1&lt;T&gt;)">
+      <summary>
+        <para>Implicit operator for creating a NativeSlice from a NativeArray.</para>
+      </summary>
+      <param name="array">NativeArray.</param>
+    </member>
     <member name="P:Unity.Collections.NativeSlice_1.Length">
       <summary>
         <para>Number of elements in the slice.</para>
@@ -33290,6 +34665,90 @@ In performance sensitive code it can make sense to use NativeArrayOptions.Uninit
     <member name="T:Unity.Collections.WriteOnlyAttribute">
       <summary>
         <para>The WriteOnly attribute lets you mark a member of a struct used in a job as write-only.</para>
+      </summary>
+    </member>
+    <member name="T:Unity.IO.LowLevel.Unsafe.AsyncReadManager">
+      <summary>
+        <para>With the AsyncReadManager, you can perform asynchronous I/O operations through Unity's virtual file system. You can perform these operations on any thread or job.</para>
+      </summary>
+    </member>
+    <member name="M:Unity.IO.LowLevel.Unsafe.AsyncReadManager.Read(System.String,Unity.IO.LowLevel.Unsafe.ReadCommand*,System.UInt32)">
+      <summary>
+        <para>Issues an asynchronous file read operation. Returns a ReadHandle.</para>
+      </summary>
+      <param name="filename">The filename to read from.</param>
+      <param name="readCmds">A pointer to an array of ReadCommand structs that specify offset, size, and destination buffer.</param>
+      <param name="readCmdCount">The number of read commands pointed to by readCmds.</param>
+      <returns>
+        <para>Used to monitor the progress and status of the read command.</para>
+      </returns>
+    </member>
+    <member name="T:Unity.IO.LowLevel.Unsafe.ReadCommand">
+      <summary>
+        <para>Describes the offset, size, and destination buffer of a single read operation.</para>
+      </summary>
+    </member>
+    <member name="F:Unity.IO.LowLevel.Unsafe.ReadCommand.Buffer">
+      <summary>
+        <para>The buffer that receives the read data.</para>
+      </summary>
+    </member>
+    <member name="F:Unity.IO.LowLevel.Unsafe.ReadCommand.Offset">
+      <summary>
+        <para>The offset where the read begins, within the file.</para>
+      </summary>
+    </member>
+    <member name="F:Unity.IO.LowLevel.Unsafe.ReadCommand.Size">
+      <summary>
+        <para>The size of the read in bytes.</para>
+      </summary>
+    </member>
+    <member name="T:Unity.IO.LowLevel.Unsafe.ReadHandle">
+      <summary>
+        <para>You can use this handle to query the status of an asynchronous read operation. Note: To avoid a memory leak, you must call Dispose.</para>
+      </summary>
+    </member>
+    <member name="M:Unity.IO.LowLevel.Unsafe.ReadHandle.Dispose">
+      <summary>
+        <para>Disposes the ReadHandle. Use this to free up internal resources for reuse.</para>
+      </summary>
+    </member>
+    <member name="M:Unity.IO.LowLevel.Unsafe.ReadHandle.IsValid">
+      <summary>
+        <para>Check if the ReadHandle is valid.</para>
+      </summary>
+      <returns>
+        <para>True if the ReadHandle is valid.</para>
+      </returns>
+    </member>
+    <member name="P:Unity.IO.LowLevel.Unsafe.ReadHandle.JobHandle">
+      <summary>
+        <para>JobHandle that completes when the read operation completes.</para>
+      </summary>
+    </member>
+    <member name="P:Unity.IO.LowLevel.Unsafe.ReadHandle.Status">
+      <summary>
+        <para>Current state of the read operation.</para>
+      </summary>
+    </member>
+    <member name="T:Unity.IO.LowLevel.Unsafe.ReadStatus">
+      <summary>
+        <para>State of the read operation.</para>
+      </summary>
+    </member>
+    <member name="F:Unity.IO.LowLevel.Unsafe.ReadStatus.Complete">
+      <summary>
+        <para>All the ReadCommand operations completed successfully.</para>
+      </summary>
+    </member>
+    <member name="F:Unity.IO.LowLevel.Unsafe.ReadStatus.Failed">
+      <summary>
+        <para>One or more of the ReadCommand operations failed.</para>
+      </summary>
+    </member>
+    <member name="F:Unity.IO.LowLevel.Unsafe.ReadStatus.InProgress">
+      <summary>
+        <para>The read operation is in progress.</para>
       </summary>
     </member>
     <member name="?:Unity.Jobs.IJob">
@@ -33704,6 +35163,47 @@ See Also: JobHandle.CombineDependencies.</para>
     <member name="F:Unity.Jobs.LowLevel.Unsafe.ScheduleMode.Run">
       <summary>
         <para>Schedule job as independent.</para>
+      </summary>
+    </member>
+    <member name="T:Unity.Profiling.ProfilerMarker">
+      <summary>
+        <para>Performance marker used for profiling arbitrary code blocks.</para>
+      </summary>
+    </member>
+    <member name="M:Unity.Profiling.ProfilerMarker.Auto">
+      <summary>
+        <para>Creates a helper struct for the scoped using blocks.</para>
+      </summary>
+      <returns>
+        <para>IDisposable struct which calls Begin and End automatically.</para>
+      </returns>
+    </member>
+    <member name="T:Unity.Profiling.ProfilerMarker.AutoScope">
+      <summary>
+        <para>Helper IDisposable struct for use with ProfilerMarker.Auto.</para>
+      </summary>
+    </member>
+    <member name="M:Unity.Profiling.ProfilerMarker.Begin">
+      <summary>
+        <para>Begin profiling a piece of code marked with a custom name defined by this instance of ProfilerMarker.</para>
+      </summary>
+      <param name="contextUnityObject">Object associated with the operation.</param>
+    </member>
+    <member name="M:Unity.Profiling.ProfilerMarker.Begin(UnityEngine.Object)">
+      <summary>
+        <para>Begin profiling a piece of code marked with a custom name defined by this instance of ProfilerMarker.</para>
+      </summary>
+      <param name="contextUnityObject">Object associated with the operation.</param>
+    </member>
+    <member name="M:Unity.Profiling.ProfilerMarker.#ctor(System.String)">
+      <summary>
+        <para>Constructs a new performance marker for code instrumentation.</para>
+      </summary>
+      <param name="name">Marker name.</param>
+    </member>
+    <member name="M:Unity.Profiling.ProfilerMarker.End">
+      <summary>
+        <para>End profiling a piece of code marked with a custom name defined by this instance of ProfilerMarker.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.UnityAPICompatibilityVersionAttribute">
@@ -34184,6 +35684,12 @@ See Also: JobHandle.CombineDependencies.</para>
       </summary>
       <param name="lhs"></param>
       <param name="rhs"></param>
+    </member>
+    <member name="?:UnityEngine.Vector2Int.op_Explicit(UnityEngine.Vector2Int)">
+      <summary>
+        <para>Converts a Vector2Int to a Vector3Int.</para>
+      </summary>
+      <param name="v"></param>
     </member>
     <member name="?:UnityEngine.Vector2Int.op_Minus(UnityEngine.Vector2Int,UnityEngine.Vector2Int)">
       <summary>
@@ -34769,6 +36275,12 @@ See Also: JobHandle.CombineDependencies.</para>
       <param name="lhs"></param>
       <param name="rhs"></param>
     </member>
+    <member name="?:UnityEngine.Vector3Int.op_Explicit(UnityEngine.Vector3Int)">
+      <summary>
+        <para>Converts a Vector3Int to a Vector2Int.</para>
+      </summary>
+      <param name="v"></param>
+    </member>
     <member name="?:UnityEngine.Vector3Int.op_Minus(UnityEngine.Vector3Int,UnityEngine.Vector3Int)">
       <summary>
         <para>Subtracts one vector from another.</para>
@@ -35014,16 +36526,16 @@ See Also: JobHandle.CombineDependencies.</para>
       <param name="target"></param>
       <param name="maxDistanceDelta"></param>
     </member>
-    <member name="M:UnityEngine.Vector4.Normalize">
-      <summary>
-        <para>Makes this vector have a magnitude of 1.</para>
-      </summary>
-    </member>
     <member name="M:UnityEngine.Vector4.Normalize(UnityEngine.Vector4)">
       <summary>
         <para></para>
       </summary>
       <param name="a"></param>
+    </member>
+    <member name="M:UnityEngine.Vector4.Normalize">
+      <summary>
+        <para>Makes this vector have a magnitude of 1.</para>
+      </summary>
     </member>
     <member name="?:UnityEngine.Vector4.op_Divide(UnityEngine.Vector4,System.Single)">
       <summary>
@@ -35163,6 +36675,11 @@ See Also: JobHandle.CombineDependencies.</para>
     <member name="T:UnityEngine.WaitForSecondsRealtime">
       <summary>
         <para>Suspends the coroutine execution for the given amount of seconds using unscaled time.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WaitForSecondsRealtime.waitTime">
+      <summary>
+        <para>The given amount of seconds that the yield instruction will wait for.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.WaitForSecondsRealtime.#ctor(System.Single)">
@@ -35602,7 +37119,7 @@ The GrammarRecognizer uses Extensible Markup Language (XML) elements and attribu
     </member>
     <member name="F:UnityEngine.Windows.Speech.SemanticMeaning.key">
       <summary>
-        <para>A key of semaning meaning.</para>
+        <para>A key of semantic meaning.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Windows.Speech.SemanticMeaning.values">

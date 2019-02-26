@@ -102,6 +102,16 @@
         <para>Hexagonal layout for cells in the GridLayout.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.GridLayout.CellLayout.Isometric">
+      <summary>
+        <para>Isometric layout for cells in the GridLayout.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.GridLayout.CellLayout.IsometricZAsY">
+      <summary>
+        <para>Isometric layout for cells in the GridLayout where any Z cell value set will be added as a Y value.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.GridLayout.CellLayout.Rectangle">
       <summary>
         <para>Rectangular layout for cells in the GridLayout.</para>

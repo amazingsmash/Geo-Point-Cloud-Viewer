@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{27460EF9-FEB8-4E33-9CB4-BFE571217DDC}|Default">
+  <MonoDevelop.Ide.ItemProperties.UnityTCPComms PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Source Not Available">
+    <Files>
+      <File FileName="Program.cs" Line="88" Column="14" />
+      <File FileName="TCPEnd.cs" Line="116" Column="21" />
+      <File FileName="Source Not Available" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="UnityTCPComms" expanded="True">
+            <Node name="UnityTCPComms" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

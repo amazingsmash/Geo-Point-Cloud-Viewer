@@ -56,7 +56,7 @@
     </member>
     <member name="F:UnityEngine.WindZoneMode.Directional">
       <summary>
-        <para>Wind zone affects the entire scene in one direction.</para>
+        <para>Wind zone affects the entire Scene in one direction.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.WindZoneMode.Spherical">

@@ -11,12 +11,7 @@
     </member>
     <member name="P:UnityEngine.AssetBundle.isStreamedSceneAssetBundle">
       <summary>
-        <para>Return true if the AssetBundle is a streamed scene AssetBundle.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.AssetBundle.mainAsset">
-      <summary>
-        <para>Main asset that was supplied when building the asset bundle (Read Only).</para>
+        <para>Return true if the AssetBundle is a streamed Scene AssetBundle.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.AssetBundle.Contains(System.String)">
@@ -40,7 +35,7 @@
     </member>
     <member name="M:UnityEngine.AssetBundle.GetAllScenePaths">
       <summary>
-        <para>Return all the scene asset paths (paths to *.unity assets) in the AssetBundle.</para>
+        <para>Return all the Scene asset paths (paths to *.unity assets) in the AssetBundle.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.AssetBundle.LoadAllAssets(System.Type)">
@@ -210,7 +205,7 @@
       </summary>
       <param name="stream">The managed Stream object. Unity calls Read(), Seek() and the Length property on this object to load the AssetBundle data.</param>
       <param name="crc">An optional CRC-32 checksum of the uncompressed content.</param>
-      <param name="managedReadBufferSize">An optional overide for the size of the read buffer size used whilst loading data. The default size is 32KB.</param>
+      <param name="managedReadBufferSize">You can use this to override the size of the read buffer Unity uses while loading data. The default size is 32KB.</param>
       <returns>
         <para>The loaded AssetBundle object or null when the object fails to load.</para>
       </returns>
@@ -221,10 +216,20 @@
       </summary>
       <param name="stream">The managed Stream object. Unity calls Read(), Seek() and the Length property on this object to load the AssetBundle data.</param>
       <param name="crc">An optional CRC-32 checksum of the uncompressed content.</param>
-      <param name="managedReadBufferSize">An optional overide for the size of the read buffer size used whilst loading data. The default size is 32KB.</param>
+      <param name="managedReadBufferSize">You can use this to override the size of the read buffer Unity uses while loading data. The default size is 32KB.</param>
       <returns>
         <para>Asynchronous create request for an AssetBundle. Use AssetBundleCreateRequest.assetBundle property to get an AssetBundle once it is loaded.</para>
       </returns>
+    </member>
+    <member name="M:UnityEngine.AssetBundle.RecompressAssetBundleAsync(System.String,System.String,UnityEngine.BuildCompression,System.UInt32,UnityEngine.ThreadPriority)">
+      <summary>
+        <para>Asynchronously recompress a downloaded/stored AssetBundle from one BuildCompression to another.</para>
+      </summary>
+      <param name="inputPath">Path to the AssetBundle to recompress.</param>
+      <param name="outputPath">Path to the recompressed AssetBundle to be generated. Can be the same as inputPath.</param>
+      <param name="method">The compression method, level and blocksize to use during recompression. Only some BuildCompression types are supported (see note).</param>
+      <param name="expectedCRC">CRC of the AssetBundle to test against. Testing this requires additional file reading and computation. Pass in 0 to skip this check.</param>
+      <param name="priority">The priority at which the recompression operation should run. This sets thread priority during the operation and does not effect the order in which operations are performed. Recompression operations run on a background worker thread.</param>
     </member>
     <member name="M:UnityEngine.AssetBundle.Unload(System.Boolean)">
       <summary>
@@ -246,6 +251,81 @@
     <member name="P:UnityEngine.AssetBundleCreateRequest.assetBundle">
       <summary>
         <para>Asset object being loaded (Read Only).</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.AssetBundleLoadResult">
+      <summary>
+        <para>The result of an Asset Bundle Load or Recompress Operation.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.AlreadyLoaded">
+      <summary>
+        <para>The Asset Bundle is already loaded.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.Cancelled">
+      <summary>
+        <para>The operation was cancelled.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.FailedCache">
+      <summary>
+        <para>The Asset Bundle was not successfully cached.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.FailedDecompression">
+      <summary>
+        <para>Failed to decompress the Asset Bundle.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.FailedDeleteRecompressionTarget">
+      <summary>
+        <para>The target path given for the Recompression operation could not be deleted for swap with recompressed bundle file.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.FailedRead">
+      <summary>
+        <para>Failed to read the Asset Bundle file.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.FailedWrite">
+      <summary>
+        <para>Failed to write to the file system.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.NoSerializedData">
+      <summary>
+        <para>The Asset Bundle does not contain any serialized data. It may be empty, or corrupt.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.NotCompatible">
+      <summary>
+        <para>The AssetBundle is incompatible with this version of Unity.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.NotMatchingCrc">
+      <summary>
+        <para>The decompressed Asset data did not match the precomputed CRC. This may suggest that the AssetBundle did not download correctly.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.NotValidAssetBundle">
+      <summary>
+        <para>This does not appear to be a valid Asset Bundle.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.RecompressionTargetExistsButNotArchive">
+      <summary>
+        <para>The target path given for the Recompression operation exists but is not an Archive container.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.RecompressionTargetIsLoaded">
+      <summary>
+        <para>The target path given for the Recompression operation is an Archive that is currently loaded.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.AssetBundleLoadResult.Success">
+      <summary>
+        <para>The operation completed successfully.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.AssetBundleManifest">
@@ -293,6 +373,36 @@
         <para>Array of asset bundle names this asset bundle depends on.</para>
       </returns>
     </member>
+    <member name="T:UnityEngine.AssetBundleRecompressOperation">
+      <summary>
+        <para>Asynchronous AssetBundle recompression from one compression method and level to another.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.AssetBundleRecompressOperation.humanReadableResult">
+      <summary>
+        <para>A string describing the recompression operation result (Read Only).</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.AssetBundleRecompressOperation.inputPath">
+      <summary>
+        <para>Path of the AssetBundle being recompressed (Read Only).</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.AssetBundleRecompressOperation.outputPath">
+      <summary>
+        <para>Path of the resulting recompressed AssetBundle (Read Only).</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.AssetBundleRecompressOperation.result">
+      <summary>
+        <para>Result of the recompression operation.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.AssetBundleRecompressOperation.success">
+      <summary>
+        <para>True if the recompress operation is complete and was successful, otherwise false (Read Only).</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.AssetBundleRequest">
       <summary>
         <para>Asynchronous load request from an AssetBundle.</para>
@@ -306,6 +416,71 @@
     <member name="P:UnityEngine.AssetBundleRequest.asset">
       <summary>
         <para>Asset object being loaded (Read Only).</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.BuildCompression">
+      <summary>
+        <para>Contains information about compression methods, compression levels and block sizes that are supported by Asset Bundle compression at build time and recompression at runtime.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.BuildCompression.LZ4">
+      <summary>
+        <para>LZ4HC "Chunk Based" Compression.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.BuildCompression.LZ4Runtime">
+      <summary>
+        <para>LZ4 Compression for runtime recompression.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.BuildCompression.LZMA">
+      <summary>
+        <para>LZMA Compression.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.BuildCompression.Uncompressed">
+      <summary>
+        <para>Uncompressed Asset Bundle.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.BuildCompression.UncompressedRuntime">
+      <summary>
+        <para>Uncompressed Asset Bundle.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.CompressionLevel">
+      <summary>
+        <para>Compression Levels relate to how much time should be spent compressing Assets into an Asset Bundle.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.CompressionLevel.None">
+      <summary>
+        <para>No compression.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.CompressionType">
+      <summary>
+        <para>Compression Method for Asset Bundles.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.CompressionType.Lz4">
+      <summary>
+        <para>LZ4 compression results in larger compressed files than LZMA, but does not require the entire bundle to be decompressed before use.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.CompressionType.Lz4HC">
+      <summary>
+        <para>LZ4HC is a high compression variant of LZ4. LZ4HC compression results in larger compressed files than LZMA, but does not require the entire bundle to be decompressed before use.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.CompressionType.Lzma">
+      <summary>
+        <para>LZMA compression results in smaller compressed Asset Bundles but they must be entirely decompressed before use.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.CompressionType.None">
+      <summary>
+        <para>Uncompressed Asset Bundles are larger than compressed Asset Bundles, but they are the fastest to access once downloaded.</para>
       </summary>
     </member>
     <member name="A:UnityEngine.AssetBundleModule">

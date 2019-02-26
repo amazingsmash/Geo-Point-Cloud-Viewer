@@ -81,10 +81,9 @@ namespace UnityTCPComms
             client.ConnectToTCPServer();
 
             Thread.Sleep(2000);
-
             while (true)
             {
-                client.SendMessage("Client msg.");
+                //client.SendMessage("Client msg.");
                 Thread.Sleep(1000);
             }
         }

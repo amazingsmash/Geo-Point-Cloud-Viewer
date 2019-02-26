@@ -1,9 +1,10 @@
 ﻿<Properties StartupConfiguration="{27460EF9-FEB8-4E33-9CB4-BFE571217DDC}|Default">
   <MonoDevelop.Ide.ItemProperties.UnityTCPComms PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Source Not Available">
     <Files>
-      <File FileName="Program.cs" Line="80" Column="1" />
+      <File FileName="Program.cs" Line="88" Column="14" />
       <File FileName="TCPEnd.cs" Line="116" Column="21" />
+      <File FileName="Source Not Available" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,9 +21,7 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/UnityTCPComms/UnityTCPComms/Program.cs" relfile="Program.cs" line="80" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

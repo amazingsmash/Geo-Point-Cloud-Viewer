@@ -729,27 +729,27 @@
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.dryLevel">
       <summary>
-        <para>Mix level of dry signal in output in mB. Ranges from -10000.0 to 0.0. Default is 0.</para>
+        <para>Mix level of dry signal in output in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.hfReference">
       <summary>
-        <para>Reference high frequency in Hz. Ranges from 1000.0 to 20000.0. Default is 5000.0.</para>
+        <para>Reference high frequency in hertz (Hz). Ranges from 1000.0 to 20000.0. Default is 5000.0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.lfReference">
       <summary>
-        <para>Reference low-frequency in Hz. Ranges from 20.0 to 1000.0. Default is 250.0.</para>
+        <para>Reference low-frequency in hertz (Hz). Ranges from 20.0 to 1000.0. Default is 250.0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.reflectionsDelay">
       <summary>
-        <para>Late reverberation level relative to room effect in mB. Ranges from -10000.0 to 2000.0. Default is 0.0.</para>
+        <para>Late reverberation level relative to room effect in millibels (mB). Ranges from -10000.0 to 2000.0. Default is 0.0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.reflectionsLevel">
       <summary>
-        <para>Early reflections level relative to room effect in mB. Ranges from -10000.0 to 1000.0. Default is -10000.0.</para>
+        <para>Early reflections level relative to room effect in millibels (mB). Ranges from -10000.0 to 1000.0. Default is -10000.0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.reverbDelay">
@@ -759,7 +759,7 @@
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.reverbLevel">
       <summary>
-        <para>Late reverberation level relative to room effect in mB. Ranges from -10000.0 to 2000.0. Default is 0.0.</para>
+        <para>Late reverberation level relative to room effect in millibels (mB). Ranges from -10000.0 to 2000.0. Default is 0.0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.reverbPreset">
@@ -769,17 +769,17 @@
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.room">
       <summary>
-        <para>Room effect level at low frequencies in mB. Ranges from -10000.0 to 0.0. Default is 0.0.</para>
+        <para>Room effect level at low frequencies in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.roomHF">
       <summary>
-        <para>Room effect high-frequency level re. low frequency level in mB. Ranges from -10000.0 to 0.0. Default is 0.0.</para>
+        <para>Room effect high-frequency level re. low frequency level in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.0.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbFilter.roomLF">
       <summary>
-        <para>Room effect low-frequency level in mB. Ranges from -10000.0 to 0.0. Default is 0.0.</para>
+        <para>Room effect low-frequency level in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.0.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.AudioReverbPreset">
@@ -929,7 +929,7 @@
     </member>
     <member name="T:UnityEngine.AudioReverbZone">
       <summary>
-        <para>Reverb Zones are used when you want to create location based ambient effects in the scene.</para>
+        <para>Reverb Zones are used when you want to create location based ambient effects in the Scene.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.AudioReverbZone.decayHFRatio">
@@ -1789,9 +1789,29 @@
         <para>A structure describing the webcam device.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.WebCamDevice.availableResolutions">
+      <summary>
+        <para>Possible WebCamTexture resolutions for this device.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WebCamDevice.depthCameraName">
+      <summary>
+        <para>A string identifier used to create a depth data based WebCamTexture.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WebCamDevice.isAutoFocusPointSupported">
+      <summary>
+        <para>Returns true if the camera supports automatic focusing on points of interest and false otherwise.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.WebCamDevice.isFrontFacing">
       <summary>
         <para>True if camera faces the same direction a screen does, false otherwise.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WebCamDevice.kind">
+      <summary>
+        <para>Property of type WebCamKind denoting the kind of webcam device.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.WebCamDevice.name">
@@ -1799,9 +1819,34 @@
         <para>A human-readable name of the device. Varies across different systems.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.WebCamKind">
+      <summary>
+        <para>Enum representing the different types of web camera device.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WebCamKind.ColorAndDepth">
+      <summary>
+        <para>Camera which supports synchronized color and depth data (currently these are only dual back and true depth cameras on latest iOS devices).</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WebCamKind.Telephoto">
+      <summary>
+        <para>A Telephoto camera device. These devices have a longer focal length than a wide-angle camera.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WebCamKind.WideAngle">
+      <summary>
+        <para>Wide angle (default) camera.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.WebCamTexture">
       <summary>
         <para>WebCam Textures are textures onto which the live video input is rendered.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WebCamTexture.autoFocusPoint">
+      <summary>
+        <para>This property allows you to set/get the auto focus point of the camera. This works only on Android and iOS devices.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.WebCamTexture.deviceName">
@@ -1817,6 +1862,11 @@
     <member name="P:UnityEngine.WebCamTexture.didUpdateThisFrame">
       <summary>
         <para>Did the video buffer update this frame?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WebCamTexture.isDepth">
+      <summary>
+        <para>This property is true if the texture is based on depth data.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.WebCamTexture.isPlaying">

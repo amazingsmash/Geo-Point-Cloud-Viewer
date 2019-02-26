@@ -167,7 +167,7 @@
 the .audioClip property defaults to 3D.</param>
       <param name="stream">Sets whether the clip should be completely downloaded before it's ready to play (false) or the stream can be played even if only part of the clip is downloaded (true).
 The latter will disable seeking on the clip (with .time and/or .timeSamples).</param>
-      <param name="audioType">The AudioType of the content your downloading. If this is not set Unity will try to determine the type from URL.</param>
+      <param name="audioType">The AudioType of the content you are downloading. If this is not set Unity will try to determine the type from URL.</param>
       <returns>
         <para>The returned AudioClip.</para>
       </returns>
@@ -180,7 +180,7 @@ The latter will disable seeking on the clip (with .time and/or .timeSamples).</p
 the .audioClip property defaults to 3D.</param>
       <param name="stream">Sets whether the clip should be completely downloaded before it's ready to play (false) or the stream can be played even if only part of the clip is downloaded (true).
 The latter will disable seeking on the clip (with .time and/or .timeSamples).</param>
-      <param name="audioType">The AudioType of the content your downloading. If this is not set Unity will try to determine the type from URL.</param>
+      <param name="audioType">The AudioType of the content you are downloading. If this is not set Unity will try to determine the type from URL.</param>
       <returns>
         <para>The returned AudioClip.</para>
       </returns>
@@ -193,7 +193,7 @@ The latter will disable seeking on the clip (with .time and/or .timeSamples).</p
 the .audioClip property defaults to 3D.</param>
       <param name="stream">Sets whether the clip should be completely downloaded before it's ready to play (false) or the stream can be played even if only part of the clip is downloaded (true).
 The latter will disable seeking on the clip (with .time and/or .timeSamples).</param>
-      <param name="audioType">The AudioType of the content your downloading. If this is not set Unity will try to determine the type from URL.</param>
+      <param name="audioType">The AudioType of the content you are downloading. If this is not set Unity will try to determine the type from URL.</param>
       <returns>
         <para>The returned AudioClip.</para>
       </returns>

@@ -4,27 +4,27 @@
     <assembly>
       <name>UnityEngine.UIElementsModule</name>
     </assembly>
-    <member name="T:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.StatusFlags">
+    <member name="T:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.StatusFlags">
       <summary>
         <para>Status of the menu item.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.StatusFlags.Checked">
+    <member name="F:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.StatusFlags.Checked">
       <summary>
         <para>The item is displayed with a checkmark.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.StatusFlags.Disabled">
+    <member name="F:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.StatusFlags.Disabled">
       <summary>
         <para>The item is disabled and is not be selectable by the user.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.StatusFlags.Hidden">
+    <member name="F:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.StatusFlags.Hidden">
       <summary>
         <para>The item is not displayed.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.StatusFlags.Normal">
+    <member name="F:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.StatusFlags.Normal">
       <summary>
         <para>The item is displayed normally.</para>
       </summary>
@@ -39,97 +39,129 @@
         <para>Constructor. Avoid newing events. Instead, use GetPooled() to get an event from a pool of reusable events.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.BaseControl`1">
+    <member name="T:UnityEngine.Experimental.UIElements.BaseField`1">
       <summary>
         <para>Abstract base class for controls.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.BaseControl_1.value">
+    <member name="P:UnityEngine.Experimental.UIElements.BaseField_1.value">
       <summary>
-        <para>The value associated with the control.</para>
+        <para>The value associated with the field.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.BaseControl`1.BaseControlUxmlTraits">
+    <member name="M:UnityEngine.Experimental.UIElements.BaseField_1.SetValueWithoutNotify(T)">
       <summary>
-        <para>UxmlTraits for the BaseControl.</para>
+        <para>Allow to set a value without being of the change, if any.</para>
+      </summary>
+      <param name="newValue">New Value to set.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.BaseField`1.UxmlTraits">
+      <summary>
+        <para>UxmlTraits for the BaseField.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.BaseControl_1.BaseControlUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.BaseField_1.UxmlTraits.uxmlChildElementsDescription">
       <summary>
-        <para>Returns an empty enumerable, as controls generally do not have children.</para>
+        <para>Enumerator to get the child elements of the UxmlTraits of BaseField.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.BaseControl_1.BaseControlUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.BaseField_1.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.BaseTextControl`1">
+    <member name="T:UnityEngine.Experimental.UIElements.BaseSlider`1">
       <summary>
-        <para>Abstract base class for controls containing a text property.</para>
+        <para>This is a base class for the Slider fields.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.BaseTextControl_1.text">
+    <member name="P:UnityEngine.Experimental.UIElements.BaseSlider_1.direction">
       <summary>
-        <para>The text associated with the control.</para>
+        <para>This is the actual property to contain the direction of the slider.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.BaseTextControl_1.value">
+    <member name="P:UnityEngine.Experimental.UIElements.BaseSlider_1.highValue">
       <summary>
-        <para>The value associated with the control.</para>
+        <para>This is the maximum value that the slider encodes.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.BaseTextControl`1.BaseTextControlUxmlTraits">
+    <member name="P:UnityEngine.Experimental.UIElements.BaseSlider_1.lowValue">
       <summary>
-        <para>UxmlTraits for the BaseTextControl.</para>
+        <para>This is the minimum value that the slider encodes.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.BaseTextControl_1.BaseTextControlUxmlTraits.#ctor">
+    <member name="P:UnityEngine.Experimental.UIElements.BaseSlider_1.pageSize">
+      <summary>
+        <para>This is a generic page size used to change the value when clicking in the slider.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.BaseSlider_1.range">
+      <summary>
+        <para>This is the range from the minimum value to the maximum value of the slider.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.BaseSlider_1.value">
+      <summary>
+        <para>The actual value of the slider.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.BaseSlider_1.AdjustDragElement(System.Single)">
+      <summary>
+        <para>Method used to adjust the dragelement. Mainly used in a scroller.</para>
+      </summary>
+      <param name="factor">The factor used to adjust the drag element, where a value &gt; 1 will make it invisible.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.BindableElement">
+      <summary>
+        <para>Element that can be bound to a property.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.BindableElement.binding">
+      <summary>
+        <para>Binding object that will be updated.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.BindableElement.bindingPath">
+      <summary>
+        <para>Path of the target property to be bound.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.BindableElement.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.BaseTextElement">
+    <member name="T:UnityEngine.Experimental.UIElements.BindableElement.UxmlFactory">
       <summary>
-        <para>Abstract base class for VisualElement containing text.</para>
+        <para>Instantiates a BindableElement using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.BaseTextElement.text">
-      <summary>
-        <para>The text associated with the element.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.BaseTextElement.BaseTextElementUxmlTraits">
-      <summary>
-        <para>UxmlTraits for the BaseTextElement.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.BaseTextElement.BaseTextElementUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for BasetextElement properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.BaseTextElement.BaseTextElementUxmlTraits.uxmlChildElementsDescription">
-      <summary>
-        <para>Returns an empty enumerable, as text elements generally do not have children.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.BaseTextElement.BaseTextElementUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.BindableElement.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.BaseTextElement.BaseTextElementUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="T:UnityEngine.Experimental.UIElements.BindableElement.UxmlTraits">
       <summary>
-        <para>Initialize BaseTextElement properties using values from the attribute bag.</para>
+        <para>UxmlTraits for the BindableElement.</para>
       </summary>
-      <param name="ve">The object to initialize.</param>
-      <param name="bag">The attribute bag.</param>
-      <param name="cc">The creation context; unused.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.BindableElement.UxmlTraits.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.BindableElement.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+      <summary>
+        <para>Initialize EnumField properties using values from the attribute bag.</para>
+      </summary>
+      <param name="ve"></param>
+      <param name="bag"></param>
+      <param name="cc"></param>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.BlurEvent">
       <summary>
-        <para>Event sent immediately after an element has lost focus. Capturable, does not bubbles, non-cancellable.</para>
+        <para>Event sent immediately after an element has lost focus. This event trickles down, it does not bubble up, and it cannot be cancelled.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.BlurEvent.#ctor">
@@ -142,32 +174,32 @@
         <para>Styled visual element to match the IMGUI Box Style.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Box.BoxFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.Box.UxmlFactory">
       <summary>
         <para>Instantiates a Box using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Box.BoxFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Box.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Button.ButtonFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.Button.UxmlFactory">
       <summary>
         <para>Instantiates a Button using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Button.ButtonFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Button.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Button.ButtonUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.Button.UxmlTraits">
       <summary>
         <para>UxmlTraits for the UI.Button.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Button.ButtonUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Button.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
@@ -183,70 +215,61 @@
       </summary>
       <param name="evt">The event to handle.</param>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.HasBubbleHandlers">
+    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.HasBubbleUpHandlers">
       <summary>
-        <para>Return true if event handlers for the event propagation bubble up phase have been attached on this object.</para>
+        <para>Return true if event handlers for the event propagation BubbleUp phase have been attached on this object.</para>
       </summary>
       <returns>
-        <para>True if object has event handlers for the bubble up phase.</para>
+        <para>True if object has event handlers for the BubbleUp phase.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.HasCaptureHandlers">
+    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.HasTrickleDownHandlers">
       <summary>
-        <para>Return true if event handlers for the event propagation capture phase have been attached on this object.</para>
+        <para>Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object.</para>
       </summary>
       <returns>
-        <para>True if object has event handlers for the capture phase.</para>
+        <para>True if object has event handlers for the TrickleDown phase.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.RegisterCallback(UnityEngine.Experimental.UIElements.EventCallback`1&lt;TEventType&gt;,UnityEngine.Experimental.UIElements.Capture)">
+    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.RegisterCallback(UnityEngine.Experimental.UIElements.EventCallback`1&lt;TEventType&gt;,UnityEngine.Experimental.UIElements.TrickleDown)">
       <summary>
-        <para>Add an event handler on the instance. If the handler has already been registered on the same phase (capture or bubbling), this will have no effect.</para>
+        <para>Adds an event handler to the instance. If the event handler has already been registered for the same phase (either TrickleDown or BubbleUp) then this method has no effect.</para>
       </summary>
       <param name="callback">The event handler to add.</param>
-      <param name="useCapture">By default the callback will be called during the bubbling phase. Pass Capture.Capture to have the callback called during the capture phase instead.</param>
+      <param name="useTrickleDown">By default, this callback is called during the BubbleUp phase. Pass TrickleDown.TrickleDown to call this callback during the TrickleDown phase.</param>
       <param name="userArgs">Data to pass to the callback.</param>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.RegisterCallback(UnityEngine.Experimental.UIElements.EventCallback`2&lt;TEventType,TUserArgsType&gt;,TUserArgsType,UnityEngine.Experimental.UIElements.Capture)">
+    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.RegisterCallback(UnityEngine.Experimental.UIElements.EventCallback`2&lt;TEventType,TUserArgsType&gt;,TUserArgsType,UnityEngine.Experimental.UIElements.TrickleDown)">
       <summary>
-        <para>Add an event handler on the instance. If the handler has already been registered on the same phase (capture or bubbling), this will have no effect.</para>
+        <para>Adds an event handler to the instance. If the event handler has already been registered for the same phase (either TrickleDown or BubbleUp) then this method has no effect.</para>
       </summary>
       <param name="callback">The event handler to add.</param>
-      <param name="useCapture">By default the callback will be called during the bubbling phase. Pass Capture.Capture to have the callback called during the capture phase instead.</param>
+      <param name="useTrickleDown">By default, this callback is called during the BubbleUp phase. Pass TrickleDown.TrickleDown to call this callback during the TrickleDown phase.</param>
       <param name="userArgs">Data to pass to the callback.</param>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.UnregisterCallback(UnityEngine.Experimental.UIElements.EventCallback`1&lt;TEventType&gt;,UnityEngine.Experimental.UIElements.Capture)">
+    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.SendEvent(UnityEngine.Experimental.UIElements.EventBase)">
+      <summary>
+        <para>Sends an event to the event handler.</para>
+      </summary>
+      <param name="e">The event to send.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.UnregisterCallback(UnityEngine.Experimental.UIElements.EventCallback`1&lt;TEventType&gt;,UnityEngine.Experimental.UIElements.TrickleDown)">
       <summary>
         <para>Remove callback from the instance.</para>
       </summary>
       <param name="callback">The callback to remove.</param>
-      <param name="useCapture">Select wether the callback should be removed from the capture or the bubbling phase.</param>
+      <param name="useTrickleDown">Set this parameter to true to remove the callback from the TrickleDown phase. Set this parameter to false to remove the callback from the BubbleUp phase.</param>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.UnregisterCallback(UnityEngine.Experimental.UIElements.EventCallback`2&lt;TEventType,TUserArgsType&gt;,UnityEngine.Experimental.UIElements.Capture)">
+    <member name="M:UnityEngine.Experimental.UIElements.CallbackEventHandler.UnregisterCallback(UnityEngine.Experimental.UIElements.EventCallback`2&lt;TEventType,TUserArgsType&gt;,UnityEngine.Experimental.UIElements.TrickleDown)">
       <summary>
         <para>Remove callback from the instance.</para>
       </summary>
       <param name="callback">The callback to remove.</param>
-      <param name="useCapture">Select wether the callback should be removed from the capture or the bubbling phase.</param>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Capture">
-      <summary>
-        <para>Used to specify the phases where an event handler should be executed.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.Capture.Capture">
-      <summary>
-        <para>The event handler should be executed during the capture and the target phases.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.Capture.NoCapture">
-      <summary>
-        <para>The event handler should be executed during the target and bubble up phases.</para>
-      </summary>
+      <param name="useTrickleDown">Set this parameter to true to remove the callback from the TrickleDown phase. Set this parameter to false to remove the callback from the BubbleUp phase.</param>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.ChangeEvent`1">
       <summary>
-        <para>Sends an event when a value from a field changes.</para>
+        <para>Sends an event when a value in a field changes.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.ChangeEvent_1.newValue">
@@ -266,12 +289,12 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.ChangeEvent_1.GetPooled(T,T)">
       <summary>
-        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
-      <param name="previousValue"></param>
-      <param name="newValue"></param>
+      <param name="previousValue">The previous value.</param>
+      <param name="newValue">The new value.</param>
       <returns>
-        <para>An event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.ChangeEvent_1.Init">
@@ -311,27 +334,27 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.CommandEventBase_1.GetPooled(UnityEngine.Event)">
       <summary>
-        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="commandName">The command name.</param>
       <param name="systemEvent">An IMGUI command event.</param>
       <returns>
-        <para>An event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.CommandEventBase_1.GetPooled(System.String)">
       <summary>
-        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="commandName">The command name.</param>
       <param name="systemEvent">An IMGUI command event.</param>
       <returns>
-        <para>An event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.CommandEventBase_1.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.ContextClickEvent">
@@ -344,184 +367,6 @@
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ContextualMenu">
-      <summary>
-        <para>A contextual menu.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.AppendAction(System.String,System.Action`1&lt;UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction&gt;,System.Func`2&lt;UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction,UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction/StatusFlags&gt;,System.Object)">
-      <summary>
-        <para>Add an item that will execute an action in the contextual menu. The item is added at the end of the current item list.</para>
-      </summary>
-      <param name="actionName">Name of the item. This name will be displayed in the contextual menu.</param>
-      <param name="action">Callback to execute when the user selects this item in the menu.</param>
-      <param name="actionStatusCallback">Callback to execute to determine the status of the item.</param>
-      <param name="userData">An object that will be stored in the userData property of the MenuAction item.</param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.AppendSeparator()">
-      <summary>
-        <para>Add a separator line in the menu. The separator is added at the end of the current item list.</para>
-      </summary>
-      <param name="subMenuPath">The submenu path where the separator will be added. Path components are delimited by forward slashes ('/').</param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.AppendSeparator(System.String)">
-      <summary>
-        <para>Add a separator line in the menu. The separator is added at the end of the current item list.</para>
-      </summary>
-      <param name="subMenuPath">The submenu path where the separator will be added. Path components are delimited by forward slashes ('/').</param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.#ctor">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ContextualMenu.EventInfo">
-      <summary>
-        <para>A class holding information about the event that triggered the display of the contextual menu.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ContextualMenu.EventInfo.localMousePosition">
-      <summary>
-        <para>If the triggering event was a mouse event, this property is the mouse position. The position is expressed using the coordinate system of the element that received the mouse event. Otherwise this property is zero.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ContextualMenu.EventInfo.modifiers">
-      <summary>
-        <para>If modifier keys (Alt, Control, Shift, Windows/Command) were pressed to trigger the display of the contextual menu, this property lists the modifier keys.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ContextualMenu.EventInfo.mousePosition">
-      <summary>
-        <para>If the triggering event was a mouse event, this property is the mouse position expressed using the global coordinate system. Otherwise this property is zero.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.EventInfo.#ctor(UnityEngine.Experimental.UIElements.EventBase)">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-      <param name="e"></param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.InsertAction(System.Int32,System.String,System.Action`1&lt;UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction&gt;,System.Func`2&lt;UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction,UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction/StatusFlags&gt;,System.Object)">
-      <summary>
-        <para>Add an item that will execute an action in the contextual menu. The item is added at the end of the specified index in the list.</para>
-      </summary>
-      <param name="actionName">Name of the item. This name will be displayed in the contextual menu.</param>
-      <param name="action">Callback to execute when the user selects this item in the menu.</param>
-      <param name="actionStatusCallback">Callback to execute to determine the status of the item.</param>
-      <param name="atIndex">Index where the item should be inserted.</param>
-      <param name="userData">An object that will be stored in the userData property of the MenuAction item. This object is accessible through the action callback.</param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.InsertSeparator(System.String,System.Int32)">
-      <summary>
-        <para>Add a separator line in the menu. The separator is added at the end of the specified index in the list.</para>
-      </summary>
-      <param name="atIndex">Index where the separator should be inserted.</param>
-      <param name="subMenuPath">The submenu path where the separator is added. Path components are delimited by forward slashes ('/').</param>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction">
-      <summary>
-        <para>A menu action item.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.eventInfo">
-      <summary>
-        <para>Provides information on the event that triggered the contextual menu.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.name">
-      <summary>
-        <para>The name of the item. The name can be prefixed by its submenu path. Path components are delimited by forward slashes ('/').</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.status">
-      <summary>
-        <para>The status of the item.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.userData">
-      <summary>
-        <para>The userData object stored by the constructor.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.AlwaysDisabled(UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction)">
-      <summary>
-        <para>Status callback that always returns StatusFlags.Disabled.</para>
-      </summary>
-      <param name="a">Unused parameter.</param>
-      <returns>
-        <para>Always return StatusFlags.Disabled.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.AlwaysEnabled(UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction)">
-      <summary>
-        <para>Status callback that always returns StatusFlags.Enabled.</para>
-      </summary>
-      <param name="a">Unused parameter.</param>
-      <returns>
-        <para>Always return StatusFlags.Enabled.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.#ctor(System.String,System.Action`1&lt;UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction&gt;,System.Func`2&lt;UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction,UnityEngine.Experimental.UIElements.ContextualMenu/MenuAction/StatusFlags&gt;,System.Object)">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-      <param name="actionName">The path and name of the menu item. Use the path, delimited by forward slashes ('/'), to place the menu item within a submenu.</param>
-      <param name="actionCallback">Action to be executed when the menu item is selected.</param>
-      <param name="actionStatusCallback">Function called to determine if the menu item is enabled.</param>
-      <param name="userData">An object that will be stored in the userData property.</param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.Execute">
-      <summary>
-        <para>Execute the callback associated with this item.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.MenuAction.UpdateActionStatus(UnityEngine.Experimental.UIElements.ContextualMenu/EventInfo)">
-      <summary>
-        <para>Update the status flag of this item by calling the item status callback.</para>
-      </summary>
-      <param name="eventInfo">Information about the event that triggered the display of the context menu, such as the mouse position or the key pressed.</param>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ContextualMenu.MenuItem">
-      <summary>
-        <para>An item in a contextual menu.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.MenuItems">
-      <summary>
-        <para>Get the list of menu items.</para>
-      </summary>
-      <returns>
-        <para>The list of items in the menu.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.PrepareForDisplay(UnityEngine.Experimental.UIElements.EventBase)">
-      <summary>
-        <para>Update the status of all items by calling their status callback and remove the separators in excess. This is called just before displaying the menu.</para>
-      </summary>
-      <param name="e"></param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.RemoveItemAt(System.Int32)">
-      <summary>
-        <para>Remove the menu item at index.</para>
-      </summary>
-      <param name="index">The index of the item to remove.</param>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ContextualMenu.Separator">
-      <summary>
-        <para>A separator menu item.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.ContextualMenu.Separator.subMenuPath">
-      <summary>
-        <para>The submenu path where the separator will be added. Path components are delimited by forward slashes ('/').</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenu.Separator.#ctor(System.String)">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-      <param name="subMenuPath">The path for the submenu. Path components are delimited by forward slashes ('/').</param>
-    </member>
     <member name="T:UnityEngine.Experimental.UIElements.ContextualMenuManager">
       <summary>
         <para>Use this class to display a contextual menu.</para>
@@ -529,24 +374,17 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.ContextualMenuManager.DisplayMenu(UnityEngine.Experimental.UIElements.EventBase,UnityEngine.Experimental.UIElements.IEventHandler)">
       <summary>
-        <para>Display the contextual menu.</para>
+        <para>Displays the contextual menu.</para>
       </summary>
       <param name="triggerEvent">The event that triggered the display of the menu.</param>
       <param name="target">The element for which the menu is displayed.</param>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.ContextualMenuManager.DisplayMenuIfEventMatches(UnityEngine.Experimental.UIElements.EventBase,UnityEngine.Experimental.UIElements.IEventHandler)">
       <summary>
-        <para>Check if the event is an event that triggers the display of the menu and display it if it needs to.</para>
+        <para>Checks if the event triggers the display of the contextual menu. This method also displays the menu.</para>
       </summary>
       <param name="eventHandler">The element for which the menu is displayed.</param>
       <param name="evt">The event to inspect.</param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenuManager.DoDisplayMenu(UnityEngine.Experimental.UIElements.ContextualMenu,UnityEngine.Experimental.UIElements.EventBase)">
-      <summary>
-        <para>Display the contextual menu.</para>
-      </summary>
-      <param name="menu">The menu to display.</param>
-      <param name="triggerEvent">The event that triggered the display of the contextual menu.</param>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.ContextualMenuManipulator">
       <summary>
@@ -571,7 +409,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.ContextualMenuPopulateEvent">
       <summary>
-        <para>An event sent when a contextual menu needs to be filled with menu item.</para>
+        <para>The event sent when a contextual menu requires menu items.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.ContextualMenuPopulateEvent.menu">
@@ -579,25 +417,30 @@
         <para>The menu to populate.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Experimental.UIElements.ContextualMenuPopulateEvent.triggerEvent">
+      <summary>
+        <para>The event that triggered the ContextualMenuPopulateEvent.</para>
+      </summary>
+    </member>
     <member name="M:UnityEngine.Experimental.UIElements.ContextualMenuPopulateEvent.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenuPopulateEvent.GetPooled(UnityEngine.Experimental.UIElements.EventBase,UnityEngine.Experimental.UIElements.ContextualMenu,UnityEngine.Experimental.UIElements.IEventHandler)">
+    <member name="M:UnityEngine.Experimental.UIElements.ContextualMenuPopulateEvent.GetPooled">
       <summary>
-        <para>Retrieves an event from the event pool. Use this method to retrieve a mouse event and initialize the event, instead of creating a new mouse event.</para>
+        <para>Retrieves an event from the event pool. Use this method to retrieve a mouse event and initialize the event, instead of creating a new mouse event. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="triggerEvent">The event that triggered the display of the contextual menu.</param>
       <param name="menu">The menu to populate.</param>
       <param name="target">The element that triggered the display of the contextual menu.</param>
       <returns>
-        <para>The event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.ContextualMenuPopulateEvent.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.CreationContext">
@@ -637,7 +480,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.DragEnterEvent">
       <summary>
-        <para>Use the DragEnterEvent class to manage events that occur when dragging enters an element or one of its descendants. The DragEnterEvent can be cancelled, cannot be captured, and does not bubble.</para>
+        <para>Use the DragEnterEvent class to manage events that occur when dragging enters an element or one of its descendants. The DragEnterEvent is cancellable, it does not trickle down, and it does not bubble up.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.DragEnterEvent.#ctor">
@@ -667,7 +510,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.DragLeaveEvent">
       <summary>
-        <para>Use the DragLeaveEvent class to manage events sent when dragging leaves an element or one of its descendants. The DragLeaveEvent can be cancelled, cannot be captured, and does not bubble.</para>
+        <para>Use the DragLeaveEvent class to manage events sent when dragging leaves an element or one of its descendants. The DragLeaveEvent is cancellable, it does not trickle down, and it does not bubble up.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.DragLeaveEvent.#ctor">
@@ -700,6 +543,184 @@
         <para>Constructor.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Experimental.UIElements.DropdownMenu">
+      <summary>
+        <para>A drop-down menu.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.AppendAction(System.String,System.Action`1&lt;UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction&gt;,System.Func`2&lt;UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction,UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction/StatusFlags&gt;,System.Object)">
+      <summary>
+        <para>Add an item that will execute an action in the drop-down menu. The item is added at the end of the current item list.</para>
+      </summary>
+      <param name="actionName">Name of the item. This name will be displayed in the drop-down menu.</param>
+      <param name="action">Callback to execute when the user selects this item in the menu.</param>
+      <param name="actionStatusCallback">Callback to execute to determine the status of the item.</param>
+      <param name="userData">An object that will be stored in the userData property of the MenuAction item.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.AppendSeparator()">
+      <summary>
+        <para>Add a separator line in the menu. The separator is added at the end of the current item list.</para>
+      </summary>
+      <param name="subMenuPath">The submenu path where the separator will be added. Path components are delimited by forward slashes ('/').</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.AppendSeparator(System.String)">
+      <summary>
+        <para>Add a separator line in the menu. The separator is added at the end of the current item list.</para>
+      </summary>
+      <param name="subMenuPath">The submenu path where the separator will be added. Path components are delimited by forward slashes ('/').</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.DropdownMenu.EventInfo">
+      <summary>
+        <para>A class holding information about the event that triggered the display of the drop-down menu.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.DropdownMenu.EventInfo.localMousePosition">
+      <summary>
+        <para>If the triggering event was a mouse event, this property is the mouse position. The position is expressed using the coordinate system of the element that received the mouse event. Otherwise this property is zero.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.DropdownMenu.EventInfo.modifiers">
+      <summary>
+        <para>If modifier keys (Alt, Control, Shift, Windows/Command) were pressed to trigger the display of the dropdown menu, this property lists the modifier keys.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.DropdownMenu.EventInfo.mousePosition">
+      <summary>
+        <para>If the triggering event was a mouse event, this property is the mouse position expressed using the global coordinate system. Otherwise this property is zero.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.EventInfo.#ctor(UnityEngine.Experimental.UIElements.EventBase)">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+      <param name="e"></param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.InsertAction(System.Int32,System.String,System.Action`1&lt;UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction&gt;,System.Func`2&lt;UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction,UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction/StatusFlags&gt;,System.Object)">
+      <summary>
+        <para>Add an item that will execute an action in the drop-down menu. The item is added at the end of the specified index in the list.</para>
+      </summary>
+      <param name="actionName">Name of the item. This name will be displayed in the drop-down menu.</param>
+      <param name="action">Callback to execute when the user selects this item in the menu.</param>
+      <param name="actionStatusCallback">Callback to execute to determine the status of the item.</param>
+      <param name="atIndex">Index where the item should be inserted.</param>
+      <param name="userData">An object that will be stored in the userData property of the MenuAction item. This object is accessible through the action callback.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.InsertSeparator(System.String,System.Int32)">
+      <summary>
+        <para>Add a separator line in the menu. The separator is added at the end of the specified index in the list.</para>
+      </summary>
+      <param name="atIndex">Index where the separator should be inserted.</param>
+      <param name="subMenuPath">The submenu path where the separator is added. Path components are delimited by forward slashes ('/').</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction">
+      <summary>
+        <para>A menu action item.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.eventInfo">
+      <summary>
+        <para>Provides information on the event that triggered the drop-down menu.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.name">
+      <summary>
+        <para>The name of the item. The name can be prefixed by its submenu path. Path components are delimited by forward slashes ('/').</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.status">
+      <summary>
+        <para>The status of the item.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.userData">
+      <summary>
+        <para>The userData object stored by the constructor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.AlwaysDisabled(UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction)">
+      <summary>
+        <para>Status callback that always returns StatusFlags.Disabled.</para>
+      </summary>
+      <param name="a">Unused parameter.</param>
+      <returns>
+        <para>Always return StatusFlags.Disabled.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.AlwaysEnabled(UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction)">
+      <summary>
+        <para>Status callback that always returns StatusFlags.Enabled.</para>
+      </summary>
+      <param name="a">Unused parameter.</param>
+      <returns>
+        <para>Always return StatusFlags.Enabled.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.#ctor(System.String,System.Action`1&lt;UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction&gt;,System.Func`2&lt;UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction,UnityEngine.Experimental.UIElements.DropdownMenu/MenuAction/StatusFlags&gt;,System.Object)">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+      <param name="actionName">The path and name of the menu item. Use the path, delimited by forward slashes ('/'), to place the menu item within a submenu.</param>
+      <param name="actionCallback">Action to be executed when the menu item is selected.</param>
+      <param name="actionStatusCallback">Function called to determine if the menu item is enabled.</param>
+      <param name="userData">An object that will be stored in the userData property.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.Execute">
+      <summary>
+        <para>Execute the callback associated with this item.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.MenuAction.UpdateActionStatus(UnityEngine.Experimental.UIElements.DropdownMenu/EventInfo)">
+      <summary>
+        <para>Update the status flag of this item by calling the item status callback.</para>
+      </summary>
+      <param name="eventInfo">Information about the event that triggered the display of the drop-down menu, such as the mouse position or the key pressed.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.DropdownMenu.MenuItem">
+      <summary>
+        <para>An item in a drop-down menu.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.MenuItems">
+      <summary>
+        <para>Get the list of menu items.</para>
+      </summary>
+      <returns>
+        <para>The list of items in the menu.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.PrepareForDisplay(UnityEngine.Experimental.UIElements.EventBase)">
+      <summary>
+        <para>Update the status of all items by calling their status callback and remove the separators in excess. This is called just before displaying the menu.</para>
+      </summary>
+      <param name="e"></param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.RemoveItemAt(System.Int32)">
+      <summary>
+        <para>Remove the menu item at index.</para>
+      </summary>
+      <param name="index">The index of the item to remove.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.DropdownMenu.Separator">
+      <summary>
+        <para>A separator menu item.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.UIElements.DropdownMenu.Separator.subMenuPath">
+      <summary>
+        <para>The submenu path where the separator will be added. Path components are delimited by forward slashes ('/').</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.DropdownMenu.Separator.#ctor(System.String)">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+      <param name="subMenuPath">The path for the submenu. Path components are delimited by forward slashes ('/').</param>
+    </member>
     <member name="T:UnityEngine.Experimental.UIElements.EventBase">
       <summary>
         <para>The base class for all UIElements events.</para>
@@ -707,12 +728,7 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.bubbles">
       <summary>
-        <para>Returns whether this event type bubbles up in the event propagation path.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.EventBase.capturable">
-      <summary>
-        <para>Return whether this event is sent down the event propagation path during the capture phase.</para>
+        <para>Whether this event type bubbles up in the event propagation path.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.currentTarget">
@@ -722,7 +738,7 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.dispatch">
       <summary>
-        <para>Return whether the event is currently being dispatched to visual element. An event can not be redispatched while being dispatched. If you need to recursively redispatch an event, you should use a copy.</para>
+        <para>Whether the event is being dispatched to a visual element. An event cannot be redispatched while it being dispatched. If you need to recursively dispatch an event, it is recommended that you use a copy of the event.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.flags">
@@ -732,7 +748,7 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.imguiEvent">
       <summary>
-        <para>The IMGUIEvent at the source of this event. This can be null as not all events are generated by IMGUI.</para>
+        <para>The IMGUIEvent at the source of this event. The source can be null since not all events are generated by IMGUI.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.isDefaultPrevented">
@@ -742,17 +758,22 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.isImmediatePropagationStopped">
       <summary>
-        <para>Return true if StopImmediatePropagation() has been called for this event.</para>
+        <para>Whether StopImmediatePropagation() was called for this event.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.isPropagationStopped">
       <summary>
-        <para>Return true if StopPropagation() has been called for this event.</para>
+        <para>Whether StopPropagation() was called for this event.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.originalMousePosition">
       <summary>
-        <para>The original mouse position of the IMGUI event, before it is transformed to the local element coordinates. </para>
+        <para>The original mouse position of the IMGUI event, before it is transformed to the current target local coordinates.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.EventBase.pooled">
+      <summary>
+        <para>Whether the event is allocated from a pool of events.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.propagationPhase">
@@ -762,12 +783,17 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.target">
       <summary>
-        <para>The target for this event. The is the visual element that received the event. Unlike currentTarget, target does not change when the event is sent to elements along the propagation path.</para>
+        <para>The target visual element that received this event. Unlike currentTarget, this target does not change when the event is sent to other elements along the propagation path.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.EventBase.timestamp">
       <summary>
-        <para>The time at which the event was created.</para>
+        <para>The time when the event was created.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.EventBase.tricklesDown">
+      <summary>
+        <para>Whether this event is sent down the event propagation path during the TrickleDown phase.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase.Dispose">
@@ -775,39 +801,9 @@
         <para>Implementation of IDisposable.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.EventBase.EventFlags">
-      <summary>
-        <para>Flags to describe the characteristics of an event.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.EventBase.EventFlags.Bubbles">
-      <summary>
-        <para>Event will bubble up the propagation path (i.e. from the target parent up to the visual tree root).</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.EventBase.EventFlags.Cancellable">
-      <summary>
-        <para>Execution of default behavior for this event can be cancelled.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.EventBase.EventFlags.Capturable">
-      <summary>
-        <para>Event will be sent down the propagation path during the capture phase (i.e. from the visual tree root down to the target parent).</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.EventBase.EventFlags.None">
-      <summary>
-        <para>Empty value.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEngine.Experimental.UIElements.EventBase.EventFlags.Pooled">
-      <summary>
-        <para>Event has been instanciated from the event pool.</para>
-      </summary>
-    </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase.GetEventTypeId">
       <summary>
-        <para>Get the type id for this event instance.</para>
+        <para>Retrieves the type id for this event instance.</para>
       </summary>
       <returns>
         <para>The type ID.</para>
@@ -815,17 +811,17 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets all event members to their initial values.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase.PreventDefault">
       <summary>
-        <para>Call this function to prevent the execution of the default actions for this event.</para>
+        <para>Whether the default actions are prevented from being executed for this event.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase.RegisterEventType">
       <summary>
-        <para>Register an event class to the event type system.</para>
+        <para>Registers an event class to the event type system.</para>
       </summary>
       <returns>
         <para>The type ID.</para>
@@ -833,12 +829,12 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase.StopImmediatePropagation">
       <summary>
-        <para>Immediately stop the propagation of this event. The event will not be sent to any further event handlers on the current target or on any other element in the propagation path.</para>
+        <para>Immediately stops the propagation of the event. The event is not sent to other elements along the propagation path. This method prevents other event handlers from executing on the current target.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase.StopPropagation">
       <summary>
-        <para>Stop the propagation of this event. The event will not be sent to any further element in the propagation path. Further event handlers on the current target will be executed.</para>
+        <para>Stops propagating this event. The event is not sent to other elements along the propagation path. This method does not prevent other event handlers from executing on the current target.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.EventBase`1">
@@ -853,7 +849,7 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase_1.GetEventTypeId">
       <summary>
-        <para>Get the type id for this event instance.</para>
+        <para>Retrieves the type id for this event instance.</para>
       </summary>
       <returns>
         <para>The type ID.</para>
@@ -861,25 +857,45 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase_1.GetPooled">
       <summary>
-        <para>Get an event from the event pool. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <returns>
-        <para>An event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.EventBase_1.ReleasePooled(T)">
+    <member name="M:UnityEngine.Experimental.UIElements.EventBase_1.Init">
       <summary>
-        <para>Release an event obtained from GetPooled().</para>
+        <para>Resets all event members to their initial values.</para>
       </summary>
-      <param name="evt">The event to release.</param>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.EventBase_1.TypeId">
       <summary>
-        <para>Get the type id for this event instance.</para>
+        <para>Gets the type id for the event class.</para>
       </summary>
       <returns>
-        <para>The event instance type id.</para>
+        <para>The event class type id.</para>
       </returns>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.EventDispatcher">
+      <summary>
+        <para>Dispatches events to a IPanel.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.EventDispatcher.Gate">
+      <summary>
+        <para>Gates control when the dispatcher processes events.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.EventDispatcher.Gate.#ctor(UnityEngine.Experimental.UIElements.EventDispatcher)">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+      <param name="d">The dispatcher controlled by this gate.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.EventDispatcher.Gate.Dispose">
+      <summary>
+        <para>Implementation of IDisposable.Dispose. Opens the gate. If all gates are open, events in the queue are processed.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.ExecuteCommandEvent">
       <summary>
@@ -890,6 +906,34 @@
       <summary>
         <para>Constructor.</para>
       </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.Flex">
+      <summary>
+        <para>Use this structure to set the IStyle.Flex shorthand property which sets the IStyle.flexGrow, IStyle.flexShrink, and IStyle.flexBasis properties.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.Flex.basis">
+      <summary>
+        <para>The value for the IStyle.flexBasis property.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.Flex.grow">
+      <summary>
+        <para>The value for the IStyle.flexBasis property.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.Flex.shrink">
+      <summary>
+        <para>The value for the IStyle.flexBasis property.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.Flex.#ctor(System.Single,System.Single,System.Single)">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+      <param name="g"></param>
+      <param name="s"></param>
+      <param name="b"></param>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.Focusable">
       <summary>
@@ -957,11 +1001,10 @@
         <para>The currently focused element.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.FocusController.#ctor(UnityEngine.Experimental.UIElements.IFocusRing)">
+    <member name="M:UnityEngine.Experimental.UIElements.FocusController.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
-      <param name="focusRing"></param>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.FocusController.SwitchFocusOnEvent(UnityEngine.Experimental.UIElements.EventBase)">
       <summary>
@@ -971,7 +1014,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.FocusEvent">
       <summary>
-        <para>Event sent immediately after an element has gained focus. Capturable, does not bubbles, non-cancellable.</para>
+        <para>Event sent immediately after an element has gained focus. This event trickles down, it does not bubble up, and it cannot be cancelled.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.FocusEvent.#ctor">
@@ -991,28 +1034,28 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.FocusEventBase_1.relatedTarget">
       <summary>
-        <para>For FocusOut and Blur events, the element gaining the focus. For FocusIn and Focus events, the element losing the focus.</para>
+        <para>For FocusOut and Blur events, contains the element that gains the focus. For FocusIn and Focus events, contains the element that loses the focus.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.FocusEventBase_1.GetPooled(UnityEngine.Experimental.UIElements.IEventHandler,UnityEngine.Experimental.UIElements.Focusable,UnityEngine.Experimental.UIElements.FocusChangeDirection)">
+    <member name="M:UnityEngine.Experimental.UIElements.FocusEventBase_1.GetPooled">
       <summary>
-        <para>Get an event from the event pool and initialize it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes the event with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="target">The event target.</param>
       <param name="relatedTarget">The related target.</param>
       <param name="direction">The direction of the focus change.</param>
       <returns>
-        <para>An event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.FocusEventBase_1.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.FocusInEvent">
       <summary>
-        <para>Event sent immediately before an element gains focus. Capturable, bubbles, non-cancellable.</para>
+        <para>Event sent immediately before an element gains focus. This event trickles down and bubbles up. This event cannot be cancelled.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.FocusInEvent.#ctor">
@@ -1022,12 +1065,12 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.FocusInEvent.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.FocusOutEvent">
       <summary>
-        <para>Event sent immediately before an element loses focus. Capturable, bubbles, non-cancellable.</para>
+        <para>Event sent immediately before an element loses focus. This event trickles down and bubbles up. This event cannot be cancelled.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.FocusOutEvent.#ctor">
@@ -1037,12 +1080,32 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.FocusOutEvent.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.Foldout">
+      <summary>
+        <para>Collapsable section of UI.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.Foldout.value">
+      <summary>
+        <para>Contains the collapse state. True if the Foldout is open and the contents are visible. False if it's collapsed.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.Foldout.UxmlFactory">
+      <summary>
+        <para>Instantiates a Foldout using the data read from a UXML file.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.Foldout.UxmlFactory.#ctor">
+      <summary>
+        <para>Constructor.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.GeometryChangedEvent">
       <summary>
-        <para>Event sent after layout calculations, when the position or the dimension of an element changes. This event cannot be captured, cannot be cancelled, and it does not bubble.</para>
+        <para>Event sent after layout calculations, when the position or the dimension of an element changes. This event cannot be cancelled, it does not trickle down, and it does not bubble up.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.GeometryChangedEvent.newRect">
@@ -1067,13 +1130,62 @@
       <param name="oldRect">The old dimensions of the element.</param>
       <param name="newRect">The new dimensions of the element.</param>
       <returns>
-        <para>Returns an event from the pool.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.GeometryChangedEvent.Init">
       <summary>
         <para>Resets the event values to their initial values.</para>
       </summary>
+    </member>
+    <member name="?:UnityEngine.Experimental.UIElements.IBindable">
+      <summary>
+        <para>Interface for all bindable fields.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.IBindable.binding">
+      <summary>
+        <para>Binding object that will be updated.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.IBindable.bindingPath">
+      <summary>
+        <para>Path of the target property to be bound.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEngine.Experimental.UIElements.IBinding">
+      <summary>
+        <para>Base interface for Binding objects.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.IBinding.PreUpdate">
+      <summary>
+        <para>Called at regular intervals to synchronize bound properties to their IBindable counterparts. Called before the Update() method.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.IBinding.Release">
+      <summary>
+        <para>Disconnects the field from its bound property</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.IBinding.Update">
+      <summary>
+        <para>Called at regular intervals to synchronize bound properties to their IBindable counterparts.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.IBindingExtensions">
+      <summary>
+        <para>Extensions methods to provide additional IBindable functionality.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.IBindingExtensions.IsBound(UnityEngine.Experimental.UIElements.IBindable)">
+      <summary>
+        <para>Checks if a IBindable is bound to a property.</para>
+      </summary>
+      <param name="control">This Bindable object.</param>
+      <returns>
+        <para>Returns true if this IBindable is bound to a property.</para>
+      </returns>
     </member>
     <member name="?:UnityEngine.Experimental.UIElements.IChangeEvent">
       <summary>
@@ -1095,18 +1207,6 @@
         <para>Interface for drag and drop events.</para>
       </summary>
     </member>
-    <member name="?:UnityEngine.Experimental.UIElements.IEventDispatcher">
-      <summary>
-        <para>Interface for event dispatchers.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IEventDispatcher.DispatchEvent(UnityEngine.Experimental.UIElements.EventBase,UnityEngine.Experimental.UIElements.IPanel)">
-      <summary>
-        <para>Dispatch an event to the panel.</para>
-      </summary>
-      <param name="evt">The event to dispatch.</param>
-      <param name="panel">The panel where the event will be dispatched.</param>
-    </member>
     <member name="?:UnityEngine.Experimental.UIElements.IEventHandler">
       <summary>
         <para>Interface for class capable of handling events.</para>
@@ -1118,21 +1218,27 @@
       </summary>
       <param name="evt">The event to handle.</param>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IEventHandler.HasBubbleHandlers">
+    <member name="M:UnityEngine.Experimental.UIElements.IEventHandler.HasBubbleUpHandlers">
       <summary>
-        <para>Return true if event handlers for the event propagation bubble up phase have been attached on this object.</para>
+        <para>Return true if event handlers for the event propagation BubbleUp phase have been attached on this object.</para>
       </summary>
       <returns>
-        <para>True if object has event handlers for the bubble up phase.</para>
+        <para>True if object has event handlers for the BubbleUp phase.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IEventHandler.HasCaptureHandlers">
+    <member name="M:UnityEngine.Experimental.UIElements.IEventHandler.HasTrickleDownHandlers">
       <summary>
-        <para>Return true if event handlers for the event propagation capture phase have been attached on this object.</para>
+        <para>Returns true if event handlers, for the event propagation TrickleDown phase, are attached to this object.</para>
       </summary>
       <returns>
-        <para>True if object has event handlers for the capture phase.</para>
+        <para>Returns true if the object already has event handlers for the TrickleDown phase.</para>
       </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.IEventHandler.SendEvent(UnityEngine.Experimental.UIElements.EventBase)">
+      <summary>
+        <para>Sends an event to the event handler.</para>
+      </summary>
+      <param name="e">The event to send.</param>
     </member>
     <member name="?:UnityEngine.Experimental.UIElements.IFocusEvent">
       <summary>
@@ -1171,6 +1277,11 @@
     <member name="?:UnityEngine.Experimental.UIElements.IKeyboardEvent">
       <summary>
         <para>Interface for keyboard events.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.IKeyboardEvent.actionKey">
+      <summary>
+        <para>Returns true if the platform specific action key is pressed. This key is Command on macOS and Control otherwise.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.IKeyboardEvent.altKey">
@@ -1228,78 +1339,93 @@
         <para>The base texture coordinates of the Image relative to the bottom left corner.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Image.ImageFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.Image.UxmlFactory">
       <summary>
         <para>Instantiates an Image using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Image.ImageFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Image.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Image.ImageUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.Image.UxmlTraits">
       <summary>
         <para>UxmlTraits for the Image.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.Image.ImageUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.Image.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an empty enumerable, as images generally do not have children.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Image.ImageUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Image.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.IMGUIContainer.IMGUIContainerFactory">
+    <member name="?:UnityEngine.Experimental.UIElements.IManipulator">
+      <summary>
+        <para>An interface for Manipulator classes.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.IManipulator.target">
+      <summary>
+        <para>The element that handles the interaction.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.IMGUIContainer.MarkDirtyLayout">
+      <summary>
+        <para>Marks layout as dirty to trigger a redraw.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.IMGUIContainer.UxmlFactory">
       <summary>
         <para>Instantiates an IMGUIContainer using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IMGUIContainer.IMGUIContainerFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.IMGUIContainer.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.IMGUIContainer.IMGUIContainerUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.IMGUIContainer.UxmlTraits">
       <summary>
         <para>UxmlTraits for the IMGUIContainer.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.IMGUIContainer.IMGUIContainerUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.IMGUIContainer.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an empty enumerable, as IMGUIContainer cannot have VisualElement children.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IMGUIContainer.IMGUIContainerUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.IMGUIContainer.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.IMGUIEvent">
       <summary>
-        <para>Class used to dispatch IMGUI event types that have no equivalent in UIElements events.</para>
+        <para>Class used to send a IMGUI event that has no equivalent UIElements event.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.IMGUIEvent.#ctor">
       <summary>
-        <para>Constructor. Avoid newing events. Instead, use GetPooled() to get an event from a pool of reusable events.</para>
+        <para>Constructor. Use GetPooled() to get an event from a pool of reusable events.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.IMGUIEvent.GetPooled(UnityEngine.Event)">
       <summary>
-        <para>Get an event from the event pool and initialize it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="systemEvent">The IMGUI event used to initialize the event.</param>
       <returns>
-        <para>An event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.IMGUIEvent.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="?:UnityEngine.Experimental.UIElements.IMouseCaptureEvent">
@@ -1310,6 +1436,11 @@
     <member name="?:UnityEngine.Experimental.UIElements.IMouseEvent">
       <summary>
         <para>Interface for mouse events.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.IMouseEvent.actionKey">
+      <summary>
+        <para>Returns true if the platform specific action key is pressed. This key is Command on macOS and Control otherwise.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.IMouseEvent.altKey">
@@ -1374,13 +1505,25 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.INotifyValueChanged_1.OnValueChanged(UnityEngine.Experimental.UIElements.EventCallback`1&lt;UnityEngine.Experimental.UIElements.ChangeEvent`1&lt;T&gt;&gt;)">
       <summary>
-        <para>Registers this callback to receive ChangeEvent&lt;T&gt; when value was changed by user input.</para>
+        <para>Registers this callback to receive ChangeEvent&lt;T&gt; when value is changed by user input.</para>
+      </summary>
+      <param name="callback"></param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.INotifyValueChanged_1.RemoveOnValueChanged(UnityEngine.Experimental.UIElements.EventCallback`1&lt;UnityEngine.Experimental.UIElements.ChangeEvent`1&lt;T&gt;&gt;)">
+      <summary>
+        <para>Unregisters this callback from receiving ChangeEvent&lt;T&gt; when value is changed by user input.</para>
       </summary>
       <param name="callback"></param>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.INotifyValueChanged_1.SetValueAndNotify(T)">
       <summary>
         <para>Set the value and, if different, notifies registers callbacks with a ChangeEvent&lt;T&gt;</para>
+      </summary>
+      <param name="newValue">The new value to be set.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.INotifyValueChanged_1.SetValueWithoutNotify(T)">
+      <summary>
+        <para>Set the value and, even if different, does not notify registers callbacks with a ChangeEvent&lt;T&gt;</para>
       </summary>
       <param name="newValue">The new value to be set.</param>
     </member>
@@ -1406,17 +1549,17 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.InputEvent.GetPooled(System.String,System.String)">
       <summary>
-        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="newData">The new text.</param>
       <param name="previousData">The text before the change occured.</param>
       <returns>
-        <para>An event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.InputEvent.Init">
       <summary>
-        <para>Sets the event to its initial state.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="?:UnityEngine.Experimental.UIElements.IPanel">
@@ -1427,6 +1570,11 @@
     <member name="P:UnityEngine.Experimental.UIElements.IPanel.focusController">
       <summary>
         <para>Return the focus controller for this panel.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEngine.Experimental.UIElements.IPanelChangedEvent">
+      <summary>
+        <para>Interface for panel change events.</para>
       </summary>
     </member>
     <member name="?:UnityEngine.Experimental.UIElements.IScheduledItem">
@@ -1515,7 +1663,7 @@
         <para>Background image to paint in the element's box.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.IStyle.backgroundSize">
+    <member name="P:UnityEngine.Experimental.UIElements.IStyle.backgroundScaleMode">
       <summary>
         <para>Background image scaling in the element's box.</para>
       </summary>
@@ -1590,6 +1738,11 @@
         <para>Space reserved for the top edge of the border during the layout phase.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Experimental.UIElements.IStyle.color">
+      <summary>
+        <para>Color to use when drawing the text of an element.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.UIElements.IStyle.cursor">
       <summary>
         <para>Mouse cursor to display when the mouse pointer is over an element.</para>
@@ -1635,9 +1788,9 @@
         <para>Font size to draw the element's text.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.IStyle.fontStyle">
+    <member name="P:UnityEngine.Experimental.UIElements.IStyle.fontStyleAndWeight">
       <summary>
-        <para>Font style to draw the element's text.</para>
+        <para>Font style and weight (normal, bold, italic) to draw the element's text.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.IStyle.height">
@@ -1755,19 +1908,14 @@
         <para>Size of the 9-slice's top edge when painting an element's background image.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.IStyle.textAlignment">
-      <summary>
-        <para>Text alignment in the element's box.</para>
-      </summary>
-    </member>
     <member name="P:UnityEngine.Experimental.UIElements.IStyle.textClipping">
       <summary>
         <para>Clipping if the text does not fit in the element's box.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.IStyle.textColor">
+    <member name="P:UnityEngine.Experimental.UIElements.IStyle.unityTextAlign">
       <summary>
-        <para>Color to use when drawing the text of an element.</para>
+        <para>Horizontal and vertical text alignment in the element's box.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.IStyle.visibility">
@@ -1841,84 +1989,14 @@
         <para>This type allows UXML attribute value retrieval during the VisualElement instantiation. An instance will be provided to the factory method - see UXMLFactoryAttribute.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyBool(System.String,System.Boolean)">
+    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.TryGetAttributeValue(System.String,System.String&amp;)">
       <summary>
-        <para>Return the value of an attribute as a bool, or the defaultValue if the property is not found.</para>
+        <para>Get the value of an attribute as a string.</para>
       </summary>
-      <param name="propertyName">Attribute name.</param>
-      <param name="defaultValue">Default value if the property is not found.</param>
+      <param name="attributeName">Attribute name.</param>
+      <param name="value">The attribute value or null if not found.</param>
       <returns>
-        <para>The attribute value or the default value if not found.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyColor(System.String,UnityEngine.Color)">
-      <summary>
-        <para>Return the value of an attribute as a Color, or the defaultValue if the property is not found.</para>
-      </summary>
-      <param name="propertyName">Attribute name.</param>
-      <param name="defaultValue">Default value if the property is not found.</param>
-      <returns>
-        <para>The attribute value or the default value if not found.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyDouble(System.String,System.Double)">
-      <summary>
-        <para>Return the value of an attribute as a double, or the defaultValue if the property is not found.</para>
-      </summary>
-      <param name="defaultValue">Default value if the property is not found.</param>
-      <param name="propertyName">AttributeName.</param>
-      <returns>
-        <para>The attribute value or the default value if not found.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyEnum(System.String,T)">
-      <summary>
-        <para>Return the value of an attribute as a T, or the defaultValue if the property is not found.</para>
-      </summary>
-      <param name="propertyName">Attribute name.</param>
-      <param name="defaultValue">Default value if the property is not found.</param>
-      <returns>
-        <para>The attribute value or the default value if not found.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyFloat(System.String,System.Single)">
-      <summary>
-        <para>Return the value of an attribute as a float, or the defaultValue if the property is not found.</para>
-      </summary>
-      <param name="propertyName">Attribute name.</param>
-      <param name="defaultValue">Default value if the property is not found.</param>
-      <returns>
-        <para>The attribute value or the default value if not found.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyInt(System.String,System.Int32)">
-      <summary>
-        <para>Return the value of an attribute as an int, or the defaultValue if the property is not found.</para>
-      </summary>
-      <param name="propertyName">Attribute name.</param>
-      <param name="defaultValue">Default value if the property is not found.</param>
-      <returns>
-        <para>The attribute value or the default value if not found.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyLong(System.String,System.Int64)">
-      <summary>
-        <para>Return the value of an attribute as a long, or the defaultValue if the property is not found.</para>
-      </summary>
-      <param name="propertyName">Attribute name.</param>
-      <param name="defaultValue">Default value if the property is not found.</param>
-      <returns>
-        <para>The attribute value or the default value if not found.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlAttributes.GetPropertyString(System.String,System.String)">
-      <summary>
-        <para>Return the value of an attribute as a string, or the defaultValue if the property is not found.</para>
-      </summary>
-      <param name="propertyName">Attribute name.</param>
-      <param name="defaultValue">Default value if the property is not found.</param>
-      <returns>
-        <para>The attribute value or the default value if not found.</para>
+        <para>True if the attribute was found, false otherwise.</para>
       </returns>
     </member>
     <member name="?:UnityEngine.Experimental.UIElements.IUxmlFactory">
@@ -1971,7 +2049,7 @@
         <para>The fully qualified name of the UXML element read by the factory.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.IUxmlFactory.AcceptsAttributeBag(UnityEngine.Experimental.UIElements.IUxmlAttributes)">
+    <member name="M:UnityEngine.Experimental.UIElements.IUxmlFactory.AcceptsAttributeBag">
       <summary>
         <para>Returns true if the factory accepts the content of the attribute bag.</para>
       </summary>
@@ -2087,9 +2165,14 @@
         <para>Base class for keyboard events.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.actionKey">
+      <summary>
+        <para>Returns true if the platform specific action key is pressed. This key is Command on macOS and Control otherwise.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.altKey">
       <summary>
-        <para>Return true if the Alt key is pressed.</para>
+        <para>Returns true if the Alt key is pressed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.character">
@@ -2099,12 +2182,12 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.commandKey">
       <summary>
-        <para>Return true if the Windows/Command key is pressed.</para>
+        <para>Returns true if the Windows/Command key is pressed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.ctrlKey">
       <summary>
-        <para>Return true if the Control key is pressed.</para>
+        <para>Returns true if the Control key is pressed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.keyCode">
@@ -2114,46 +2197,46 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.modifiers">
       <summary>
-        <para>Flag set holding the pressed modifier keys (Alt, Control, Shift, Windows/Command).</para>
+        <para>Flags holding the pressed modifier keys (Alt, Control, Shift, Windows/Command).</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.shiftKey">
       <summary>
-        <para>Return true if the Shift key is pressed.</para>
+        <para>Returns true if the Shift key is pressed.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.GetPooled(System.Char,UnityEngine.KeyCode,UnityEngine.EventModifiers)">
       <summary>
-        <para>Get an event from the event pool and initialize it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets a keyboard event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="c">The character for this event.</param>
       <param name="keyCode">The keyCode for this event.</param>
       <param name="modifiers">Event modifier keys that are active for this event.</param>
       <param name="systemEvent">A keyboard IMGUI event.</param>
       <returns>
-        <para>A keyboard event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.GetPooled(UnityEngine.Event)">
       <summary>
-        <para>Get an event from the event pool and initialize it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets a keyboard event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="c">The character for this event.</param>
       <param name="keyCode">The keyCode for this event.</param>
       <param name="modifiers">Event modifier keys that are active for this event.</param>
       <param name="systemEvent">A keyboard IMGUI event.</param>
       <returns>
-        <para>A keyboard event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.KeyboardEventBase_1.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.KeyDownEvent">
       <summary>
-        <para>Event sent when a key is pressed on the keyboard. Capturable, bubbles, cancellable.</para>
+        <para>Event sent when a key is pressed on the keyboard. This event trickles down and bubbles up. This event is cancellable.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.KeyDownEvent.#ctor">
@@ -2163,7 +2246,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.KeyUpEvent">
       <summary>
-        <para>Event sent when a key is released on the keyboard. Capturable, bubbles, cancellable.</para>
+        <para>Event sent when a key is released on the keyboard. This event trickles down and bubbles up. This event is cancellable.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.KeyUpEvent.#ctor">
@@ -2171,22 +2254,22 @@
         <para>Constructor. Avoid newing events. Instead, use GetPooled() to get an event from a pool of reusable events.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Label.LabelFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.Label.UxmlFactory">
       <summary>
         <para>Instantiates a Label using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Label.LabelFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Label.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Label.LabelUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.Label.UxmlTraits">
       <summary>
         <para>UxmlTraits for the Label.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Label.LabelUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Label.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
@@ -2243,44 +2326,6 @@
         <para>Controls the selection state, whether: selections are disabled, there is only one selectable item, or if there are multiple selectable items.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ListView.ListViewFactory">
-      <summary>
-        <para>Instantiates a ListView using the data read from a UXML file.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ListView.ListViewFactory.#ctor">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ListView.ListViewUxmlTraits">
-      <summary>
-        <para>UxmlTraits for the ListView.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ListView.ListViewUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for ListView properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ListView.ListViewUxmlTraits.uxmlChildElementsDescription">
-      <summary>
-        <para>Returns an empty enumerable, as list views generally do not have children.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ListView.ListViewUxmlTraits.#ctor">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ListView.ListViewUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
-      <summary>
-        <para>Initialize ListView properties using values from the attribute bag.</para>
-      </summary>
-      <param name="ve">The object to initialize.</param>
-      <param name="bag">The attribute bag.</param>
-      <param name="cc">The creation context; unused.</param>
-    </member>
     <member name="M:UnityEngine.Experimental.UIElements.ListView.Refresh">
       <summary>
         <para>Clear, recreate all visible visual elements, and rebind all items. This should be called whenever the items source changes.</para>
@@ -2297,6 +2342,59 @@
         <para>Scroll so that a specific item index from the items source is visible.</para>
       </summary>
       <param name="index">Item index to scroll to.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.ListView.UxmlFactory">
+      <summary>
+        <para>Instantiates a ListView using the data read from a UXML file.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.ListView.UxmlFactory.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.ListView.UxmlTraits">
+      <summary>
+        <para>UxmlTraits for the ListView.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.ListView.UxmlTraits.uxmlChildElementsDescription">
+      <summary>
+        <para>Returns an empty enumerable, as list views generally do not have children.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.ListView.UxmlTraits.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.ListView.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+      <summary>
+        <para>Initialize ListView properties using values from the attribute bag.</para>
+      </summary>
+      <param name="ve">The object to initialize.</param>
+      <param name="bag">The attribute bag.</param>
+      <param name="cc">The creation context; unused.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.Manipulator">
+      <summary>
+        <para>Base class for objects that define user interaction with a VisualElement. Most often manipulators hold state for complex interactions, for example interactions that require a mouse down, mouse move mouse up sequence.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.Manipulator.target">
+      <summary>
+        <para>The element that handles the interaction.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.Manipulator.RegisterCallbacksOnTarget">
+      <summary>
+        <para>Register event callbacks on the target visual element.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.Manipulator.UnregisterCallbacksFromTarget">
+      <summary>
+        <para>Unregister event callbacks on the target visual element.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.ManipulatorActivationFilter">
       <summary>
@@ -2327,10 +2425,99 @@
         <para>True if the event matches the requirements.</para>
       </returns>
     </member>
+    <member name="T:UnityEngine.Experimental.UIElements.MinMaxSlider">
+      <summary>
+        <para>A min/max slider containing a representation of a range.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.MinMaxSlider.highLimit">
+      <summary>
+        <para>This is the high limit of the slider.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.MinMaxSlider.lowLimit">
+      <summary>
+        <para>This is the low limit of the slider.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.MinMaxSlider.maxValue">
+      <summary>
+        <para>This is the high value of the range represented on the slider.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.MinMaxSlider.minValue">
+      <summary>
+        <para>This is the low value of the range represented on the slider.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.MinMaxSlider.range">
+      <summary>
+        <para>Returns the range of the low/high limits of the slider.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.MinMaxSlider.value">
+      <summary>
+        <para>This is the value of the slider. This is a Vector2 where the x is the lower bound and the y is the higher bound.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.MinMaxSlider.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+      <param name="minValue">The minimum value in the range to be represented.</param>
+      <param name="maxValue">The maximum value in the range to be represented.</param>
+      <param name="minLimit">The minimum value of the slider limit.</param>
+      <param name="maxLimit">The maximum value of the slider limit.</param>
+      <param name="direction">This is the sldier direction, for now, only Horizontal is supported.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.MinMaxSlider.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+      <param name="minValue">The minimum value in the range to be represented.</param>
+      <param name="maxValue">The maximum value in the range to be represented.</param>
+      <param name="minLimit">The minimum value of the slider limit.</param>
+      <param name="maxLimit">The maximum value of the slider limit.</param>
+      <param name="direction">This is the sldier direction, for now, only Horizontal is supported.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.MinMaxSlider.UxmlFactory">
+      <summary>
+        <para>Instantiates a MinMaxSlider using the data read from a UXML file.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.MinMaxSlider.UxmlFactory.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.MinMaxSlider.UxmlTraits">
+      <summary>
+        <para>UxmlTraits for the MinMaxSlider.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.MinMaxSlider.UxmlTraits.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.MinMaxSlider.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+      <summary>
+        <para>Initialize MinMaxSlider properties using values from the attribute bag.</para>
+      </summary>
+      <param name="ve">The element to initialize.</param>
+      <param name="bag">The bag of attributes.</param>
+      <param name="cc">Creation Context, unused.</param>
+    </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseCaptureController">
       <summary>
         <para>Class that manages capturing mouse events.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.CaptureMouse(UnityEngine.Experimental.UIElements.IEventHandler)">
+      <summary>
+        <para>Assigns an event handler to capture mouse events.</para>
+      </summary>
+      <param name="handler">The event handler that captures mouse events.</param>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.HasMouseCapture(UnityEngine.Experimental.UIElements.IEventHandler)">
       <summary>
@@ -2341,31 +2528,25 @@
         <para>True if the handler captures the mouse.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.IsMouseCaptureTaken">
+    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.IsMouseCaptured">
       <summary>
-        <para>Checks if there is a handler assigned to capturing the mouse.</para>
+        <para>Checks if there is a handler capturing the mouse.</para>
       </summary>
       <returns>
-        <para>Returns true if a handler is assigned to capture the mouse, false otherwise.</para>
+        <para>Returns true if a handler is capturing the mouse, false otherwise.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.ReleaseMouseCapture(UnityEngine.Experimental.UIElements.IEventHandler)">
+    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.ReleaseMouse(UnityEngine.Experimental.UIElements.IEventHandler)">
       <summary>
         <para>Stops an event handler from capturing the mouse.</para>
       </summary>
       <param name="handler">The event handler to stop capturing the mouse. If this handler is not assigned to capturing the mouse, nothing happens.</param>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.ReleaseMouseCapture">
+    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.ReleaseMouse">
       <summary>
         <para>Stops an event handler from capturing the mouse.</para>
       </summary>
       <param name="handler">The event handler to stop capturing the mouse. If this handler is not assigned to capturing the mouse, nothing happens.</param>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureController.TakeMouseCapture(UnityEngine.Experimental.UIElements.IEventHandler)">
-      <summary>
-        <para>Assigns an event handler to capture the mouse.</para>
-      </summary>
-      <param name="handler">The event handler to capture the mouse.</param>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseCaptureEvent">
       <summary>
@@ -2382,18 +2563,24 @@
         <para>Event sent when the handler capturing the mouse changes.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureEventBase_1.GetPooled(UnityEngine.Experimental.UIElements.IEventHandler)">
+    <member name="P:UnityEngine.Experimental.UIElements.MouseCaptureEventBase_1.relatedTarget">
       <summary>
-        <para>Retrieves an event from the event pool. Use this method to retrieve a mouse event and initialize the event, instead of creating a new mouse event.</para>
+        <para>In the case of a MouseCaptureEvent, this property is the IEventHandler that loses the capture. In the case of a MouseCaptureOutEvent, this property is the IEventHandler that gains the capture.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureEventBase_1.GetPooled(UnityEngine.Experimental.UIElements.IEventHandler,UnityEngine.Experimental.UIElements.IEventHandler)">
+      <summary>
+        <para>Retrieves an event from the event pool. Use this method to retrieve a mouse event and initialize the event, instead of creating a new mouse event. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="target">The handler taking or releasing the mouse capture.</param>
+      <param name="relatedTarget">The related target.</param>
       <returns>
-        <para>A IMouseCaptureEvent.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseCaptureEventBase_1.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseCaptureOutEvent">
@@ -2418,7 +2605,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseEnterEvent">
       <summary>
-        <para>Event sent when the mouse pointer enters an element or one of its descendent elements. The event is cancellable, non-capturable, and does not bubble.</para>
+        <para>Event sent when the mouse pointer enters an element or one of its descendent elements. The event is cancellable, it does not trickle down, and it does not bubble up.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseEnterEvent.#ctor">
@@ -2428,12 +2615,12 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseEnterEvent.Init">
       <summary>
-        <para>Resets the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseEnterWindowEvent">
       <summary>
-        <para>Event sent when the mouse pointer enters a window. Cancellable, non-capturable, does not bubbles.</para>
+        <para>Event sent when the mouse pointer enters a window. The event is cancellable, it does not trickle down, and it does not bubble up.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseEnterWindowEvent.#ctor">
@@ -2443,7 +2630,7 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseEnterWindowEvent.Init">
       <summary>
-        <para>Resets the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseEventBase`1">
@@ -2451,9 +2638,14 @@
         <para>The base class for mouse events.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.actionKey">
+      <summary>
+        <para>Returns true if the platform specific action key is pressed. This key is Command on macOS and Control otherwise.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.altKey">
       <summary>
-        <para>Return true if the Alt key is pressed.</para>
+        <para>Returns true if the Alt key is pressed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.button">
@@ -2468,12 +2660,12 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.commandKey">
       <summary>
-        <para>Return true if the Windows/Command key is pressed.</para>
+        <para>Returns true if the Windows/Command key is pressed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.ctrlKey">
       <summary>
-        <para>Return true if the Control key is pressed.</para>
+        <para>Returns true if the Control key is pressed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.currentTarget">
@@ -2488,12 +2680,12 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.modifiers">
       <summary>
-        <para>Flag set holding the pressed modifier keys (Alt, Control, Shift, Windows/Command).</para>
+        <para>Flags holding the pressed modifier keys (Alt, Control, Shift, Windows/Command).</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.mouseDelta">
       <summary>
-        <para>Mouse position difference between the last mouse event and this one.</para>
+        <para>The difference of the mouse position between the previous mouse event and the current mouse event.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.mousePosition">
@@ -2503,26 +2695,26 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.MouseEventBase_1.shiftKey">
       <summary>
-        <para>Return true if the Shift key is pressed.</para>
+        <para>Returns true if the Shift key is pressed.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseEventBase_1.GetPooled(UnityEngine.Event)">
       <summary>
-        <para>Get an event from the event pool and initialize it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="systemEvent">A mouse IMGUI event.</param>
       <returns>
-        <para>A mouse event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseEventBase_1.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseLeaveEvent">
       <summary>
-        <para>Event sent when the mouse pointer exits an element and all its descendent elements. The event is cancellable, non-capturable, and does not bubble.</para>
+        <para>Event sent when the mouse pointer exits an element and all its descendent elements. The event is cancellable, it does not trickle down, and it does not bubble up.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseLeaveEvent.#ctor">
@@ -2532,12 +2724,12 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseLeaveEvent.Init">
       <summary>
-        <para>Resets the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseLeaveWindowEvent">
       <summary>
-        <para>Event sent when the mouse pointer exits a window. Cancellable, non-capturable, does not bubbles.</para>
+        <para>Event sent when the mouse pointer exits a window. The event is cancellable, it does not trickle down, and it does not bubble up.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseLeaveWindowEvent.#ctor">
@@ -2547,7 +2739,7 @@
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseLeaveWindowEvent.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseMoveEvent">
@@ -2562,7 +2754,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseOutEvent">
       <summary>
-        <para>Event sent when the mouse pointer exits an element. Capturable, bubbles, cancellable.</para>
+        <para>Event sent when the mouse pointer exits an element. The event trickles down, it bubbles up, and it is cancellable.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseOutEvent.#ctor">
@@ -2572,7 +2764,7 @@
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.MouseOverEvent">
       <summary>
-        <para>Event sent when the mouse pointer enters an element. Capturable, bubbles, cancellable.</para>
+        <para>Event sent when the mouse pointer enters an element. The event trickles down, it bubbles up, and it is cancellable.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.MouseOverEvent.#ctor">
@@ -2590,32 +2782,62 @@
         <para>Constructor. Avoid newing events. Instead, use GetPooled() to get an event from a pool of reusable events.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Experimental.UIElements.PanelChangedEventBase`1">
+      <summary>
+        <para>Abstract base class for events notifying of a panel change.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.PanelChangedEventBase_1.destinationPanel">
+      <summary>
+        <para>In the case of AttachToPanelEvent, the panel to which the event target element is now attached. In the case of DetachFromPanelEvent, the panel to which the event target element will be attached.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.PanelChangedEventBase_1.originPanel">
+      <summary>
+        <para>In the case of AttachToPanelEvent, the panel to which the event target element was attached. In the case of DetachFromPanelEvent, the panel from which the event target element is detached.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.PanelChangedEventBase_1.GetPooled(UnityEngine.Experimental.UIElements.IPanel,UnityEngine.Experimental.UIElements.IPanel)">
+      <summary>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
+      </summary>
+      <param name="originPanel">Sets the originPanel property of the event.</param>
+      <param name="destinationPanel">Sets the destinationPanel property of the event.</param>
+      <returns>
+        <para>Returns an initialized event.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.PanelChangedEventBase_1.Init">
+      <summary>
+        <para>Resets the event members to their initial values.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.UIElements.PopupWindow">
       <summary>
         <para>Styled visual element that matches the EditorGUILayout.Popup IMGUI element.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.PopupWindow.PopupWindowFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.PopupWindow.UxmlFactory">
       <summary>
         <para>Instantiates a PopupWindow using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.PopupWindow.PopupWindowFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.PopupWindow.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.PopupWindow.PopupWindowUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.PopupWindow.UxmlTraits">
       <summary>
         <para>UxmlTraits for the PopupWindow.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.PopupWindow.PopupWindowUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.PopupWindow.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an empty enumerable, as popup windows generally do not have children.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.PopupWindow.PopupWindowUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.PopupWindow.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
@@ -2635,11 +2857,6 @@
         <para>The event is being sent to the event target parent element up to the root element.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Experimental.UIElements.PropagationPhase.Capture">
-      <summary>
-        <para>The event is being sent to the root element down to the event target parent element.</para>
-      </summary>
-    </member>
     <member name="F:UnityEngine.Experimental.UIElements.PropagationPhase.DefaultAction">
       <summary>
         <para>The event is being sent to the target element for it to execute its default actions for this event. Event handlers do not get the events in this phase. Instead, ExecuteDefaultAction is called on the target.</para>
@@ -2648,6 +2865,11 @@
     <member name="F:UnityEngine.Experimental.UIElements.PropagationPhase.None">
       <summary>
         <para>The event is not being propagated.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.UIElements.PropagationPhase.TrickleDown">
+      <summary>
+        <para>The event is being sent from the root element to the target parent element.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.RepeatButton">
@@ -2671,39 +2893,6 @@
       <param name="delay">The initial delay before the action is executed for the first time.</param>
       <param name="interval">The interval between each execution of the action.</param>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.RepeatButton.RepeatButtonFactory">
-      <summary>
-        <para>Instantiates a RepeatButton using the data read from a UXML file.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.RepeatButton.RepeatButtonFactory.#ctor">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEngine.Experimental.UIElements.RepeatButton.RepeatButtonUxmlTraits">
-      <summary>
-        <para>UxmlTraits for the RepeatButton.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.RepeatButton.RepeatButtonUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for RepeatButton properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.RepeatButton.RepeatButtonUxmlTraits.#ctor">
-      <summary>
-        <para>Constructor.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.RepeatButton.RepeatButtonUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
-      <summary>
-        <para>Initialize RepeatButton properties using values from the attribute bag.</para>
-      </summary>
-      <param name="ve">The object to initialize.</param>
-      <param name="bag">The attribute bag.</param>
-      <param name="cc">The creation context; unused.</param>
-    </member>
     <member name="M:UnityEngine.Experimental.UIElements.RepeatButton.SetAction(System.Action,System.Int64,System.Int64)">
       <summary>
         <para>Set the action that should be executed when the button is pressed.</para>
@@ -2712,37 +2901,60 @@
       <param name="delay">The initial delay before the action is executed for the first time.</param>
       <param name="interval">The interval between each execution of the action.</param>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Scroller.ScrollerFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.RepeatButton.UxmlFactory">
+      <summary>
+        <para>Instantiates a RepeatButton using the data read from a UXML file.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.RepeatButton.UxmlFactory.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.RepeatButton.UxmlTraits">
+      <summary>
+        <para>UxmlTraits for the RepeatButton.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.RepeatButton.UxmlTraits.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.RepeatButton.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+      <summary>
+        <para>Initialize RepeatButton properties using values from the attribute bag.</para>
+      </summary>
+      <param name="ve">The object to initialize.</param>
+      <param name="bag">The attribute bag.</param>
+      <param name="cc">The creation context; unused.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.Scroller.UxmlFactory">
       <summary>
         <para>Instantiates a Scroller using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Scroller.ScrollerFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Scroller.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Scroller.ScrollerUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.Scroller.UxmlTraits">
       <summary>
         <para>UxmlTraits for the Scroller.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.Scroller.ScrollerUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for Scroller properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.Scroller.ScrollerUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.Scroller.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an empty enumerable, as scrollers do not have children.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Scroller.ScrollerUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Scroller.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Scroller.ScrollerUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.Scroller.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize Scroller properties using values from the attribute bag.</para>
       </summary>
@@ -2750,37 +2962,32 @@
       <param name="bag">The attribute bag.</param>
       <param name="cc">The creation context; unused.</param>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ScrollerButton.ScrollerButtonFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.ScrollerButton.UxmlFactory">
       <summary>
         <para>Instantiates a ScrollerButton using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ScrollerButton.ScrollerButtonFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.ScrollerButton.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ScrollerButton.ScrollerButtonUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.ScrollerButton.UxmlTraits">
       <summary>
         <para>UxmlTraits for the ScrollerButton.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ScrollerButton.ScrollerButtonUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for ScrollerButton properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ScrollerButton.ScrollerButtonUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.ScrollerButton.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an empty enumerable, as buttons generally do not have children.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ScrollerButton.ScrollerButtonUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.ScrollerButton.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ScrollerButton.ScrollerButtonUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.ScrollerButton.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize ScrollerButton properties using values from the attribute bag.</para>
       </summary>
@@ -2788,9 +2995,19 @@
       <param name="bag">The attribute bag.</param>
       <param name="cc">The creation context; unused.</param>
     </member>
+    <member name="P:UnityEngine.Experimental.UIElements.ScrollView.horizontalPageSize">
+      <summary>
+        <para>This property is controlling the scrolling speed of the horizontal scroller.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.UIElements.ScrollView.stretchContentWidth">
       <summary>
         <para>Indicates whether the content of ScrollView should fill the width of its viewport. The default value is false.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.ScrollView.verticalPageSize">
+      <summary>
+        <para>This property is controlling the scrolling speed of the vertical scroller.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.ScrollView.ScrollTo(UnityEngine.Experimental.UIElements.VisualElement)">
@@ -2799,32 +3016,33 @@
       </summary>
       <param name="child">The child to scroll to.</param>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ScrollView.ScrollViewFactory">
+    <member name="M:UnityEngine.Experimental.UIElements.ScrollView.SetContents(UnityEngine.Experimental.UIElements.VisualElement)">
+      <summary>
+        <para>Replaces the contentContainer with this element. The previous contents container will be removed the hierarchy</para>
+      </summary>
+      <param name="contents">The element to display in this ScrollView</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.ScrollView.UxmlFactory">
       <summary>
         <para>Instantiates a ScrollView using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ScrollView.ScrollViewFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.ScrollView.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.ScrollView.ScrollViewUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.ScrollView.UxmlTraits">
       <summary>
         <para>UxmlTraits for the ScrollView.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.ScrollView.ScrollViewUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for ScrollView properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ScrollView.ScrollViewUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.ScrollView.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.ScrollView.ScrollViewUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.ScrollView.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize ScrollView properties using values from the attribute bag.</para>
       </summary>
@@ -2852,47 +3070,118 @@
         <para>Only one item is selectable.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Slider.OnPersistentDataReady">
+    <member name="T:UnityEngine.Experimental.UIElements.Slider">
       <summary>
-        <para>Called when the persistent data is accessible and/or when the data or persistence key have changed (VisualElement is properly parented).</para>
+        <para>Experimental.UIElements.Slider is a controller allowing the selection of a value from a range (min, max, value).</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Slider.SliderFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.Slider.UxmlFactory">
       <summary>
         <para>Instantiates a Slider using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Slider.SliderFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Slider.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Slider.SliderUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.Slider.UxmlTraits">
       <summary>
         <para>UxmlTraits for the Slider.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.Slider.SliderUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for Slider properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.Slider.SliderUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.Slider.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an empty enumerable, as sliders generally do not have children.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Slider.SliderUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Slider.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Slider.SliderUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.Slider.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize Slider properties using values from the attribute bag.</para>
       </summary>
       <param name="ve">The object to initialize.</param>
       <param name="bag">The attribute bag.</param>
+      <param name="cc">The creation context; unused.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.SliderDirection">
+      <summary>
+        <para>This is the direction of the Slider and SliderInt.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.UIElements.SliderDirection.Horizontal">
+      <summary>
+        <para>An horizontal slider is made with a SliderDirection Horizontal.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.UIElements.SliderDirection.Vertical">
+      <summary>
+        <para>An vertical slider is made with a SliderDirection Vertical.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.SliderInt">
+      <summary>
+        <para>A slider containing Integer discrete values.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.SliderInt.pageSize">
+      <summary>
+        <para>The value to add or remove to the SliderInt.value when it is clicked.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.SliderInt.#ctor">
+      <summary>
+        <para>Constructors for the SliderInt.</para>
+      </summary>
+      <param name="start">This is the low value of the slider.</param>
+      <param name="end">This is the high value of the slider.</param>
+      <param name="direction">This is the slider direction, horizontal or vertical.</param>
+      <param name="pageSize">This is the number of values to change when the slider is clicked.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.SliderInt.#ctor">
+      <summary>
+        <para>Constructors for the SliderInt.</para>
+      </summary>
+      <param name="start">This is the low value of the slider.</param>
+      <param name="end">This is the high value of the slider.</param>
+      <param name="direction">This is the slider direction, horizontal or vertical.</param>
+      <param name="pageSize">This is the number of values to change when the slider is clicked.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.SliderInt.UxmlFactory">
+      <summary>
+        <para>Instantiates a SliderInt using the data read from a UXML file.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.SliderInt.UxmlFactory.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.SliderInt.UxmlTraits">
+      <summary>
+        <para>UxmlTraits for the SliderInt.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.SliderInt.UxmlTraits.uxmlChildElementsDescription">
+      <summary>
+        <para>Returns an empty enumerable, as sliders generally do not have children.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.SliderInt.UxmlTraits.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.SliderInt.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+      <summary>
+        <para>Initialize SliderInt properties using values from the attribute bag.</para>
+      </summary>
+      <param name="ve">The object to initialize.</param>
+      <param name="bag">The bag of attributes.</param>
       <param name="cc">The creation context; unused.</param>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.StyleEnums.Align">
@@ -3025,6 +3314,11 @@
         <para>Elements are placed over multiple lines.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.Experimental.UIElements.StyleEnums.Wrap.WrapReverse">
+      <summary>
+        <para>Elements are placed over multiple lines with new lines occuring in the reverse order set in the container.</para>
+      </summary>
+    </member>
     <member name="?:UnityEngine.Experimental.UIElements.StyleSheets.ICustomStyle">
       <summary>
         <para>This interface exposes methods to read custom style properties applied from USS files to visual elements.</para>
@@ -3058,7 +3352,7 @@
       <param name="propertyName">Name of the property in USS.</param>
       <param name="target">Target StyleValue&lt;T&gt; field or variable to write to.</param>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.StyleSheets.ICustomStyle.ApplyCustomProperty(System.String,UnityEngine.Experimental.UIElements.StyleSheets.StyleValue`1&lt;T&gt;&amp;)">
+    <member name="M:UnityEngine.Experimental.UIElements.StyleSheets.ICustomStyle.ApplyCustomProperty">
       <summary>
         <para>Read a style property value into the specified StyleValue&lt;T&gt;.</para>
       </summary>
@@ -3111,43 +3405,99 @@
         <para>The value to be used for the custom style.</para>
       </returns>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.TemplateContainer.TemplateContainerFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.TemplateContainer">
+      <summary>
+        <para>Template Container.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.TemplateContainer.UxmlFactory">
       <summary>
         <para>Instantiates and clones a TemplateContainer using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.TemplateContainer.TemplateContainerFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.TemplateContainer.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.TemplateContainer.TemplateContainerUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.TemplateContainer.UxmlTraits">
       <summary>
         <para>UxmlTraits for the TemplateContainer.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.TemplateContainer.TemplateContainerUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for TemplateContainer properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.TemplateContainer.TemplateContainerUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.TemplateContainer.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an empty enumerable, as template instance do not have children.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.TemplateContainer.TemplateContainerUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.TemplateContainer.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.TemplateContainer.TemplateContainerUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.TemplateContainer.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize TemplateContainer properties using values from the attribute bag.</para>
       </summary>
       <param name="ve">The object to initialize.</param>
       <param name="bag">The attribute bag.</param>
       <param name="cc">The creation context; unused.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.TextElement">
+      <summary>
+        <para>Abstract base class for VisualElement containing text.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.TextElement.text">
+      <summary>
+        <para>The text associated with the element.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.TextElement.MeasureTextSize(System.String,System.Single,UnityEngine.Experimental.UIElements.VisualElement/MeasureMode,System.Single,UnityEngine.Experimental.UIElements.VisualElement/MeasureMode)">
+      <summary>
+        <para>Computes the size needed to display a text string based on element style values such as font, font-size, word-wrap, and so on.</para>
+      </summary>
+      <param name="textToMeasure">The text to measure.</param>
+      <param name="width">Suggested width. Can be zero.</param>
+      <param name="widthMode">Width restrictions.</param>
+      <param name="height">Suggested height.</param>
+      <param name="heightMode">Height restrictions.</param>
+      <returns>
+        <para>Returns the horizontal and vertical size needed to display the text string.</para>
+      </returns>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.TextElement.UxmlFactory">
+      <summary>
+        <para>Instantiates a TextElement using the data read from a UXML file.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.TextElement.UxmlFactory.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.TextElement.UxmlTraits">
+      <summary>
+        <para>UxmlTraits for the TextElement.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.TextElement.UxmlTraits.uxmlChildElementsDescription">
+      <summary>
+        <para>Enumerator to get the child elements of the UxmlTraits of TextElement.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.TextElement.UxmlTraits.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.TextElement.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+      <summary>
+        <para>Initializer for the UxmlTraits for the TextElement.</para>
+      </summary>
+      <param name="ve">VisualElement to initialize.</param>
+      <param name="bag">Bag of attributes where to get the value from.</param>
+      <param name="cc">Creation Context, not used.</param>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.TextField">
       <summary>
@@ -3192,32 +3542,34 @@
         <para>Called when the persistent data is accessible and/or when the data or persistence key have changed (VisualElement is properly parented).</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.TextField.TextFieldFactory">
+    <member name="M:UnityEngine.Experimental.UIElements.TextField.SelectRange(System.Int32,System.Int32)">
+      <summary>
+        <para>Selects text in the textfield between cursorIndex and selectionIndex.</para>
+      </summary>
+      <param name="cursorIndex">The caret and selection start position.</param>
+      <param name="selectionIndex">The selection end position.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.TextField.UxmlFactory">
       <summary>
         <para>Instantiates a TextField using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.TextField.TextFieldFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.TextField.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.TextField.TextFieldUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.TextField.UxmlTraits">
       <summary>
         <para>UxmlTraits for the TextField.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.TextField.TextFieldUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for TextField properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.TextField.TextFieldUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.TextField.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.TextField.TextFieldUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.TextField.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize TextField properties using values from the attribute bag.</para>
       </summary>
@@ -3265,6 +3617,11 @@
         <para>Maximum number of characters for the field.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Experimental.UIElements.TextInputFieldBase_1.selectIndex">
+      <summary>
+        <para>The current selection position index in the text input field.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.UIElements.TextInputFieldBase_1.selectionColor">
       <summary>
         <para>Background color of selected text.</para>
@@ -3293,17 +3650,17 @@
         <para>Selects all the text.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.TextInputFieldBase`1.TextInputFieldBaseUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.TextInputFieldBase`1.UxmlTraits">
       <summary>
         <para>UxmlTraits for the TextInputFieldBase.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.TextInputFieldBase_1.TextInputFieldBaseUxmlTraits.uxmlAttributesDescription">
+    <member name="M:UnityEngine.Experimental.UIElements.TextInputFieldBase_1.UxmlTraits.#ctor">
       <summary>
-        <para>Returns an enumerable containing attribute descriptions for TextInputFieldBase properties that should be available in UXML.</para>
+        <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.TextInputFieldBase_1.TextInputFieldBaseUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.TextInputFieldBase_1.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize TextInputFieldBase properties using values from the attribute bag.</para>
       </summary>
@@ -3311,54 +3668,84 @@
       <param name="bag">The attribute bag.</param>
       <param name="cc">The creation context; unused.</param>
     </member>
+    <member name="T:UnityEngine.Experimental.UIElements.Toggle">
+      <summary>
+        <para>This is the Toggle field.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.UIElements.Toggle.text">
       <summary>
         <para>Optional text after the toggle.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.Toggle.value">
-      <summary>
-        <para>Return whether the toggle is on or not.</para>
-      </summary>
-    </member>
     <member name="M:UnityEngine.Experimental.UIElements.Toggle.OnToggle(System.Action)">
       <summary>
-        <para>Sets the event callback for this toggle button.</para>
+        <para>(Obsolete) Sets the event callback for this toggle button. Use OnValueChanged() instead.</para>
       </summary>
       <param name="clickEvent">The action to be called when this Toggle is clicked.</param>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Toggle.ToggleFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.Toggle.UxmlFactory">
       <summary>
         <para>Instantiates a Toggle using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Toggle.ToggleFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Toggle.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.Toggle.ToggleUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.Toggle.UxmlTraits">
       <summary>
         <para>UxmlTraits for the Toggle.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.Toggle.ToggleUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for Toggle properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Toggle.ToggleUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.Toggle.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.Toggle.ToggleUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.Toggle.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize Toggle properties using values from the attribute bag.</para>
       </summary>
       <param name="ve">The object to initialize.</param>
       <param name="bag">The attribute bag.</param>
       <param name="cc">The creation context; unused.</param>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.TooltipEvent">
+      <summary>
+        <para>Event sent to find the first element that displays a tooltip.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.TooltipEvent.rect">
+      <summary>
+        <para>Rectangle of the hovered element in the panel coordinate system.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.TooltipEvent.tooltip">
+      <summary>
+        <para>Text to display inside the tooltip box.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.TooltipEvent.Init">
+      <summary>
+        <para>Resets the event members to their initial values.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.Experimental.UIElements.TrickleDown">
+      <summary>
+        <para>Use this enum to specify during which phases the event handler is executed.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.UIElements.TrickleDown.NoTrickleDown">
+      <summary>
+        <para>The event handler should be executed during the AtTarget and BubbleUp phases.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.Experimental.UIElements.TrickleDown.TrickleDown">
+      <summary>
+        <para>The event handler should be executed during the TrickleDown and AtTarget phases.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.UQuery">
       <summary>
@@ -3763,6 +4150,11 @@
         <para>The attribute name.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Experimental.UIElements.UxmlAttributeDescription.obsoleteNames">
+      <summary>
+        <para>A list of obsolete names for this attribute.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Experimental.UIElements.UxmlAttributeDescription.restriction">
       <summary>
         <para>Restrictions on the possible values of the attribute.</para>
@@ -3783,10 +4175,17 @@
         <para>Whether the attribute is optional, required or prohibited.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.UxmlAttributeDescription.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.UxmlAttributeDescription.GetValueFromBag(UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext,System.Func`3&lt;System.String,T,T&gt;,T)">
       <summary>
-        <para>Constructor.</para>
+        <para>Get the attribute value from the attribute bag.</para>
       </summary>
+      <param name="bag">A bag containg attributes and their values as strings.</param>
+      <param name="cc">The context in which the values are retrieved.</param>
+      <param name="converterFunc">A function to convert a string value to type T.</param>
+      <param name="defaultValue">The value to return if the attribute is not found in the bag.</param>
+      <returns>
+        <para>The attribute value from the bag, or defaultValue if the attribute is not found.</para>
+      </returns>
     </member>
     <member name="T:UnityEngine.Experimental.UIElements.UxmlAttributeDescription.Use">
       <summary>
@@ -4356,42 +4755,42 @@
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory">
       <summary>
         <para>Instantiates a VisualElement using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory.substituteForTypeName">
+    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory.substituteForTypeName">
       <summary>
         <para>Returns the VisualElement type name.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory.substituteForTypeNamespace">
+    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory.substituteForTypeNamespace">
       <summary>
         <para>Returns the VisualElement type namespace.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory.substituteForTypeQualifiedName">
+    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory.substituteForTypeQualifiedName">
       <summary>
         <para>Returns the VisualElement qualified name.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory.uxmlName">
+    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory.uxmlName">
       <summary>
         <para>Returns VisualContainer type name.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory.uxmlNamespace">
+    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory.uxmlNamespace">
       <summary>
         <para>Returns VisualContainer namespace name.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory.uxmlQualifiedName">
+    <member name="P:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory.uxmlQualifiedName">
       <summary>
         <para>Returns VisualContainer full name.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.VisualContainer.VisualContainerFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.VisualContainer.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
@@ -4457,6 +4856,11 @@
     <member name="P:UnityEngine.Experimental.UIElements.VisualElement.style">
       <summary>
         <para>Reference to the style object of this element.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Experimental.UIElements.VisualElement.tooltip">
+      <summary>
+        <para>Text to display inside an information box after the user hovers the element for a small amount of time.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.VisualElement.userData">
@@ -4689,6 +5093,11 @@
         <para>Insert an element into this element's contentContainer</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.MarkDirtyRepaint">
+      <summary>
+        <para>Triggers a repaint of the VisualElement on the next frame.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.UIElements.VisualElement.MeasureMode">
       <summary>
         <para>The modes available to measure VisualElement sizes.</para>
@@ -4767,6 +5176,12 @@
         <para>Write persistence data to file.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.SendEvent(UnityEngine.Experimental.UIElements.EventBase)">
+      <summary>
+        <para>Sends an event to the event handler.</para>
+      </summary>
+      <param name="e">The event to send.</param>
+    </member>
     <member name="M:UnityEngine.Experimental.UIElements.VisualElement.SendToBack">
       <summary>
         <para>Sends this element to the beginning of its parent children list. The element will be visually behind any overlapping sibling elements.</para>
@@ -4776,7 +5191,7 @@
       <summary>
         <para>Changes whether the current VisualElement is enabled or not. When disabled, a VisualElement does not receive most events.</para>
       </summary>
-      <param name="value">New enabled state</param>
+      <param name="value">New enabled state.</param>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.VisualElement.Sort(System.Comparison`1&lt;UnityEngine.Experimental.UIElements.VisualElement&gt;)">
       <summary>
@@ -4796,37 +5211,32 @@
       </summary>
       <param name="className">The class name to add or remove from the class list.</param>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.VisualElement.VisualElementFactory">
+    <member name="T:UnityEngine.Experimental.UIElements.VisualElement.UxmlFactory">
       <summary>
         <para>Instantiates a VisualElement using the data read from a UXML file.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.VisualElementFactory.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.UxmlFactory.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Experimental.UIElements.VisualElement.VisualElementUxmlTraits">
+    <member name="T:UnityEngine.Experimental.UIElements.VisualElement.UxmlTraits">
       <summary>
         <para>UxmlTraits for the VisualElement.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualElement.VisualElementUxmlTraits.uxmlAttributesDescription">
-      <summary>
-        <para>Returns an enumerable containing attribute descriptions for VisualElement properties that should be available in UXML.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.Experimental.UIElements.VisualElement.VisualElementUxmlTraits.uxmlChildElementsDescription">
+    <member name="P:UnityEngine.Experimental.UIElements.VisualElement.UxmlTraits.uxmlChildElementsDescription">
       <summary>
         <para>Returns an enumerable containing UxmlChildElementDescription(typeof(VisualElement)), since VisualElements can contain other VisualElements.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.VisualElementUxmlTraits.#ctor">
+    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.UxmlTraits.#ctor">
       <summary>
         <para>Constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.VisualElementUxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
+    <member name="M:UnityEngine.Experimental.UIElements.VisualElement.UxmlTraits.Init(UnityEngine.Experimental.UIElements.VisualElement,UnityEngine.Experimental.UIElements.IUxmlAttributes,UnityEngine.Experimental.UIElements.CreationContext)">
       <summary>
         <para>Initialize VisualElement properties using values from the attribute bag.</para>
       </summary>
@@ -4930,6 +5340,43 @@
       <param name="currentFocusable"></param>
       <param name="direction"></param>
     </member>
+    <member name="T:UnityEngine.Experimental.UIElements.VisualTreeAsset">
+      <summary>
+        <para>Instances of this class hold a tree of `VisualElementAsset`s. It is created from an UXML file, and each `VisualElementAsset` represents a UXML node inside this file. A `VisualTreeAsset` can be Cloned to yield a tree of `VisualElement`s.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.VisualTreeAsset.CloneTree(System.Collections.Generic.Dictionary`2&lt;System.String,UnityEngine.Experimental.UIElements.VisualElement&gt;)">
+      <summary>
+        <para>Build a tree of VisualElements from the asset.</para>
+      </summary>
+      <param name="slotInsertionPoints">A mapping of slot names to the VisualElements at their root.</param>
+      <param name="bindingPath">Path of the target property to be bound to the cloned tree root.</param>
+      <returns>
+        <para>The root of the tree of VisualElements that was just cloned.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.VisualTreeAsset.CloneTree(System.Collections.Generic.Dictionary`2&lt;System.String,UnityEngine.Experimental.UIElements.VisualElement&gt;,System.String)">
+      <summary>
+        <para>Build a tree of VisualElements from the asset.</para>
+      </summary>
+      <param name="slotInsertionPoints">A mapping of slot names to the VisualElements at their root.</param>
+      <param name="bindingPath">Path of the target property to be bound to the cloned tree root.</param>
+      <returns>
+        <para>The root of the tree of VisualElements that was just cloned.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.VisualTreeAsset.CloneTree(UnityEngine.Experimental.UIElements.VisualElement,System.Collections.Generic.Dictionary`2&lt;System.String,UnityEngine.Experimental.UIElements.VisualElement&gt;)">
+      <summary>
+        <para>Build a tree of VisualElements from the asset.</para>
+      </summary>
+      <param name="target">A VisualElement that will act as the root of the cloned tree.</param>
+      <param name="slotInsertionPoints">A mapping of slot names to the VisualElements at their root.</param>
+    </member>
+    <member name="M:UnityEngine.Experimental.UIElements.VisualTreeAsset.#ctor">
+      <summary>
+        <para>Constructor.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Experimental.UIElements.WheelEvent">
       <summary>
         <para>Mouse wheel event.</para>
@@ -4937,26 +5384,26 @@
     </member>
     <member name="P:UnityEngine.Experimental.UIElements.WheelEvent.delta">
       <summary>
-        <para>The amount of scrolling applied on the mouse wheel.</para>
+        <para>The amount of scrolling applied with the mouse wheel.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.WheelEvent.#ctor">
       <summary>
-        <para>Constructor. Avoid newing events. Instead, use GetPooled() to get an event from a pool of reusable events.</para>
+        <para>Constructor. Use GetPooled() to get an event from a pool of reusable events.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.WheelEvent.GetPooled(UnityEngine.Event)">
       <summary>
-        <para>Get an event from the event pool and initialize it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using ReleaseEvent().</para>
+        <para>Gets an event from the event pool and initializes it with the given values. Use this function instead of creating new events. Events obtained from this method should be released back to the pool using Dispose().</para>
       </summary>
       <param name="systemEvent">A wheel IMGUI event.</param>
       <returns>
-        <para>A wheel event.</para>
+        <para>Returns an initialized event.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.Experimental.UIElements.WheelEvent.Init">
       <summary>
-        <para>Reset the event members to their initial value.</para>
+        <para>Resets the event members to their initial values.</para>
       </summary>
     </member>
     <member name="A:UnityEngine.UIElementsModule">

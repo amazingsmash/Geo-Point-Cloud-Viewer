@@ -101,7 +101,7 @@
     </member>
     <member name="P:UnityEngine.Canvas.renderOrder">
       <summary>
-        <para>The render order in which the canvas is being emitted to the scene. (Read Only)</para>
+        <para>The render order in which the canvas is being emitted to the Scene. (Read Only)</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Canvas.rootCanvas">
@@ -311,6 +311,14 @@ See Also: CanvasRenderer.EnableRectClipping, CanvasRenderer.DisableRectClipping.
       <summary>
         <para>Get the current color of the renderer.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.CanvasRenderer.GetInheritedAlpha">
+      <summary>
+        <para>Get the final inherited alpha calculated by including all the parent alphas from included parent CanvasGroups.</para>
+      </summary>
+      <returns>
+        <para>The calculated inherited alpha.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.CanvasRenderer.GetMaterial(System.Int32)">
       <summary>
@@ -523,12 +531,12 @@ See Also: CanvasRenderer.SetMaterialCount, CanvasRenderer.SetTexture.</para>
     </member>
     <member name="F:UnityEngine.RenderMode.ScreenSpaceOverlay">
       <summary>
-        <para>Render at the end of the scene using a 2D Canvas.</para>
+        <para>Render at the end of the Scene using a 2D Canvas.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.RenderMode.WorldSpace">
       <summary>
-        <para>Render using any Camera in the scene that can render the layer.</para>
+        <para>Render using any Camera in the Scene that can render the layer.</para>
       </summary>
     </member>
     <member name="A:UnityEngine.UIModule">

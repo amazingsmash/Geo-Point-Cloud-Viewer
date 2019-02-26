@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener, ITCPEndListener
 {
-    static TCPServer server = null;
+    TCPServer server = null;
 
     public int port = 3333;
 
-    public RemoteServerPointCloudListener()
+    void Start()
     {
-        if (server != null)
-        {
-            server = new TCPServer("127.0.0.1", port, this);
-        }
+        server = new TCPServer("127.0.0.1", port, this);
         Debug.Log("Server generated.");
     }
 
@@ -22,7 +19,7 @@ public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener
         Debug.Log(msg);
     }
 
-    public void onPointSelected(Vector3 point)
+    public void onPointSelected(Vector3 point, float classCode)
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sphere.transform.position = point;
@@ -31,7 +28,7 @@ public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener
 
         SelectPointCmd selectPointCmd = new SelectPointCmd(0, 0, 0);
 
-        server.SendMessage("Point Selected: " + point.ToString());
+        server.SendMessage("Point Selected: " + point.ToString() + " of class: " + classCode);
     }
 
     public void OnStatusChanged(TCPEnd.Status status)

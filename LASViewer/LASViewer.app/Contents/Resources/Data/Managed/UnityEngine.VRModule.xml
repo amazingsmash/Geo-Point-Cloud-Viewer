@@ -34,6 +34,26 @@
         <para>Renders the right eye of the XR device in the Game View window or in main window on a host PC.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.XR.TrackingOriginMode">
+      <summary>
+        <para>Represents how the device is reporting pose data.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.XR.TrackingOriginMode.Device">
+      <summary>
+        <para>Represents a Device relative tracking origin. A Device relative tracking origin defines a Local Origin at the position of the device in space at some previous point in time, usually at a recenter event, power-on or AR/VR session start. Pose data provided by the device will be in this space relative to the local origin. This means that poses returned in this mode will not include the user height (for VR) or the device height (for AR) and any camera tracking from the XR Device will need to be manually offset accordingly.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.XR.TrackingOriginMode.Floor">
+      <summary>
+        <para>Represents the tracking origin whereby 0,0,0 is on the "floor" or other surface determined by the XR Device being used. The pose values reported by an XR Device in this mode will include the height of the XR Device above this surface, removing the need to offset the position of the camera tracking the XR Device by the height of the user (VR) or the height of the device above the floor (AR).</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.XR.TrackingOriginMode.Unknown">
+      <summary>
+        <para>This indicates that the device does not know, or is unable to determine how it is reporting pose data. This value should be treated as an error condition.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.XR.TrackingSpaceType">
       <summary>
         <para>Represents the size of physical space available for XR.</para>
@@ -137,27 +157,27 @@
     </member>
     <member name="M:UnityEngine.XR.WSA.HolographicSettings.SetFocusPointForFrame(UnityEngine.Vector3)">
       <summary>
-        <para>Sets a point in 3d space that is the focal point of the scene for the user for this frame. This helps improve the visual fidelity of content around this point. This must be set every frame.</para>
+        <para>Sets a point in 3d space that is the focal point of the Scene for the user for this frame. This helps improve the visual fidelity of content around this point. This must be set every frame.</para>
       </summary>
-      <param name="position">The position of the focal point in the scene, relative to the camera.</param>
+      <param name="position">The position of the focal point in the Scene, relative to the camera.</param>
       <param name="normal">Surface normal of the plane being viewed at the focal point.</param>
-      <param name="velocity">A vector that describes how the focus point is moving in the scene at this point in time. This allows the HoloLens to compensate for both your head movement and the movement of the object in the scene.</param>
+      <param name="velocity">A vector that describes how the focus point is moving in the Scene at this point in time. This allows the HoloLens to compensate for both your head movement and the movement of the object in the Scene.</param>
     </member>
     <member name="M:UnityEngine.XR.WSA.HolographicSettings.SetFocusPointForFrame(UnityEngine.Vector3,UnityEngine.Vector3)">
       <summary>
-        <para>Sets a point in 3d space that is the focal point of the scene for the user for this frame. This helps improve the visual fidelity of content around this point. This must be set every frame.</para>
+        <para>Sets a point in 3d space that is the focal point of the Scene for the user for this frame. This helps improve the visual fidelity of content around this point. This must be set every frame.</para>
       </summary>
-      <param name="position">The position of the focal point in the scene, relative to the camera.</param>
+      <param name="position">The position of the focal point in the Scene, relative to the camera.</param>
       <param name="normal">Surface normal of the plane being viewed at the focal point.</param>
-      <param name="velocity">A vector that describes how the focus point is moving in the scene at this point in time. This allows the HoloLens to compensate for both your head movement and the movement of the object in the scene.</param>
+      <param name="velocity">A vector that describes how the focus point is moving in the Scene at this point in time. This allows the HoloLens to compensate for both your head movement and the movement of the object in the Scene.</param>
     </member>
     <member name="M:UnityEngine.XR.WSA.HolographicSettings.SetFocusPointForFrame(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3)">
       <summary>
-        <para>Sets a point in 3d space that is the focal point of the scene for the user for this frame. This helps improve the visual fidelity of content around this point. This must be set every frame.</para>
+        <para>Sets a point in 3d space that is the focal point of the Scene for the user for this frame. This helps improve the visual fidelity of content around this point. This must be set every frame.</para>
       </summary>
-      <param name="position">The position of the focal point in the scene, relative to the camera.</param>
+      <param name="position">The position of the focal point in the Scene, relative to the camera.</param>
       <param name="normal">Surface normal of the plane being viewed at the focal point.</param>
-      <param name="velocity">A vector that describes how the focus point is moving in the scene at this point in time. This allows the HoloLens to compensate for both your head movement and the movement of the object in the scene.</param>
+      <param name="velocity">A vector that describes how the focus point is moving in the Scene at this point in time. This allows the HoloLens to compensate for both your head movement and the movement of the object in the Scene.</param>
     </member>
     <member name="T:UnityEngine.XR.WSA.HolographicStreamerConnectionFailureReason">
       <summary>
@@ -219,6 +239,12 @@
         <para>Contains all functionality related to a XR device.</para>
       </summary>
     </member>
+    <member name="?:UnityEngine.XR.XRDevice.deviceLoaded(System.Action`1&lt;System.String&gt;)">
+      <summary>
+        <para>Subscribe a delegate to this event to get notified when an XRDevice is successfully loaded.</para>
+      </summary>
+      <param name="value"></param>
+    </member>
     <member name="P:UnityEngine.XR.XRDevice.family">
       <summary>
         <para>The name of the family of the loaded XR device.</para>
@@ -243,6 +269,14 @@
       <summary>
         <para>Refresh rate of the display in Hertz.</para>
       </summary>
+    </member>
+    <member name="P:UnityEngine.XR.XRDevice.trackingOriginMode">
+      <summary>
+        <para>Returns the devices TrackingOriginType.</para>
+      </summary>
+      <returns>
+        <para>The TrackingOriginType that the device is currently using. It will return the Unknown TrackingOriginType on failure.</para>
+      </returns>
     </member>
     <member name="P:UnityEngine.XR.XRDevice.userPresence">
       <summary>
@@ -350,6 +384,11 @@
         <para>This property has been deprecated. Use XRSettings.gameViewRenderMode instead.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.XR.XRSettings.stereoRenderingMode">
+      <summary>
+        <para>The stereo rendering mode that is currently in use.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.XR.XRSettings.supportedDevices">
       <summary>
         <para>Returns a list of supported XR devices that were included at build time.</para>
@@ -373,6 +412,31 @@
       </summary>
       <param name="deviceName">Name of the device from XRSettings.supportedDevices.</param>
       <param name="prioritizedDeviceNameList">Prioritized list of device names from XRSettings.supportedDevices.</param>
+    </member>
+    <member name="T:UnityEngine.XR.XRSettings.StereoRenderingMode">
+      <summary>
+        <para>Enum type signifying the different stereo rendering modes available.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.XR.XRSettings.StereoRenderingMode.MultiPass">
+      <summary>
+        <para>This is the reference stereo rendering path for VR.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.XR.XRSettings.StereoRenderingMode.SinglePass">
+      <summary>
+        <para>This is a faster rendering path for VR than XRSettings.StereoRenderingMode.MultiPass.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.XR.XRSettings.StereoRenderingMode.SinglePassInstanced">
+      <summary>
+        <para>This is an optimized version of the XRSettings.StereoRenderingMode.SinglePass mode.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.XR.XRSettings.StereoRenderingMode.SinglePassMultiview">
+      <summary>
+        <para>This is a OpenGL optimized version of the XRSettings.StereoRenderingMode.SinglePassInstanced mode.</para>
+      </summary>
     </member>
     <member name="T:UnityEngine.XR.XRStats">
       <summary>

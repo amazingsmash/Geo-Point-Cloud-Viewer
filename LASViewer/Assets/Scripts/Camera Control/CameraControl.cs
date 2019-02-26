@@ -20,11 +20,20 @@ public class CameraControl : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.X))
         {
             flyCam.enabled = !flyCam.enabled;
+
+            Cursor.lockState = flyCam.enabled ? CursorLockMode.Locked : CursorLockMode.None;
         }
     }
 
     public void setCameraOrtho(bool isOrtho)
     {
         cam.orthographic = isOrtho;
+        cam.orthographicSize = 250;
+
+        if (isOrtho)
+        {
+            cam.transform.rotation.SetLookRotation(new Vector3(1, 0, 0));
+        }
+
     }
 }

@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class CameraExtension
+{
+    public static float GetDistanceForLenghtToScreenSize(this Camera camera, float length, int nPixels)
+    {
+        float pixelAngleDegrees =(camera.fieldOfView / camera.scaledPixelWidth)* nPixels;
+        return length / Mathf.Tan(Mathf.Deg2Rad * pixelAngleDegrees);
+    }
+}
+
 public static class ColorExtension
 {
     public static bool IsEqualsTo(this Color c1, Color c2)
@@ -45,6 +54,29 @@ public static class BoundsExtension
     {
         Vector3 p = box.ClosestPoint(position);
         return Vector3.Distance(position, p);
+    }
+
+    public static float MaxInnerDistance(this Bounds box)
+    {
+        return Vector3.Distance(box.min, box.max);
+    }
+
+    public static float MaxDistance(this Bounds box, Vector3 position)
+    {
+        float farX = Mathf.Max(Mathf.Abs(box.min.x - position.x), Mathf.Abs(box.max.x - position.x));
+        float farY = Mathf.Max(Mathf.Abs(box.min.y - position.y), Mathf.Abs(box.max.y - position.y));
+        float farZ = Mathf.Max(Mathf.Abs(box.min.z - position.z), Mathf.Abs(box.max.z - position.z));
+        return Mathf.Sqrt(farX * farX + farY * farY + farZ * farZ);
+    }
+
+    public static float MinDistance(this Bounds box, Vector3 position)
+    {
+        if (box.Contains(position))
+        {
+            return 0.0f;
+        }
+        Vector3 p = box.ClosestPoint(position);
+        return Vector3.Distance(p, position);
     }
 }
 

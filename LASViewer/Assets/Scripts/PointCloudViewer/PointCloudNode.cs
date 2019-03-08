@@ -32,18 +32,11 @@ abstract class PointCloudNode : MonoBehaviour
 
     public abstract void ComputeNodeState(ref List<PointCloudLeafNode.NodeAndDistance> visibleLeafNodesAndDistances, Vector3 camPosition, float zFar);
     public abstract void OnStateChanged();
-    public abstract bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider);
+    public abstract bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager);
 
     public float EstimatedDistance(Vector3 position)
     {
-
-        Bounds bounds = boundsInModelSpace;
-        if (bounds.Contains(position))
-        {
-            return 0.0f;
-        }
-        Vector3 p = bounds.ClosestPoint(position);
-        return Vector3.Distance(p, position);
+        return boundsInModelSpace.MinDistance(position);
     }
 
     public abstract void GetClosestPointOnRay(Ray ray,
@@ -111,7 +104,7 @@ abstract class PointCloudNode : MonoBehaviour
 
 class PointCloudParentNode : PointCloudNode
 {
-    public override bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager materialProvider)
+    public override bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
         InitializeFromJSON(node);
         gameObject.name = "PC Parent Node";
@@ -121,7 +114,7 @@ class PointCloudParentNode : PointCloudNode
         //Debug.Log("N Children: " + childrenJSON.Count);
         for (int i = 0; i < childrenJSON.Count; i++)
         {
-            PointCloudNode pcNode = PointCloudNode.AddNode(childrenJSON[i], directory, gameObject, materialProvider);
+            PointCloudNode pcNode = PointCloudNode.AddNode(childrenJSON[i], directory, gameObject, manager);
             if (pcNode != null)
             {
                 childrenList.Add(pcNode);
@@ -151,12 +144,14 @@ class PointCloudParentNode : PointCloudNode
         switch (State)
         {
             case PCNodeState.INVISIBLE:
+                gameObject.SetActive(false);
                 foreach (PointCloudNode node in children)
                 {
                     node.State = PCNodeState.INVISIBLE;
                 }
                 break;
             case PCNodeState.VISIBLE:
+                gameObject.SetActive(true);
                 break;
         }
     }

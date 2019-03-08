@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
-    Camera cam;
+    Camera cam = null;
     FlyCam flyCam;
 
     // Start is called before the first frame update
@@ -27,13 +27,27 @@ public class CameraControl : MonoBehaviour
 
     public void setCameraOrtho(bool isOrtho)
     {
-        cam.orthographic = isOrtho;
-        cam.orthographicSize = 250;
-
-        if (isOrtho)
+        if (cam != null)
         {
-            cam.transform.rotation.SetLookRotation(new Vector3(1, 0, 0));
+            cam.orthographic = isOrtho;
+            cam.orthographicSize = 250;
+
+            if (isOrtho)
+            {
+                cam.transform.rotation.SetLookRotation(new Vector3(1, 0, 0));
+            }
         }
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (cam != null)
+        {
+            Gizmos.color = Color.cyan;
+            float pointPhysicalSize = 0.1f; //Round point size
+            float distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
+            Gizmos.DrawWireSphere(cam.transform.position, distanceThreshold);
+        }
     }
 }

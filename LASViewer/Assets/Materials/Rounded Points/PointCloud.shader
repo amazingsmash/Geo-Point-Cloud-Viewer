@@ -64,23 +64,30 @@
 				float3 tangent = normalize(cross(float3(0,1,0), pIn.normal));
 				float3 up = normalize(cross(tangent, pIn.normal));
                 
-                up = (up * _Size/2.0);
-                tangent = (tangent* _Size/2.0);
+                //up = (up * _Size/2.0);
+              
+                //float3 upY = up * _Size / 0.5; //Sin(30)
+                //float3 downY = up * _Size / 0.5; //Sin(30)
+                tangent = tangent * 1.73205080757;// (tangent* _Size/2.0);
+                
+                tangent *= _Size;
+                up *= _Size;
+                
                 float3 p = vertex.xyz;
                 
                 //V1
-                pIn.vertex = mul(UNITY_MATRIX_VP, float4(p + up, 1.0));
-                pIn.texcoord = float2(0, 2.0);;
+                pIn.vertex = mul(UNITY_MATRIX_VP, float4(p + up*2.0, 1.0));
+                pIn.texcoord = float2(0, 2.0);
                 triStream.Append(pIn);
                 
                 //V2
                 pIn.vertex = mul(UNITY_MATRIX_VP, float4(p - up + tangent, 1.0));
-                pIn.texcoord = float2(1.73205080757, -1.0);;
+                pIn.texcoord = float2(1.73205080757, -1.0);
                 triStream.Append(pIn);
                 
                 //V3
                 pIn.vertex = mul(UNITY_MATRIX_VP, float4(p - up - tangent, 1.0));
-                pIn.texcoord = float2(-1.73205080757, -1.0);;
+                pIn.texcoord = float2(-1.73205080757, -1.0);
                 triStream.Append(pIn);
 			}
 

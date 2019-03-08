@@ -8,6 +8,8 @@ public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener
 
     public int port = 3333;
 
+    public GameObject selectedPointMark = null;
+
     void Start()
     {
         server = new TCPServer("127.0.0.1", port, this);
@@ -21,10 +23,15 @@ public class RemoteServerPointCloudListener : MonoBehaviour, IPointCloudListener
 
     public void onPointSelected(Vector3 point, float classCode)
     {
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.position = point;
-        float ballSize = 2.0f;
-        sphere.transform.localScale = new Vector3(ballSize, ballSize, ballSize);
+        //GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //sphere.transform.position = point;
+        //float ballSize = 2.0f;
+        //sphere.transform.localScale = new Vector3(ballSize, ballSize, ballSize);
+
+        if (selectedPointMark != null)
+        {
+            Instantiate(selectedPointMark, point, Quaternion.identity);
+        }
 
         SelectPointCmd selectPointCmd = new SelectPointCmd(0, 0, 0);
 

@@ -6,3 +6,5 @@ LASConverter/*.mat
 LASConverter/*.las
 *.m~
 .DS_Store
+*.bytes
+*.DS_Store

@@ -15,9 +15,12 @@ public interface IPointCloudManager
 {
     Color GetColorForClass(float classification);
     MeshManager GetMeshManager();
-    float HDHorizontalRelativeScreenSize { get; }
-    Material HDMaterial { get; }
-    Material LDMaterial { get; }
+    //Material HDMaterial { get; }
+    //Material LDMaterial { get; }
+
+    //Material[] GetMaterialsForDistance(float minDistance, float maxDistance);
+
+    void ModifyRendererBasedOnBounds(Bounds bounds, MeshRenderer meshRenderer);
 }
 
 public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
@@ -59,24 +62,26 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     // Use this for initialization
     void Start()
     {
-        //DirectoryInfo dir = getModelDirectoryFromDialog();
-        //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
-        DirectoryInfo dir = (folderPath == null)? getModelDirectoryFromDialog() : new DirectoryInfo(folderPath);
-        //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL MINI");
-        //"/Users/josemiguelsn/Desktop/repos/LASViewer/Models/18 - BITREE";
-        Initialize(dir);
-
-        InvokeRepeating("CheckNodeRenderState", 0.0f, 0.3f);
-    }
-
-    public void Initialize(DirectoryInfo directory)
-    {
         if (!transform.lossyScale.NearlyEquals(Vector3.one))
         {
             Debug.LogError("PointCloud must be not to scale.");
             return;
         }
 
+
+        //DirectoryInfo dir = getModelDirectoryFromDialog();
+        //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
+        DirectoryInfo dir = (folderPath == null)? getModelDirectoryFromDialog() : new DirectoryInfo(folderPath);
+        //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/LAS MODEL MINI");
+        //"/Users/josemiguelsn/Desktop/repos/LASViewer/Models/18 - BITREE";
+        InitIPointCloudManager();
+        InitializeTree(dir);
+
+        InvokeRepeating("CheckNodeRenderState", 0.0f, 0.1f);
+    }
+
+    public void InitializeTree(DirectoryInfo directory)
+    {
         this.directory = directory;
         meshManager = new MeshManager(numberOfMeshes, numberOfMeshLoadingJobs);
         FileInfo index = directory.GetFiles("voxelIndex.json")[0];
@@ -196,26 +201,44 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     public Material ldMaterial = null;
 
     public int numberOfMeshes = 400;
-    public float hDRelativeScreenSize = 0.9f;
     public int numberOfMeshLoadingJobs = 20;
     private MeshManager meshManager = null;
+    public float pointPhysicalSize = 0.1f; //Round point size
 
-    static Dictionary<float, Color> classColor = null;
+    float distanceThreshold = 100.0f;
+
+    Material[] ldmats = null;
+    Material[] hdmats = null;
+    Material[] allMats = null;
+
+    static Dictionary<int, Color> classColor = null;
+
+    private void InitIPointCloudManager()
+    {
+        //Class colors
+        classColor = new Dictionary<int, Color>();
+        classColor[3] = new Color(178.0f / 255.0f, 149.0f / 255.0f, 82.0f / 255.0f);
+        classColor[23] = new Color(139.0f / 255.0f, 196.0f / 255.0f, 60.0f / 255.0f);
+        classColor[16] = Color.blue;
+        classColor[19] = Color.blue;
+        classColor[17] = Color.red;
+        classColor[20] = Color.green;
+        classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
+        classColor[29] = Color.black;
+        classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
+
+        //Materials
+        hdmats = new Material[] { hdMaterial };
+        ldmats = new Material[] { ldMaterial };
+        allMats = new Material[] { hdMaterial, ldMaterial };
+
+        distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
+    }
+
     Color IPointCloudManager.GetColorForClass(float classification)
     {
-        if (classColor == null)
-        {
-            classColor = new Dictionary<float, Color>();
-            classColor[16] = Color.blue;
-            classColor[19] = Color.blue;
-            classColor[17] = Color.red;
-            classColor[20] = Color.green;
-            classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
-            classColor[29] = Color.black;
-            classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
-        }
-
-        return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
+        int c = (int)classification;
+        return (classColor.ContainsKey(c)) ? classColor[c] : Color.gray;
     }
 
     float GetClassCodeForColor(Color color)
@@ -235,7 +258,37 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
         return meshManager;
     }
 
-    float IPointCloudManager.HDHorizontalRelativeScreenSize { get { return hDRelativeScreenSize; } }
-    Material IPointCloudManager.HDMaterial { get { return hdMaterial; } }
-    Material IPointCloudManager.LDMaterial { get { return ldMaterial; } }
+    //Material IPointCloudManager.HDMaterial { get { return hdMaterial; } }
+    //Material IPointCloudManager.LDMaterial { get { return ldMaterial; } }
+    //Material[] IPointCloudManager.GetMaterialsForDistance(float minDistance, float maxDistance)
+    //{
+    //    if (maxDistance > distanceThreshold)
+    //    {
+    //        return hdmats;
+    //    }
+    //    else
+    //    {
+    //        return ldmats;
+    //    }
+    //}
+
+    void IPointCloudManager.ModifyRendererBasedOnBounds(Bounds bounds, MeshRenderer meshRenderer)
+    {
+        float maxDistance = bounds.MaxDistance(Camera.main.transform.position);
+        float minDistance = bounds.MinDistance(Camera.main.transform.position);
+        meshRenderer.material = (maxDistance < distanceThreshold)? hdMaterial : ldMaterial;
+
+        if (minDistance > distanceThreshold) //Closest Point too far
+        {
+            meshRenderer.sharedMaterials = ldmats;
+        }
+        else if (maxDistance < distanceThreshold)
+        {
+            meshRenderer.sharedMaterials = hdmats;
+        }
+        else
+        {
+            meshRenderer.sharedMaterials = allMats;
+        }
+    }
 }

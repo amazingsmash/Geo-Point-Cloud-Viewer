@@ -142,6 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   port: 1234
+  selectedPointMark: {fileID: 5251760684638228610, guid: de76cbce9d7a9445fb8d374fe11b6000,
+    type: 3}
 --- !u!4 &36585157
 Transform:
   m_ObjectHideFlags: 0
@@ -174,7 +176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &168791627
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -296,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 2
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -693,8 +695,8 @@ MonoBehaviour:
   hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
   ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
   numberOfMeshes: 400
-  hDRelativeScreenSize: 0.99
   numberOfMeshLoadingJobs: 30
+  pointPhysicalSize: 0.1
 --- !u!1 &1461045656
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +814,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.5807227, g: 0.6961684, b: 0.8490566, a: 0}
+  m_BackGroundColor: {r: 0.9716981, g: 0.4754644, b: 0.0779192, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -825,7 +827,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 300
+  far clip plane: 1000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1098,3 +1100,77 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886465000}
   m_CullTransparentMesh: 0
+--- !u!1001 &1346725261303724421
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1346725260469274437, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_Name
+      value: Point Selected Billboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274437, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346725260469274432, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c69c8ba962b6e49e3b6ecc0dcb66fb30, type: 3}

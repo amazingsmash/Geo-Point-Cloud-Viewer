@@ -5,16 +5,14 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
+
 class PointCloudLeafNode : PointCloudNode
 {
     FileInfo fileInfo = null;
     IPointCloudManager pointCloudManager = null;
+    MeshRenderer meshRenderer = null;
+    MeshFilter meshFilter = null;
     private MeshState currentMeshState = MeshState.NOT_LOADED;
-
-    GameObject hdChild = null;
-    GameObject ldChild = null;
-
-    public LODGroup LoDGroup;
 
     private enum MeshState
     {
@@ -35,6 +33,16 @@ class PointCloudLeafNode : PointCloudNode
     public override bool Initialize(JSONNode node, DirectoryInfo directory, IPointCloudManager manager)
     {
         gameObject.name = "PointCloudOctreeLeafNode";
+        meshFilter = gameObject.AddComponent<MeshFilter>();
+        meshFilter.mesh = null;
+        meshRenderer = gameObject.AddComponent<MeshRenderer>();
+
+        meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        meshRenderer.receiveShadows = false;
+        meshRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+        meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+        meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+
         this.pointCloudManager = manager;
         string filename = node["filename"];
         fileInfo = directory.GetFiles(filename)[0];
@@ -42,38 +50,7 @@ class PointCloudLeafNode : PointCloudNode
         Debug.Assert(this.pointCloudManager != null, "No PCManager");
         InitializeFromJSON(node);
 
-        //Creating LODS
-        LoDGroup = gameObject.AddComponent<LODGroup>();
-        LoDGroup.animateCrossFading = false;
-        LODGroup.crossFadeAnimationDuration = 6.0f;
-        LoDGroup.fadeMode = LODFadeMode.CrossFade;
-
-        LOD[] lods = new LOD[2];
-        lods[0] = CreateLoD("HD Version",
-                            manager.HDHorizontalRelativeScreenSize,
-                            manager.HDMaterial,
-                            out hdChild);
-        lods[1] = CreateLoD("LD Version", 
-                            0.0f, 
-                            manager.LDMaterial, 
-                            out ldChild);
-        LoDGroup.SetLODs(lods);
-
         return true;
-    }
-
-    LOD CreateLoD(string childName, float screenHeight, Material material, out GameObject child)
-    {
-        child = new GameObject(childName);
-        child.isStatic = true;
-        child.transform.SetParent(gameObject.transform, false);
-        MeshFilter meshFilter = child.AddComponent<MeshFilter>();
-        meshFilter.mesh = null;
-        MeshRenderer meshRenderer = child.AddComponent<MeshRenderer>();
-        meshRenderer.material = material;
-
-        LOD lod = new LOD(screenHeight, new Renderer[] { meshRenderer });
-        return lod;
     }
 
     void FetchMesh()
@@ -84,28 +61,15 @@ class PointCloudLeafNode : PointCloudNode
         Mesh mesh = pointCloudManager.GetMeshManager().CreateMesh(fileInfo, pointCloudManager, priority);
         if (mesh != null)
         {
-
-            hdChild.GetComponent<MeshFilter>().mesh = mesh;
-            ldChild.GetComponent<MeshFilter>().mesh = mesh;
-            LoDGroup.RecalculateBounds();
-
-            LoDGroup.enabled = true;
-            hdChild.SetActive(true);
-            ldChild.SetActive(true);
-
+            meshFilter.mesh = mesh;
             currentMeshState = MeshState.LOADED;
         }
     }
 
     private void RemoveMesh()
     {
-        LoDGroup.enabled = false;
-        hdChild.SetActive(false);
-        ldChild.SetActive(false);
-
-        pointCloudManager.GetMeshManager().ReleaseMesh(hdChild.GetComponent<MeshFilter>().mesh); //Returning Mesh
-        hdChild.GetComponent<MeshFilter>().mesh = null;
-        ldChild.GetComponent<MeshFilter>().mesh = null;
+        pointCloudManager.GetMeshManager().ReleaseMesh(meshFilter.mesh); //Returning Mesh
+        meshFilter.mesh = null;
         currentMeshState = MeshState.NOT_LOADED;
     }
 
@@ -118,6 +82,7 @@ class PointCloudLeafNode : PointCloudNode
             {
                 FetchMesh();
             }
+            pointCloudManager.ModifyRendererBasedOnBounds(boundsInModelSpace, meshRenderer);
         }
         else
         {
@@ -131,20 +96,21 @@ class PointCloudLeafNode : PointCloudNode
     private void OnDrawGizmos()
     {
         Gizmos.color = (State == PCNodeState.VISIBLE) ? Color.red : Color.blue;
-#if UNITY_EDITOR
-        if (Selection.Contains(gameObject) || Selection.Contains(hdChild) || Selection.Contains(ldChild))
+
+        if (meshRenderer.materials.Length > 1)
         {
             Gizmos.color = Color.green;
         }
-#endif
 
-        Bounds b = boundsInModelSpace;// GetBoundsInWorldSpace();
+        Bounds b = boundsInModelSpace;
         Gizmos.DrawWireCube(b.center, b.size);
 
         //Gizmos.DrawWireSphere(boundingSphere.position, boundingSphere.radius);
     }
 
-    public override void ComputeNodeState(ref List<PointCloudLeafNode.NodeAndDistance> visibleLeafNodesAndDistances, Vector3 camPosition, float zFar)
+    public override void ComputeNodeState(ref List<PointCloudLeafNode.NodeAndDistance> visibleLeafNodesAndDistances,
+                                        Vector3 camPosition, 
+                                        float zFar)
     {
         float dist = EstimatedDistance(camPosition);
         if (dist <= zFar)
@@ -154,11 +120,8 @@ class PointCloudLeafNode : PointCloudNode
             nodeAndDistance.estimatedDistanceToCamera = dist;
             visibleLeafNodesAndDistances.Add(nodeAndDistance);
 
-            //int activeLoD = LoDGroup.ActiveLoD();
-            //if (activeLoD > -1)
-            //{
-            //    Debug.Log("LoD " + LoDGroup.ActiveLoD());
-            //}
+            //Material
+            //meshRenderer.materials = pointCloudManager.GetMaterialsForDistance(dist, boundsInModelSpace.MaxDistance(camPosition));
         }
     }
 
@@ -176,47 +139,45 @@ class PointCloudLeafNode : PointCloudNode
         //}
     }
 
-    public override void GetClosestPointOnRay(Ray ray,
-                                                Vector2 screenPos,
-                                                ref float maxDist,
-                                                ref Vector3 closestHit,
-                                                ref Color colorClosestHit,
-                                            float sqrMaxScreenDistance)
-    {
-        if (State == PCNodeState.INVISIBLE || currentMeshState != MeshState.LOADED)
+        public override void GetClosestPointOnRay(Ray ray,
+                                                    Vector2 screenPos,
+                                                    ref float maxDist,
+                                                    ref Vector3 closestHit,
+                                                    ref Color colorClosestHit,
+                                                float sqrMaxScreenDistance)
         {
-            return;
-        }
-
-        Mesh mesh = hdChild.GetComponent<MeshFilter>().mesh;
-        if (mesh == null)
-        {
-            return;
-        }
-        Bounds meshBounds = boundsInModelSpace;
-        if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
-        {
-            //print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
-            int i = 0;
-            foreach (Vector3 p in mesh.vertices)
-            //for(int i = 0; i < mesh.vertices.Length; i++)
+            if (State == PCNodeState.INVISIBLE || currentMeshState != MeshState.LOADED)
             {
-                //Vector3 p = mesh.vertices[i];
-                Vector3 pWorld = transform.TransformPoint(p);
-                Vector3 v = Camera.main.WorldToScreenPoint(pWorld);
-                float distancePointToCamera = Mathf.Abs(v.z);
-                if (distancePointToCamera < maxDist)
+                return;
+            }
+
+            Mesh mesh = meshFilter.mesh;
+            if (mesh == null)
+            {
+                return;
+            }
+            Bounds meshBounds = boundsInModelSpace;
+            if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
+            {
+                //print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
+                int i = 0;
+                foreach (Vector3 p in mesh.vertices)
                 {
-                    float sqrDistance = (new Vector2(v.x, v.y) - screenPos).sqrMagnitude;
-                    if (sqrDistance < sqrMaxScreenDistance)
+                    Vector3 pWorld = transform.TransformPoint(p);
+                    Vector3 v = Camera.main.WorldToScreenPoint(pWorld);
+                    float distancePointToCamera = Mathf.Abs(v.z);
+                    if (distancePointToCamera < maxDist)
                     {
-                        closestHit = pWorld;
-                        colorClosestHit = mesh.colors[i];
-                        maxDist = distancePointToCamera;
+                        float sqrDistance = (new Vector2(v.x, v.y) - screenPos).sqrMagnitude;
+                        if (sqrDistance < sqrMaxScreenDistance)
+                        {
+                            closestHit = pWorld;
+                            colorClosestHit = mesh.colors[i];
+                            maxDist = distancePointToCamera;
+                        }
                     }
+                    i++;
                 }
-                i++;
             }
         }
-    }
 }

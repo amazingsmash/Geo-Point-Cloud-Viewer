@@ -13,7 +13,7 @@ public interface IPointCloudListener
 
 public interface IPointCloudManager
 {
-    Color GetColorForClass(float classification);
+    Color GetColorForClass(int classification);
     MeshManager GetMeshManager();
     //Material HDMaterial { get; }
     //Material LDMaterial { get; }
@@ -235,10 +235,9 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
         distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
     }
 
-    Color IPointCloudManager.GetColorForClass(float classification)
+    Color IPointCloudManager.GetColorForClass(int classification)
     {
-        int c = (int)classification;
-        return (classColor.ContainsKey(c)) ? classColor[c] : Color.gray;
+        return (classColor.ContainsKey(classification)) ? classColor[classification] : Color.gray;
     }
 
     float GetClassCodeForColor(Color color)
@@ -257,20 +256,6 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     {
         return meshManager;
     }
-
-    //Material IPointCloudManager.HDMaterial { get { return hdMaterial; } }
-    //Material IPointCloudManager.LDMaterial { get { return ldMaterial; } }
-    //Material[] IPointCloudManager.GetMaterialsForDistance(float minDistance, float maxDistance)
-    //{
-    //    if (maxDistance > distanceThreshold)
-    //    {
-    //        return hdmats;
-    //    }
-    //    else
-    //    {
-    //        return ldmats;
-    //    }
-    //}
 
     void IPointCloudManager.ModifyRendererBasedOnBounds(Bounds bounds, MeshRenderer meshRenderer)
     {

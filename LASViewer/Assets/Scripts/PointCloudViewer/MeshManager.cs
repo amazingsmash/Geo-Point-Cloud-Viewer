@@ -197,13 +197,16 @@ public class MeshLoaderJob: AsyncJobThread.Job
         indices = new int[nPoints];
         colors = new Color[nPoints];
 
+        ArrayList cs = new ArrayList();
+
         for (int i = 0; i < nPoints; i++)
         {
             points[i] = new Vector3(matrix[i, 0], matrix[i, 2], matrix[i, 1]); //XZY
             indices[i] = i;
-            float classification = matrix[i, 3];
+            int classification = (int)matrix[i, 3];
             colors[i] = manager.GetColorForClass(classification);
         }
+
         IsDone = true;
     }
 }

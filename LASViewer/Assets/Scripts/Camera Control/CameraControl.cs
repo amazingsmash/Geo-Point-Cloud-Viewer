@@ -7,6 +7,11 @@ public class CameraControl : MonoBehaviour
     Camera cam = null;
     FlyCam flyCam;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

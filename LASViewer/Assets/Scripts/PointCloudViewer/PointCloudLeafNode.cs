@@ -42,6 +42,7 @@ class PointCloudLeafNode : PointCloudNode
         meshRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
         meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
         meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+        meshRenderer.allowOcclusionWhenDynamic = false;
 
         this.pointCloudManager = manager;
         string filename = node["filename"];

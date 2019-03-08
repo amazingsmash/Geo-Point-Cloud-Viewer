@@ -28,6 +28,7 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     public string folderPath = null;
     public GameObject listenerGO = null;
     public bool moveCameraToCenter = false;
+    public float stateUpdateDeltaTime = 0.3f;
 
     private IPointCloudListener pcListener
     {
@@ -77,7 +78,7 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
         InitIPointCloudManager();
         InitializeTree(dir);
 
-        InvokeRepeating("CheckNodeRenderState", 0.0f, 0.1f);
+        InvokeRepeating("CheckNodeRenderState", 0.0f, stateUpdateDeltaTime);
     }
 
     public void InitializeTree(DirectoryInfo directory)
@@ -114,8 +115,6 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 
     void Update()
     {
-        CheckNodeRenderState();
-
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Input.mousePosition;

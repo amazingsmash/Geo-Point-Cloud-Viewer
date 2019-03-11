@@ -689,9 +689,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e5903554ce2b4642a4ba70d9a4ee74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  folderPath: /Users/josemiguelsn/Desktop/repos/LASViewer/Models/18 - BITREE
+  folderPath: /Users/josemiguelsn/Desktop/repos/LASViewer/Models/Model
   listenerGO: {fileID: 36585155}
   moveCameraToCenter: 1
+  stateUpdateDeltaTime: 0.3
   hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
   ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
   numberOfMeshes: 400
@@ -827,7 +828,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -873,9 +874,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 5
-  speed: 30
+  speed: 3000
   gravity: 20
-  shiftAdd: 25
+  shiftAdd: 2500
   maxShift: 100
   walkerMode: 0
 --- !u!114 &1533746845

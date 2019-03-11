@@ -1,15 +1,16 @@
 ﻿<Properties StartupConfiguration="{FE7AD86C-619D-70DB-2836-FF2F2CCCF427}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Camera Control/CameraControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/Matrix2D.cs">
     <Files>
       <File FileName="Assets/Scripts/PointCloudViewer/PointCloudNode.cs" Line="39" Column="26" />
       <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="41" Column="45" />
       <File FileName="Assets/Scripts/Communications/NetworkCommand.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/PointCloudViewer/Extensions.cs" Line="65" Column="6" />
-      <File FileName="Assets/Scripts/PointCloudViewer/MeshManager.cs" Line="207" Column="39" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" Line="83" Column="5" />
+      <File FileName="Assets/Scripts/PointCloudViewer/MeshManager.cs" Line="210" Column="1" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" Line="86" Column="36" />
       <File FileName="Assets/Scripts/Point Selection Billboard/Billboard.cs" Line="13" Column="29" />
       <File FileName="Assets/Materials/Point Selected Billboard/BillBoard_ZTest_Off.shader" Line="14" Column="6" />
-      <File FileName="Assets/Scripts/Camera Control/CameraControl.cs" Line="12" Column="26" />
+      <File FileName="Assets/Scripts/Camera Control/CameraControl.cs" Line="31" Column="6" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Matrix2D.cs" Line="21" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,20 +22,15 @@
                 <Node name="Rounded Points" expanded="True" />
               </Node>
               <Node name="Scripts" expanded="True">
-                <Node name="Camera Control" expanded="True">
-                  <Node name="CameraControl.cs" selected="True" />
-                </Node>
+                <Node name="Camera Control" expanded="True" />
                 <Node name="Communications" expanded="True" />
                 <Node name="Point Selection Billboard" expanded="True" />
-                <Node name="PointCloudViewer" expanded="True" />
+                <Node name="PointCloudViewer" expanded="True">
+                  <Node name="Matrix2D.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.UnitTesting.TestPad">
-        <State name="__root__">
-          <Node name="LASViewer" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
@@ -44,13 +40,10 @@
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Camera Control/CameraControl.cs" relfile="Assets/Scripts/Camera Control/CameraControl.cs" line="37" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPServer.cs" relfile="Assets/Scripts/Communications/TCPServer.cs" line="47" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPServer.cs" relfile="Assets/Scripts/Communications/TCPServer.cs" line="74" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" relfile="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" line="43" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPEnd.cs" relfile="Assets/Scripts/Communications/TCPEnd.cs" line="215" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Camera Control/CameraControl.cs" relfile="Assets/Scripts/Camera Control/CameraControl.cs" line="35" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/MeshManager.cs" relfile="Assets/Scripts/PointCloudViewer/MeshManager.cs" line="210" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

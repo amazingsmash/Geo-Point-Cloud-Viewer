@@ -37,6 +37,11 @@ public class Matrix2D {
             }
         }
 
+        //for (int i = 0; i < nRows; i++)
+        //{
+        //    Debug.Log("" + values[i, 0] + " " + values[i, 1] + " " + values[i, 2] + " " + values[i, 3]);
+        //}
+
         //Debug.Log(values);
 
         return new Matrix2D(values);

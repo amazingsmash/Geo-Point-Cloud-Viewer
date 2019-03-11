@@ -1,28 +1,115 @@
 from laspy.file import File
 import numpy as np
+import scipy.io as sio
+import Encoding
+import shutil
+import os
+import JSONUtils
+
+from datetime import datetime
 
 class PointCloudModel:
 
     def __init__(self, name, lasFilePaths):
 
-        self.lasFilePaths = lasFilePaths
+        self.__file_paths = lasFilePaths
         self.name = name
 
     def addLASFilePath(self, path):
-        self.lasFilePaths += [path]
+        self.__file_paths += [path]
+
+    def splitInTwoByLargestAxis(xyzc, size):
+        max_dim = np.argmax(size)
+        m = np.median(xyzc[:, max_dim])
+        division = xyzc[:, max_dim] > m
+        return division
 
 
-    def generate(self, outPath=""):
+    def __save_tree(self, xyzc, indices):
+        n_points = xyzc.shape[0]
 
-        for file in self.lasFilePaths:
+        if n_points == 0:
+            return
 
-            inFile = File(file, mode='r')
+        min = np.min(xyzc[:, 0:3], axis=0)
+        max = np.max(xyzc[:, 0:3], axis=0)
 
+        voxelIndex = {}
+
+        voxelIndex["min"] = min.tolist()
+        voxelIndex["max"] = max.tolist()
+        voxelIndex["indices"] = indices
+
+        if n_points < self.__max_file_points:
+            file_name = "Node"
+            for i in indices: file_name += "_" + str(i)
+            file_name += ".bytes"
+
+            file_path = "%s/%s" % (self.__out_folder, file_name)
+
+            Encoding.saveMatrixToFile(xyzc, file_path)
+
+            voxelIndex["filename"] = file_name
+            voxelIndex["children"] = []
+        else:
+            size = max - min
+            division = PointCloudModel.splitInTwoByLargestAxis(xyzc, size)
+
+            xyzc0 = xyzc[division, :]
+            vi0 = self.__save_tree(xyzc0, indices + [0])
+
+            xyzc1 = xyzc[np.logical_not(division), :]
+            vi1 = self.__save_tree(xyzc1, indices + [1])
+
+            voxelIndex["filename"] = ""
+            voxelIndex["children"] = [vi0, vi1]
+
+        return voxelIndex
+
+
+    def generate(self, outPath="", max_file_points=65000):
+
+        self.__out_folder = outPath + self.name
+        self.__max_file_points = max_file_points
+        shutil.rmtree(self.__out_folder, ignore_errors=True)
+        os.mkdir(self.__out_folder)
+
+        voxelIndices = []
+        index = 0
+        for file in self.__file_paths:
+            in_file = File(file, mode='r')
+
+            xyzc = np.transpose(np.array([in_file.X,
+                                         in_file.Y,
+                                         in_file.Z,
+                                         in_file.Classification.astype(float)]))
+
+            if "pivot" not in locals():
+                pivot = np.min(xyzc[:, 0:3], axis=0)
+
+            xyzc[:, 0] -= pivot[0]
+            xyzc[:, 1] -= pivot[1]
+            xyzc[:, 2] -= pivot[2]
+
+            vi = self.__save_tree(xyzc, [index])
+            voxelIndices += [vi]
+
+        JSONUtils.writeJSON(voxelIndices, self.__out_folder + "/voxelIndex.json")
+
+            # # Testing write speed
+            # t0 = datetime.now()
+            # sio.savemat('lasMatlab.mat', {'xyzc': xyzc})
+            # t1 = datetime.now()
+            # td = t1-t0
+            # print(td.microseconds * (10**-6))
+            # print(xyzc.shape)
 
 if __name__ == "__main__":
 
-    model = PointCloudModel("Model", ["000018.las"])
+    # m = np.array([[0.0, 0.1], [0.4, 0.3]])
+    # Encoding.saveMatrixToFile(m, "lol.bytes")
 
-    model.generate();
+    model = PointCloudModel("Model", ["000018.las"])
+    model.generate()
 
     print("DONE")

@@ -697,7 +697,7 @@ MonoBehaviour:
   ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
   numberOfMeshes: 400
   numberOfMeshLoadingJobs: 30
-  pointPhysicalSize: 0.1
+  pointPhysicalSize: 10
 --- !u!1 &1461045656
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,7 +828,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 100000
+  far clip plane: 1000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -874,9 +874,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 5
-  speed: 3000
+  speed: 30
   gravity: 20
-  shiftAdd: 2500
+  shiftAdd: 40
   maxShift: 100
   walkerMode: 0
 --- !u!114 &1533746845

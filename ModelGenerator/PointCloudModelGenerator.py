@@ -79,9 +79,9 @@ class PointCloudModel:
         for file in self.__file_paths:
             in_file = File(file, mode='r')
 
-            xyzc = np.transpose(np.array([in_file.X,
-                                         in_file.Y,
-                                         in_file.Z,
+            xyzc = np.transpose(np.array([in_file.X / 100, # Reading in cm.
+                                         in_file.Y / 100,
+                                         in_file.Z / 100,
                                          in_file.Classification.astype(float)]))
 
             if "pivot" not in locals():
@@ -105,10 +105,7 @@ class PointCloudModel:
             # print(xyzc.shape)
 
 if __name__ == "__main__":
-
-    # m = np.array([[0.0, 0.1], [0.4, 0.3]])
-    # Encoding.saveMatrixToFile(m, "lol.bytes")
-
+    
     model = PointCloudModel("Model", ["000018.las"])
     model.generate()
 

@@ -105,8 +105,13 @@ class PointCloudModel:
             # print(xyzc.shape)
 
 if __name__ == "__main__":
-    
-    model = PointCloudModel("Model", ["000018.las"])
-    model.generate()
 
-    print("DONE")
+    t0 = datetime.now()
+    model = PointCloudModel("Model 92", ["../Data/000092.las"])
+    model.generate("../Models/")
+    t1 = datetime.now()
+    td = t1-t0
+
+    print("Model Generated in %f sec." % td.total_seconds())
+
+

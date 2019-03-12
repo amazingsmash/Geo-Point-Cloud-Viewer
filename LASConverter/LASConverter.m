@@ -244,6 +244,7 @@ classdef LASConverter
                 filename = filenames{lasIndex};
                 
                 las = lasdata(filename);
+                fprintf("Read %d points from %s", length(las.x), filename);
                 %Compute min of first
                 if isnan(pMin)
                     pMin = [ min(las.x), min(las.y), min(las.z)];
@@ -306,7 +307,5 @@ classdef LASConverter
             fwrite(fileID,data);
             fclose(fileID);
         end
-        
-        
     end
 end

@@ -6,7 +6,7 @@ def floatArray2Binary(array):
     buf = struct.pack('%sf' % len(array), *array)
     return buf
 
-def saveMatrixToFile(matrix, filePath):
+def matrix_to_file(matrix, filePath):
 
     values = np.transpose(matrix).flatten().tolist()
     values = list(matrix.shape) + values

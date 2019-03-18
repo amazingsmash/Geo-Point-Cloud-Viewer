@@ -2,8 +2,8 @@ Models
 LASViewer/Library/
 LASViewer/obj/Debug/
 LASViewer/Temp/
-LASConverter/*.mat
-LASConverter/*.las
+*.mat
+*.las
 *.m~
 .DS_Store
 *.bytes

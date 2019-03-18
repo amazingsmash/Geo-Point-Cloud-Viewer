@@ -6,23 +6,6 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
-public interface IPointCloudListener
-{
-    void onPointSelected(Vector3 point, float classCode);
-}
-
-public interface IPointCloudManager
-{
-    Color GetColorForClass(int classification);
-    MeshManager GetMeshManager();
-    //Material HDMaterial { get; }
-    //Material LDMaterial { get; }
-
-    //Material[] GetMaterialsForDistance(float minDistance, float maxDistance);
-
-    void ModifyRendererBasedOnBounds(Bounds bounds, MeshRenderer meshRenderer);
-}
-
 public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
 {
     public string folderPath = null;

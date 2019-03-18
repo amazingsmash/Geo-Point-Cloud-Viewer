@@ -113,5 +113,3 @@ if __name__ == "__main__":
     td = t1-t0
 
     print("Model Generated in %f sec." % td.total_seconds())
-
-

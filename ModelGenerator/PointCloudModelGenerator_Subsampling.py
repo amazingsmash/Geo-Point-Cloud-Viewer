@@ -140,7 +140,7 @@ class PointCloudModel:
 if __name__ == "__main__":
 
     t0 = datetime.now()
-    model = PointCloudModel("Model 18", ["../Data/000018.las"])
+    model = PointCloudModel("000003_clasificado", ["../Data/000003_clasificado.las"])
     model.generate("../Models/")
     t1 = datetime.now()
     td = t1-t0

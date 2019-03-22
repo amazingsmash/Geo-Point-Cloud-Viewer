@@ -1,11 +1,15 @@
 ﻿<Properties StartupConfiguration="{FE7AD86C-619D-70DB-2836-FF2F2CCCF427}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Communications/CanvasPointCloudListener.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Materials/Rounded Points/PointCloud.shader">
     <Files>
       <File FileName="Assets/Scripts/Communications/NetworkCommand.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="252" Column="6" />
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" Line="134" Column="29" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" Line="227" Column="1" />
       <File FileName="Assets/Scripts/Communications/CanvasPointCloudListener.cs" Line="45" Column="43" />
-      <File FileName="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" Line="41" Column="54" />
+      <File FileName="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" Line="38" Column="30" />
+      <File FileName="Assets/Scripts/PointCloudViewer/MeshManager.cs" Line="225" Column="1" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot_Transparency.shader" Line="32" Column="30" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud.shader" Line="32" Column="33" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot.shader" Line="28" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,13 +18,13 @@
             <Node name="Assets" expanded="True">
               <Node name="Materials" expanded="True">
                 <Node name="Point Selected Billboard" expanded="True" />
-                <Node name="Rounded Points" expanded="True" />
+                <Node name="Rounded Points" expanded="True">
+                  <Node name="PointCloud.shader" selected="True" />
+                </Node>
               </Node>
               <Node name="Scripts" expanded="True">
                 <Node name="Camera Control" expanded="True" />
-                <Node name="Communications" expanded="True">
-                  <Node name="CanvasPointCloudListener.cs" selected="True" />
-                </Node>
+                <Node name="Communications" expanded="True" />
                 <Node name="Point Selection Billboard" expanded="True" />
                 <Node name="PointCloudViewer" expanded="True">
                   <Node name="Subsampled_Version" expanded="True" />
@@ -29,6 +33,11 @@
               </Node>
             </Node>
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="LASViewer" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>

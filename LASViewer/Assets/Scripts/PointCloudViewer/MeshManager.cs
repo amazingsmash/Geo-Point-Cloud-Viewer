@@ -67,6 +67,11 @@ public class MeshManager
         mesh.Clear();
         meshPool.ReleaseInstance(mesh);
     }
+
+    public void StopLoaderThread()
+    {
+        thread.Stop();
+    }
 }
 
 public class AsyncJobThread
@@ -88,24 +93,26 @@ public class AsyncJobThread
 
     private System.Threading.Thread thread = null;
     private readonly ArrayList jobs = new ArrayList();
+    private bool running = false;
 
     public void RunJob(Job job)
     {
+        if (!running)
+        {
+            thread = new System.Threading.Thread(Run);
+            running = true;
+            thread.Start();
+        }
+
         lock (jobs.SyncRoot)
         {
             jobs.Add(job);
         }
     }
 
-    public AsyncJobThread()
-    {
-        thread = new System.Threading.Thread(Run);
-        thread.Start();
-    }
-
     public void Run()
     {
-        while (true)
+        while (running)
         {
             Job job = ExtractJob();
             if (job != null)
@@ -113,6 +120,11 @@ public class AsyncJobThread
                 job.Execute();
             }
         }
+    }
+
+    public void Stop()
+    {
+        running = false;
     }
 
     MeshLoaderJob ExtractJob()

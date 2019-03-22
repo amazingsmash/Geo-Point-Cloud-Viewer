@@ -73,18 +73,11 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         string s = reader.ReadToEnd();
         JSONNode json = JSON.Parse(s);
 
-        if (json.IsArray)
+        JSONArray nodes = json["nodes"].AsArray;
+        topNodes = new PCNode[nodes.Count];
+        for (int i = 0; i < json.AsArray.Count; i++)
         {
-            topNodes = new PCNode[json.AsArray.Count];
-            for (int i = 0; i < json.AsArray.Count; i++)
-            {
-                topNodes[i] = PCNode.AddNode(json.AsArray[i], this.directory, gameObject, this);
-            }
-        }
-        else
-        {
-            topNodes = new PCNode[1];
-            topNodes[0] = PCNode.AddNode(json, this.directory, gameObject, this);
+            topNodes[i] = PCNode.AddNode(nodes[i], this.directory, gameObject, this);
         }
 
         if (moveCameraToCenter)
@@ -103,6 +96,11 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             Vector3 mousePosition = Input.mousePosition;
             SelectPoint(mousePosition, 10.0f);
         }
+    }
+
+    void OnDestroy()
+    {
+        meshManager.StopLoaderThread();
     }
 
     List<PCNode.NodeAndDistance> distanceVisibleNodeList = new List<PCNode.NodeAndDistance>();
@@ -215,9 +213,12 @@ public partial class PointCloud: MonoBehaviour, IPointCloudManager
         classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
 
         //Materials
+
+        //ldMaterial.SetFloat("Transparency", 0.00001f);
         hdmats = new Material[] { hdMaterial };
         ldmats = new Material[] { ldMaterial };
         allMats = new Material[] { hdMaterial, ldMaterial };
+
 
         distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
     }

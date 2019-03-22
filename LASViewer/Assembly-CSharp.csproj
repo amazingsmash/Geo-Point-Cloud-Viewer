@@ -85,6 +85,7 @@
     <None Include="Assets\Materials\Point Selected Billboard\BillBoard_ZTest_Off.shader" />
     <None Include="Assets\Materials\Rounded Points\PointCloud_Dot.shader" />
     <None Include="Assets\Materials\Rounded Points\PointCloud.shader" />
+    <None Include="Assets\Materials\Rounded Points\PointCloud_Dot_Transparency.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

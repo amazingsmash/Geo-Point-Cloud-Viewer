@@ -6,8 +6,13 @@ import shutil
 import os
 import JSONUtils
 import math
+import gc
+import seaborn as sns
 
 from datetime import datetime
+
+import easygui
+
 
 class PointCloudModel:
 
@@ -98,6 +103,19 @@ class PointCloudModel:
         file_path = "%s/%s" % (out_folder, file_name)
         return file_name, file_path
 
+    def generate_color_palette(point_classes):
+        palette = sns.color_palette(None, len(point_classes))
+
+        p = []
+        index = 0
+        for c in point_classes:
+            cc = {"class": c, "color": list(palette[index])}
+            index += 1
+            p = [cc]
+
+        return p
+
+
     def generate(self, out_path="", max_file_points=65000):
 
         out_folder = out_path + self.name
@@ -105,8 +123,14 @@ class PointCloudModel:
         os.mkdir(out_folder)
 
         voxel_indices = []
+        bounds = []
         index = 0
+        point_classes = []
         for file in self.__file_paths:
+
+            index_file_name = "%s_tree.json" % os.path.basename(file)
+
+            print("Reading file %s" % file)
             in_file = File(file, mode='r')
 
             xyzc = np.transpose(np.array([in_file.x,
@@ -114,20 +138,44 @@ class PointCloudModel:
                                          in_file.z,
                                          in_file.Classification.astype(float)]))
 
-            if "pivot" not in locals():
-                pivot = np.min(xyzc[:, 0:3], axis=0)
+            if "xyz_offset" not in locals():
+                xyz_offset = np.min(xyzc[:, 0:3], axis=0)
 
-            xyzc[:, 0] -= pivot[0]
-            xyzc[:, 1] -= pivot[1]
-            xyzc[:, 2] -= pivot[2]
+            xyzc[:, 0] -= xyz_offset[0]
+            xyzc[:, 1] -= xyz_offset[1]
+            xyzc[:, 2] -= xyz_offset[2]
+
+            cs = np.unique(xyzc[:, 3]).tolist()
+            for c in cs:
+                if c not in point_classes:
+                    point_classes += [c]
 
             vi = self.__save_tree(xyzc,
                                   [index],
                                   out_folder=out_folder,
                                   max_points=max_file_points)
-            voxel_indices += [vi]
+            index += 1
 
-        JSONUtils.writeJSON(voxel_indices, out_folder + "/voxelIndex.json")
+            bounds += [vi["min"], vi["max"]]
+
+            voxel_indices += [index_file_name]
+            JSONUtils.writeJSON(vi, out_folder + "/" + index_file_name)
+
+            gc.collect() # Forcing garbage collection
+
+        bounds = np.array(bounds)
+        xyz_min = np.min(bounds, axis=0)
+        xyz_max = np.max(bounds, axis=0)
+
+        model = {"model_name" : self.name,
+                 "xyz_offset": xyz_offset.tolist(),
+                 "min" : xyz_min.tolist(),
+                 "max" : xyz_max.tolist(),
+                 "classes" : PointCloudModel.generate_color_palette(point_classes),
+                 "nodes": voxel_indices
+        }
+
+        JSONUtils.writeJSON(model, out_folder + "/voxelIndex.json")
 
             # # Testing write speed
             # t0 = datetime.now()
@@ -139,8 +187,16 @@ class PointCloudModel:
 
 if __name__ == "__main__":
 
+    def get_las_paths():
+        path = easygui.diropenbox("Select Data Folder")
+        file_paths = [path + "/" + f for f in os.listdir(path) if ".las" in f]
+        return file_paths
+
+
+    paths = get_las_paths()
+
     t0 = datetime.now()
-    model = PointCloudModel("000003_clasificado", ["../Data/000003_clasificado.las"])
+    model = PointCloudModel("Corridor", paths)
     model.generate("../Models/")
     t1 = datetime.now()
     td = t1-t0

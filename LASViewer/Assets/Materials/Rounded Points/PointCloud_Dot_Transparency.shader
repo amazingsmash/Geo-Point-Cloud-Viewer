@@ -2,7 +2,8 @@
 {
     Properties
     {
-        _Transparency ("Transparency", Float) = 1.0
+        _MinDistance ("MinDistance", Float) = 100.0
+        _MaxDistance ("MaxDistance", Float) = 300.0
     }
     SubShader
     {
@@ -17,7 +18,8 @@
             #pragma vertex vert
             #pragma fragment frag
             
-            float _Transparency;
+            float _MinDistance;
+            float _MaxDistance;
 
             struct v2f {
                 float4 pos : SV_POSITION;
@@ -31,12 +33,19 @@
                 v2f o;
                 o.pos = UnityObjectToClipPos(vertex);
                 o.color = color;
+
+                _MinDistance = 0.0;
+                float camDist = distance(vertex.xyz, _WorldSpaceCameraPos);
+                float alpha = 1.0 - ((camDist - _MinDistance) / (_MaxDistance - _MinDistance));
+                o.color.a  = clamp(alpha, 0.0, 1.0);
+                
+                //o.color = float4(alpha, 0,0,1);
+                
                 return o;
             }
             
             fixed4 frag (v2f i) : SV_Target
             {
-                i.color.a = _Transparency;
                 return i.color;
             }
             ENDCG

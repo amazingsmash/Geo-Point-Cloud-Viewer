@@ -65,6 +65,11 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         }
     }
 
+    private float meshLoadingDistance
+    {
+        get { return averagePointDistance * 2.0f; }
+    }
+
     float minDistanceToCam = 0.0f;
     float maxDistanceToCam = 0.0f;
     float lodTestResult = 0.0f;
@@ -197,17 +202,20 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         float ndmT = pcManager.nearDistanceThreshold();
 
         RenderType newRT = RenderType.BOTH;
-        if (minDistanceToCam > ndmT)
-        {
+        if (minDistanceToCam > ndmT) {
             newRT = RenderType.FDM;
         }
-        else
-        {
-            if (maxDistanceToCam < ndmT)
-            {
-                newRT = RenderType.NDM;
-            }
+        else if (maxDistanceToCam < ndmT) {
+            newRT = RenderType.NDM;
         }
+
+        //newRT = RenderType.FDM; //REMOVE
+
+        //float minD = pcManager.nearDistanceThreshold() + boundsInModelSpace.MaxInnerDistance();
+        //float maxD = pcManager.farDistanceThreshold();
+        //if (minD > maxD) { minD = maxD; }
+        //meshRenderer.material.SetFloat("_MaxDistance", maxD);
+        //meshRenderer.material.SetFloat("_MinDistance", minD);
 
         if (renderType != newRT)
         {
@@ -217,6 +225,12 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
                 case RenderType.FDM:
                     {
                         meshRenderer.material = pcManager.GetFDM();
+
+                        float minD = pcManager.nearDistanceThreshold();
+                        float maxD = meshLoadingDistance;
+                        if (minD > maxD) { minD = maxD; }
+                        meshRenderer.material.SetFloat("_MaxDistance", maxD);
+                        meshRenderer.material.SetFloat("_MinDistance", minD);
                         break;
                     }
                 case RenderType.NDM:
@@ -231,13 +245,6 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
                     }
             }
         }
-
-        if (renderType == RenderType.FDM)
-        {
-            float alpha = lodTestResult - 1.0f;
-            alpha = alpha > 1.0f ? 1.0f : alpha;
-            meshRenderer.material.SetFloat("Transparency", alpha);
-        }
     }
 
     public void ComputeNodeState(ref List<PCNode.NodeAndDistance> visibleLeafNodesAndDistances,
@@ -249,7 +256,7 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         float ratioFarDistance = (minDistanceToCam / pcManager.farDistanceThreshold());
         float ratioNearDistance = (minDistanceToCam / pcManager.nearDistanceThreshold());
 
-        lodTestResult = averagePointDistance / minDistanceToCam;
+        lodTestResult = (meshLoadingDistance / minDistanceToCam);
         bool visible = ratioFarDistance < 1;
 
         State = (visible && lodTestResult > 1.0f) ? PCNodeState.VISIBLE : PCNodeState.INVISIBLE;

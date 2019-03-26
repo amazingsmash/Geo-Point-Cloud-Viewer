@@ -1,10 +1,9 @@
 ﻿<Properties StartupConfiguration="{FE7AD86C-619D-70DB-2836-FF2F2CCCF427}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs">
     <Files>
-      <File FileName="Assets/Scripts/Communications/NetworkCommand.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="210" Column="10" />
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" Line="328" Column="5" />
-      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot_Transparency.shader" Line="41" Column="62" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="239" Column="49" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" Line="138" Column="32" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot_Transparency.shader" Line="42" Column="40" />
       <File FileName="Assets/Scripts/PointCloudViewer/Utils/Extensions.cs" Line="81" Column="1" />
     </Files>
     <Pads>
@@ -42,7 +41,7 @@
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPServer.cs" relfile="Assets/Scripts/Communications/TCPServer.cs" line="74" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" relfile="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" line="43" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPEnd.cs" relfile="Assets/Scripts/Communications/TCPEnd.cs" line="215" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" relfile="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" line="252" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" relfile="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" line="246" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" relfile="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" line="326" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

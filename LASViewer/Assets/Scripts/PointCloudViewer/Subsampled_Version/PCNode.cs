@@ -25,17 +25,6 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         FDM, NDM, BOTH
     };
 
-    public struct NodeAndDistance : System.IComparable<NodeAndDistance>
-    {
-        public PCNode node;
-        public float estimatedDistanceToCamera;
-
-        public int CompareTo(NodeAndDistance other)
-        {
-            return other.estimatedDistanceToCamera.CompareTo(estimatedDistanceToCamera);
-        }
-    }
-
     #endregion
 
     #region Attributes
@@ -51,19 +40,8 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
     public Bounds boundsInModelSpace { get; private set; }
     protected PCNode[] children = null;
 
-    private PCNodeState _state = PCNodeState.INVISIBLE;
-    public PCNodeState State
-    {
-        get { return _state; }
-        set
-        {
-            if (_state != value)
-            {
-                _state = value;
-                OnStateChanged();
-            }
-        }
-    }
+    public PCNodeState State = PCNodeState.INVISIBLE;
+
 
     private float meshLoadingDistance
     {
@@ -247,25 +225,19 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         }
     }
 
-    public void ComputeNodeState(ref List<PCNode.NodeAndDistance> visibleLeafNodesAndDistances,
+    public void ComputeNodeState(ref List<PCNode> visibleLeafNodesAndDistances,
                                         Vector3 camPosition, 
                                         float zFar)
     {
         CheckCameraDistances();
 
-        float ratioFarDistance = (minDistanceToCam / pcManager.farDistanceThreshold());
-        float ratioNearDistance = (minDistanceToCam / pcManager.nearDistanceThreshold());
-
         lodTestResult = (meshLoadingDistance / minDistanceToCam);
-        bool visible = ratioFarDistance < 1;
+        bool visible = minDistanceToCam < pcManager.farDistanceThreshold();
 
         State = (visible && lodTestResult > 1.0f) ? PCNodeState.VISIBLE : PCNodeState.INVISIBLE;
         if (State == PCNodeState.VISIBLE)
         {
-            NodeAndDistance nodeAndDistance = new NodeAndDistance();
-            nodeAndDistance.node = this;
-            nodeAndDistance.estimatedDistanceToCamera = minDistanceToCam;
-            visibleLeafNodesAndDistances.Add(nodeAndDistance);
+            visibleLeafNodesAndDistances.Add(this);
 
             foreach (PCNode node in children)
             {
@@ -305,22 +277,6 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
         Bounds b = boundsInModelSpace;
         Gizmos.DrawWireCube(b.center, b.size);
-
-        //Gizmos.DrawWireSphere(boundingSphere.position, boundingSphere.radius);
-    }
-
-
-    public void OnStateChanged()
-    {
-        //switch (State)
-        //{
-        //    case PCNodeState.INVISIBLE:
-        //        Debug.Log("Leaf Node set invisible.");
-        //        break;
-        //    case PCNodeState.VISIBLE:
-        //        Debug.Log("Leaf Node set invisible.");
-        //        break;
-        //}
     }
 
     #endregion

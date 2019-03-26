@@ -135,7 +135,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         meshManager.StopLoaderThread();
     }
 
-    List<PCNode.NodeAndDistance> distanceVisibleNodeList = new List<PCNode.NodeAndDistance>();
+    List<PCNode> distanceVisibleNodeList = new List<PCNode>();
     void UpdateVisibleNodeList()
     {
         distanceVisibleNodeList.Clear();
@@ -159,16 +159,11 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             int nMeshes = meshManager.NAvailableMeshes;
             for (int i = distanceVisibleNodeList.Count - 1; i > -1; i--)
             {
-                var n = ((PCNode.NodeAndDistance)distanceVisibleNodeList[i]);
-                n.node.State = (visibleMeshesCount < nMeshes) ? PCNode.PCNodeState.VISIBLE : PCNode.PCNodeState.INVISIBLE;
+                PCNode n = ((PCNode)distanceVisibleNodeList[i]);
+                n.State = (visibleMeshesCount < nMeshes) ? PCNode.PCNodeState.VISIBLE : PCNode.PCNodeState.INVISIBLE;
                 visibleMeshesCount++;
             }
         }
-
-        //foreach(PCNode node in topNodes)
-        //{
-        //    node.CheckMeshState();
-        //}
     }
 
 

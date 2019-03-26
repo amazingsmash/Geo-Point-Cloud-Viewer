@@ -53,6 +53,9 @@ public class CameraControl : MonoBehaviour
             float pointPhysicalSize = 0.1f; //Round point size
             float distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
             Gizmos.DrawWireSphere(cam.transform.position, distanceThreshold);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(cam.transform.position, cam.farClipPlane);
         }
     }
 }

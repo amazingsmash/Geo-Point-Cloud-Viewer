@@ -194,9 +194,6 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
     private void CheckMaterial()
     {
-
-
-
         float ndmT = pcManager.nearDistanceThreshold();
 
         RenderType newRT = RenderType.BOTH;
@@ -214,7 +211,6 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
         if (renderType != newRT)
         {
-
             renderType = newRT;
             switch (renderType)
             {
@@ -292,11 +288,11 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = (State == PCNodeState.VISIBLE) ? Color.red : Color.blue;
-
-        if (meshRenderer.materials.Length > 1)
+        switch (renderType)
         {
-            Gizmos.color = Color.green;
+            case RenderType.BOTH: { Gizmos.color = Color.green; break; }
+            case RenderType.FDM: { Gizmos.color = Color.red; break; }
+            case RenderType.NDM: { Gizmos.color = Color.blue; break; }
         }
 
 

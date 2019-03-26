@@ -6,6 +6,8 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
+using System.Diagnostics;
+
 public partial class PointCloud : MonoBehaviour, IPointCloudManager
 {
     public string folderPath = null;
@@ -48,7 +50,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
     {
         if (!transform.lossyScale.NearlyEquals(Vector3.one))
         {
-            Debug.LogError("PointCloud must be not to scale.");
+            UnityEngine.Debug.Log("PointCloud must be not to scale.");
             return;
         }
 
@@ -64,21 +66,51 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         InvokeRepeating("CheckNodeRenderState", 0.0f, stateUpdateDeltaTime);
     }
 
-    private void InitializeTree(DirectoryInfo directory)
+    private JSONNode ReadJSON(string filePath)
     {
-        this.directory = directory;
-        meshManager = new MeshManager(numberOfMeshes, numberOfMeshLoadingJobs);
-        FileInfo index = directory.GetFiles("voxelIndex.json")[0];
-        StreamReader reader = new StreamReader(index.FullName);
+        StreamReader reader = new StreamReader(filePath);
         string s = reader.ReadToEnd();
         JSONNode json = JSON.Parse(s);
+        return json;
+    }
 
-        JSONArray nodes = json["nodes"].AsArray;
-        topNodes = new PCNode[nodes.Count];
-        for (int i = 0; i < json.AsArray.Count; i++)
+    private JSONNode ReadJSON(DirectoryInfo dir, string fileName)
+    {
+        try
         {
-            topNodes[i] = PCNode.AddNode(nodes[i], this.directory, gameObject, this);
+            FileInfo index = directory.GetFiles(fileName)[0];
+            JSONNode json = ReadJSON(index.FullName);
+            return json;
         }
+        catch
+        {
+            throw new System.Exception("Error reading JSON from " + fileName);
+        }
+    }
+
+    private void InitializeTree(DirectoryInfo dir)
+    {
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+
+        this.directory = dir;
+        meshManager = new MeshManager(numberOfMeshes, numberOfMeshLoadingJobs);
+        JSONNode modelJSON = ReadJSON(this.directory, "pc_model.json");
+        JSONArray trees = modelJSON["nodes"].AsArray;
+        InitColorPalette(modelJSON["classes"].AsArray);
+
+        topNodes = new PCNode[trees.Count];
+
+        int i = 0;
+        foreach (JSONNode tree in trees)
+        {
+            string fileName = tree.ToString().Trim('"');
+            JSONNode treeJSON = ReadJSON(this.directory, fileName);
+            topNodes[i++] = PCNode.AddNode(treeJSON, this.directory, gameObject, this);
+        }
+
+        stopwatch.Stop();
+        UnityEngine.Debug.Log("PC Model Loaded in ms: " + stopwatch.ElapsedMilliseconds);
 
         if (moveCameraToCenter)
         {
@@ -133,10 +165,10 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             }
         }
 
-        foreach(PCNode node in topNodes)
-        {
-            node.CheckMeshState();
-        }
+        //foreach(PCNode node in topNodes)
+        //{
+        //    node.CheckMeshState();
+        //}
     }
 
 
@@ -147,7 +179,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             return;
         }
 
-        Debug.Log("Finding selected point.");
+        UnityEngine.Debug.Log("Finding selected point.");
 
         MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
         float maxDist = 10000000.0f;
@@ -161,7 +193,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             PCNode node = child.GetComponent<PCNode>();
             if (node != null)
             {
-                Debug.Log("Finding selected point on node.");
+                UnityEngine.Debug.Log("Finding selected point on node.");
                 node.GetClosestPointOnRay(ray,
                                           screenPosition,
                                           ref maxDist,
@@ -177,13 +209,14 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             pcListener.onPointSelected(closestHit, classCode);
         }
     }
+
 }
 
 //IPointCloudManager
 public partial class PointCloud: MonoBehaviour, IPointCloudManager
 {
-    public Material hdMaterial = null;
-    public Material ldMaterial = null;
+    public Material farDistanceMat = null;
+    public Material nearDistanceMat = null;
 
     public int numberOfMeshes = 400;
     public int numberOfMeshLoadingJobs = 20;
@@ -198,26 +231,38 @@ public partial class PointCloud: MonoBehaviour, IPointCloudManager
 
     static Dictionary<int, Color> classColor = null;
 
+    private void InitColorPalette(JSONArray classes)
+    {
+        classColor = new Dictionary<int, Color>();
+        foreach (JSONNode c in classes)
+        {
+            int pointClass = (int)c["class"].AsFloat;
+            double[] v = c["color"].AsArray.AsDoubles();
+            classColor[pointClass] = new Color((float)v[0],
+                                            (float)v[1], 
+                                            (float)v[2]);
+        }
+    }
+
     private void InitIPointCloudManager()
     {
         //Class colors
-        classColor = new Dictionary<int, Color>();
-        classColor[3] = new Color(178.0f / 255.0f, 149.0f / 255.0f, 82.0f / 255.0f);
-        classColor[23] = new Color(139.0f / 255.0f, 196.0f / 255.0f, 60.0f / 255.0f);
-        classColor[16] = Color.blue;
-        classColor[19] = Color.blue;
-        classColor[17] = Color.red;
-        classColor[20] = Color.green;
-        classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
-        classColor[29] = Color.black;
-        classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
+        //classColor = new Dictionary<int, Color>();
+        //classColor[3] = new Color(178.0f / 255.0f, 149.0f / 255.0f, 82.0f / 255.0f);
+        //classColor[23] = new Color(139.0f / 255.0f, 196.0f / 255.0f, 60.0f / 255.0f);
+        //classColor[16] = Color.blue;
+        //classColor[19] = Color.blue;
+        //classColor[17] = Color.red;
+        //classColor[20] = Color.green;
+        //classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
+        //classColor[29] = Color.black;
+        //classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
 
         //Materials
 
-        //ldMaterial.SetFloat("Transparency", 0.00001f);
-        hdmats = new Material[] { hdMaterial };
-        ldmats = new Material[] { ldMaterial };
-        allMats = new Material[] { hdMaterial, ldMaterial };
+        hdmats = new Material[] { farDistanceMat };
+        ldmats = new Material[] { nearDistanceMat };
+        allMats = new Material[] { farDistanceMat, nearDistanceMat };
 
 
         distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
@@ -249,19 +294,40 @@ public partial class PointCloud: MonoBehaviour, IPointCloudManager
     {
         float maxDistance = bounds.MaxDistance(Camera.main.transform.position);
         float minDistance = bounds.MinDistance(Camera.main.transform.position);
-        meshRenderer.material = (maxDistance < distanceThreshold)? hdMaterial : ldMaterial;
+        meshRenderer.material = (maxDistance < distanceThreshold)? farDistanceMat : nearDistanceMat;
 
         if (minDistance > distanceThreshold) //Closest Point too far
         {
-            meshRenderer.sharedMaterials = ldmats;
+            meshRenderer.materials = ldmats;
         }
         else if (maxDistance < distanceThreshold)
         {
-            meshRenderer.sharedMaterials = hdmats;
+            meshRenderer.materials = hdmats;
         }
         else
         {
-            meshRenderer.sharedMaterials = allMats;
+            meshRenderer.materials = allMats;
         }
+    }
+
+
+    public Material GetNDM()
+    {
+        return farDistanceMat;
+    }
+
+    public Material GetFDM()
+    {
+        return nearDistanceMat;
+    }
+
+    public float nearDistanceThreshold()
+    {
+        return distanceThreshold;
+    }
+
+    public float farDistanceThreshold()
+    {
+        return Camera.main.farClipPlane;
     }
 }

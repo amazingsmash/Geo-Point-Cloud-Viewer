@@ -461,14 +461,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482816573d2854f028c69bfeee865777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  folderPath: ../Models/Corridor
+  folderPath: ../Models/LAS 29
   listenerGO: {fileID: 209579780}
   moveCameraToCenter: 1
   stateUpdateDeltaTime: 0.3
-  hdMaterial: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
-  ldMaterial: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
-  numberOfMeshes: 400
-  numberOfMeshLoadingJobs: 20
+  farDistanceMat: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
+  nearDistanceMat: {fileID: 2100000, guid: 2ce516ce8968c40db9175658ce4c5c84, type: 2}
+  numberOfMeshes: 600
+  numberOfMeshLoadingJobs: 40
   pointPhysicalSize: 0.1
 --- !u!4 &1433645508
 Transform:

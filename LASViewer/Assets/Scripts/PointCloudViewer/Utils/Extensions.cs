@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 public static class CameraExtension
 {
@@ -130,4 +131,18 @@ public static class LoDGroupExtensions
     }
 }
 
+public static class JSONArrayExtensions
+{
+    public static double[] AsDoubles(this JSONArray array)
+    {
+        double[] res = new double[array.Count];
+        int i = 0;
+        foreach (JSONNode v in array)
+        {
+            res[i] = v.AsDouble;
+            i++;
+        }
+        return res;
+    }
+}
 

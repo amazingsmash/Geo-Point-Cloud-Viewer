@@ -174,6 +174,26 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
             pcListener.onPointSelected(closestHit, classCode);
         }
     }
+
+    public Material GetNDM()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public Material GetFDM()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public float nearDistanceThreshold()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public float farDistanceThreshold()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 //IPointCloudManager

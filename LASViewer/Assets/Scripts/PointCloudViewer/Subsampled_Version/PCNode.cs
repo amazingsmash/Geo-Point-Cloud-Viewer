@@ -5,7 +5,7 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
-class PCNode: MonoBehaviour
+class PCNode: MonoBehaviour, System.IComparable<PCNode>
 {
     #region subtypes
 
@@ -18,6 +18,11 @@ class PCNode: MonoBehaviour
     {
         VISIBLE,
         INVISIBLE
+    };
+
+    public enum RenderType
+    {
+        FDM, NDM, BOTH
     };
 
     public struct NodeAndDistance : System.IComparable<NodeAndDistance>
@@ -36,7 +41,7 @@ class PCNode: MonoBehaviour
     #region Attributes
 
     FileInfo fileInfo = null;
-    IPointCloudManager pointCloudManager = null;
+    IPointCloudManager pcManager = null;
     MeshRenderer meshRenderer = null;
     MeshFilter meshFilter = null;
     private MeshState currentMeshState = MeshState.NOT_LOADED;
@@ -59,6 +64,11 @@ class PCNode: MonoBehaviour
             }
         }
     }
+
+    float minDistanceToCam = 0.0f;
+    float maxDistanceToCam = 0.0f;
+    float lodTestResult = 0.0f;
+    RenderType renderType = RenderType.FDM;
 
     #endregion
 
@@ -107,11 +117,11 @@ class PCNode: MonoBehaviour
         meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
         meshRenderer.allowOcclusionWhenDynamic = false;
 
-        this.pointCloudManager = manager;
+        this.pcManager = manager;
         string filename = node["filename"];
         fileInfo = directory.GetFiles(filename)[0];
         Debug.Assert(this.fileInfo != null, "File not found:" + node["filename"]);
-        Debug.Assert(this.pointCloudManager != null, "No PCManager");
+        Debug.Assert(this.pcManager != null, "No PCManager");
 
         gameObject.name = "PC Parent Node";
 
@@ -130,6 +140,8 @@ class PCNode: MonoBehaviour
 
         InitializeFromJSON(node);
 
+        meshRenderer.material = pcManager.GetFDM();
+
         return childrenJSON.Count > 0;
     }
 
@@ -137,23 +149,18 @@ class PCNode: MonoBehaviour
 
     #region LOD
 
-    public float EstimatedDistance(Vector3 position)
-    {
-        return boundsInModelSpace.MinDistance(position);
-    }
-
     void FetchMesh()
     {
         if (currentMeshState == MeshState.NOT_LOADED)
         {
-            float dist = boundingSphere.DistanceTo(Camera.main.transform.position);
-            float priority = Camera.main.farClipPlane - dist;
+            float priority = 1.0f / minDistanceToCam;
 
-            Mesh mesh = pointCloudManager.GetMeshManager().CreateMesh(fileInfo, pointCloudManager, priority);
+            Mesh mesh = pcManager.GetMeshManager().CreateMesh(fileInfo, pcManager, priority);
             if (mesh != null)
             {
                 meshFilter.mesh = mesh;
                 currentMeshState = MeshState.LOADED;
+                CheckMaterial();
             }
         }
     }
@@ -162,46 +169,126 @@ class PCNode: MonoBehaviour
     {
         if (currentMeshState == MeshState.LOADED)
         {
-            pointCloudManager.GetMeshManager().ReleaseMesh(meshFilter.mesh); //Returning Mesh
+            pcManager.GetMeshManager().ReleaseMesh(meshFilter.mesh); //Returning Mesh
             meshFilter.mesh = null;
             currentMeshState = MeshState.NOT_LOADED;
         }
     }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    if (State == PCNodeState.VISIBLE)
-    //    {
-    //        if (currentMeshState == MeshState.NOT_LOADED)
-    //        {
-    //            FetchMesh();
-    //        }
-    //        pointCloudManager.ModifyRendererBasedOnBounds(boundsInModelSpace, meshRenderer);
-    //    }
-    //    else
-    //    {
-    //        if (currentMeshState == MeshState.LOADED)
-    //        {
-    //            RemoveMesh();
-    //        }
-    //    }
-    //}
-
-    // Update is called once per frame
-    public void CheckMeshState()
+    public int CompareTo(PCNode other)
     {
-        if (State == PCNodeState.VISIBLE)
+        return other.minDistanceToCam.CompareTo(minDistanceToCam);
+    }
+
+    private void Update()
+    {
+        CheckCameraDistances();
+        CheckMaterial();
+    }
+
+    private void CheckCameraDistances()
+    {
+        minDistanceToCam = boundsInModelSpace.MinDistance(Camera.main.transform.position);
+        maxDistanceToCam = boundsInModelSpace.MaxDistance(Camera.main.transform.position);
+    }
+
+    private void CheckMaterial()
+    {
+
+
+
+        float ndmT = pcManager.nearDistanceThreshold();
+
+        RenderType newRT = RenderType.BOTH;
+        if (minDistanceToCam > ndmT)
         {
-            FetchMesh();
-            pointCloudManager.ModifyRendererBasedOnBounds(boundsInModelSpace, meshRenderer);
+            newRT = RenderType.FDM;
+        }
+        else
+        {
+            if (maxDistanceToCam < ndmT)
+            {
+                newRT = RenderType.NDM;
+            }
         }
 
-        foreach (PCNode node in children)
+        if (renderType != newRT)
         {
-            node.CheckMeshState();
+
+            renderType = newRT;
+            switch (renderType)
+            {
+                case RenderType.FDM:
+                    {
+                        meshRenderer.material = pcManager.GetFDM();
+                        break;
+                    }
+                case RenderType.NDM:
+                    {
+                        meshRenderer.material = pcManager.GetNDM();
+                        break;
+                    }
+                default:
+                    {
+                        meshRenderer.materials = new Material[] { pcManager.GetFDM(), pcManager.GetNDM() };
+                        break;
+                    }
+            }
+        }
+
+        if (renderType == RenderType.FDM)
+        {
+            float alpha = lodTestResult - 1.0f;
+            alpha = alpha > 1.0f ? 1.0f : alpha;
+            meshRenderer.material.SetFloat("Transparency", alpha);
         }
     }
+
+    public void ComputeNodeState(ref List<PCNode.NodeAndDistance> visibleLeafNodesAndDistances,
+                                        Vector3 camPosition, 
+                                        float zFar)
+    {
+        CheckCameraDistances();
+
+        float ratioFarDistance = (minDistanceToCam / pcManager.farDistanceThreshold());
+        float ratioNearDistance = (minDistanceToCam / pcManager.nearDistanceThreshold());
+
+        lodTestResult = averagePointDistance / minDistanceToCam;
+        bool visible = ratioFarDistance < 1;
+
+        State = (visible && lodTestResult > 1.0f) ? PCNodeState.VISIBLE : PCNodeState.INVISIBLE;
+        if (State == PCNodeState.VISIBLE)
+        {
+            NodeAndDistance nodeAndDistance = new NodeAndDistance();
+            nodeAndDistance.node = this;
+            nodeAndDistance.estimatedDistanceToCamera = minDistanceToCam;
+            visibleLeafNodesAndDistances.Add(nodeAndDistance);
+
+            foreach (PCNode node in children)
+            {
+                if (!node.isActiveAndEnabled)
+                {
+                    node.CheckCameraDistances();
+                }
+                node.ComputeNodeState(ref visibleLeafNodesAndDistances, camPosition, zFar);
+                node.gameObject.SetActive(node.State == PCNodeState.VISIBLE);
+                if (node.State == PCNodeState.INVISIBLE)
+                {
+                    node.RemoveMesh();
+                }
+            }
+
+            //Changing Material
+            if (currentMeshState == MeshState.NOT_LOADED) {
+                //Requesting mesh
+                FetchMesh();
+            }
+        }
+    }
+
+    #endregion
+
+    #region others
 
     private void OnDrawGizmos()
     {
@@ -212,39 +299,11 @@ class PCNode: MonoBehaviour
             Gizmos.color = Color.green;
         }
 
+
         Bounds b = boundsInModelSpace;
         Gizmos.DrawWireCube(b.center, b.size);
 
         //Gizmos.DrawWireSphere(boundingSphere.position, boundingSphere.radius);
-    }
-
-    public void ComputeNodeState(ref List<PCNode.NodeAndDistance> visibleLeafNodesAndDistances,
-                                        Vector3 camPosition, 
-                                        float zFar)
-    {
-        float dist = EstimatedDistance(camPosition);
-        State = (dist <= zFar && dist <= averagePointDistance) ? PCNodeState.VISIBLE : PCNodeState.INVISIBLE;
-        if (State == PCNodeState.VISIBLE)
-        {
-            NodeAndDistance nodeAndDistance = new NodeAndDistance();
-            nodeAndDistance.node = this;
-            nodeAndDistance.estimatedDistanceToCamera = dist;
-            visibleLeafNodesAndDistances.Add(nodeAndDistance);
-
-            foreach (PCNode node in children)
-            {
-                node.ComputeNodeState(ref visibleLeafNodesAndDistances, camPosition, zFar);
-                node.gameObject.SetActive(node.State == PCNodeState.VISIBLE);
-                if (node.State == PCNodeState.INVISIBLE)
-                {
-                    node.RemoveMesh();
-                }
-            }
-        }
-        else
-        {
-            //Debug.Log("PCNode not visible.");
-        }
     }
 
 
@@ -306,6 +365,8 @@ class PCNode: MonoBehaviour
                 }
             }
         }
+
+
 
     #endregion
 }

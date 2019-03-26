@@ -17,4 +17,9 @@ public interface IPointCloudManager
     //Material[] GetMaterialsForDistance(float minDistance, float maxDistance);
 
     void ModifyRendererBasedOnBounds(Bounds bounds, MeshRenderer meshRenderer);
+
+    Material GetNDM();
+    Material GetFDM();
+    float nearDistanceThreshold();
+    float farDistanceThreshold();
 }

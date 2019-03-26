@@ -24,6 +24,10 @@ class PointCloudModel:
     def add_las_path(self, path):
         self.__file_paths += [path]
 
+    def get_las_paths_in_folder(folder_path):
+        file_paths = [folder_path + "/" + f for f in os.listdir(folder_path) if ".las" in f]
+        return file_paths
+
     def split_two_longest_axis(xyzc, size):
         max_dim = np.argmax(size)
         m = np.median(xyzc[:, max_dim])
@@ -105,15 +109,7 @@ class PointCloudModel:
 
     def generate_color_palette(point_classes):
         palette = sns.color_palette(None, len(point_classes))
-
-        p = []
-        index = 0
-        for c in point_classes:
-            cc = {"class": c, "color": list(palette[index])}
-            index += 1
-            p = [cc]
-
-        return p
+        return [{"class": c, "color": list(palette[i])} for i, c in enumerate(point_classes)]
 
 
     def generate(self, out_path="", max_file_points=65000):
@@ -124,11 +120,10 @@ class PointCloudModel:
 
         voxel_indices = []
         bounds = []
-        index = 0
         point_classes = []
-        for file in self.__file_paths:
+        for index, file in enumerate(self.__file_paths):
 
-            index_file_name = "%s_tree.json" % os.path.basename(file)
+            index_file_name = "tree_%d.json" % index
 
             print("Reading file %s" % file)
             in_file = File(file, mode='r')
@@ -146,15 +141,12 @@ class PointCloudModel:
             xyzc[:, 2] -= xyz_offset[2]
 
             cs = np.unique(xyzc[:, 3]).tolist()
-            for c in cs:
-                if c not in point_classes:
-                    point_classes += [c]
+            point_classes += [c for c in cs if c not in point_classes]
 
             vi = self.__save_tree(xyzc,
                                   [index],
                                   out_folder=out_folder,
                                   max_points=max_file_points)
-            index += 1
 
             bounds += [vi["min"], vi["max"]]
 
@@ -175,7 +167,7 @@ class PointCloudModel:
                  "nodes": voxel_indices
         }
 
-        JSONUtils.writeJSON(model, out_folder + "/voxelIndex.json")
+        JSONUtils.writeJSON(model, out_folder + "/pc_model.json")
 
             # # Testing write speed
             # t0 = datetime.now()
@@ -187,17 +179,17 @@ class PointCloudModel:
 
 if __name__ == "__main__":
 
-    def get_las_paths():
-        path = easygui.diropenbox("Select Data Folder")
-        file_paths = [path + "/" + f for f in os.listdir(path) if ".las" in f]
-        return file_paths
+    # model = PointCloudModel("Corridor", [])
+    # model.get_las_paths_in_folder(easygui.diropenbox("Select Data Folder"))
+    # model.get_las_paths_in_folder("/Volumes/My Passport/Disco2/221_400BEG-PIE/LIDAR")
 
+    model = PointCloudModel("LAS 29", ["../Data/000029.las"])
 
-    paths = get_las_paths()
+    out_path = "../Models/"
+    # out_path = "/Volumes/My Passport/Unity_PC_Model/"
 
     t0 = datetime.now()
-    model = PointCloudModel("Corridor", paths)
-    model.generate("../Models/")
+    model.generate(out_path)
     t1 = datetime.now()
     td = t1-t0
 

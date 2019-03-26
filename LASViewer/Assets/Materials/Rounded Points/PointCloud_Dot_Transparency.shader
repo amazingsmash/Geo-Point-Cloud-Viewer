@@ -4,6 +4,7 @@
     {
         _MinDistance ("MinDistance", Float) = 100.0
         _MaxDistance ("MaxDistance", Float) = 300.0
+        _Transparency ("Transparency", Float) = 1.0
     }
     SubShader
     {
@@ -20,6 +21,7 @@
             
             float _MinDistance;
             float _MaxDistance;
+            float _Transparency;
 
             struct v2f {
                 float4 pos : SV_POSITION;
@@ -37,7 +39,7 @@
                 _MinDistance = 0.0;
                 float camDist = distance(vertex.xyz, _WorldSpaceCameraPos);
                 float alpha = 1.0 - ((camDist - _MinDistance) / (_MaxDistance - _MinDistance));
-                o.color.a  = clamp(alpha, 0.0, 1.0);
+                o.color.a  = clamp(/*alpha *  */_Transparency, 0.0, 1.0);
                 
                 //o.color = float4(alpha, 0,0,1);
                 

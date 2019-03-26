@@ -1,10 +1,12 @@
 ﻿<Properties StartupConfiguration="{FE7AD86C-619D-70DB-2836-FF2F2CCCF427}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs">
     <Files>
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="239" Column="49" />
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" Line="138" Column="32" />
-      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot_Transparency.shader" Line="42" Column="40" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="186" Column="36" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" Line="321" Column="1" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot_Transparency.shader" Line="32" Column="28" />
       <File FileName="Assets/Scripts/PointCloudViewer/Utils/Extensions.cs" Line="81" Column="1" />
+      <File FileName="Assets/Materials/Rounded Points/PointCloud.shader" Line="51" Column="4" />
+      <File FileName="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" Line="38" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,12 +19,12 @@
               </Node>
               <Node name="Scripts" expanded="True">
                 <Node name="Camera Control" expanded="True" />
-                <Node name="Communications" expanded="True" />
+                <Node name="Communications" expanded="True">
+                  <Node name="RemoteServerPointCloudListener.cs" selected="True" />
+                </Node>
                 <Node name="Point Selection Billboard" expanded="True" />
                 <Node name="PointCloudViewer" expanded="True">
-                  <Node name="Subsampled_Version" expanded="True">
-                    <Node name="PointCloud.cs" selected="True" />
-                  </Node>
+                  <Node name="Subsampled_Version" expanded="True" />
                   <Node name="Utils" expanded="True" />
                 </Node>
               </Node>
@@ -41,8 +43,6 @@
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPServer.cs" relfile="Assets/Scripts/Communications/TCPServer.cs" line="74" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" relfile="Assets/Scripts/Communications/RemoteServerPointCloudListener.cs" line="43" column="1" />
       <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/Communications/TCPEnd.cs" relfile="Assets/Scripts/Communications/TCPEnd.cs" line="215" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" relfile="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" line="246" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/LASViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" relfile="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" line="326" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

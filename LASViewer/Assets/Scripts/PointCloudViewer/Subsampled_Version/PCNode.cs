@@ -45,13 +45,15 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
     private float meshLoadingDistance
     {
-        get { return averagePointDistance * 2.0f; }
+        get { return averagePointDistance * 4.0f; }
     }
 
     float minDistanceToCam = 0.0f;
     float maxDistanceToCam = 0.0f;
     float lodTestResult = 0.0f;
     RenderType renderType = RenderType.FDM;
+    float meshLoadingTimeSec = 0;
+    private float secSinceMeshCreated { get { return Time.time - meshLoadingTimeSec; } }
 
     #endregion
 
@@ -143,6 +145,7 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
             {
                 meshFilter.mesh = mesh;
                 currentMeshState = MeshState.LOADED;
+                meshLoadingTimeSec = Time.time;
                 CheckMaterial();
             }
         }
@@ -179,12 +182,16 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
     {
         float ndmT = pcManager.nearDistanceThreshold();
 
-        RenderType newRT = RenderType.BOTH;
+        RenderType newRT;
         if (minDistanceToCam > ndmT) {
             newRT = RenderType.FDM;
         }
         else if (maxDistanceToCam < ndmT) {
             newRT = RenderType.NDM;
+        }
+        else
+        {
+            newRT = RenderType.BOTH;
         }
 
         //newRT = RenderType.FDM; //REMOVE
@@ -222,6 +229,12 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
                         break;
                     }
             }
+        }
+
+        if (renderType == RenderType.FDM)
+        {
+            float timeAlpha = secSinceMeshCreated / 5.0f;
+            meshRenderer.material.SetFloat("_Transparency", timeAlpha);
         }
     }
 

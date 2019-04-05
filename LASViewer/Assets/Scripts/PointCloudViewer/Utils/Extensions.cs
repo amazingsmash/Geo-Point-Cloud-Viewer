@@ -144,5 +144,10 @@ public static class JSONArrayExtensions
         }
         return res;
     }
+
+    public static Vector3 AsVector3(this JSONNode node)
+    {
+        return new Vector3(node[0].AsFloat, node[2].AsFloat, node[1].AsFloat);
+    }
 }
 

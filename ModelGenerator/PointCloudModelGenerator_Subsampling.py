@@ -24,9 +24,8 @@ class PointCloudModel:
     def add_las_path(self, path):
         self.__file_paths += [path]
 
-    def get_las_paths_in_folder(folder_path):
-        file_paths = [folder_path + "/" + f for f in os.listdir(folder_path) if ".las" in f]
-        return file_paths
+    def get_las_paths_in_folder(self, folder_path):
+        self.__file_paths += [folder_path + "/" + f for f in os.listdir(folder_path) if ".las" in f]
 
     def split_two_longest_axis(xyzc, size):
         max_dim = np.argmax(size)
@@ -112,7 +111,7 @@ class PointCloudModel:
         return [{"class": c, "color": list(palette[i])} for i, c in enumerate(point_classes)]
 
 
-    def generate(self, out_path="", max_file_points=65000):
+    def generate(self, out_path="", max_file_points=65000, max_las_files=None):
 
         out_folder = out_path + self.name
         shutil.rmtree(out_folder, ignore_errors=True)
@@ -121,7 +120,11 @@ class PointCloudModel:
         voxel_indices = []
         bounds = []
         point_classes = []
-        for index, file in enumerate(self.__file_paths):
+
+        files = self.__file_paths
+        if max_las_files is not None: files = files[:max_las_files]
+
+        for index, file in enumerate(files):
 
             index_file_name = "tree_%d.json" % index
 
@@ -150,7 +153,9 @@ class PointCloudModel:
 
             bounds += [vi["min"], vi["max"]]
 
-            voxel_indices += [index_file_name]
+            voxel_indices += [{"file": index_file_name,
+                               "min": vi["min"],
+                               "max": vi["max"]}]
             JSONUtils.writeJSON(vi, out_folder + "/" + index_file_name)
 
             gc.collect() # Forcing garbage collection
@@ -179,11 +184,11 @@ class PointCloudModel:
 
 if __name__ == "__main__":
 
-    # model = PointCloudModel("Corridor", [])
+    model = PointCloudModel("Corridor_New", [])
     # model.get_las_paths_in_folder(easygui.diropenbox("Select Data Folder"))
-    # model.get_las_paths_in_folder("/Volumes/My Passport/Disco2/221_400BEG-PIE/LIDAR")
+    model.get_las_paths_in_folder("/Volumes/My Passport/Disco2/221_400BEG-PIE/LIDAR")
 
-    model = PointCloudModel("LAS 29", ["../Data/000029.las"])
+    # model = PointCloudModel("LAS 29", ["../Data/000029.las"])
 
     out_path = "../Models/"
     # out_path = "/Volumes/My Passport/Unity_PC_Model/"

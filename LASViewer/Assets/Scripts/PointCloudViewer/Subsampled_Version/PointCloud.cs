@@ -15,6 +15,35 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
     public bool moveCameraToCenter = false;
     public float stateUpdateDeltaTime = 0.3f;
 
+
+    DirectoryInfo directory = null;
+
+    class PCTree
+    {
+        public Bounds bounds;
+        public string treeFile;
+        public PCNode node;
+        public bool Loaded { get { return node != null; } }
+        public bool InSight
+        {
+            get { return (bounds.MinDistance(Camera.main.transform.position) < Camera.main.farClipPlane); }
+        }
+
+        public void Load(PointCloud pc, DirectoryInfo dir)
+        {
+            JSONNode treeJSON = PointCloud.ReadJSON(dir, treeFile);
+            node = PCNode.AddNode(treeJSON, dir, pc.gameObject, pc);
+            UnityEngine.Debug.Log("Added subtree " + treeFile);
+        }
+
+        public void Unload()
+        {
+            Destroy(node.gameObject);
+            node = null;
+        }
+    };
+    PCTree[] topNodes = null;
+
     private IPointCloudListener pcListener
     {
         get
@@ -27,9 +56,6 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         }
     }
 
-
-    DirectoryInfo directory = null;
-    PCNode[] topNodes = null;
 
     DirectoryInfo getModelDirectoryFromDialog()
     {
@@ -54,7 +80,6 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             return;
         }
 
-
         //DirectoryInfo dir = getModelDirectoryFromDialog();
         //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
         DirectoryInfo dir = (folderPath == null)? getModelDirectoryFromDialog() : new DirectoryInfo(folderPath);
@@ -66,7 +91,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         InvokeRepeating("CheckNodeRenderState", 0.0f, stateUpdateDeltaTime);
     }
 
-    private JSONNode ReadJSON(string filePath)
+    static public JSONNode ReadJSON(string filePath)
     {
         StreamReader reader = new StreamReader(filePath);
         string s = reader.ReadToEnd();
@@ -74,11 +99,11 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         return json;
     }
 
-    private JSONNode ReadJSON(DirectoryInfo dir, string fileName)
+    static public JSONNode ReadJSON(DirectoryInfo dir, string fileName)
     {
         try
         {
-            FileInfo index = directory.GetFiles(fileName)[0];
+            FileInfo index = dir.GetFiles(fileName)[0];
             JSONNode json = ReadJSON(index.FullName);
             return json;
         }
@@ -92,21 +117,24 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
 
-
         this.directory = dir;
         meshManager = new MeshManager(numberOfMeshes, numberOfMeshLoadingJobs);
         JSONNode modelJSON = ReadJSON(this.directory, "pc_model.json");
         JSONArray trees = modelJSON["nodes"].AsArray;
         InitColorPalette(modelJSON["classes"].AsArray);
 
-        topNodes = new PCNode[trees.Count];
+        topNodes = new PCTree[trees.Count];
 
         int i = 0;
         foreach (JSONNode tree in trees)
         {
-            string fileName = tree.ToString().Trim('"');
-            JSONNode treeJSON = ReadJSON(this.directory, fileName);
-            topNodes[i++] = PCNode.AddNode(treeJSON, this.directory, gameObject, this);
+            Vector3 min = tree["min"].AsVector3();
+            Vector3 max = tree["max"].AsVector3();
+
+            PCTree t = new PCTree();
+            t.bounds = new Bounds((max + min) / 2, (max - min));
+            t.treeFile = tree["file"].ToString().Trim('"');
+            topNodes[i++] = t;
         }
 
         stopwatch.Stop();
@@ -114,15 +142,42 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
 
         if (moveCameraToCenter)
         {
-            Camera.main.transform.position = topNodes[0].boundsInModelSpace.center;
+            Camera.main.transform.position = topNodes[0].bounds.center;
         }
 
         System.GC.Collect(); //Garbage Collection
     }
 
 
+
+    private void CheckTopNodes()
+    {
+        for(int i = 0; i < topNodes.Length; i++)
+        {
+            PCTree t = topNodes[i];
+            bool visible = t.InSight;
+
+            if (t.Loaded)
+            {
+                if (!visible)
+                {
+                    t.Unload();
+                }
+            }
+            else{
+                if (visible) { 
+                    t.Load(this, this.directory);
+                    return; //Just load one per frame
+                }
+            }
+        }
+    }
+
+
     void Update()
     {
+        CheckTopNodes();
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Input.mousePosition;
@@ -141,9 +196,12 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         distanceVisibleNodeList.Clear();
         Vector3 camPos = Camera.main.transform.position;
         float zFar = Camera.main.farClipPlane;
-        foreach (PCNode node in topNodes)
+        foreach (PCTree tree in topNodes)
         {
-            node.ComputeNodeState(ref distanceVisibleNodeList, camPos, zFar);
+            if (tree.node != null)
+            {
+                tree.node.ComputeNodeState(ref distanceVisibleNodeList, camPos, zFar);
+            }
         }
 
         distanceVisibleNodeList.Sort();
@@ -241,24 +299,10 @@ public partial class PointCloud: MonoBehaviour, IPointCloudManager
 
     private void InitIPointCloudManager()
     {
-        //Class colors
-        //classColor = new Dictionary<int, Color>();
-        //classColor[3] = new Color(178.0f / 255.0f, 149.0f / 255.0f, 82.0f / 255.0f);
-        //classColor[23] = new Color(139.0f / 255.0f, 196.0f / 255.0f, 60.0f / 255.0f);
-        //classColor[16] = Color.blue;
-        //classColor[19] = Color.blue;
-        //classColor[17] = Color.red;
-        //classColor[20] = Color.green;
-        //classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
-        //classColor[29] = Color.black;
-        //classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
-
         //Materials
-
         hdmats = new Material[] { farDistanceMat };
         ldmats = new Material[] { nearDistanceMat };
         allMats = new Material[] { farDistanceMat, nearDistanceMat };
-
 
         distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
     }

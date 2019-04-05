@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482816573d2854f028c69bfeee865777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  folderPath: ../Models/Corridor
+  folderPath: ../Models/Corridor_New
   listenerGO: {fileID: 209579780}
   moveCameraToCenter: 1
   stateUpdateDeltaTime: 0.3

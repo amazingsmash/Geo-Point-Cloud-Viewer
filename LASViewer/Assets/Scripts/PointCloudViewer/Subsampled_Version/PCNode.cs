@@ -61,8 +61,8 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
     public void InitializeFromJSON(JSONNode node)
     {
-        Vector3 min = JSONNode2Vector3(node["min"]);
-        Vector3 max = JSONNode2Vector3(node["max"]);
+        Vector3 min = node["min"].AsVector3();
+        Vector3 max = node["max"].AsVector3();
         Vector3 center = (min + max) / 2.0f;
         Vector3 size = max - min;
         boundingSphere = new BoundingSphere(center, size.magnitude);
@@ -70,11 +70,6 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         averagePointDistance = node["avgDistance"];
 
         boundsInModelSpace = new Bounds(center, size);
-    }
-
-    public static Vector3 JSONNode2Vector3(JSONNode node)
-    {
-        return new Vector3(node[0].AsFloat, node[2].AsFloat, node[1].AsFloat);
     }
 
     public static PCNode AddNode(JSONNode node, DirectoryInfo directory, GameObject gameObject, IPointCloudManager materialProvider)

@@ -14,8 +14,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
     public GameObject listenerGO = null;
     public bool moveCameraToCenter = false;
     public float stateUpdateDeltaTime = 0.3f;
-
-
+    
     DirectoryInfo directory = null;
 
     class PCTree

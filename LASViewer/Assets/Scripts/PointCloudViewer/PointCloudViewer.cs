@@ -13,6 +13,14 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
     public bool moveCameraToCenter = false;
     public float stateUpdateDeltaTime = 0.3f;
 
+    public int NLoadingNodes
+    {
+        get
+        {
+            return meshManager.NPendingMeshes;
+        }
+    }
+
     private IPointCloudListener pcListener
     {
         get
@@ -104,6 +112,13 @@ public partial class PointCloudViewer : MonoBehaviour, IPointCloudManager
             SelectPoint(mousePosition, 10.0f);
         }
     }
+
+    void OnDestroy()
+    {
+        meshManager.StopLoaderThread();
+    }
+
+
 
     List<PointCloudLeafNode.NodeAndDistance> distanceVisibleNodeList = new List<PointCloudLeafNode.NodeAndDistance>();
     void UpdateVisibleLeafNodesList()

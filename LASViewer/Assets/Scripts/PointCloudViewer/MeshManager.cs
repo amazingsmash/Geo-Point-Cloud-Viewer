@@ -10,6 +10,14 @@ public class MeshManager
     private readonly AsyncJobThread thread = new AsyncJobThread();
     private Dictionary<string, MeshLoaderJob> jobs = new Dictionary<string, MeshLoaderJob>();
 
+    public int NPendingMeshes
+    {
+        get
+        {
+            return thread.NPendingJobs;
+        }
+    }
+
     public int NAvailableMeshes
     {
         get
@@ -32,7 +40,7 @@ public class MeshManager
             if (job != null)
             {
                 jobs[fileInfo.FullName] = job;
-                job.AsynMeshLoading(fileInfo, manager, thread, priority);
+                job.AsyncMeshLoading(fileInfo, manager, thread, priority);
             }
         }
         else
@@ -94,6 +102,7 @@ public class AsyncJobThread
     private System.Threading.Thread thread = null;
     private readonly ArrayList jobs = new ArrayList();
     private bool running = false;
+    public int NPendingJobs { get { return jobs.Count; } }
 
     public void RunJob(Job job)
     {
@@ -159,7 +168,7 @@ public class MeshLoaderJob: AsyncJobThread.Job
     private FileInfo fileInfo;
     private IPointCloudManager manager;
 
-    public void AsynMeshLoading(FileInfo fileInfo, IPointCloudManager manager, AsyncJobThread thread, float priority)
+    public void AsyncMeshLoading(FileInfo fileInfo, IPointCloudManager manager, AsyncJobThread thread, float priority)
     {
         this.fileInfo = fileInfo;
         this.manager = manager;

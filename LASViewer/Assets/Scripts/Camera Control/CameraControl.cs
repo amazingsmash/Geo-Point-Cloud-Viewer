@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraControl : MonoBehaviour
 {
     Camera cam = null;
     FlyCam flyCam;
+    public Text label = null;
+
+    private string flyMsg = "Press AWSD keys to Fly, Hold Shift for Speed Up. Press X to show the cursor.";
+    private string selectMsg = "Select points with the cursor. Press X to Fly.";
 
     private void Awake()
     {
@@ -17,6 +22,16 @@ public class CameraControl : MonoBehaviour
     {
         cam = gameObject.GetComponent<Camera>();
         flyCam = gameObject.GetComponent<FlyCam>();
+        Cursor.visible = false;
+        ShowText(flyMsg);
+    }
+
+    void ShowText(string msg)
+    {
+        if (label)
+        {
+            label.text = msg;
+        }
     }
 
     // Update is called once per frame
@@ -25,8 +40,9 @@ public class CameraControl : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.X))
         {
             flyCam.enabled = !flyCam.enabled;
-
             Cursor.lockState = flyCam.enabled ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !flyCam.enabled;
+            ShowText(flyCam.enabled ? flyMsg : selectMsg);
         }
     }
 

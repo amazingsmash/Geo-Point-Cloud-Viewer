@@ -184,11 +184,11 @@ class PointCloudModel:
 
 if __name__ == "__main__":
 
-    model = PointCloudModel("Corridor_New", [])
+    #model = PointCloudModel("Corridor_New", [])
     # model.get_las_paths_in_folder(easygui.diropenbox("Select Data Folder"))
-    model.get_las_paths_in_folder("/Volumes/My Passport/Disco2/221_400BEG-PIE/LIDAR")
+    #model.get_las_paths_in_folder("/Volumes/My Passport/Disco2/221_400BEG-PIE/LIDAR")
 
-    # model = PointCloudModel("LAS 29", ["../Data/000029.las"])
+    model = PointCloudModel("LAS 29", ["../Data/222S.las"])
 
     out_path = "../Models/"
     # out_path = "/Volumes/My Passport/Unity_PC_Model/"

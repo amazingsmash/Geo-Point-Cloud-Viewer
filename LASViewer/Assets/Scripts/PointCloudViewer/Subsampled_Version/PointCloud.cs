@@ -29,6 +29,11 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
             get { return (bounds.MinDistance(Camera.main.transform.position) < Camera.main.farClipPlane); }
         }
 
+        public bool IsVisible(Vector3 camPosInModelSpace, float farClipPlane)
+        {
+            return (bounds.MinDistance(camPosInModelSpace) < farClipPlane);
+        }
+
         public void Load(PointCloud pc, DirectoryInfo dir)
         {
             JSONNode treeJSON = PointCloud.ReadJSON(dir, treeFile);
@@ -142,7 +147,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
 
         if (moveCameraToCenter)
         {
-            Camera.main.transform.position = topNodes[0].bounds.center;
+            Camera.main.transform.position = transform.TransformPoint(topNodes[0].bounds.center);
         }
 
         System.GC.Collect(); //Garbage Collection
@@ -152,10 +157,15 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
 
     private void CheckTopNodes()
     {
-        for(int i = 0; i < topNodes.Length; i++)
+
+        Vector3 camPos = Camera.main.transform.position;
+        camPos = transform.InverseTransformPoint(camPos);
+
+        for (int i = 0; i < topNodes.Length; i++)
         {
             PCTree t = topNodes[i];
-            bool visible = t.InSight;
+            //bool visible = t.InSight;
+            bool visible = t.IsVisible(camPos, Camera.main.farClipPlane);
 
             if (t.Loaded)
             {

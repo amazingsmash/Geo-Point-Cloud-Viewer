@@ -38,6 +38,11 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
     protected BoundingSphere boundingSphere;
     public Bounds boundsInModelSpace { get; private set; }
+    public Bounds boundsInWorldSpace { get
+        {
+            return meshRenderer.bounds;
+        }
+    }
     protected PCNode[] children = null;
 
     public PCNodeState State = PCNodeState.INVISIBLE;
@@ -167,8 +172,17 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
     private void CheckCameraDistances()
     {
-        minDistanceToCam = boundsInModelSpace.MinDistance(Camera.main.transform.position);
-        maxDistanceToCam = boundsInModelSpace.MaxDistance(Camera.main.transform.position);
+        Vector3 camPos = Camera.main.transform.position;
+
+
+        //Bounds b = boundsInWorldSpace;
+        //minDistanceToCam = b.MinDistance(camPos);
+        //maxDistanceToCam = b.MaxDistance(camPos);
+
+
+        camPos = transform.InverseTransformPoint(camPos);
+        minDistanceToCam = boundsInModelSpace.MinDistance(camPos);
+        maxDistanceToCam = boundsInModelSpace.MaxDistance(camPos);
     }
 
     private void CheckMaterial()
@@ -285,18 +299,22 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         }
 
 
-        Bounds b = boundsInModelSpace;
+        Bounds b = boundsInWorldSpace;// boundsInModelSpace;
         Gizmos.DrawWireCube(b.center, b.size);
+
+        //b = boundsInModelSpace;
+        //Gizmos.color = Color.white;
+        //Gizmos.DrawWireCube(b.center, b.size);
     }
 
     private void OnDrawGizmos()
     {
-        //showLoDGizmos();
+        showLoDGizmos();
     }
 
     private void OnDrawGizmosSelected()
     {
-        showLoDGizmos();
+        //showLoDGizmos();
     }
 
     #endregion

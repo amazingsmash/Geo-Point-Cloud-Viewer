@@ -352,12 +352,12 @@ public partial class PointCloud: MonoBehaviour, IPointCloudManager
 
     public Material GetNDM()
     {
-        return farDistanceMat;
+        return nearDistanceMat;
     }
 
     public Material GetFDM()
     {
-        return nearDistanceMat;
+        return farDistanceMat;
     }
 
     public float nearDistanceThreshold()

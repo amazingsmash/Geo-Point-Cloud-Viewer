@@ -102,9 +102,7 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         fileInfo = directory.GetFiles(filename)[0];
         Debug.Assert(this.fileInfo != null, "File not found:" + node["filename"]);
         Debug.Assert(this.pcManager != null, "No PCManager");
-
-        gameObject.name = "PC Parent Node";
-
+        
         JSONArray childrenJSON = node["children"].AsArray;
         ArrayList childrenList = new ArrayList();
         //Debug.Log("N Children: " + childrenJSON.Count);
@@ -211,16 +209,20 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
                         if (minD > maxD) { minD = maxD; }
                         meshRenderer.material.SetFloat("_MaxDistance", maxD);
                         meshRenderer.material.SetFloat("_MinDistance", minD);
+
+                        gameObject.name = "PC Node - FDM";
                         break;
                     }
                 case RenderType.NDM:
                     {
                         meshRenderer.material = pcManager.GetNDM();
+                        gameObject.name = "PC Node - NDM";
                         break;
                     }
                 default:
                     {
                         meshRenderer.materials = new Material[] { pcManager.GetFDM(), pcManager.GetNDM() };
+                        gameObject.name = "PC Node - FDM & NDM";
                         break;
                     }
             }
@@ -273,7 +275,7 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
     #region others
 
-    private void OnDrawGizmos()
+    private void showLoDGizmos()
     {
         switch (renderType)
         {
@@ -285,6 +287,16 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
 
         Bounds b = boundsInModelSpace;
         Gizmos.DrawWireCube(b.center, b.size);
+    }
+
+    private void OnDrawGizmos()
+    {
+        //showLoDGizmos();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        showLoDGizmos();
     }
 
     #endregion

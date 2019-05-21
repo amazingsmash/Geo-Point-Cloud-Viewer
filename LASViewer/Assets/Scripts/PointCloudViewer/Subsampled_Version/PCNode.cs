@@ -173,13 +173,7 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
     private void CheckCameraDistances()
     {
         Vector3 camPos = Camera.main.transform.position;
-
-
-        //Bounds b = boundsInWorldSpace;
-        //minDistanceToCam = b.MinDistance(camPos);
-        //maxDistanceToCam = b.MaxDistance(camPos);
-
-
+        
         camPos = transform.InverseTransformPoint(camPos);
         minDistanceToCam = boundsInModelSpace.MinDistance(camPos);
         maxDistanceToCam = boundsInModelSpace.MaxDistance(camPos);

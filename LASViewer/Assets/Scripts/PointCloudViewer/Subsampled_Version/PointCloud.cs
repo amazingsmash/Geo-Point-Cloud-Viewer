@@ -79,11 +79,11 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
     // Use this for initialization
     void Start()
     {
-        if (!transform.lossyScale.NearlyEquals(Vector3.one))
-        {
-            UnityEngine.Debug.Log("PointCloud must be not to scale.");
-            return;
-        }
+       // if (!transform.lossyScale.NearlyEquals(Vector3.one))
+       // {
+        //    UnityEngine.Debug.Log("PointCloud must be not to scale.");
+         //   return;
+       // }
 
         //DirectoryInfo dir = getModelDirectoryFromDialog();
         //DirectoryInfo dir = new DirectoryInfo("/Users/josemiguelsn/Desktop/repos/LASViewer/Models/92.las - BITREE");
@@ -250,19 +250,22 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         Vector3 closestHit = Vector3.negativeInfinity;
         Color colorClosestHit = Color.black;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            GameObject child = transform.GetChild(i).gameObject;
-            PCNode node = child.GetComponent<PCNode>();
-            if (node != null)
+
+        //Accounting for PC transformations
+        ray = new Ray(transform.InverseTransformPoint(ray.origin),
+                      transform.InverseTransformDirection(ray.direction));
+
+        PCNode[] nodes = GetComponentsInChildren<PCNode>(false);
+        foreach (PCNode node in nodes) {
+            if (node.State == PCNode.PCNodeState.VISIBLE)
             {
                 UnityEngine.Debug.Log("Finding selected point on node.");
                 node.GetClosestPointOnRay(ray,
-                                          screenPosition,
-                                          ref maxDist,
-                                          ref closestHit,
-                                          ref colorClosestHit,
-                                          maxScreenDistance * maxScreenDistance);
+                                            screenPosition,
+                                            ref maxDist,
+                                            ref closestHit,
+                                            ref colorClosestHit,
+                                            maxScreenDistance * maxScreenDistance);
             }
         }
 

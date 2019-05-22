@@ -148,6 +148,7 @@ public partial class PointCloud : MonoBehaviour, IPointCloudManager
         if (moveCameraToCenter)
         {
             Camera.main.transform.position = transform.TransformPoint(topNodes[0].bounds.center);
+            Camera.main.transform.forward = transform.forward;
         }
 
         System.GC.Collect(); //Garbage Collection

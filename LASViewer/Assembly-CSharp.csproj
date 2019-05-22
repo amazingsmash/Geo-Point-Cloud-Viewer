@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Communications\TCPEnd.cs" />
     <Compile Include="Assets\Scripts\Earth\FloatingOrigin.cs" />
     <Compile Include="Assets\Scripts\Earth\GISCameraController.cs" />
+    <Compile Include="Assets\Scripts\Earth\RotateSun.cs" />
     <Compile Include="Assets\Scripts\OLD\CSVManager.cs" />
     <Compile Include="Assets\Scripts\OLD\CSVReader.cs" />
     <Compile Include="Assets\Scripts\OLD\PointCloudLoader.cs" />

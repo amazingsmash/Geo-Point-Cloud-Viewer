@@ -28,7 +28,7 @@ public class GISCameraController : MonoBehaviour
 
 
         double distanceToPointCloud = (camPos - pointCloud.transform.position).magnitude;
-        flyCamController.shiftAdd = (float)(camHeight) / 50 + flyCamController.speed;
+        flyCamController.shiftAdd = (float)(camHeight) / 10 + flyCamController.speed;
         flyCamController.maxShift = flyCamController.shiftAdd;
 
         //pointCloud.enabled = camHeight < 10000;

@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/LASScene.unity
     guid: b9970de7435e148b5a0ef5be8533997c
   - enabled: 1
-    path: Assets/Scenes/Demo_Aerolaser.unity
+    path: Assets/Scenes/LAS_No_Subsampling.unity
     guid: 69eae41bfc64e4ad78801b82161dce68
   - enabled: 0
     path: Assets/Scenes/LAS_Subsampled.unity

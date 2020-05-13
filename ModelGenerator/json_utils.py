@@ -3,12 +3,13 @@ import json
 import os
 
 
-def readJSON(filename):
+def read_json(filename):
     with open(filename) as data_file:
         data = json.load(data_file)
     return data
 
-def writeJSON(data, filename):
+
+def write_json(data, filename):
     folder = os.path.dirname(filename)
     if not os.path.isdir(folder): os.makedirs(folder)
 

@@ -1,14 +1,12 @@
 from laspy.file import File
 import numpy as np
-import scipy.io as sio
 import Encoding
 import shutil
 import os
 import JSONUtils
-from pyproj import CRS, Transformer, exceptions
-import webbrowser
-
 from datetime import datetime
+
+import pcutils
 
 
 class PointCloudModel:
@@ -21,7 +19,8 @@ class PointCloudModel:
     def add_las_path(self, path):
         self.__file_paths += [path]
 
-    def split_two_longest_axis(xyzc, size):
+    @staticmethod
+    def __split_two_longest_axis(xyzc, size):
         max_dim = np.argmax(size)
         m = np.median(xyzc[:, max_dim])
         division = xyzc[:, max_dim] > m
@@ -62,9 +61,12 @@ class PointCloudModel:
             voxel_index["children"] = []
         else:
             size = max_xyz - min_xyz
-            division = PointCloudModel.split_two_longest_axis(xyzc, size)
+            division = PointCloudModel.__split_two_longest_axis(xyzc, size)
 
             xyzc0 = xyzc[division, :]
+
+            print("share mem") if np.may_share_memory(xyzc, xyzc0) else print("no share mem")
+
             vi0 = self.__save_tree(xyzc0,
                                    indices + [0],
                                   out_folder=out_folder,
@@ -81,62 +83,11 @@ class PointCloudModel:
 
         return voxel_index
 
-    @staticmethod
-    def __discover_epsg(las_x, las_y):
-
-        ref_point = np.array([40.4165, -3.70256])
-        point = np.array([(np.min(las_x) + np.max(las_x)) / 2, (np.min(las_y) + np.max(las_y)) / 2])
-
-        crs_4326 = CRS.from_epsg(4326)
-
-        dists = {}
-
-        for i in range(2000, 10000):
-            try:
-                crs_in = CRS.from_epsg(i)
-                transformer = Transformer.from_crs(crs_from=crs_in, crs_to=crs_4326)
-                lat, lon = transformer.transform(point[0], point[1])
-                new_point = np.array([lat, lon])
-                d = np.linalg.norm(ref_point-new_point)
-                dists[i] = d
-                print("EPSG %d -> %f" % (i, d))
-                if d < 10:
-                    url = "http://maps.google.com/maps?q=%f,%f" % (lat, lon)
-                    webbrowser.open(url)
-
-            except exceptions.CRSError:
-                pass
-
-
-
-    @staticmethod
-    def __convert_las_to_wgs84(las_x, las_y, epsg_num=32733, show_map=True):
-
-        if epsg_num is 4326:
-            return las_x, las_y
-
-        crs_in = CRS.from_epsg(epsg_num)
-        crs_4326 = CRS.from_epsg(4326)
-        transformer = Transformer.from_crs(crs_from=crs_in, crs_to=crs_4326)
-
-        lat, lon = transformer.transform(las_x, las_y)
-
-        if show_map:
-            url = "http://maps.google.com/maps?q=%f,%f" % ((np.min(lat) + np.max(lat))/2, (np.min(lon) + np.max(lon))/2)
-            webbrowser.open(url)
-
-        return lat, lon
-
-    @staticmethod
-    def __get_sector(lat, lon):
-        sector = (np.min(lat), np.min(lon), np.max(lat), np.max(lon))
-        return sector
-
     def generate(self, out_path="", max_file_points=65000):
         """Stores tree model on disk. Nodes have a max size of max_file_points"""
 
         out_folder = os.path.join(out_path, self.name)
-        if (os.path.exists(out_folder)):
+        if os.path.exists(out_folder):
             shutil.rmtree(out_folder, ignore_errors=True)
         os.makedirs(out_folder)
 
@@ -145,12 +96,10 @@ class PointCloudModel:
         for file in self.__file_paths:
             in_file = File(file, mode='r')
 
-            # PointCloudModel.__discover_epsg(in_file.x, in_file.y)
-
-            lat, lon = PointCloudModel.__convert_las_to_wgs84(in_file.x, in_file.y, self.epsg_num, show_map=False)
+            lat, lon = pcutils.convert_las_to_wgs84(in_file.x, in_file.y, self.epsg_num, show_map=False)
             h = in_file.z
 
-            sector = PointCloudModel.__get_sector(lat, lon)
+            sector = pcutils.get_sector(lat, lon)
             print("Sector ", end="")
             print(sector)
 
@@ -172,22 +121,15 @@ class PointCloudModel:
                                   max_points=max_file_points)
             voxel_indices += [vi]
 
-        JSONUtils.writeJSON(voxel_indices, out_folder + "/voxelIndex.json")
+        JSONUtils.write_json(voxel_indices, out_folder + "/voxelIndex.json")
 
-            # # Testing write speed
-            # t0 = datetime.now()
-            # sio.savemat('lasMatlab.mat', {'xyzc': xyzc})
-            # t1 = datetime.now()
-            # td = t1-t0
-            # print(td.microseconds * (10**-6))
-            # print(xyzc.shape)
 
 if __name__ == "__main__":
 
     t0 = datetime.now()
     # model = PointCloudModel("000029_NS", ["../Data/000029.las"])
     # model = PointCloudModel("DEMO", ["000052.las"], epsg_num=2062)
-    model = PointCloudModel("LASBCN", ["000001.las"], epsg_num=32631)
+    model = PointCloudModel("LASBCN_2", ["000001.las"], epsg_num=32631)
     model.generate("../Models")
     t1 = datetime.now()
     td = t1-t0

@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="abe32653-d01b-4287-a51e-b2e5b1ece8a0" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ModelGenerator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ModelGenerator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pc_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Encoding.py" beforeDir="false" afterPath="$PROJECT_DIR$/encoding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JSONUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/json_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PointCloudModelGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/PointCloudModelGenerator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +44,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.PointCloudModelGenerator">
+  <component name="RunManager" selected="Python.PointCloudModelGenerator_Subsampling">
     <configuration name="PointCloudModelGenerator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ModelGenerator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -114,8 +115,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.PointCloudModelGenerator" />
         <item itemvalue="Python.PointCloudModelGenerator_Subsampling" />
+        <item itemvalue="Python.PointCloudModelGenerator" />
       </list>
     </recent_temporary>
   </component>
@@ -145,45 +146,77 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1859" height="219" key="GridCell.Tab.0.bottom" timestamp="1589290092433">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state x="880" y="205" key="#Inspections" timestamp="1589380431075">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="219" key="GridCell.Tab.0.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589290092433" />
-    <state width="1859" height="219" key="GridCell.Tab.0.center" timestamp="1589290092432">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state x="880" y="205" key="#Inspections/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380431075" />
+    <state width="2539" height="367" key="GridCell.Tab.0.bottom" timestamp="1589380797560">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="219" key="GridCell.Tab.0.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589290092432" />
-    <state width="1859" height="219" key="GridCell.Tab.0.left" timestamp="1589290092431">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state width="2539" height="367" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797560" />
+    <state width="1859" height="201" key="GridCell.Tab.0.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328903" />
+    <state width="2539" height="367" key="GridCell.Tab.0.center" timestamp="1589380797558">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="219" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589290092431" />
-    <state width="1859" height="219" key="GridCell.Tab.0.right" timestamp="1589290092432">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state width="2539" height="367" key="GridCell.Tab.0.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797558" />
+    <state width="1859" height="201" key="GridCell.Tab.0.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328902" />
+    <state width="2539" height="367" key="GridCell.Tab.0.left" timestamp="1589380797557">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="219" key="GridCell.Tab.0.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589290092432" />
-    <state width="1859" height="201" key="GridCell.Tab.1.bottom" timestamp="1589289865591">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state width="2539" height="367" key="GridCell.Tab.0.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797557" />
+    <state width="1859" height="201" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328902" />
+    <state width="2539" height="367" key="GridCell.Tab.0.right" timestamp="1589380797559">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="201" key="GridCell.Tab.1.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589289865591" />
-    <state width="1859" height="201" key="GridCell.Tab.1.center" timestamp="1589289865590">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state width="2539" height="367" key="GridCell.Tab.0.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797559" />
+    <state width="1859" height="201" key="GridCell.Tab.0.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328903" />
+    <state width="2539" height="201" key="GridCell.Tab.1.bottom" timestamp="1589380130490">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="201" key="GridCell.Tab.1.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589289865590" />
-    <state width="1859" height="201" key="GridCell.Tab.1.left" timestamp="1589289865589">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state width="2539" height="201" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380130490" />
+    <state width="1859" height="201" key="GridCell.Tab.1.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368319686" />
+    <state width="2539" height="201" key="GridCell.Tab.1.center" timestamp="1589380130488">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="201" key="GridCell.Tab.1.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589289865589" />
-    <state width="1859" height="201" key="GridCell.Tab.1.right" timestamp="1589289865590">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state width="2539" height="201" key="GridCell.Tab.1.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380130488" />
+    <state width="1859" height="201" key="GridCell.Tab.1.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368319685" />
+    <state width="2539" height="201" key="GridCell.Tab.1.left" timestamp="1589380130487">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="1859" height="201" key="GridCell.Tab.1.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589289865590" />
+    <state width="2539" height="201" key="GridCell.Tab.1.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380130487" />
+    <state width="1859" height="201" key="GridCell.Tab.1.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368319685" />
+    <state width="2539" height="201" key="GridCell.Tab.1.right" timestamp="1589380130489">
+      <screen x="0" y="0" width="2560" height="1080" />
+    </state>
+    <state width="2539" height="201" key="GridCell.Tab.1.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380130489" />
+    <state width="1859" height="201" key="GridCell.Tab.1.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368319686" />
     <state x="211" y="190" key="SettingsEditor" timestamp="1589287139745">
       <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state x="211" y="190" key="SettingsEditor/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589287139745" />
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog" timestamp="1589367191203">
+      <screen x="0" y="23" width="2560" height="1057" />
+    </state>
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589367191203" />
+    <state x="702" y="189" key="refactoring.ChangeSignatureDialog" timestamp="1589367688887">
+      <screen x="0" y="23" width="2560" height="1057" />
+    </state>
+    <state x="702" y="189" key="refactoring.ChangeSignatureDialog/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589367688887" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PointCloudModelGenerator.py</url>
+          <line>69</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py</url>
+          <line>238</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">

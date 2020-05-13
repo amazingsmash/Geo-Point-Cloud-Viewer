@@ -47,3 +47,5 @@ Unity project that loads a pre-set point cloud model and renders it following th
 }
 
 The technique shaders are prepared for Desktop platforms and has been tested on PC and Mac both for mono and stereoscopic rendering (VR). 
+
+See it in action on Youtube [link text](https://www.youtube.com/watch?v=M-L_zB4L3k0).

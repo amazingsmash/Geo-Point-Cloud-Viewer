@@ -1,5 +1,4 @@
 import sys
-
 from laspy.file import File
 import numpy as np
 import encoding
@@ -9,11 +8,9 @@ import json_utils
 import math
 import gc
 import seaborn as sns
-from pyproj import CRS, Transformer, exceptions
 from datetime import datetime
-
-# import easygui
 import pc_utils
+import time
 
 
 class PointCloudModel:
@@ -58,7 +55,7 @@ class PointCloudModel:
     def __random_subsampling(xyzc, max_points):
         n_points = xyzc.shape[0]
         if n_points < max_points:
-            return xyzc, np.array([0,4])
+            return xyzc, np.array([0, 4])
 
         selection = np.random.choice(n_points, size=max_points, replace=False)
         inverse_mask = np.ones(n_points, np.bool)
@@ -73,37 +70,40 @@ class PointCloudModel:
         xyz0 = np.random.permutation(xyz)
         xyz1 = np.random.permutation(xyz)
         d = xyz1 - xyz0
-        d = d[:,0]**2 + d[:,1]**2 + d[:,2]**2
+        d = d[:, 0] ** 2 + d[:, 1] ** 2 + d[:, 2] ** 2
         d = np.mean(d)
         return math.sqrt(d)
 
-    def __save_tree(self, xyzc, indices, out_folder, max_points):
+    def __save_tree(self, xyzc, indices, out_folder, max_points, subsample):
         n_points = xyzc.shape[0]
 
         if n_points == 0:
             return
 
-        min_xyz = np.min(xyzc[:, 0:3], axis=0)
-        max_xyz = np.max(xyzc[:, 0:3], axis=0)
+        if subsample or n_points < max_points:
 
-        voxel_index = {"min": min_xyz.tolist(),
-                       "max": max_xyz.tolist(),
-                       "indices": indices}
+            min_xyz = np.min(xyzc[:, 0:3], axis=0)
+            max_xyz = np.max(xyzc[:, 0:3], axis=0)
 
-        node_points, remaining_points = PointCloudModel.__random_subsampling(xyzc, max_points)
-        file_name, file_path = self.__get_file_path(indices, out_folder)
-        encoding.matrix_to_file(node_points, file_path)
+            voxel_index = {"min": min_xyz.tolist(),
+                           "max": max_xyz.tolist(),
+                           "indices": indices}
 
-        self.n_generation_stored_points += node_points.shape[0]
-        self.__print_generation_state()
+            node_points, remaining_points = PointCloudModel.__random_subsampling(xyzc, max_points)
+            file_name, file_path = self.__get_file_path(indices, out_folder)
+            encoding.matrix_to_file(node_points, file_path)
 
-        voxel_index["filename"] = file_name
-        voxel_index["npoints"] = node_points.shape[0]
-        voxel_index["avgDistance"] = PointCloudModel.__aprox_average_distance(node_points[:, 0:3])
+            self.n_generation_stored_points += node_points.shape[0]
+            self.__print_generation_state()
+
+            voxel_index["filename"] = file_name
+            voxel_index["npoints"] = node_points.shape[0]
+            voxel_index["avgDistance"] = PointCloudModel.__aprox_average_distance(node_points[:, 0:3])
+
+            xyzc = remaining_points
+            n_points = xyzc.shape[0]
 
         # Creating children
-        xyzc = remaining_points
-        n_points = xyzc.shape[0]
         if n_points < max_points:
             voxel_index["children"] = []
         else:
@@ -113,35 +113,17 @@ class PointCloudModel:
             xyzc0 = xyzc[division, :]
             vi0 = self.__save_tree(xyzc0,
                                    indices + [0],
-                                  out_folder=out_folder,
-                                  max_points=max_points)
+                                   out_folder=out_folder,
+                                   max_points=max_points)
 
             xyzc1 = xyzc[np.logical_not(division), :]
             vi1 = self.__save_tree(xyzc1,
                                    indices + [1],
-                                  out_folder=out_folder,
-                                  max_points=max_points)
+                                   out_folder=out_folder,
+                                   max_points=max_points)
             voxel_index["children"] = [vi0, vi1]
 
         return voxel_index
-
-    @staticmethod
-    def __convert_las_to_wgs84(las_x, las_y, epsg_num=32733, show_map=True):
-
-        if epsg_num is 4326:
-            return las_x, las_y
-
-        crs_in = CRS.from_epsg(epsg_num)
-        crs_4326 = CRS.from_epsg(4326)
-        transformer = Transformer.from_crs(crs_from=crs_in, crs_to=crs_4326)
-
-        lat, lon = transformer.transform(las_x, las_y)
-
-        if show_map:
-            url = "http://maps.google.com/maps?q=%f,%f" % ((np.min(lat) + np.max(lat))/2, (np.min(lon) + np.max(lon))/2)
-            webbrowser.open(url)
-
-        return lat, lon
 
     @staticmethod
     def __get_file_path(indices, out_folder):
@@ -155,11 +137,12 @@ class PointCloudModel:
         return [{"class": c, "color": list(palette[i])} for i, c in enumerate(point_classes)]
 
     def __print_generation_state(self):
-        msg = "Processed %f %%." % (self.n_generation_stored_points / self.n_generation_points)
+        msg = "Processed %f%%." % (self.n_generation_stored_points / self.n_generation_points)
         sys.stdout.write('\r' + msg)
         sys.stdout.flush()
+        time.sleep(0.0000000000001)
 
-    def generate(self, out_path="", max_file_points=65000, max_las_files=None):
+    def generate(self, out_path="", max_file_points=65000, max_las_files=None, subsample=True):
         out_folder = out_path + self.name
         shutil.rmtree(out_folder, ignore_errors=True)
         os.mkdir(out_folder)
@@ -186,9 +169,9 @@ class PointCloudModel:
             print(sector)
 
             xyzc = np.transpose(np.array([in_file.x,
-                                         in_file.y,
-                                         in_file.z,
-                                         in_file.Classification.astype(float)]))
+                                          in_file.y,
+                                          in_file.z,
+                                          in_file.Classification.astype(float)]))
 
             if "xyz_offset" not in locals():
                 xyz_offset = np.min(xyzc[:, 0:3], axis=0)
@@ -207,47 +190,39 @@ class PointCloudModel:
             vi = self.__save_tree(xyzc,
                                   [index],
                                   out_folder=out_folder,
-                                  max_points=max_file_points)
+                                  max_points=max_file_points,
+                                  subsample=subsample)
 
             bounds += [vi["min"], vi["max"]]
 
             voxel_indices += [{"file": index_file_name,
                                "min": vi["min"],
                                "max": vi["max"]}]
-            JSONUtils.write_json(vi, out_folder + "/" + index_file_name)
+            json_utils.write_json(vi, out_folder + "/" + index_file_name)
 
-            gc.collect() # Forcing garbage collection
+            gc.collect()  # Forcing garbage collection
 
         bounds = np.array(bounds)
         xyz_min = np.min(bounds, axis=0)
         xyz_max = np.max(bounds, axis=0)
 
-        model = {"model_name" : self.name,
+        model = {"model_name": self.name,
                  "xyz_offset": xyz_offset.tolist(),
-                 "min" : xyz_min.tolist(),
-                 "max" : xyz_max.tolist(),
-                 "classes" : PointCloudModel.__generate_color_palette(point_classes),
+                 "min": xyz_min.tolist(),
+                 "max": xyz_max.tolist(),
+                 "classes": PointCloudModel.__generate_color_palette(point_classes),
                  "nodes": voxel_indices
-        }
+                 }
 
-        JSONUtils.write_json(model, out_folder + "/pc_model.json")
+        json_utils.write_json(model, out_folder + "/pc_model.json")
 
 
 if __name__ == "__main__":
-
-    # model = PointCloudModel("Corridor_New", [])
-    model = PointCloudModel("LASBCN_3", ["000001.las"], epsg_num=32631)
-    # model.get_las_paths_in_folder(easygui.diropenbox("Select Data Folder"))
-    # model = PointCloudModel("LIDAR", las_folder="/Volumes/My Passport/Disco2/221_400BEG-PIE/LIDAR")
-
-    # model = PointCloudModel("LAS 29", ["../Data/000029.las"])
-
-    out_path = "../Models/"
-    # out_path = "/Volumes/My Passport/Unity_PC_Model/"
-
+    model = PointCloudModel("LAS_MODEL", ["000001.las"], epsg_num=32631)
+    out_model_path = "../Models/"
     t0 = datetime.now()
-    model.generate(out_path)
+    model.generate(out_model_path, subsample=True)
     t1 = datetime.now()
-    td = t1-t0
+    td = t1 - t0
 
     print("Model Generated in %f sec." % td.total_seconds())

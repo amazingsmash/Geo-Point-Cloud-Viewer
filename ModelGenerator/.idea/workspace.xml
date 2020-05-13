@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="abe32653-d01b-4287-a51e-b2e5b1ece8a0" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/pc_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encoding.py" beforeDir="false" afterPath="$PROJECT_DIR$/encoding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JSONUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/json_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PointCloudModelGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/PointCloudModelGenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PointCloudModelGenerator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +75,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pc_model.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -150,25 +147,25 @@
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
     <state x="880" y="205" key="#Inspections/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380431075" />
-    <state width="2539" height="367" key="GridCell.Tab.0.bottom" timestamp="1589380797560">
+    <state width="2539" height="187" key="GridCell.Tab.0.bottom" timestamp="1589389949912">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="367" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797560" />
+    <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589389949912" />
     <state width="1859" height="201" key="GridCell.Tab.0.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328903" />
-    <state width="2539" height="367" key="GridCell.Tab.0.center" timestamp="1589380797558">
+    <state width="2539" height="187" key="GridCell.Tab.0.center" timestamp="1589389949911">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="367" key="GridCell.Tab.0.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797558" />
+    <state width="2539" height="187" key="GridCell.Tab.0.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589389949911" />
     <state width="1859" height="201" key="GridCell.Tab.0.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328902" />
-    <state width="2539" height="367" key="GridCell.Tab.0.left" timestamp="1589380797557">
+    <state width="2539" height="187" key="GridCell.Tab.0.left" timestamp="1589389949910">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="367" key="GridCell.Tab.0.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797557" />
+    <state width="2539" height="187" key="GridCell.Tab.0.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589389949910" />
     <state width="1859" height="201" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328902" />
-    <state width="2539" height="367" key="GridCell.Tab.0.right" timestamp="1589380797559">
+    <state width="2539" height="187" key="GridCell.Tab.0.right" timestamp="1589389949911">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="367" key="GridCell.Tab.0.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589380797559" />
+    <state width="2539" height="187" key="GridCell.Tab.0.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589389949911" />
     <state width="1859" height="201" key="GridCell.Tab.0.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589368328903" />
     <state width="2539" height="201" key="GridCell.Tab.1.bottom" timestamp="1589380130490">
       <screen x="0" y="0" width="2560" height="1080" />
@@ -205,18 +202,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PointCloudModelGenerator.py</url>
-          <line>69</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PointCloudModelGenerator_Subsampling.py</url>
-          <line>238</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">

@@ -14,13 +14,21 @@ pc_model PC_MODEL_NAME [-h] [-d D] [-f F [F ...]] [-o O] [-e E] [-n N]
                               [-s S]
 
 optional arguments:
+
   -h, --help    show this help message and exit
+  
   -d D          Folder with LAS files inside
+  
   -f F [F ...]  Paths to LAS files
+  
   -o O          Path to output folder (default wd)
+  
   -e E          EPSG num (default 32631)
+  
   -n N          Max points per node (default 65000)
+  
   -s S          Subsample PC in parent nodes (default True)
+  
   
 For example:
 

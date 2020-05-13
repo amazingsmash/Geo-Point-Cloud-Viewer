@@ -33,3 +33,16 @@ optional arguments:
 For example:
 
 pc_model PC_MODEL_NAME -f las1.las las2.las -d path/to/las/folder -o path/to/out -p 32631 -n MAX_POINTS_NODE -s True 
+
+## Unity Viewer
+
+Unity project that loads a pre-set point cloud model and renders it following the double material strategy described in our work published at Eurographics 2019.
+
+@article{santana2019visualization,
+  title={Visualization of Large Point Cloud in Unity},
+  author={Santana N{\'u}{\~n}ez, Jos{\'e} Miguel and Trujillo Pino, Agust{\'\i}n Rafael and Ortega Trujillo, Sebasti{\'a}n Eleazar},
+  journal={Eurographics technical report series},
+  year={2019}
+}
+
+The technique shaders are prepared for Desktop platforms and has been tested on PC and Mac both for mono and stereoscopic rendering (VR). 

@@ -38,7 +38,8 @@ pc_model PC_MODEL_NAME -f las1.las las2.las -d path/to/las/folder -o path/to/out
 
 Unity project that loads a pre-set point cloud model and renders it following the double material strategy described in our work published at Eurographics 2019.
 
-@article{santana2019visualization,
+
+> @article{santana2019visualization,
   title={Visualization of Large Point Cloud in Unity},
   author={Santana N{\'u}{\~n}ez, Jos{\'e} Miguel and Trujillo Pino, Agust{\'\i}n Rafael and Ortega Trujillo, Sebasti{\'a}n Eleazar},
   journal={Eurographics technical report series},

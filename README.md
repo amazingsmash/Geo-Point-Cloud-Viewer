@@ -27,7 +27,7 @@ For example:
 
 > pc_model PC_MODEL_NAME -f las1.las las2.las -d path/to/las/folder -o path/to/out -p 32631 -n MAX_POINTS_NODE -s True 
 
-## Unity Viewer
+## Unity Renderer
 
 Unity project that loads a pre-set point cloud model and renders it following the double material strategy described in our work published at Eurographics 2019.
 

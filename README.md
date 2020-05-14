@@ -14,7 +14,7 @@ The usage is defined as:
 > 
 > optional arguments:
 > 
->   -h, --help    show this help message and exit
+>      -h, --help    show this help message and exit 
 >      -d D          Folder with LAS files inside
 >      -f F [F ...]  Paths to LAS files
 >      -o O          Path to output folder (default wd)

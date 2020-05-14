@@ -1,4 +1,7 @@
+import argparse
 import sys
+from getopt import getopt
+
 from laspy.file import File
 import numpy as np
 import encoding
@@ -218,10 +221,43 @@ class PointCloudModel:
 
 
 if __name__ == "__main__":
-    model = PointCloudModel("LAS_MODEL", ["000001.las"], epsg_num=32631)
+
+    # example: pc_model PC_MODEL_NAME -d path/to/las/folder -o path/to/out -p 32631 -n MAX_POINTS_NODE -s True
+    # example: pc_model PC_MODEL_NAME -f las1.las las2.las -o path/to/out
+    # example: pc_model PC_MODEL_NAME -f las1.las las2.las -d path/to/las/folder -o path/to/out
+
+    parser = argparse.ArgumentParser(prog='pc_model PC_MODEL_NAME')
+    parser.add_argument("-d", help="Folder with LAS files inside")
+    parser.add_argument("-f", nargs="+",  help="Paths to LAS files")
+    parser.add_argument("-o", help="Path to output folder (default wd)", default="")
+    parser.add_argument("-e", help="EPSG num (default 32631)", type=int, default=32631)
+    parser.add_argument("-n", help="Max points per node (default 65000)", type=int, default=65000)
+    parser.add_argument("-s", help="Subsample PC in parent nodes (default True)", type=bool, default=True)
+
+    parser.print_help()
+    arg = parser.parse_args(sys.argv[2:]) #getting optionals
+
+    model_name = sys.argv[1]
+    las_folder = arg.d
+    las_files = arg.f
+    out_model_path = arg.o
+    epsg_num = arg.e
+    max_points_per_node = arg.n
+    subsample = arg.s
+
+    if las_folder is None and las_files is None:
+        parser.print_help()
+        sys.exit()
+
+    model = PointCloudModel("LAS_MODEL",
+                            las_files,
+                            las_folder=las_folder,
+                            epsg_num=epsg_num)
     out_model_path = "../Models/"
     t0 = datetime.now()
-    model.generate(out_model_path, subsample=True)
+    model.generate(out_model_path,
+                   max_file_points=max_points_per_node,
+                   subsample=True)
     t1 = datetime.now()
     td = t1 - t0
 

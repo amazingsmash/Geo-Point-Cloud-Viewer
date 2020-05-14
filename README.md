@@ -1,6 +1,6 @@
-# Unity Geo Point Cloud Viewer
+# Geo Point Cloud Viewer
 
-This project is an implementation of a novel technique for massive point cloud rendering on the Unity game engine. 
+This project is an implementation of a novel technique for massive point cloud rendering on the Unity game engine. The project as a whole transforms a set of LAS files in any SRID recognized by the EPSG and generates a Unity scene in which the point cloud differentiates different point classes by color.
 It consists in two parts:
 
 ## Model Generator

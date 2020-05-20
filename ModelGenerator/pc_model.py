@@ -1,19 +1,19 @@
 import argparse
-import sys
-from getopt import getopt
-
-from laspy.file import File
-import numpy as np
-import encoding
-import shutil
-import os
-import json_utils
-import math
 import gc
-import seaborn as sns
-from datetime import datetime
-import pc_utils
+import math
+import os
+import shutil
+import sys
 import time
+from datetime import datetime
+
+import numpy as np
+import seaborn as sns
+from laspy.file import File
+
+import encoding
+import json_utils
+import pc_utils
 
 
 class PointCloudModel:
@@ -84,7 +84,6 @@ class PointCloudModel:
             return
 
         if subsample or n_points < max_points:
-
             min_xyz = np.min(xyzc[:, 0:3], axis=0)
             max_xyz = np.max(xyzc[:, 0:3], axis=0)
 
@@ -222,43 +221,36 @@ class PointCloudModel:
 
 if __name__ == "__main__":
 
-    # example: pc_model PC_MODEL_NAME -d path/to/las/folder -o path/to/out -p 32631 -n MAX_POINTS_NODE -s True
+    # example: pc_model PC_MODEL_NAME -d path/to/las/folder -o path/to/out -p 32631 -n MAX_POINTS_NODE -s
     # example: pc_model PC_MODEL_NAME -f las1.las las2.las -o path/to/out
     # example: pc_model PC_MODEL_NAME -f las1.las las2.las -d path/to/las/folder -o path/to/out
 
     parser = argparse.ArgumentParser(prog='pc_model PC_MODEL_NAME')
-    parser.add_argument("-d", help="Folder with LAS files inside")
-    parser.add_argument("-f", nargs="+",  help="Paths to LAS files")
-    parser.add_argument("-o", help="Path to output folder (default wd)", default="")
-    parser.add_argument("-e", help="EPSG num (default 32631)", type=int, default=32631)
-    parser.add_argument("-n", help="Max points per node (default 65000)", type=int, default=65000)
-    parser.add_argument("-s", help="Subsample PC in parent nodes (default True)", type=bool, default=True)
+    parser.add_argument("-d", "--directory", help="Folder with LAS files inside")
+    parser.add_argument("-f", "--files",  nargs="+", help="Paths to LAS files")
+    parser.add_argument("-o", "--out", help="Path to output folder (default wd)", default="")
+    parser.add_argument("-e", "--epsg", help="EPSG reference system number of input data (default 32631)", type=int, default=32631)
+    parser.add_argument("-n", "--node_points", help="Max points per node (default 65000)", type=int, default=65000)
+    parser.add_argument("-s", "--subsample", help="Subsample point cloud in parent nodes (default True)", type=bool, action='store_true')
 
-    parser.print_help()
-    arg = parser.parse_args(sys.argv[2:]) #getting optionals
-
+    # parser.print_help()
+    args = parser.parse_args(sys.argv[2:])  # getting optionals
     model_name = sys.argv[1]
-    las_folder = arg.d
-    las_files = arg.f
-    out_model_path = arg.o
-    epsg_num = arg.e
-    max_points_per_node = arg.n
-    subsample = arg.s
 
-    if las_folder is None and las_files is None:
+    if len(sys.argv) < 2 or (args.directory is None and args.files is None):
         parser.print_help()
         sys.exit()
 
     model = PointCloudModel("LAS_MODEL",
-                            las_files,
-                            las_folder=las_folder,
-                            epsg_num=epsg_num)
-    out_model_path = "../Models/"
+                            args.files,
+                            las_folder=args.directory,
+                            epsg_num=args.epsg)
+
     t0 = datetime.now()
-    model.generate(out_model_path,
-                   max_file_points=max_points_per_node,
-                   subsample=True)
+    model.generate(args.out,
+                   max_file_points=args.node_points,
+                   subsample=args.subsample)
     t1 = datetime.now()
     td = t1 - t0
 
-    print("Model Generated in %f sec." % td.total_seconds())
+    print("Model generated in %f sec." % td.total_seconds())

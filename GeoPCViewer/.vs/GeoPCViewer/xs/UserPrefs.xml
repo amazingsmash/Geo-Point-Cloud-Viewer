@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{DB5BD49D-9187-36BE-03EA-2A3DFFC31A45}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs">
+    <Files>
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="7" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="GeoPCViewer" expanded="True" selected="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="PointCloudViewer" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="75c88d76-1c94-4da1-8f33-90cc002ce0fd" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

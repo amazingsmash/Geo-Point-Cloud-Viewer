@@ -10,7 +10,6 @@ def get_sector(lat, lon):
 
 
 def convert_las_to_wgs84(las_x, las_y, epsg_num=32733, show_map=True):
-
     if epsg_num is 4326:
         return las_x, las_y
 
@@ -21,14 +20,13 @@ def convert_las_to_wgs84(las_x, las_y, epsg_num=32733, show_map=True):
     lat, lon = transformer.transform(las_x, las_y)
 
     if show_map:
-        url = "http://maps.google.com/maps?q=%f,%f" % ((np.min(lat) + np.max(lat))/2, (np.min(lon) + np.max(lon))/2)
+        url = "http://maps.google.com/maps?q=%f,%f" % ((np.min(lat) + np.max(lat)) / 2, (np.min(lon) + np.max(lon)) / 2)
         webbrowser.open(url)
 
     return lat, lon
 
 
 def discover_epsg(las_x, las_y):
-
     ref_point = np.array([40.4165, -3.70256])
     point = np.array([(np.min(las_x) + np.max(las_x)) / 2, (np.min(las_y) + np.max(las_y)) / 2])
 
@@ -42,7 +40,7 @@ def discover_epsg(las_x, las_y):
             transformer = Transformer.from_crs(crs_from=crs_in, crs_to=crs_4326)
             lat, lon = transformer.transform(point[0], point[1])
             new_point = np.array([lat, lon])
-            d = np.linalg.norm(ref_point-new_point)
+            d = np.linalg.norm(ref_point - new_point)
             dists[i] = d
             print("EPSG %d -> %f" % (i, d))
             if d < 10:

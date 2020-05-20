@@ -1,16 +1,11 @@
 import argparse
 import gc
-import math
 import os
-import shutil
 import sys
 import time
 from datetime import datetime
-
 import numpy as np
 import seaborn as sns
-from laspy.file import File
-
 import encoding
 import json_utils
 import pc_utils
@@ -20,203 +15,123 @@ class PointCloudModel:
 
     def __init__(self,
                  name,
-                 las_paths=None,
-                 las_folder=None,
-                 epsg_num=4326):
+                 dgg_cell_size=0.1,
+                 parent_directory="",
+                 max_file_points=65000,
+                 parent_subsampling=True):
 
-        if las_folder is not None:
-            file_paths = [os.path.join(las_folder, f) for f in os.listdir(las_folder) if ".las" in f]
-            las_paths = file_paths if las_paths is None else las_paths + file_paths
-
-        self.__file_paths = las_paths
-        self.name = name
-        self.epsg_num = epsg_num
+        self._dgg_cell_size = dgg_cell_size
+        self._name = name
+        self._parent_directory = parent_directory
+        self._max_file_points = max_file_points
+        self._parent_subsampling = parent_subsampling
+        self._point_classes = []
 
         self.n_generation_stored_points = 0
         self.n_generation_points = 0
         self.generation_file = 0
 
-    def add_las_path(self, path):
-        self.__file_paths += [path]
+    def store_las_file(self, las_path, epsg):
+        xyzc = pc_utils.read_las_as_wgs84_xyzc(las_path, epsg)
+        cells = pc_utils.split_xyzc_in_wgs84_normalized_cells(xyzc,
+                                                              dgg_cell_size=self._dgg_cell_size)
 
-    def get_las_paths_in_folder(self, folder_path):
-        self.__file_paths += [folder_path + "/" + f for f in os.listdir(folder_path) if ".las" in f]
+        for c in cells:
+            self._store_cell(c)
 
-    @staticmethod
-    def __split_two_longest_axis(xyzc, size):
-        max_dim = np.argmax(size)
-        m = np.median(xyzc[:, max_dim])
-        division = xyzc[:, max_dim] > m
+        self._save_model_descriptor()
 
-        s_div = sum(division)
-        if s_div == 0 or s_div == xyzc.shape[0]:
-            division = xyzc[:, max_dim] >= m
+    def _store_cell(self, cell):
+        directory = "Cell_%d_%d" % cell["cell_index"]
+        directory = os.path.join(self._parent_directory, self._name, directory)
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
 
-        return division
+        xyzc = cell["xyzc"]
+        index_data = []
+        point_classes = np.unique(xyzc[:, 3]).tolist()
+        print("\n%d points. %d classes.\n" % (xyzc.shape[0], len(point_classes)))
+        self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
 
-    @staticmethod
-    def __random_subsampling(xyzc, max_points):
-        n_points = xyzc.shape[0]
-        if n_points < max_points:
-            return xyzc, np.array([0, 4])
+        index_file_name = "cell.json"
+        index_path = os.path.join(directory, index_file_name)
 
-        selection = np.random.choice(n_points, size=max_points, replace=False)
-        inverse_mask = np.ones(n_points, np.bool)
-        inverse_mask[selection] = 0
+        self.n_generation_points = xyzc.shape[0]
+        self.n_generation_stored_points = 0
 
-        selection = xyzc[selection, :]
-        non_selected = xyzc[inverse_mask, :]
-        return selection, non_selected
+        vi = self._save_tree(xyzc, [0], out_folder=directory)
 
-    @staticmethod
-    def __aprox_average_distance(xyz):
-        xyz0 = np.random.permutation(xyz)
-        xyz1 = np.random.permutation(xyz)
-        d = xyz1 - xyz0
-        d = d[:, 0] ** 2 + d[:, 1] ** 2 + d[:, 2] ** 2
-        d = np.mean(d)
-        return math.sqrt(d)
+        index_data += [{"file": index_file_name,
+                        "min": np.min(xyzc[:, 0:3], axis=0).tolist(),
+                        "max": np.max(xyzc[:, 0:3], axis=0).tolist()}]
+        json_utils.write_json(vi, index_path)
 
-    def __save_tree(self, xyzc, indices, out_folder, max_points, subsample):
+        gc.collect()  # Forcing garbage collection
+
+    def _save_model_descriptor(self):
+        desc_model = {"model_name": self._name,
+                      "classes": PointCloudModel._generate_color_palette(self._point_classes)}
+
+        path = os.path.join(self._parent_directory, self._name, "pc_model.json")
+        json_utils.write_json(desc_model, path)
+
+    def _save_tree(self, xyzc, indices, out_folder):
         n_points = xyzc.shape[0]
 
         if n_points == 0:
             return
 
-        if subsample or n_points < max_points:
+        if self._parent_subsampling or n_points < self._max_file_points:
             min_xyz = np.min(xyzc[:, 0:3], axis=0)
             max_xyz = np.max(xyzc[:, 0:3], axis=0)
 
-            voxel_index = {"min": min_xyz.tolist(),
-                           "max": max_xyz.tolist(),
-                           "indices": indices}
-
-            node_points, remaining_points = PointCloudModel.__random_subsampling(xyzc, max_points)
-            file_name, file_path = self.__get_file_path(indices, out_folder)
+            node_points, remaining_points = pc_utils.random_subsampling(xyzc, self._max_file_points)
+            file_name, file_path = self._get_file_path(indices, out_folder)
             encoding.matrix_to_file(node_points, file_path)
 
             self.n_generation_stored_points += node_points.shape[0]
-            self.__print_generation_state()
+            self._print_generation_state()
 
-            voxel_index["filename"] = file_name
-            voxel_index["npoints"] = node_points.shape[0]
-            voxel_index["avgDistance"] = PointCloudModel.__aprox_average_distance(node_points[:, 0:3])
+            voxel_index = {"min": min_xyz.tolist(),
+                           "max": max_xyz.tolist(),
+                           "indices": indices,
+                           "filename": file_name,
+                           "npoints": node_points.shape[0],
+                           "avgDistance": pc_utils.aprox_average_distance(node_points[:, 0:3])}
 
             xyzc = remaining_points
-            n_points = xyzc.shape[0]
 
         # Creating children
-        if n_points < max_points:
-            voxel_index["children"] = []
-        else:
-            size = max_xyz - min_xyz
-            division = PointCloudModel.__split_two_longest_axis(xyzc, size)
-
-            xyzc0 = xyzc[division, :]
-            vi0 = self.__save_tree(xyzc0,
-                                   indices + [0],
-                                   out_folder=out_folder,
-                                   max_points=max_points)
-
-            xyzc1 = xyzc[np.logical_not(division), :]
-            vi1 = self.__save_tree(xyzc1,
-                                   indices + [1],
-                                   out_folder=out_folder,
-                                   max_points=max_points)
-            voxel_index["children"] = [vi0, vi1]
-
+        voxel_index["children"] = self._get_children(xyzc, indices, out_folder)
         return voxel_index
 
+    def _get_children(self, xyzc, indices, out_folder):
+        children = []
+        if xyzc.shape[0] >= self._max_file_points:
+            # TODO change to option
+            # pcs = pc_utils.split_longest_axis(xyzc)
+            pcs = pc_utils.split_octree(xyzc, level=len(indices))
+            for i, pc in enumerate(pcs):
+                vi = self._save_tree(pc, indices + [i], out_folder=out_folder)
+                children += [vi]
+        return children
+
     @staticmethod
-    def __get_file_path(indices, out_folder):
-        file_name = "Node" + "_".join(str(indices)) + ".bytes"
+    def _get_file_path(indices, out_folder):
+        file_name = "Node-" + "_".join( [str(n) for n in indices] ) + ".bytes"
         file_path = os.path.join(out_folder, file_name)
         return file_name, file_path
 
     @staticmethod
-    def __generate_color_palette(point_classes):
+    def _generate_color_palette(point_classes):
         palette = sns.color_palette(None, len(point_classes))
         return [{"class": c, "color": list(palette[i])} for i, c in enumerate(point_classes)]
 
-    def __print_generation_state(self):
-        msg = "Processed %f%%." % (self.n_generation_stored_points / self.n_generation_points)
+    def _print_generation_state(self):
+        msg = "Processed %f%%." % (self.n_generation_stored_points / self.n_generation_points * 100)
         sys.stdout.write('\r' + msg)
         sys.stdout.flush()
         time.sleep(0.0000000000001)
-
-    def generate(self, out_path="", max_file_points=65000, max_las_files=None, subsample=True):
-        out_folder = out_path + self.name
-        shutil.rmtree(out_folder, ignore_errors=True)
-        os.mkdir(out_folder)
-
-        voxel_indices = []
-        bounds = []
-        point_classes = []
-
-        files = self.__file_paths
-        if max_las_files is not None: files = files[:max_las_files]
-
-        for index, file in enumerate(files):
-
-            index_file_name = "tree_%d.json" % index
-
-            print("Processing file %s" % file)
-            in_file = File(file, mode='r')
-
-            lat, lon = pc_utils.convert_las_to_wgs84(in_file.x, in_file.y, self.epsg_num, show_map=False)
-            h = in_file.z
-
-            sector = pc_utils.get_sector(lat, lon)
-            print("Sector ", end="")
-            print(sector)
-
-            xyzc = np.transpose(np.array([in_file.x,
-                                          in_file.y,
-                                          in_file.z,
-                                          in_file.Classification.astype(float)]))
-
-            if "xyz_offset" not in locals():
-                xyz_offset = np.min(xyzc[:, 0:3], axis=0)
-
-            xyzc[:, 0] -= xyz_offset[0]
-            xyzc[:, 1] -= xyz_offset[1]
-            xyzc[:, 2] -= xyz_offset[2]
-
-            cs = np.unique(xyzc[:, 3]).tolist()
-            point_classes += [c for c in cs if c not in point_classes]
-
-            self.n_generation_points = xyzc.shape[0]
-            self.n_generation_stored_points = 0
-            print("%d points. %d classes." % (xyzc.shape[0], len(point_classes)))
-
-            vi = self.__save_tree(xyzc,
-                                  [index],
-                                  out_folder=out_folder,
-                                  max_points=max_file_points,
-                                  subsample=subsample)
-
-            bounds += [vi["min"], vi["max"]]
-
-            voxel_indices += [{"file": index_file_name,
-                               "min": vi["min"],
-                               "max": vi["max"]}]
-            json_utils.write_json(vi, out_folder + "/" + index_file_name)
-
-            gc.collect()  # Forcing garbage collection
-
-        bounds = np.array(bounds)
-        xyz_min = np.min(bounds, axis=0)
-        xyz_max = np.max(bounds, axis=0)
-
-        model = {"model_name": self.name,
-                 "xyz_offset": xyz_offset.tolist(),
-                 "min": xyz_min.tolist(),
-                 "max": xyz_max.tolist(),
-                 "classes": PointCloudModel.__generate_color_palette(point_classes),
-                 "nodes": voxel_indices
-                 }
-
-        json_utils.write_json(model, out_folder + "/pc_model.json")
 
 
 if __name__ == "__main__":
@@ -225,32 +140,49 @@ if __name__ == "__main__":
     # example: pc_model PC_MODEL_NAME -f las1.las las2.las -o path/to/out
     # example: pc_model PC_MODEL_NAME -f las1.las las2.las -d path/to/las/folder -o path/to/out
 
-    parser = argparse.ArgumentParser(prog='pc_model PC_MODEL_NAME')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("pc_model", help="Creates a hierarchical representation of a multi LAS point cloud designed "
+                                         "for out-of-core rendering.")
     parser.add_argument("-d", "--directory", help="Folder with LAS files inside")
-    parser.add_argument("-f", "--files",  nargs="+", help="Paths to LAS files")
+    parser.add_argument("-f", "--files", nargs="+", help="Paths to LAS files")
     parser.add_argument("-o", "--out", help="Path to output folder (default wd)", default="")
-    parser.add_argument("-e", "--epsg", help="EPSG reference system number of input data (default 32631)", type=int, default=32631)
+    parser.add_argument("-e", "--epsg", help="EPSG reference system number of input data (default 32631)",
+                        type=int, default=32631)
     parser.add_argument("-n", "--node_points", help="Max points per node (default 65000)", type=int, default=65000)
-    parser.add_argument("-s", "--subsample", help="Subsample point cloud in parent nodes (default True)", type=bool, action='store_true')
+    parser.add_argument("-s", "--subsample", help="Subsample point cloud in parent nodes.",
+                        action='store_true')
+    parser.add_argument("-g", "--grid_cell_size", help="Divide model in a Rectangular WGS84 Discrete Global Grid with "
+                                                       "the given cell size length in degrees. (default 0.1º)",
+                        type=float, default=0.1)
 
-    # parser.print_help()
-    args = parser.parse_args(sys.argv[2:])  # getting optionals
-    model_name = sys.argv[1]
+    args = parser.parse_args()  # getting optionals
 
-    if len(sys.argv) < 2 or (args.directory is None and args.files is None):
+    if args.directory is None and args.files is None:
         parser.print_help()
         sys.exit()
 
-    model = PointCloudModel("LAS_MODEL",
-                            args.files,
-                            las_folder=args.directory,
-                            epsg_num=args.epsg)
+    las_files = args.files
+    if args.directory is not None:
+        las_files += pc_utils.get_las_paths_from_directory(args.directory)
+
+    if len(las_files) == 0:
+        print("No input LAS found.")
+        parser.print_help()
+        sys.exit()
+
+    model = PointCloudModel(name=args.pc_model,
+                            dgg_cell_size=args.grid_cell_size,
+                            parent_directory=args.out)
+
+    for f in las_files:
+        model.store_las_file(f, args.epsg)
 
     t0 = datetime.now()
-    model.generate(args.out,
-                   max_file_points=args.node_points,
-                   subsample=args.subsample)
+
+    for f in las_files:
+        model.store_las_file(f, args.epsg)
+
     t1 = datetime.now()
     td = t1 - t0
 
-    print("Model generated in %f sec." % td.total_seconds())
+    print("\nModel generated in %f sec.\n" % td.total_seconds())

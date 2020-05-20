@@ -11,7 +11,8 @@ def read_json(filename):
 
 def write_json(data, filename):
     folder = os.path.dirname(filename)
-    if not os.path.isdir(folder): os.makedirs(folder)
+    if not os.path.isdir(folder):
+        os.makedirs(folder)
 
     with open(filename, 'w') as outfile:
         json.dump(data, outfile, indent=4)

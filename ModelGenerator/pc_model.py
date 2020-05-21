@@ -4,6 +4,8 @@ import os
 import sys
 import time
 from datetime import datetime
+from enum import Enum
+
 import numpy as np
 import seaborn as sns
 import encoding
@@ -13,28 +15,35 @@ import pc_utils
 
 class PointCloudModel:
 
+    class Partitioning(Enum):
+        LONGEST_AXIS_BINTREE = 0
+        REGULAR_OCTREE = 1
+
     def __init__(self,
                  name,
-                 dgg_cell_size=0.1,
+                 dgg_cell_side_length=0.1,
                  parent_directory="",
-                 max_file_points=65000,
+                 partitioning_method=Partitioning.REGULAR_OCTREE,
+                 max_node_points=65000,
                  parent_subsampling=True):
 
-        self._dgg_cell_size = dgg_cell_size
+        self._dgg_cell_side_length = dgg_cell_side_length
         self._name = name
         self._parent_directory = parent_directory
-        self._max_file_points = max_file_points
+        self._max_node_points = max_node_points
         self._parent_subsampling = parent_subsampling
         self._point_classes = []
+        self._partitioning_method = partitioning_method
 
         self.n_generation_stored_points = 0
         self.n_generation_points = 0
         self.generation_file = 0
 
     def store_las_file(self, las_path, epsg):
+        print("Storing file %s." % las_path)
         xyzc = pc_utils.read_las_as_wgs84_xyzc(las_path, epsg)
         cells = pc_utils.split_xyzc_in_wgs84_normalized_cells(xyzc,
-                                                              dgg_cell_size=self._dgg_cell_size)
+                                                              dgg_cell_size=self._dgg_cell_side_length)
 
         for c in cells:
             self._store_cell(c)
@@ -50,7 +59,7 @@ class PointCloudModel:
         xyzc = cell["xyzc"]
         index_data = []
         point_classes = np.unique(xyzc[:, 3]).tolist()
-        print("\n%d points. %d classes.\n" % (xyzc.shape[0], len(point_classes)))
+        print("\n%d points. %d classes." % (xyzc.shape[0], len(point_classes)))
         self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
 
         index_file_name = "cell.json"
@@ -69,7 +78,12 @@ class PointCloudModel:
         gc.collect()  # Forcing garbage collection
 
     def _save_model_descriptor(self):
+
         desc_model = {"model_name": self._name,
+                      "dgg_cell_side_length": self._dgg_cell_side_length,
+                      "max_node_points": self._max_node_points,
+                      "parent_subsampling": self._parent_subsampling,
+                      "partitioning_method": self._partitioning_method.name,
                       "classes": PointCloudModel._generate_color_palette(self._point_classes)}
 
         path = os.path.join(self._parent_directory, self._name, "pc_model.json")
@@ -81,11 +95,11 @@ class PointCloudModel:
         if n_points == 0:
             return
 
-        if self._parent_subsampling or n_points < self._max_file_points:
+        if self._parent_subsampling or n_points < self._max_node_points:
             min_xyz = np.min(xyzc[:, 0:3], axis=0)
             max_xyz = np.max(xyzc[:, 0:3], axis=0)
 
-            node_points, remaining_points = pc_utils.random_subsampling(xyzc, self._max_file_points)
+            node_points, remaining_points = pc_utils.random_subsampling(xyzc, self._max_node_points)
             file_name, file_path = self._get_file_path(indices, out_folder)
             encoding.matrix_to_file(node_points, file_path)
 
@@ -107,10 +121,13 @@ class PointCloudModel:
 
     def _get_children(self, xyzc, indices, out_folder):
         children = []
-        if xyzc.shape[0] >= self._max_file_points:
-            # TODO change to option
-            # pcs = pc_utils.split_longest_axis(xyzc)
-            pcs = pc_utils.split_octree(xyzc, level=len(indices))
+        if xyzc.shape[0] >= self._max_node_points:
+
+            if self._partitioning_method == PointCloudModel.Partitioning.REGULAR_OCTREE:
+                pcs = pc_utils.split_octree(xyzc, level=len(indices))
+            else:
+                pcs = pc_utils.split_longest_axis(xyzc)
+
             for i, pc in enumerate(pcs):
                 vi = self._save_tree(pc, indices + [i], out_folder=out_folder)
                 children += [vi]
@@ -141,8 +158,8 @@ if __name__ == "__main__":
     # example: pc_model PC_MODEL_NAME -f las1.las las2.las -d path/to/las/folder -o path/to/out
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("pc_model", help="Creates a hierarchical representation of a multi LAS point cloud designed "
-                                         "for out-of-core rendering.")
+    parser.add_argument("pc_model", help="Creates a hierarchical model of the given name of a multi LAS point cloud "
+                                         "designed for efficient out-of-core processing and rendering.")
     parser.add_argument("-d", "--directory", help="Folder with LAS files inside")
     parser.add_argument("-f", "--files", nargs="+", help="Paths to LAS files")
     parser.add_argument("-o", "--out", help="Path to output folder (default wd)", default="")
@@ -152,8 +169,11 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--subsample", help="Subsample point cloud in parent nodes.",
                         action='store_true')
     parser.add_argument("-g", "--grid_cell_size", help="Divide model in a Rectangular WGS84 Discrete Global Grid with "
-                                                       "the given cell size length in degrees. (default 0.1º)",
+                                                       "the given cell side length in degrees. (default 0.1º)",
                         type=float, default=0.1)
+    parser.add_argument("-b", "--binary", help="Creates a binary tree, where nodes split by their longest axis,"
+                                                "Otherwise, it creates a regular octree where the root node is the size of a cell",
+                        action='store_true')
 
     args = parser.parse_args()  # getting optionals
 
@@ -170,12 +190,17 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit()
 
-    model = PointCloudModel(name=args.pc_model,
-                            dgg_cell_size=args.grid_cell_size,
-                            parent_directory=args.out)
+    if args.binary:
+        method = PointCloudModel.Partitioning.LONGEST_AXIS_BINTREE
+    else:
+        method = PointCloudModel.Partitioning.REGULAR_OCTREE
 
-    for f in las_files:
-        model.store_las_file(f, args.epsg)
+    model = PointCloudModel(name=args.pc_model,
+                            dgg_cell_side_length=args.grid_cell_size,
+                            parent_directory=args.out,
+                            partitioning_method=method,
+                            max_node_points=args.node_points,
+                            parent_subsampling=args.subsample)
 
     t0 = datetime.now()
 
@@ -185,4 +210,4 @@ if __name__ == "__main__":
     t1 = datetime.now()
     td = t1 - t0
 
-    print("\nModel generated in %f sec.\n" % td.total_seconds())
+    print("\nModel generated in %f sec." % td.total_seconds())

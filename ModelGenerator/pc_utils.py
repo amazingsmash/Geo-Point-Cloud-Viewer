@@ -58,7 +58,7 @@ def read_las_as_wgs84_xyzc(las_path, epsg_num):
     h = in_file.z
 
     sector = get_sector(lat, lon)
-    print("\nLAS WGS84 Sector [%f, %f - %f, %f]\n" % sector)
+    print("LAS WGS84 Sector [%f, %f - %f, %f]" % sector)
 
     xyzc = np.transpose(np.array([lat, lon, h,
                                   in_file.Classification.astype(float)]))

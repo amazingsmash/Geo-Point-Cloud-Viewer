@@ -142,16 +142,17 @@ def split_octree(xyzc, level):
 
     n_level_partitions = int(2 ** level)
 
-    indices = np.floor(xyzc[:, 0] * n_level_partitions +
-                       xyzc[:, 1] * n_level_partitions * n_level_partitions +
-                       xyzc[:, 2] * n_level_partitions * n_level_partitions * n_level_partitions).astype(int)
+    indices = np.clip(np.floor(xyzc[:, 0:3] * n_level_partitions), 0, n_level_partitions-1).astype(int)
+    indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions**2
 
     children = []
-    for i in range(8):
-        ps = indices == i
+    for i, index in enumerate(np.unique(indices)):
+        ps = indices == index
         points = xyzc[ps, :]
         if points.shape[0] > 0:
             children += [xyzc[ps, :]]
+
+    assert len(children) <= 8
 
     return children
 

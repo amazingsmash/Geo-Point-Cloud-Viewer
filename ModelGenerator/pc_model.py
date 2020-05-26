@@ -14,7 +14,6 @@ import pc_utils
 
 
 class PointCloudModel:
-
     class Partitioning(Enum):
         LONGEST_AXIS_BINTREE = 0
         REGULAR_OCTREE = 1
@@ -34,6 +33,7 @@ class PointCloudModel:
         self._parent_subsampling = parent_subsampling
         self._point_classes = []
         self._partitioning_method = partitioning_method
+        self._cells = []
 
         self.n_generation_stored_points = 0
         self.n_generation_points = 0
@@ -51,13 +51,12 @@ class PointCloudModel:
         self._save_model_descriptor()
 
     def _store_cell(self, cell):
-        directory = "Cell_%d_%d" % cell["cell_index"]
-        directory = os.path.join(self._parent_directory, self._name, directory)
+        folder_name = "Cell_%d_%d" % cell["cell_index"]
+        directory = os.path.join(self._parent_directory, self._name, folder_name)
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
         xyzc = cell["xyzc"]
-        index_data = []
         point_classes = np.unique(xyzc[:, 3]).tolist()
         print("\n%d points. %d classes." % (xyzc.shape[0], len(point_classes)))
         self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
@@ -70,9 +69,13 @@ class PointCloudModel:
 
         vi = self._save_tree(xyzc, [0], out_folder=directory)
 
-        index_data += [{"file": index_file_name,
-                        "min": np.min(xyzc[:, 0:3], axis=0).tolist(),
-                        "max": np.max(xyzc[:, 0:3], axis=0).tolist()}]
+        cell_data = {"directory": folder_name,
+                     "cell_index": cell["cell_index"],
+                     "cell_min_lon_lat": cell["cell_min_lon_lat"],
+                     "cell_max_lon_lat": cell["cell_max_lon_lat"],
+                     "min_lon_lat_height": cell["min_lon_lat_height"],
+                     "max_lon_lat_height": cell["max_lon_lat_height"]}
+        self._cells += [cell_data]
         json_utils.write_json(vi, index_path)
 
         gc.collect()  # Forcing garbage collection
@@ -84,6 +87,7 @@ class PointCloudModel:
                       "max_node_points": self._max_node_points,
                       "parent_subsampling": self._parent_subsampling,
                       "partitioning_method": self._partitioning_method.name,
+                      "cells": self._cells,
                       "classes": PointCloudModel._generate_color_palette(self._point_classes)}
 
         path = os.path.join(self._parent_directory, self._name, "pc_model.json")
@@ -135,7 +139,7 @@ class PointCloudModel:
 
     @staticmethod
     def _get_file_path(indices, out_folder):
-        file_name = "Node-" + "_".join( [str(n) for n in indices] ) + ".bytes"
+        file_name = "Node-" + "_".join([str(n) for n in indices]) + ".bytes"
         file_path = os.path.join(out_folder, file_name)
         return file_name, file_path
 
@@ -172,7 +176,7 @@ if __name__ == "__main__":
                                                        "the given cell side length in degrees. (default 0.1º)",
                         type=float, default=0.1)
     parser.add_argument("-b", "--binary", help="Creates a binary tree, where nodes split by their longest axis,"
-                                                "Otherwise, it creates a regular octree where the root node is the size of a cell",
+                                               "Otherwise, it creates a regular octree where the root node is the size of a cell",
                         action='store_true')
 
     args = parser.parse_args()  # getting optionals

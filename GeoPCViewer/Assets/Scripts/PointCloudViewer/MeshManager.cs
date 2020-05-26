@@ -24,7 +24,9 @@ public class MeshManager
         jobPool = new ObjectPool<MeshLoaderJob>(nJobs);
     }
 
-    public Mesh CreateMesh(FileInfo fileInfo, IPointCloudManager manager, float priority)
+    public Mesh CreateMesh(FileInfo fileInfo,
+        MeshLoaderJob.GetColorForClass getColorForClass,
+        float priority)
     {
         if (!jobs.ContainsKey(fileInfo.FullName))
         {
@@ -32,7 +34,7 @@ public class MeshManager
             if (job != null)
             {
                 jobs[fileInfo.FullName] = job;
-                job.AsynMeshLoading(fileInfo, manager, thread, priority);
+                job.AsyncFileRead(fileInfo, getColorForClass, null, thread, priority);
             }
         }
         else
@@ -44,7 +46,7 @@ public class MeshManager
                 if (mesh != null)
                 {
                     //Debug.Log("Remaining Meshes: " + meshPool.remaining);
-                    job.LoadMeshData(mesh);
+                    job.LoadData(mesh);
                     if (mesh != null)
                     {
                         jobs.Remove(fileInfo.FullName);
@@ -150,19 +152,28 @@ public class AsyncJobThread
     }
 }
 
-public class MeshLoaderJob: AsyncJobThread.Job
+public class MeshLoaderJob : AsyncJobThread.Job
 {
     private Vector3[] points = null;
     private int[] indices = null;
     private Color[] colors = null;
 
     private FileInfo fileInfo;
-    private IPointCloudManager manager;
 
-    public void AsynMeshLoading(FileInfo fileInfo, IPointCloudManager manager, AsyncJobThread thread, float priority)
+    public delegate Color GetColorForClass(int classification);
+    public delegate void OnMeshCreated(Mesh mesh);
+    GetColorForClass getColorForClass;
+    OnMeshCreated onMeshCreated;
+
+    public void AsyncFileRead(FileInfo fileInfo,
+                                GetColorForClass getColorForClass,
+                                OnMeshCreated onMeshCreated,
+                                AsyncJobThread thread,
+                                float priority)
     {
         this.fileInfo = fileInfo;
-        this.manager = manager;
+        this.getColorForClass = getColorForClass;
+        this.onMeshCreated = onMeshCreated;
         Run(thread, priority);
     }
 
@@ -171,9 +182,18 @@ public class MeshLoaderJob: AsyncJobThread.Job
         byte[] buffer = File.ReadAllBytes(fileInfo.FullName);
         Matrix2D m = Matrix2D.readFromBytes(buffer);
         CreateMeshFromLASMatrix(m.values);
+
+        if (onMeshCreated is OnMeshCreated omc)
+        {
+            Mesh mesh = new Mesh();
+            mesh.vertices = points;
+            mesh.colors = colors;
+            mesh.SetIndices(indices, MeshTopology.Points, 0);
+            omc.Invoke(mesh);
+        }
     }
 
-    public Mesh LoadMeshData(Mesh pointCloud)
+    public Mesh LoadData(Mesh pointCloud)
     {
         if (pointCloud == null)
         {
@@ -216,7 +236,7 @@ public class MeshLoaderJob: AsyncJobThread.Job
             points[i] = new Vector3(matrix[i, 0], matrix[i, 2], matrix[i, 1]); //XZY
             indices[i] = i;
             int classification = (int)matrix[i, 3];
-            colors[i] = manager.GetColorForClass(classification);
+            colors[i] = getColorForClass(classification);
         }
 
         IsDone = true;

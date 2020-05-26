@@ -59,7 +59,7 @@ class PointCloudLeafNode : PointCloudNode
         float dist = boundingSphere.DistanceTo(Camera.main.transform.position);
         float priority = Camera.main.farClipPlane - dist;
 
-        Mesh mesh = pointCloudManager.GetMeshManager().CreateMesh(fileInfo, pointCloudManager, priority);
+        Mesh mesh = pointCloudManager.GetMeshManager().CreateMesh(fileInfo, pointCloudManager.GetColorForClass, priority);
         if (mesh != null)
         {
             meshFilter.mesh = mesh;

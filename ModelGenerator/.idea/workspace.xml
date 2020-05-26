@@ -5,160 +5,66 @@
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/UserPrefs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/UserPrefs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/project-cache/Assembly-CSharp-Debug.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/project-cache/Assembly-CSharp-Debug.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assembly-CSharp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scenes/LAS_No_Subsampling.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scenes/LAS_No_Subsampling.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/MeshManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/MeshManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Utils/Matrix2D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Utils/Matrix2D.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ArtifactDB" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ArtifactDB" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentMaximizeLayout.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentMaximizeLayout.dwlt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/CHANGELOG.md.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/CONTRIBUTING.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/CONTRIBUTING.md.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/AssemblyNameProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/AssemblyNameProvider.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/FileIO.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/FileIO.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/GUIDGenerator.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/GUIDGenerator.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/ProjectGeneration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/ProjectGeneration/ProjectGeneration.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/Unity.com.unity.vscode.Editor.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/Unity.com.unity.vscode.Editor.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/VSCodeDiscovery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/VSCodeDiscovery.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/VSCodeScriptEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/Editor/VSCodeScriptEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/LICENSE.md.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.ide.vscode@1.1.4/package.json.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/CHANGELOG.md.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/ArmModels.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/ArmModels/ArmModelEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/ArmModels/ArmModelEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/ArmModels/SwingArmModelEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/ArmModels/SwingArmModelEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/ArmModels/TransitionArmModelEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/ArmModels/TransitionArmModelEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/LegacyInputHelpersEditor.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/LegacyInputHelpersEditor.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/SeedXRInputBindings.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/SeedXRInputBindings/SeedXRInputBindings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/SeedXRInputBindings/SeedXRInputBindings.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/TrackedPoseDriver.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/TrackedPoseDriver/TPDConfigurationProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/TrackedPoseDriver/TPDConfigurationProvider.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/TrackedPoseDriver/TrackedPoseDriverEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/TrackedPoseDriver/TrackedPoseDriverEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/TrackedPoseDriver/UnityEditor.SpatialTracking.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Editor/TrackedPoseDriver/UnityEditor.SpatialTracking.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/LICENSE.md.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/README.md.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/ArmModels.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/ArmModels/ArmModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/ArmModels/ArmModel.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/ArmModels/SwingArmModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/ArmModels/SwingArmModel.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/ArmModels/TransitionArmModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/ArmModels/TransitionArmModel.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/LegacyInputHelpers.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/LegacyInputHelpers.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/AssemblyInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/AssemblyInfo.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/BasePoseProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/BasePoseProvider.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/TrackedPoseDriver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/TrackedPoseDriver.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/UnityEngine.SpatialTracking.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Runtime/TrackedPoseDriver/UnityEngine.SpatialTracking.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Editor/LegacyInputHelpersEditorTests.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Editor/LegacyInputHelpersEditorTests.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Editor/SeedXRInputBindings.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Editor/SeedXRInputBindings/SeedXRInputBindingsTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Editor/SeedXRInputBindings/SeedXRInputBindingsTests.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Runtime.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Runtime/TrackedPoseDriver.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Runtime/TrackedPoseDriver/TrackedPoseDriverTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Runtime/TrackedPoseDriver/TrackedPoseDriverTests.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Runtime/TrackedPoseDriver/UnityEngine.SpatialTracking.Tests.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Tests/Runtime/TrackedPoseDriver/UnityEngine.SpatialTracking.Tests.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Third Party Notices.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/Third Party Notices.md.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/PackageCache/com.unity.xr.legacyinputhelpers@1.3.11/package.json.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/03/0340c989e338c35d02c7389071c3bf4e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/16/16844c446c9c1131ac99b2e569b85c11" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/1d/1d319886887af02fba1c6a5e75fa6e46" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/23/23c2a5a7b8136c1c21d596e1e333d5fb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/26/26460f409c723afdc0bc2303d663eb01" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/2b/2b1ad4fe555572a31caaeaa22ae90038" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/33/3313d9d4c8187e1c71ac1a9fd2bdd256" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/33/336786b03e976af04c6dbefb91c89372" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/37/3720e44c48994b89938ea4163e211175" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/4c/4ca419de5842e55eca9bbc0b296f4f3b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/51/51fecbb60b2fa2db4e391a3765250488" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/52/52468d6ea11c13b76f5cd767a63b9e2b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/53/53abc62e46b5db53676500c91fcee185" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/58/589030c5898da9b9a61b3163336351c9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/64/64065d8d03658befc67c6f4d80820e42" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/65/6567ea0dfd20a05c576591b35039f29a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/75/7599e421ad5751183775efd554dc8cdc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/7e/7ee44786e92498a09ceed690aa7f4847" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/89/897900e08c7147716a2e1e1039ac3de1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/aa/aabb8fabfdfcdac0f02e43b2bab25dd8" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/ab/ab9593bba0fcad17468dd5a5b508e5ae" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/b1/b15bf65ec226da540c0861c6373c20de" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/b3/b3019f8dfdfd29a531a6bc106e40525b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/b6/b6e4999d0471d8e91a2ce528f85456c0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/bb/bb8221696d9fdbb395445d34ee00682e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/bb/bba838a93c4f25c4210e595cca4cdc42" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/c8/c8aaa872fcddad32a32783a696036bf9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/d0/d09f603e99b5232a93e7aaa4a998dda2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/d3/d3b367de978535eb1802be9277e1ecb8" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/fe/fef644e4b1ea04dc77c4c0804909447d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentLayout-default.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentLayout-default.dwlt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/SceneVisibilityState.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/SceneVisibilityState.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/BuiltinAssemblies.stamp" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/BuiltinAssemblies.stamp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.CollabProxy.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Rider.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Rider.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Rider.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Rider.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.TextMeshPro.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.Timeline.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.VSCode.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Unity.VSCode.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.SpatialTracking.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.SpatialTracking.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.TestRunner.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.TestRunner.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.TestRunner.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.TestRunner.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.UI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.UI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.UI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.UI.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Advertisements.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Advertisements.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Advertisements.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Advertisements.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Monetization.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Monetization.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Monetization.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.Monetization.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.SpatialTracking.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.SpatialTracking.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.TestRunner.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.TestRunner.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.TestRunner.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.TestRunner.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.UI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.UI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.UI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.UI.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptMapper" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptMapper" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ShaderCache/EditorEncounteredVariants" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ShaderCache/EditorEncounteredVariants" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/SourceAssetDB" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/SourceAssetDB" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/Hierarchy/4e17a6-mainStage.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/Hierarchy/4e17a6-mainStage.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Style.catalog" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/Style.catalog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler0.log" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Logs/Packages-Update.log" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Logs/Packages-Update.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/SceneView/4d37c6-mainStage.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/SceneView/4d37c6-mainStage.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/expandedItems" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/expandedItems" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler1.log" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler1.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler2.log" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler2.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encoding.py" beforeDir="false" afterPath="$PROJECT_DIR$/encoding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pc_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pc_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="ModelGenerator" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -254,14 +160,37 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="pc_utils" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="ModelGenerator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pc_utils.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.Python3" />
       <item itemvalue="Python.PointCloudModelGenerator" />
       <item itemvalue="Python.PointCloudModelGenerator_Subsampling" />
+      <item itemvalue="Python.pc_utils" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.PointCloudModelGenerator_Subsampling" />
+        <item itemvalue="Python.pc_utils" />
         <item itemvalue="Python.PointCloudModelGenerator" />
       </list>
     </recent_temporary>
@@ -300,67 +229,71 @@
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
     <state x="671" y="400" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589979425708" />
-    <state x="1021" y="355" width="1463" height="589" key="#xdebugger.evaluate" timestamp="1590064230985">
+    <state x="1021" y="350" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590410741044">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state x="1021" y="355" width="1463" height="589" key="#xdebugger.evaluate/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064230985" />
+    <state x="1021" y="350" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590410741044" />
+    <state x="1021" y="355" width="1463" height="589" key="#xdebugger.evaluate" timestamp="1590494135354">
+      <screen x="0" y="0" width="2560" height="1080" />
+    </state>
+    <state x="1021" y="355" width="1463" height="589" key="#xdebugger.evaluate/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494135354" />
     <state x="1280" y="257" width="1137" height="630" key="#xdebugger.evaluate/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996228011" />
-    <state width="2539" height="187" key="GridCell.Tab.0.bottom" timestamp="1590064398291">
+    <state width="2539" height="187" key="GridCell.Tab.0.bottom" timestamp="1590495596308">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064398291" />
+    <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596308" />
     <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379637" />
     <state width="2539" height="206" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232976" />
     <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202985" />
-    <state width="2539" height="187" key="GridCell.Tab.0.center" timestamp="1590064398275">
+    <state width="2539" height="187" key="GridCell.Tab.0.center" timestamp="1590495596305">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="187" key="GridCell.Tab.0.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064398275" />
+    <state width="2539" height="187" key="GridCell.Tab.0.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596305" />
     <state width="2539" height="187" key="GridCell.Tab.0.center/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379634" />
     <state width="2539" height="206" key="GridCell.Tab.0.center/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232973" />
     <state width="2539" height="187" key="GridCell.Tab.0.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202984" />
-    <state width="2539" height="187" key="GridCell.Tab.0.left" timestamp="1590064398273">
+    <state width="2539" height="187" key="GridCell.Tab.0.left" timestamp="1590495596303">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="187" key="GridCell.Tab.0.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064398273" />
+    <state width="2539" height="187" key="GridCell.Tab.0.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596303" />
     <state width="2539" height="187" key="GridCell.Tab.0.left/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379633" />
     <state width="2539" height="206" key="GridCell.Tab.0.left/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232972" />
     <state width="2539" height="187" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202983" />
-    <state width="2539" height="187" key="GridCell.Tab.0.right" timestamp="1590064398277">
+    <state width="2539" height="187" key="GridCell.Tab.0.right" timestamp="1590495596307">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="187" key="GridCell.Tab.0.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064398277" />
+    <state width="2539" height="187" key="GridCell.Tab.0.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596307" />
     <state width="2539" height="187" key="GridCell.Tab.0.right/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379635" />
     <state width="2539" height="206" key="GridCell.Tab.0.right/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232975" />
     <state width="2539" height="187" key="GridCell.Tab.0.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202985" />
-    <state width="2539" height="317" key="GridCell.Tab.1.bottom" timestamp="1590064317579">
+    <state width="2539" height="317" key="GridCell.Tab.1.bottom" timestamp="1590494392439">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="317" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064317579" />
+    <state width="2539" height="317" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392439" />
     <state width="2539" height="206" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520099" />
     <state width="2539" height="206" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269167" />
     <state width="2539" height="206" key="GridCell.Tab.1.bottom/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946739" />
     <state width="2539" height="487" key="GridCell.Tab.1.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202959" />
-    <state width="2539" height="317" key="GridCell.Tab.1.center" timestamp="1590064317576">
+    <state width="2539" height="317" key="GridCell.Tab.1.center" timestamp="1590494392437">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="317" key="GridCell.Tab.1.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064317576" />
+    <state width="2539" height="317" key="GridCell.Tab.1.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392437" />
     <state width="2539" height="206" key="GridCell.Tab.1.center/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520096" />
     <state width="2539" height="206" key="GridCell.Tab.1.center/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269165" />
     <state width="2539" height="206" key="GridCell.Tab.1.center/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946737" />
     <state width="2539" height="487" key="GridCell.Tab.1.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202957" />
-    <state width="2539" height="317" key="GridCell.Tab.1.left" timestamp="1590064317574">
+    <state width="2539" height="317" key="GridCell.Tab.1.left" timestamp="1590494392436">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="317" key="GridCell.Tab.1.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064317574" />
+    <state width="2539" height="317" key="GridCell.Tab.1.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392436" />
     <state width="2539" height="206" key="GridCell.Tab.1.left/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520095" />
     <state width="2539" height="206" key="GridCell.Tab.1.left/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269164" />
     <state width="2539" height="206" key="GridCell.Tab.1.left/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946735" />
     <state width="2539" height="487" key="GridCell.Tab.1.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202956" />
-    <state width="2539" height="317" key="GridCell.Tab.1.right" timestamp="1590064317577">
+    <state width="2539" height="317" key="GridCell.Tab.1.right" timestamp="1590494392438">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2539" height="317" key="GridCell.Tab.1.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590064317577" />
+    <state width="2539" height="317" key="GridCell.Tab.1.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392438" />
     <state width="2539" height="206" key="GridCell.Tab.1.right/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520098" />
     <state width="2539" height="206" key="GridCell.Tab.1.right/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269166" />
     <state width="2539" height="206" key="GridCell.Tab.1.right/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946738" />
@@ -369,10 +302,10 @@
       <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state x="211" y="190" key="SettingsEditor/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589287139745" />
-    <state x="633" y="384" key="com.intellij.ide.util.TipDialog" timestamp="1589961305016">
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog" timestamp="1590485300228">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1589961305016" />
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590485300227" />
     <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589367191203" />
     <state x="853" y="283" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1590064302579">
       <screen x="0" y="0" width="2560" height="1080" />

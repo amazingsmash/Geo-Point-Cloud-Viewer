@@ -10,7 +10,7 @@ def floatArray2Binary(array):
 
 def matrix_to_file(matrix, file_path):
 
-    values = np.transpose(matrix).flatten().tolist()
+    values = matrix.flatten().tolist()
     values = list(matrix.shape) + values
 
     buf = floatArray2Binary(values)

@@ -135,7 +135,7 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         {
             float priority = 1.0f / minDistanceToCam;
 
-            Mesh mesh = pcManager.GetMeshManager().CreateMesh(fileInfo, pcManager, priority);
+            Mesh mesh = pcManager.GetMeshManager().CreateMesh(fileInfo, pcManager.GetColorForClass, priority);
             if (mesh != null)
             {
                 meshFilter.mesh = mesh;

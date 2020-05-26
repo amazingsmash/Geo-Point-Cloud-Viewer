@@ -29,9 +29,9 @@ public class Matrix2D {
         float[,] values = new float[(int)buffer[0], (int)buffer[1]];
 
         int offset = 2;
-
-        for (int j = 0; j < nCols; j++){
-            for (int i = 0; i < nRows; i++){
+        for (int i = 0; i < nRows; i++)
+        {
+            for (int j = 0; j < nCols; j++){
                 values[i, j] = buffer[offset];
                 offset+=1;
             }

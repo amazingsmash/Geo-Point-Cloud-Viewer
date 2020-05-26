@@ -63,6 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GeoPCViewer\GeoPCNode.cs" />
+    <Compile Include="Assets\GeoPCViewer\GeoPCViewer.cs" />
+    <Compile Include="Assets\GeoPCViewer\MathD\Mathd.cs" />
+    <Compile Include="Assets\GeoPCViewer\MathD\Vector2d.cs" />
+    <Compile Include="Assets\GeoPCViewer\MathD\Vector3d.cs" />
     <Compile Include="Assets\Scripts\Camera Control\CameraControl.cs" />
     <Compile Include="Assets\Scripts\Camera Control\FlyCam.cs" />
     <Compile Include="Assets\Scripts\Communications\CanvasPointCloudListener.cs" />

@@ -82,17 +82,22 @@ def split_xyzc_in_wgs84_normalized_cells(xyzc, dgg_cell_size):
     for i in unique_indices:
         points = np.where(indices == i)[0]
         lon_lat_index = [lon_indices[points[0]], lat_indices[points[0]]]
-        offset = np.array(lon_lat_index) * dgg_cell_size
+        cell_min_lon_lat = np.array(lon_lat_index) * dgg_cell_size
+        cell_max_lon_lat = cell_min_lon_lat + np.array([dgg_cell_size, dgg_cell_size])
         cell_xyzc = xyzc[points, :]
-        cell_xyzc[:, 0:2] = (cell_xyzc[:, 0:2] - offset) / dgg_cell_size
-        min_h = np.min(cell_xyzc[:, 2])
-        max_h = np.max(cell_xyzc[:, 2])
+        min_lon_lat_height = np.min(cell_xyzc[:, 0:3], axis=0)
+        max_lon_lat_height = np.max(cell_xyzc[:, 0:3], axis=0)
+
+        cell_xyzc[:, 0:2] = (cell_xyzc[:, 0:2] - cell_min_lon_lat) / dgg_cell_size
+        min_h = min_lon_lat_height[2]
+        max_h = max_lon_lat_height[2]
         cell_xyzc[:, 2] = (cell_xyzc[:, 2] - min_h) / (max_h - min_h)
 
         cell = {"cell_index": tuple(lon_lat_index),
-                "xy_offset": list(offset),
-                "min_height": min_h,
-                "max_height": max_h,
+                "cell_min_lon_lat": cell_min_lon_lat.tolist(),
+                "cell_max_lon_lat": cell_max_lon_lat.tolist(),
+                "min_lon_lat_height": min_lon_lat_height.tolist(),
+                "max_lon_lat_height": max_lon_lat_height.tolist(),
                 "xyzc": cell_xyzc}
         cells += [cell]
     return cells

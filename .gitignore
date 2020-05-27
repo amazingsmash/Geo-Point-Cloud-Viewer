@@ -1,7 +1,11 @@
 Models
-LASViewer/Library/
-LASViewer/obj/Debug/
-LASViewer/Temp/
+GeoPCViewer/[Ll]ibrary/
+GeoPCViewer/[Tt]emp/
+GeoPCViewer/[Oo]bj/
+GeoPCViewer/[Bb]uild/
+GeoPCViewer/[Bb]uilds/
+GeoPCViewer/[Ll]ogs/
+GeoPCViewer/[Uu]ser[Ss]ettings/
 *.mat
 *.las
 *.m~

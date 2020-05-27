@@ -1,10 +1,15 @@
 ﻿<Properties StartupConfiguration="{DB5BD49D-9187-36BE-03EA-2A3DFFC31A45}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GeoPCViewer/GeoPCViewer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GeoPCViewer/MathD/Vector3d.cs">
     <Files>
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="1" Column="1" />
-      <File FileName="Assets/GeoPCViewer/GeoPCNode.cs" Line="28" Column="17" />
-      <File FileName="Assets/GeoPCViewer/GeoPCViewer.cs" Line="48" Column="6" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="342" Column="2" />
+      <File FileName="Assets/GeoPCViewer/GeoPCNode.cs" Line="69" Column="11" />
+      <File FileName="Assets/GeoPCViewer/GeoPCViewer.cs" Line="45" Column="47" />
       <File FileName="Assets/Scripts/PointCloudViewer/MeshManager.cs" Line="234" Column="35" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" Line="54" Column="21" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" Line="188" Column="18" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" Line="315" Column="1" />
+      <File FileName="Assets/Scripts/PointCloudViewer/PC_Interfaces.cs" Line="7" Column="5" />
+      <File FileName="Assets/GeoPCViewer/MathD/Vector3d.cs" Line="239" Column="121" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,11 +17,16 @@
           <Node name="GeoPCViewer" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="GeoPCViewer" expanded="True">
-                <Node name="MathD" expanded="True" />
-                <Node name="GeoPCViewer.cs" selected="True" />
+                <Node name="MathD" expanded="True">
+                  <Node name="Vector3d.cs" selected="True" />
+                </Node>
+              </Node>
+              <Node name="Materials" expanded="True">
+                <Node name="Rounded Points" expanded="True" />
               </Node>
               <Node name="Scripts" expanded="True">
                 <Node name="Camera Control" expanded="True" />
+                <Node name="OLD" expanded="True" />
                 <Node name="PointCloudViewer" expanded="True">
                   <Node name="Subsampled_Version" expanded="True" />
                   <Node name="Utils" expanded="True" />
@@ -35,10 +45,10 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="376bb84c-340f-4ae0-911b-1eeb3833aebe" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="6208c0b3-2471-4534-9175-3d00d478a6ba" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" relfile="Assets/GeoPCViewer/GeoPCNode.cs" line="50" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" relfile="Assets/GeoPCViewer/GeoPCNode.cs" line="122" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

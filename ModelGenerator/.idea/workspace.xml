@@ -2,61 +2,124 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="abe32653-d01b-4287-a51e-b2e5b1ece8a0" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/UserPrefs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/UserPrefs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/project-cache/Assembly-CSharp-Debug.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/project-cache/Assembly-CSharp-Debug.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assembly-CSharp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/GeoPCViewer/GeoPCViewer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/GeoPCViewer/GeoPCViewer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scenes/LAS_No_Subsampling.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scenes/LAS_No_Subsampling.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/MeshManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/MeshManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Utils/Matrix2D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Assets/Scripts/PointCloudViewer/Utils/Matrix2D.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ArtifactDB" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ArtifactDB" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/03/0340c989e338c35d02c7389071c3bf4e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/16/16844c446c9c1131ac99b2e569b85c11" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/1d/1d319886887af02fba1c6a5e75fa6e46" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/23/23c2a5a7b8136c1c21d596e1e333d5fb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/26/26460f409c723afdc0bc2303d663eb01" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/2b/2b1ad4fe555572a31caaeaa22ae90038" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/33/3313d9d4c8187e1c71ac1a9fd2bdd256" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/33/336786b03e976af04c6dbefb91c89372" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/37/3720e44c48994b89938ea4163e211175" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/4c/4ca419de5842e55eca9bbc0b296f4f3b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/51/51fecbb60b2fa2db4e391a3765250488" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/52/52468d6ea11c13b76f5cd767a63b9e2b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/53/53abc62e46b5db53676500c91fcee185" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/58/589030c5898da9b9a61b3163336351c9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/64/64065d8d03658befc67c6f4d80820e42" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/65/6567ea0dfd20a05c576591b35039f29a" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/75/7599e421ad5751183775efd554dc8cdc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/7e/7ee44786e92498a09ceed690aa7f4847" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/89/897900e08c7147716a2e1e1039ac3de1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/aa/aabb8fabfdfcdac0f02e43b2bab25dd8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/ab/ab9593bba0fcad17468dd5a5b508e5ae" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/b1/b15bf65ec226da540c0861c6373c20de" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/b3/b3019f8dfdfd29a531a6bc106e40525b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/b6/b6e4999d0471d8e91a2ce528f85456c0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/bb/bb8221696d9fdbb395445d34ee00682e" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/bb/bba838a93c4f25c4210e595cca4cdc42" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/c8/c8aaa872fcddad32a32783a696036bf9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/d0/d09f603e99b5232a93e7aaa4a998dda2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/d3/d3b367de978535eb1802be9277e1ecb8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/fe/fef644e4b1ea04dc77c4c0804909447d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/01/01354b31895638d1e4c7b28ded378000" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/07/07ea6393a57ebd9fbb52c5b40ab91d03" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/08/088ce8c8154510134fe2ff9b49072daf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/0a/0a8bfa05e460094adb6eff93d953f3bc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/0d/0d8d39382ca642d3f2b36586f8f4f9ef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/13/13a928afcf8ec4689bded89345c6a1f2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/1a/1ad610633acc4f672652833d699e8a89" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/1d/1de79517231e6a3f364625d4ee2bc053" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/1e/1e2e52454ad4820fc328caf3a41a18a2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/21/216ae6abcdb7a0e924a9c1268178eefc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/22/228f27cc19f3b69c3c7fa648be63b061" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/24/24e46d4d558f2cbba3e0f35476b5711c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/27/27beae71b5587ed7baf95f3d16013da5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/2b/2ba5268db68d5e7d194e3b0272347010" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/2e/2e4b9f1d3068ecc35e7c1bf5a832ac3d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/2f/2f9d6468399536e74d3b87e8f119f26d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/31/31ad6d27f47005a88b68b043d3a3d95d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/3a/3ab169a0a5cc77d9e30dd99990e511ca" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/3d/3d5407873fadd5e9f8ebff87b58ef4db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/3f/3f4fff278d5ce10862d1ae581b9f6ce5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/44/44b7ac24d629ae4ad186efc2dc503d3b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/51/51a9efe9b6c089c0af1ffe5f6dd605fe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/5d/5dbf43bc306161d7810bbd628de3856e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/64/646cded5d3039afdfb0011f80cd9205b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/6b/6b77da0e4e64e5ece3bc13e16bcd28d4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/6b/6b8b6edbe7a806ebf1b9a31cb359958a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/6e/6edb1392e4822f3082e25863f6a71a2f" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/74/74233e1c14b8eaf13ec46a576814f369" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/74/747d5a4384382c08ce7010d3b91fda67" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/79/792a3804d360283983f310f990e0d6a8" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/79/79aca18af2bb4289fdb950712fa727be" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/80/8072de406f58e5356c5162f5004a48cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/89/89dbf4775cfb0324afaf6911d996f38c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/98/98961d5b7aafbcfd88794d444eacf756" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/9a/9af2b217b3cdd4145de5baa5b28f9cb1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/9c/9c5f071625f606d1b2c627d278f7577f" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/9e/9e8d5643275fae75f7ab2881969f6b29" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/a3/a3f1474be250ca7e26f03d8a54872e3f" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/a6/a644e35f71d9b256cdbb6684fa57c6e7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/a7/a7820ee75772e29e212e496c6b4f64c7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/a9/a9fd7b864553732a2222ce3771b02fe2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/af/af533d680fa6074d147f05a1a2323b35" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/b3/b357d95a4a489b2e90a540a569492fec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/bd/bd0450c995ecea44b169df838aab3177" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/d9/d90aecdb9e1057d2779b5023b6f4b028" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/e0/e0e45d96155f550b0ffe7a4f35145a51" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/e6/e6d6b621ca90cac14d32952a8cc8dd3d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/e8/e8a9ddcce4469e509086250d011e5873" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/f1/f1605af7d7c3f67c08a3d59298d1a3f2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/f7/f79352b0fca8309e16d89f391f983dce" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentLayout-default.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentLayout-default.dwlt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/SceneVisibilityState.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/SceneVisibilityState.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/EditorInstance.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/EditorInstance.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/Assembly-CSharp.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ScriptAssemblies/BuiltinAssemblies.stamp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ShaderCache/EditorEncounteredVariants" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ShaderCache/EditorEncounteredVariants" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/SourceAssetDB" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/SourceAssetDB" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/Hierarchy/4e17a6-mainStage.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/Hierarchy/4e17a6-mainStage.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/SceneView/4d37c6-mainStage.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/SceneView/4d37c6-mainStage.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/expandedItems" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/expandedItems" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler1.log" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler1.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler2.log" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/shadercompiler-UnityShaderCompiler2.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-02cc5fe92e1734ad9816c083ce7f08c5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-0411c457b76724fb9a62dc68f41d4b94" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-0730a72d85cd64dc093ac77b37c34834" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-0ab8685a834cf412db621020647273ac" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-0b7cb65a91aca4ff7943331d05590fc2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-1eba35c8613c84760ae06ab08622c5f2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-24a6e2ad919714f999b414de64710332" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-33af9d0485bee422eb47012ee097cd29" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-33be8c335cb9c48ba8293f54547ee97c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-375d7349d49dc46fcacc3e63cb335144" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-39fa2920672594bdab98d2d3cad09bd5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-3f3b8534c414643648adbb92b2312ee0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-44d4c719541694219af81618994edca1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-4bef4b4e3e42c43f2971205c53eaf483" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-5486e2f8f3f944eaeae3d22fa7af7a5b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-5ab59a23bf48e4368a1ac8adeba6e4bb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-68d8cd98b72994ea08218f0d82c4002f" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-6b124dd5b08874ba1b5859a11da303e9" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-6f7ef2aea993c4ab5878e84c5b02e9b3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-7b986589a563b495eabc99ea3817cadf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-80600b14f3adc4e3898c98408a86d706" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-88e384e5927e2472d983a8ea0a5c51b3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-a7c678255bffe41e483c6e4344b6fa69" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-a93898fc8f4ea4c25a3b81491559748d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-adf033a34319d4983b7b203d17c21f77" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-b2f68fbf4069d49fda24f732c2327119" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-b379626ad2e7644b6a96749993f86c26" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-b6951ab4cb6094642aff6c84c973effe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-b6da98d7e83c44f7c8558d559e809258" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-b81c8efd780be4f42adcc4b9fb395ac3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-b9f1aba74f79b46908d7d708931c19ce" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-ba459256cd1f24ebe8f6e17a3f0e8caf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-bb8fe95c64f2447f1bc53a6e378af229" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-c20167b70c63a4d67a9461ad8870ce36" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-c608de2811651482ab530ae3e318ea18" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-c9e185cbfc651498997ba74cfd82b67d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-ca4323c9e023249ebbe75b266c2f7571" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-cb63c103be4124ea4b87cf46d3978298" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-cbb9e7eeb0143435a93bcc23fea940be" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-cbffbeb47217b4226b9be6d9341b7522" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-cdb13fe07eab54eb6a8d9a17f633f07d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-e025fe7b9700c4811ac789d80f932e46" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-f1798a68579ef484ebf27af718d95a7c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-f4777b66e63ed4e01a8c4a3479aac577" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-f4bcdb3c4782c4d32b5014813e66024a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-f5cb0e96a656d42458939ea718508c40" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/UnityTempFile-f7d1c185d28284df89c1776701cd5c04" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Temp/__Backupscenes/0.backup" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Temp/__Backupscenes/0.backup" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encoding.py" beforeDir="false" afterPath="$PROJECT_DIR$/encoding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pc_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pc_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,10 +245,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Python3" />
       <item itemvalue="Python.PointCloudModelGenerator" />
       <item itemvalue="Python.PointCloudModelGenerator_Subsampling" />
       <item itemvalue="Python.pc_utils" />
+      <item itemvalue="Python.Python3" />
     </list>
     <recent_temporary>
       <list>
@@ -238,74 +301,74 @@
     </state>
     <state x="1021" y="355" width="1463" height="589" key="#xdebugger.evaluate/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494135354" />
     <state x="1280" y="257" width="1137" height="630" key="#xdebugger.evaluate/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996228011" />
-    <state width="2539" height="187" key="GridCell.Tab.0.bottom" timestamp="1590495596308">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.0.bottom" timestamp="1590526827384">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596308" />
     <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379637" />
     <state width="2539" height="206" key="GridCell.Tab.0.bottom/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232976" />
-    <state width="2539" height="187" key="GridCell.Tab.0.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202985" />
-    <state width="2539" height="187" key="GridCell.Tab.0.center" timestamp="1590495596305">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.0.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827384" />
+    <state width="2539" height="317" key="GridCell.Tab.0.center" timestamp="1590526827383">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="187" key="GridCell.Tab.0.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596305" />
     <state width="2539" height="187" key="GridCell.Tab.0.center/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379634" />
     <state width="2539" height="206" key="GridCell.Tab.0.center/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232973" />
-    <state width="2539" height="187" key="GridCell.Tab.0.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202984" />
-    <state width="2539" height="187" key="GridCell.Tab.0.left" timestamp="1590495596303">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.0.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827383" />
+    <state width="2539" height="317" key="GridCell.Tab.0.left" timestamp="1590526827382">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="187" key="GridCell.Tab.0.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596303" />
     <state width="2539" height="187" key="GridCell.Tab.0.left/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379633" />
     <state width="2539" height="206" key="GridCell.Tab.0.left/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232972" />
-    <state width="2539" height="187" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202983" />
-    <state width="2539" height="187" key="GridCell.Tab.0.right" timestamp="1590495596307">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827382" />
+    <state width="2539" height="317" key="GridCell.Tab.0.right" timestamp="1590526827383">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="187" key="GridCell.Tab.0.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590495596307" />
     <state width="2539" height="187" key="GridCell.Tab.0.right/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379635" />
     <state width="2539" height="206" key="GridCell.Tab.0.right/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232975" />
-    <state width="2539" height="187" key="GridCell.Tab.0.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202985" />
-    <state width="2539" height="317" key="GridCell.Tab.1.bottom" timestamp="1590494392439">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.0.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827383" />
+    <state width="2539" height="317" key="GridCell.Tab.1.bottom" timestamp="1590526827387">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="317" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392439" />
     <state width="2539" height="206" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520099" />
     <state width="2539" height="206" key="GridCell.Tab.1.bottom/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269167" />
     <state width="2539" height="206" key="GridCell.Tab.1.bottom/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946739" />
-    <state width="2539" height="487" key="GridCell.Tab.1.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202959" />
-    <state width="2539" height="317" key="GridCell.Tab.1.center" timestamp="1590494392437">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.1.bottom/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827387" />
+    <state width="2539" height="317" key="GridCell.Tab.1.center" timestamp="1590526827386">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="317" key="GridCell.Tab.1.center/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392437" />
     <state width="2539" height="206" key="GridCell.Tab.1.center/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520096" />
     <state width="2539" height="206" key="GridCell.Tab.1.center/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269165" />
     <state width="2539" height="206" key="GridCell.Tab.1.center/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946737" />
-    <state width="2539" height="487" key="GridCell.Tab.1.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202957" />
-    <state width="2539" height="317" key="GridCell.Tab.1.left" timestamp="1590494392436">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.1.center/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827386" />
+    <state width="2539" height="317" key="GridCell.Tab.1.left" timestamp="1590526827385">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="317" key="GridCell.Tab.1.left/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392436" />
     <state width="2539" height="206" key="GridCell.Tab.1.left/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520095" />
     <state width="2539" height="206" key="GridCell.Tab.1.left/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269164" />
     <state width="2539" height="206" key="GridCell.Tab.1.left/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946735" />
-    <state width="2539" height="487" key="GridCell.Tab.1.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202956" />
-    <state width="2539" height="317" key="GridCell.Tab.1.right" timestamp="1590494392438">
-      <screen x="0" y="0" width="2560" height="1080" />
+    <state width="2539" height="317" key="GridCell.Tab.1.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827385" />
+    <state width="2539" height="317" key="GridCell.Tab.1.right" timestamp="1590526827386">
+      <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state width="2539" height="317" key="GridCell.Tab.1.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590494392438" />
     <state width="2539" height="206" key="GridCell.Tab.1.right/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589993520098" />
     <state width="2539" height="206" key="GridCell.Tab.1.right/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996269166" />
     <state width="2539" height="206" key="GridCell.Tab.1.right/0.23.2560.1057/549.1103.1440.813@0.23.2560.1057" timestamp="1589995946738" />
-    <state width="2539" height="487" key="GridCell.Tab.1.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589397202958" />
+    <state width="2539" height="317" key="GridCell.Tab.1.right/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1590526827386" />
     <state x="211" y="190" key="SettingsEditor" timestamp="1589287139745">
       <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state x="211" y="190" key="SettingsEditor/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589287139745" />
-    <state x="633" y="384" key="com.intellij.ide.util.TipDialog" timestamp="1590485300228">
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog" timestamp="1590575954986">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590485300227" />
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1590575954986" />
     <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589367191203" />
     <state x="853" y="283" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1590064302579">
       <screen x="0" y="0" width="2560" height="1080" />

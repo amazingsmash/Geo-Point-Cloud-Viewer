@@ -150,6 +150,7 @@ def split_octree(xyzc, level):
     indices = np.clip(np.floor(xyzc[:, 0:3] * n_level_partitions), 0, n_level_partitions-1).astype(int)
     indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions**2
 
+
     children = []
     for i, index in enumerate(np.unique(indices)):
         ps = indices == index

@@ -11,32 +11,47 @@ public class GeoPCViewer : MonoBehaviour
         public readonly Vector2d minLonLat, maxLonLat, lonLatDelta;
         public readonly double minHeight, maxHeight;
         public readonly DirectoryInfo directoryInfo;
+        public Vector3d lonHLatDelta;
+        public Vector3d lonHLatMin;
 
-        public CellData(JSONNode cellData, DirectoryInfo modelDir)
+        public CellData(JSONNode cellJSON, DirectoryInfo modelDir)
         {
-            string cn = cellData["directory"].Value;
+            string cn = cellJSON["directory"].Value;
             directoryInfo = modelDir.GetDirectories(cn)[0];
 
-            minLonLat = JSONToVector2d(cellData["cell_min_lon_lat"].AsArray);
-            maxLonLat = JSONToVector2d(cellData["cell_max_lon_lat"].AsArray);
+            minLonLat = JSONToVector2d(cellJSON["cell_min_lon_lat"].AsArray);
+            maxLonLat = JSONToVector2d(cellJSON["cell_max_lon_lat"].AsArray);
             lonLatDelta = maxLonLat - minLonLat;
 
-            minHeight = cellData["min_lon_lat_height"][2].AsDouble;
-            maxHeight = cellData["max_lon_lat_height"][2].AsDouble;
+            minHeight = cellJSON["min_lon_lat_height"][2].AsDouble;
+            maxHeight = cellJSON["max_lon_lat_height"][2].AsDouble;
+
+            double deltaH = maxHeight - minHeight;
+            lonHLatDelta = new Vector3d(lonLatDelta.x, deltaH, lonLatDelta.y);
+            lonHLatMin =new Vector3d(minLonLat[0], minHeight, minLonLat[1]);
+
         }
     }
 
     public struct NodeData
     {
         public readonly string filename;
+        public readonly double avgPointDistance;
+        public readonly Vector3d minPoints;
+        public readonly Vector3d maxPoints;
         public readonly int[] indices;
         public readonly NodeData[] children;
         public readonly string name;
-        public NodeData(JSONNode node)
+        public NodeData(JSONNode nodeJSON)
         {
-            filename = node["filename"].Value;
+            filename = nodeJSON["filename"].Value;
+            avgPointDistance = nodeJSON["avgDistance"].AsDouble;
+
+            minPoints = JSONToVector3d(nodeJSON["min"].AsArray);
+            maxPoints = JSONToVector3d(nodeJSON["max"].AsArray);
+
             name = "Node";
-            var ind = node["indices"].AsArray;
+            var ind = nodeJSON["indices"].AsArray;
             indices = new int[ind.Count];
             for (int i = 0; i < ind.Count; i++)
             {
@@ -44,7 +59,7 @@ public class GeoPCViewer : MonoBehaviour
                 name += "_" + indices[i];
             }
 
-            var cs = node["children"].AsArray;
+            var cs = nodeJSON["children"].AsArray;
             if (cs.Count > 0)
             {
                 children = new NodeData[cs.Count];
@@ -70,6 +85,10 @@ public class GeoPCViewer : MonoBehaviour
     public double metersPerDegree = 11111.11;
     private MeshManager meshManager;
     public Vector3d XYZOffset { get; private set; } = default;
+    public float nearMatDistance = 100;
+
+    public delegate void OnPointSelected(Vector3 point, float classCode);
+    public OnPointSelected onPointSelected = null;
 
     #region life cycle
 
@@ -148,6 +167,8 @@ public class GeoPCViewer : MonoBehaviour
         node.Init(nodeData, cellData, meshManager, this);
     }
 
+    #region Colors
+
     private void InitIPointCloudManager()
     {
         //Class colors
@@ -167,4 +188,60 @@ public class GeoPCViewer : MonoBehaviour
     {
         return classColor.TryGetValue(c, out Color color) ? color : Color.white;
     }
+
+    float GetClassCodeForColor(Color color)
+    {
+        foreach (var entry in classColor)
+        {
+            if (entry.Value.IsEqualsTo(color))
+            {
+                return entry.Key;
+            }
+        }
+        return 0.0f;
+    }
+
+    #endregion
+
+    #region Pointpicking
+
+    void SelectPoint(Vector2 screenPosition, float maxScreenDistance)
+    {
+        if (onPointSelected == null)
+        {
+            return;
+        }
+
+        UnityEngine.Debug.Log("Finding selected point.");
+
+        MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
+        float maxDist = 10000000.0f;
+
+        Vector3 closestHit = Vector3.negativeInfinity;
+        Color colorClosestHit = Color.black;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+            PCNode node = child.GetComponent<PCNode>();
+            if (node != null)
+            {
+                UnityEngine.Debug.Log("Finding selected point on node.");
+                node.GetClosestPointOnRay(ray,
+                                          screenPosition,
+                                          ref maxDist,
+                                          ref closestHit,
+                                          ref colorClosestHit,
+                                          maxScreenDistance * maxScreenDistance);
+            }
+        }
+
+        if (!closestHit.Equals(Vector3.negativeInfinity))
+        {
+            float classCode = GetClassCodeForColor(colorClosestHit);
+            onPointSelected.Invoke(closestHit, classCode);
+        }
+    }
+
+    #endregion
 }

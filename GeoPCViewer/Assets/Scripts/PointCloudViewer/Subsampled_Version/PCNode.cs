@@ -5,7 +5,7 @@ using SimpleJSON;
 using System.IO;
 using UnityEditor;
 
-class PCNode: MonoBehaviour, System.IComparable<PCNode>
+class PCNode : MonoBehaviour, System.IComparable<PCNode>
 {
     #region subtypes
 
@@ -178,10 +178,12 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
         float ndmT = pcManager.nearDistanceThreshold();
 
         RenderType newRT;
-        if (minDistanceToCam > ndmT) {
+        if (minDistanceToCam > ndmT)
+        {
             newRT = RenderType.FDM;
         }
-        else if (maxDistanceToCam < ndmT) {
+        else if (maxDistanceToCam < ndmT)
+        {
             newRT = RenderType.NDM;
         }
         else
@@ -234,7 +236,7 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
     }
 
     public void ComputeNodeState(ref List<PCNode> visibleLeafNodesAndDistances,
-                                        Vector3 camPosition, 
+                                        Vector3 camPosition,
                                         float zFar)
     {
         CheckCameraDistances();
@@ -262,7 +264,8 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
             }
 
             //Changing Material
-            if (currentMeshState == MeshState.NOT_LOADED) {
+            if (currentMeshState == MeshState.NOT_LOADED)
+            {
                 //Requesting mesh
                 FetchMesh();
             }
@@ -297,41 +300,41 @@ class PCNode: MonoBehaviour, System.IComparable<PCNode>
                                                     ref Vector3 closestHit,
                                                     ref Color colorClosestHit,
                                                 float sqrMaxScreenDistance)
+    {
+        if (State == PCNodeState.INVISIBLE || currentMeshState != MeshState.LOADED)
         {
-            if (State == PCNodeState.INVISIBLE || currentMeshState != MeshState.LOADED)
-            {
-                return;
-            }
+            return;
+        }
 
-            Mesh mesh = meshFilter.mesh;
-            if (mesh == null)
+        Mesh mesh = meshFilter.mesh;
+        if (mesh == null)
+        {
+            return;
+        }
+        Bounds meshBounds = boundsInModelSpace;
+        if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
+        {
+            //print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
+            int i = 0;
+            foreach (Vector3 p in mesh.vertices)
             {
-                return;
-            }
-            Bounds meshBounds = boundsInModelSpace;
-            if (meshBounds.Contains(ray.origin) || meshBounds.IntersectRay(ray))
-            {
-                //print("Scanning Point Cloud with " + mesh.vertices.Length + " vertices.");
-                int i = 0;
-                foreach (Vector3 p in mesh.vertices)
+                Vector3 pWorld = transform.TransformPoint(p);
+                Vector3 v = Camera.main.WorldToScreenPoint(pWorld);
+                float distancePointToCamera = Mathf.Abs(v.z);
+                if (distancePointToCamera < maxDist)
                 {
-                    Vector3 pWorld = transform.TransformPoint(p);
-                    Vector3 v = Camera.main.WorldToScreenPoint(pWorld);
-                    float distancePointToCamera = Mathf.Abs(v.z);
-                    if (distancePointToCamera < maxDist)
+                    float sqrDistance = (new Vector2(v.x, v.y) - screenPos).sqrMagnitude;
+                    if (sqrDistance < sqrMaxScreenDistance)
                     {
-                        float sqrDistance = (new Vector2(v.x, v.y) - screenPos).sqrMagnitude;
-                        if (sqrDistance < sqrMaxScreenDistance)
-                        {
-                            closestHit = pWorld;
-                            colorClosestHit = mesh.colors[i];
-                            maxDist = distancePointToCamera;
-                        }
+                        closestHit = pWorld;
+                        colorClosestHit = mesh.colors[i];
+                        maxDist = distancePointToCamera;
                     }
-                    i++;
                 }
+                i++;
             }
         }
+    }
 
 
 

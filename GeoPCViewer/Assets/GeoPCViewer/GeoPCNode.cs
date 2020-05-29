@@ -10,7 +10,7 @@ public class GeoPCNode : MonoBehaviour
 {
     public enum RenderType
     {
-        FAR, NEAR, MIXED
+        UNKNOWN, FAR, NEAR, MIXED
     };
 
     public enum State
@@ -30,7 +30,7 @@ public class GeoPCNode : MonoBehaviour
     private float maxDistanceToCam;
     private bool needsChildren;
     private Bounds worldSpaceBounds;
-    private RenderType renderType = RenderType.FAR;
+    private RenderType renderType = RenderType.UNKNOWN;
     private float creationTime;
     private State state = State.NOT_INIT;
 
@@ -44,6 +44,8 @@ public class GeoPCNode : MonoBehaviour
     {
         meshRenderer = GetComponent<MeshRenderer>();
         meshFilter = GetComponent<MeshFilter>();
+
+        meshRenderer.material = new Material(meshRenderer.material);
     }
 
     // Update is called once per frame
@@ -79,7 +81,6 @@ public class GeoPCNode : MonoBehaviour
 
     }
 
-
     private void OnDestroy()
     {
         Mesh mesh = meshFilter.mesh;
@@ -101,9 +102,6 @@ public class GeoPCNode : MonoBehaviour
         this.viewer = viewer;
         this.meshManager = meshManager;
 
-
-
-        double deltaH = data.cellData.maxHeight - data.cellData.minHeight;
         Vector3d degreesToMeters = new Vector3d(viewer.metersPerDegree, 1, viewer.metersPerDegree);
         Vector3d disp = Vector3d.Scale(data.cellData.lonHLatMin, degreesToMeters);
 
@@ -207,6 +205,19 @@ public class GeoPCNode : MonoBehaviour
         if (renderType != newRT)
         {
             renderType = newRT;
+
+            //TODO Do Multipass
+            /*
+            string p0 = meshRenderer.material.GetPassName(0);
+            string p1 = meshRenderer.material.GetPassName(1);
+            //meshRenderer.material.SetShaderPassEnabled(p0, false);
+            //meshRenderer.material.SetShaderPassEnabled(p1, false);
+            meshRenderer.material.SetPass(0);
+            meshRenderer.material.SetPass(1);
+            bool b1 = meshRenderer.material.GetShaderPassEnabled(p0);
+            //Debug.Log(b1);
+            */
+
             switch (renderType)
             {
                 case RenderType.FAR:

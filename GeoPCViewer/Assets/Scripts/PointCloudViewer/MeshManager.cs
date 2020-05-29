@@ -72,7 +72,10 @@ public class MeshManager
         float priority)
     {
         MeshLoaderJob job = jobPool.GetInstance();
-        job.AsyncFileRead(fileInfo, getColorForClass, null, thread, priority);
+        if (job != null)
+        {
+            job.AsyncFileRead(fileInfo, getColorForClass, null, thread, priority);
+        }
         return job;
     }
 

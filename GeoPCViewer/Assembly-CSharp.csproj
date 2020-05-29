@@ -91,6 +91,7 @@
     <Compile Include="Assets\Scripts\PointCloudViewer\Utils\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Utils\SimpleJSON.cs" />
     <None Include="Assets\Materials\Rounded Points\PointCloud_Dot.shader" />
+    <None Include="Assets\Materials\Rounded Points\PointCloud_Multipass.shader" />
     <None Include="Assets\Materials\Point Selected Billboard\BillBoard_ZTest_Off.shader" />
     <None Include="Assets\Materials\Rounded Points\PointCloud.shader" />
     <None Include="Assets\Materials\Rounded Points\PointCloud_Dot_Transparency.shader" />

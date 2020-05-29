@@ -52,7 +52,6 @@ public class GeoPCViewer : MonoBehaviour
             filename = nodeJSON["filename"].Value;
             pcFile = cellData.directoryInfo.GetFiles(filename)[0];
 
-
             avgPointDistance = nodeJSON["avgDistance"].AsDouble;
             minPoints = JSONToVector3d(nodeJSON["min"].AsArray);
             maxPoints = JSONToVector3d(nodeJSON["max"].AsArray);
@@ -96,8 +95,7 @@ public class GeoPCViewer : MonoBehaviour
     public float nearMatDistance = 100;
     public float pointPhysicalSize = 0.1f; //Round point size
 
-    public delegate void OnPointSelected(Vector3 point, float classCode);
-    public OnPointSelected onPointSelected = null;
+    private List<GeoPCNode> cellNodes = new List<GeoPCNode>();
 
     #region life cycle
 
@@ -121,13 +119,6 @@ public class GeoPCViewer : MonoBehaviour
             CellData cellData = new CellData(c, modelDir);
             InitCell(cellData, cellCounter++);
         }
-    }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     #endregion
@@ -156,20 +147,10 @@ public class GeoPCViewer : MonoBehaviour
                                     cellData.minLonLat[1] * metersPerDegree);
         }
         NodeData nodeData = new NodeData(json, cellData);
-        LoadNodeTree(nodeData, cellData, maxLevel: 1);
+        GeoPCNode n = CreateNode(nodeData);
+        cellNodes.Add(n);
     }
 
-    private void LoadNodeTree(NodeData rootNodeData, CellData cellData, uint maxLevel)
-    {
-        CreateNode(rootNodeData);
-        if (rootNodeData.indices.Length < maxLevel)
-        {
-            foreach(var child in rootNodeData.children)
-            {
-                LoadNodeTree(child, cellData, maxLevel);
-            }
-        }
-    }
 
     public GeoPCNode CreateNode(NodeData nodeData)
     {
@@ -217,13 +198,11 @@ public class GeoPCViewer : MonoBehaviour
 
     #region Pointpicking
 
-    void SelectPoint(Vector2 screenPosition, float maxScreenDistance)
+    public bool SelectPoint(Vector2 screenPosition,
+                            float maxScreenDistance,
+                            out Vector3 point,
+                            out float pointClass)
     {
-        if (onPointSelected == null)
-        {
-            return;
-        }
-
         UnityEngine.Debug.Log("Finding selected point.");
 
         MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
@@ -232,27 +211,22 @@ public class GeoPCViewer : MonoBehaviour
         Vector3 closestHit = Vector3.negativeInfinity;
         Color colorClosestHit = Color.black;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        for (int i = 0; i < transform.childCount; i++)
+
+        foreach(GeoPCNode node in cellNodes)
         {
-            GameObject child = transform.GetChild(i).gameObject;
-            PCNode node = child.GetComponent<PCNode>();
-            if (node != null)
-            {
-                UnityEngine.Debug.Log("Finding selected point on node.");
-                node.GetClosestPointOnRay(ray,
-                                          screenPosition,
-                                          ref maxDist,
-                                          ref closestHit,
-                                          ref colorClosestHit,
-                                          maxScreenDistance * maxScreenDistance);
-            }
+            UnityEngine.Debug.Log("Finding selected point on node.");
+            node.GetClosestPointOnRay(ray,
+                                        screenPosition,
+                                        ref maxDist,
+                                        ref closestHit,
+                                        ref colorClosestHit,
+                                        maxScreenDistance * maxScreenDistance);
         }
 
-        if (!closestHit.Equals(Vector3.negativeInfinity))
-        {
-            float classCode = GetClassCodeForColor(colorClosestHit);
-            onPointSelected.Invoke(closestHit, classCode);
-        }
+        bool hit = !closestHit.Equals(Vector3.negativeInfinity);
+        pointClass = hit ? GetClassCodeForColor(colorClosestHit) : default;
+        point = hit? closestHit : default;
+        return hit;
     }
 
     #endregion

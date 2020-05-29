@@ -15,7 +15,7 @@ public class GeoPCNode : MonoBehaviour
 
     public enum State
     {
-        NOT_INIT, FETCHING_MESH, RENDERING
+        NOT_INIT, INIT, FETCHING_MESH, RENDERING
     }
 
     [SerializeField] private float lodFactor = 1f;
@@ -49,7 +49,7 @@ public class GeoPCNode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (state == State.FETCHING_MESH)
+        if (state == State.FETCHING_MESH || state == State.INIT)
         {
             FetchMesh();
         }
@@ -101,10 +101,7 @@ public class GeoPCNode : MonoBehaviour
         this.viewer = viewer;
         this.meshManager = meshManager;
 
-        meshJob = meshManager.GetMeshLoaderJob(data.pcFile,
-            viewer.GetColorForClass,
-                                            100);
-        state = State.FETCHING_MESH;
+
 
         double deltaH = data.cellData.maxHeight - data.cellData.minHeight;
         Vector3d degreesToMeters = new Vector3d(viewer.metersPerDegree, 1, viewer.metersPerDegree);
@@ -121,19 +118,38 @@ public class GeoPCNode : MonoBehaviour
         Vector3d pointsBoundSize = pointsBoundMax - pointsBoundMin;
         Vector3d pointsBoundCenter = (pointsBoundMax + pointsBoundMin) / 2;
         worldSpaceBounds = new Bounds((Vector3)(pointsBoundCenter + worldPosition), (Vector3)pointsBoundSize);
+
+        state = State.INIT;
     }
 
     private void FetchMesh()
     {
-        Mesh mesh01 = meshManager.GetMeshFromJob(meshJob);
-        if (mesh01 != null)
+        switch (state)
         {
-            meshFilter.mesh = mesh01;
-            meshRenderer.material = farMat;
-            creationTime = Time.time;
-            meshJob = null;
-            state = State.RENDERING;
+            case State.NOT_INIT:
+                break;
+            case State.INIT:
+                meshJob = meshManager.GetMeshLoaderJob(data.pcFile,
+                                                       viewer.GetColorForClass,
+                                                       100);
+                state = meshJob != null? State.FETCHING_MESH : State.INIT;
+                break;
+            case State.FETCHING_MESH:
+                Mesh mesh01 = meshManager.GetMeshFromJob(meshJob);
+                if (mesh01 != null)
+                {
+                    meshFilter.mesh = mesh01;
+                    meshRenderer.material = farMat;
+                    creationTime = Time.time;
+                    meshJob = null;
+                    state = State.RENDERING;
+                }
+                break;
+            case State.RENDERING:
+                break;
         }
+
+
     }
 
     #endregion
@@ -170,7 +186,7 @@ public class GeoPCNode : MonoBehaviour
     {
         Vector3 camPos = Camera.main.transform.position;
         bool camInside = worldSpaceBounds.Contains(camPos);
-        minDistanceToCam = camInside? 0 : worldSpaceBounds.MinDistance(camPos);
+        minDistanceToCam = camInside ? 0 : worldSpaceBounds.MinDistance(camPos);
         maxDistanceToCam = worldSpaceBounds.MaxDistance(camPos);
 
         if (camInside)

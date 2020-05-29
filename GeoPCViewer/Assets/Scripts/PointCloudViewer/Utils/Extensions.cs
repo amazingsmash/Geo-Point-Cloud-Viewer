@@ -64,10 +64,12 @@ public static class BoundsExtension
 
     public static float MaxDistance(this Bounds box, Vector3 position)
     {
-        float farX = Mathf.Max(Mathf.Abs(box.min.x - position.x), Mathf.Abs(box.max.x - position.x));
-        float farY = Mathf.Max(Mathf.Abs(box.min.y - position.y), Mathf.Abs(box.max.y - position.y));
-        float farZ = Mathf.Max(Mathf.Abs(box.min.z - position.z), Mathf.Abs(box.max.z - position.z));
-        return Mathf.Sqrt(farX * farX + farY * farY + farZ * farZ);
+        Vector3 min_p = box.min - position;
+        Vector3 max_p = box.max - position;
+        Vector3 far = new Vector3(Mathf.Max(Mathf.Abs(min_p.x), Mathf.Abs(max_p.x)),
+                                    Mathf.Max(Mathf.Abs(min_p.y), Mathf.Abs(max_p.y)),
+                                    Mathf.Max(Mathf.Abs(min_p.z), Mathf.Abs(max_p.z)));
+        return far.magnitude;
     }
 
     public static float MinDistance(this Bounds box, Vector3 position)

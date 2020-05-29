@@ -1056,9 +1056,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 5
-  speed: 30
+  speed: 100
   gravity: 20
-  shiftAdd: 40
+  shiftAdd: 200
   maxShift: 100
   walkerMode: 0
 --- !u!81 &1461207539

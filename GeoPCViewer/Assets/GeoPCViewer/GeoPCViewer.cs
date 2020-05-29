@@ -35,18 +35,25 @@ public class GeoPCViewer : MonoBehaviour
 
     public struct NodeData
     {
+        public readonly CellData cellData;
         public readonly string filename;
         public readonly double avgPointDistance;
         public readonly Vector3d minPoints;
         public readonly Vector3d maxPoints;
+        public readonly FileInfo pcFile;
         public readonly int[] indices;
         public readonly NodeData[] children;
         public readonly string name;
-        public NodeData(JSONNode nodeJSON)
+        public NodeData(JSONNode nodeJSON, CellData cellData)
         {
-            filename = nodeJSON["filename"].Value;
-            avgPointDistance = nodeJSON["avgDistance"].AsDouble;
+            this.cellData = cellData;
 
+            //TODO maybe no file
+            filename = nodeJSON["filename"].Value;
+            pcFile = cellData.directoryInfo.GetFiles(filename)[0];
+
+
+            avgPointDistance = nodeJSON["avgDistance"].AsDouble;
             minPoints = JSONToVector3d(nodeJSON["min"].AsArray);
             maxPoints = JSONToVector3d(nodeJSON["max"].AsArray);
 
@@ -65,7 +72,7 @@ public class GeoPCViewer : MonoBehaviour
                 children = new NodeData[cs.Count];
                 for (int i = 0; i < cs.Count; i++)
                 {
-                    children[i] = new NodeData(cs[i]);
+                    children[i] = new NodeData(cs[i], cellData);
                 }
             }
             else
@@ -83,9 +90,11 @@ public class GeoPCViewer : MonoBehaviour
     public int numberOfMeshes = 400;
     public int numberOfMeshLoadingJobs = 20;
     public double metersPerDegree = 11111.11;
+    public float distanceThreshold;
     private MeshManager meshManager;
     public Vector3d XYZOffset { get; private set; } = default;
     public float nearMatDistance = 100;
+    public float pointPhysicalSize = 0.1f; //Round point size
 
     public delegate void OnPointSelected(Vector3 point, float classCode);
     public OnPointSelected onPointSelected = null;
@@ -95,6 +104,8 @@ public class GeoPCViewer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
+
         meshManager = new MeshManager(numberOfMeshes, numberOfMeshLoadingJobs);
         InitIPointCloudManager();
 
@@ -144,13 +155,13 @@ public class GeoPCViewer : MonoBehaviour
                                     cellData.minHeight,
                                     cellData.minLonLat[1] * metersPerDegree);
         }
-        NodeData nodeData = new NodeData(json);
+        NodeData nodeData = new NodeData(json, cellData);
         LoadNodeTree(nodeData, cellData, maxLevel: 1);
     }
 
     private void LoadNodeTree(NodeData rootNodeData, CellData cellData, uint maxLevel)
     {
-        CreateNode(cellData, rootNodeData);
+        CreateNode(rootNodeData);
         if (rootNodeData.indices.Length < maxLevel)
         {
             foreach(var child in rootNodeData.children)
@@ -160,11 +171,12 @@ public class GeoPCViewer : MonoBehaviour
         }
     }
 
-    public void CreateNode(CellData cellData, NodeData nodeData)
+    public GeoPCNode CreateNode(NodeData nodeData)
     {
         GeoPCNode node = Instantiate(nodePrefab).GetComponent<GeoPCNode>();
         node.name = nodeData.name;
-        node.Init(nodeData, cellData, meshManager, this);
+        node.Init(nodeData, meshManager, this);
+        return node;
     }
 
     #region Colors

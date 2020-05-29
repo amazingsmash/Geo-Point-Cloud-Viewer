@@ -10,7 +10,7 @@ public class GeoPCNode : MonoBehaviour
 {
     public enum RenderType
     {
-        FDM, NDM, BOTH
+        FAR, NEAR, MIXED
     };
 
     [SerializeField] private float lodFactor = 1f;
@@ -18,17 +18,19 @@ public class GeoPCNode : MonoBehaviour
     [SerializeField] private Material nearMat;
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
-    NodeData data;
-    CellData cellData;
-    GeoPCViewer viewer;
-
-    bool childrenLoaded = false;
+    private NodeData data;
+    private GeoPCViewer viewer;
+    private MeshManager meshManager;
     private float minDistanceToCam;
     private float maxDistanceToCam;
     private bool needsChildren;
     private Bounds worldSpaceBounds;
-    private RenderType renderType;
+    private RenderType renderType = RenderType.FAR;
     private float creationTime;
+
+    private List<GeoPCNode> children = new List<GeoPCNode>();
+
+    #region Life Cycle
 
     // Start is called before the first frame update
     void Start()
@@ -48,29 +50,52 @@ public class GeoPCNode : MonoBehaviour
             LoadChildren();
         }
 
+        if (needsChildren && children.Count == 0)
+        {
+            LoadChildren();
+        }
+        else
+        {
+            if (!needsChildren && children.Count > 0)
+            {
+                RemoveChildren();
+            }
+        }
+
     }
 
+    private void OnDestroy()
+    {
+        Mesh mesh = meshFilter.mesh;
+        if (mesh != null)
+        {
+            meshManager.ReleaseMesh(mesh);
+        }
+    }
+
+    #endregion
+
+    #region Initialization
+
     public void Init(NodeData data,
-        CellData cellData,
         MeshManager meshManager,
         GeoPCViewer viewer)
     {
         this.data = data;
-        this.cellData = cellData;
         this.viewer = viewer;
+        this.meshManager = meshManager;
 
-        var fi = cellData.directoryInfo.GetFiles(data.filename)[0];
-        StartCoroutine(LoadGeometryCoroutine(fi,
+        StartCoroutine(LoadGeometryCoroutine(data.pcFile,
                                             meshManager,
                                             viewer.GetColorForClass,
                                             100));
 
-        double deltaH = cellData.maxHeight - cellData.minHeight;
+        double deltaH = data.cellData.maxHeight - data.cellData.minHeight;
         Vector3d degreesToMeters = new Vector3d(viewer.metersPerDegree, 1, viewer.metersPerDegree);
-        Vector3d disp = Vector3d.Scale(cellData.lonHLatMin, degreesToMeters);
+        Vector3d disp = Vector3d.Scale(data.cellData.lonHLatMin, degreesToMeters);
 
         Vector3d worldPosition = disp - viewer.XYZOffset;
-        Vector3d size = Vector3d.Scale(cellData.lonHLatDelta, degreesToMeters);
+        Vector3d size = Vector3d.Scale(data.cellData.lonHLatDelta, degreesToMeters);
 
         transform.position = (Vector3)worldPosition;
         transform.localScale = (Vector3)size;
@@ -96,24 +121,44 @@ public class GeoPCNode : MonoBehaviour
         creationTime = Time.time;
     }
 
+    #endregion
+
+    #region LoD
+
     public void LoadChildren()
     {
-        if (!childrenLoaded)
+        if (children.Count == 0)
         {
-            foreach (var child in data.children)
+            if (data.children != null)
             {
-                viewer.CreateNode(cellData, child);
+                foreach (var child in data.children)
+                {
+                    children.Add(viewer.CreateNode(child));
+                }
             }
-            childrenLoaded = true;
+        }
+    }
+
+    private void RemoveChildren()
+    {
+        if (children.Count > 0)
+        {
+            foreach (var child in children)
+            {
+                Destroy(child.gameObject);
+            }
+            children.Clear();
         }
     }
 
     private void RecalculateLoDParameters()
     {
-        minDistanceToCam = worldSpaceBounds.MinDistance(Camera.main.transform.position);
-        maxDistanceToCam = worldSpaceBounds.MaxDistance(Camera.main.transform.position);
+        Vector3 camPos = Camera.main.transform.position;
+        bool camInside = worldSpaceBounds.Contains(camPos);
+        minDistanceToCam = camInside? 0 : worldSpaceBounds.MinDistance(camPos);
+        maxDistanceToCam = worldSpaceBounds.MaxDistance(camPos);
 
-        if (worldSpaceBounds.Contains(Camera.main.transform.position))
+        if (camInside)
         {
             needsChildren = true;
         }
@@ -133,7 +178,7 @@ public class GeoPCNode : MonoBehaviour
             renderType = newRT;
             switch (renderType)
             {
-                case RenderType.FDM:
+                case RenderType.FAR:
                     {
                         meshRenderer.material = farMat;
 
@@ -144,7 +189,7 @@ public class GeoPCNode : MonoBehaviour
                         //meshRenderer.material.SetFloat("_MinDistance", minD);
                         break;
                     }
-                case RenderType.NDM:
+                case RenderType.NEAR:
                     {
                         meshRenderer.material = nearMat;
                         break;
@@ -168,24 +213,27 @@ public class GeoPCNode : MonoBehaviour
 
     private RenderType GetRenderType()
     {
-        float ndmT = viewer.nearMatDistance;
 
-        RenderType newRT;
-        if (minDistanceToCam > ndmT)
+        if (needsChildren)
         {
-            newRT = RenderType.FDM;
+            return RenderType.MIXED;
         }
-        else if (maxDistanceToCam < ndmT)
+
+        if (minDistanceToCam > viewer.distanceThreshold) //Closest Point too far
         {
-            newRT = RenderType.NDM;
+            return RenderType.FAR;
+        }
+        else if (maxDistanceToCam < viewer.distanceThreshold)
+        {
+            return RenderType.NEAR;
         }
         else
         {
-            newRT = RenderType.BOTH;
+            return RenderType.MIXED;
         }
-
-        return newRT;
     }
+
+    #endregion
 
     #region Gizmos
 
@@ -193,9 +241,9 @@ public class GeoPCNode : MonoBehaviour
     {
         switch (renderType)
         {
-            case RenderType.BOTH: { Gizmos.color = Color.green; break; }
-            case RenderType.FDM: { Gizmos.color = Color.red; break; }
-            case RenderType.NDM: { Gizmos.color = Color.blue; break; }
+            case RenderType.MIXED: { Gizmos.color = Color.green; break; }
+            case RenderType.FAR: { Gizmos.color = Color.red; break; }
+            case RenderType.NEAR: { Gizmos.color = Color.blue; break; }
         }
 
         Gizmos.DrawWireCube(worldSpaceBounds.center, worldSpaceBounds.size);

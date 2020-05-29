@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class MeshManager
 {
@@ -24,6 +25,7 @@ public class MeshManager
         jobPool = new ObjectPool<MeshLoaderJob>(nJobs);
     }
 
+    [Obsolete("Use GetMeshLoaderJob")]
     public Mesh CreateMesh(FileInfo fileInfo,
         MeshLoaderJob.GetColorForClass getColorForClass,
         float priority)
@@ -59,6 +61,35 @@ public class MeshManager
             {
                 //Changing priority if not finished
                 job.priority = priority;
+            }
+        }
+        return null;
+    }
+
+
+    public MeshLoaderJob GetMeshLoaderJob(FileInfo fileInfo,
+        MeshLoaderJob.GetColorForClass getColorForClass,
+        float priority)
+    {
+        MeshLoaderJob job = jobPool.GetInstance();
+        job.AsyncFileRead(fileInfo, getColorForClass, null, thread, priority);
+        return job;
+    }
+
+    public Mesh GetMeshFromJob(MeshLoaderJob job)
+    {
+        if (job.IsDone)
+        {
+            Mesh mesh = meshPool.GetInstance();
+            if (mesh != null)
+            {
+                //Debug.Log("Remaining Meshes: " + meshPool.remaining);
+                job.LoadData(mesh);
+                if (mesh != null)
+                {
+                    jobPool.ReleaseInstance(job);
+                }
+                return mesh;
             }
         }
         return null;

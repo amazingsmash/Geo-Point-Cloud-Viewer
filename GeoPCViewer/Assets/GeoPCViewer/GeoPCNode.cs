@@ -13,6 +13,11 @@ public class GeoPCNode : MonoBehaviour
         FAR, NEAR, MIXED
     };
 
+    public enum State
+    {
+        NOT_INIT, FETCHING_MESH, RENDERING
+    }
+
     [SerializeField] private float lodFactor = 1f;
     [SerializeField] private Material farMat;
     [SerializeField] private Material nearMat;
@@ -27,8 +32,10 @@ public class GeoPCNode : MonoBehaviour
     private Bounds worldSpaceBounds;
     private RenderType renderType = RenderType.FAR;
     private float creationTime;
+    private State state = State.NOT_INIT;
 
     private List<GeoPCNode> children = new List<GeoPCNode>();
+    private MeshLoaderJob meshJob = null;
 
     #region Life Cycle
 
@@ -42,27 +49,36 @@ public class GeoPCNode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RecalculateLoDParameters();
-        CheckMaterial();
-
-        if (Input.GetKeyUp(KeyCode.I) || needsChildren)
+        if (state == State.FETCHING_MESH)
         {
-            LoadChildren();
+            FetchMesh();
         }
 
-        if (needsChildren && children.Count == 0)
+        if (state == State.RENDERING)
         {
-            LoadChildren();
-        }
-        else
-        {
-            if (!needsChildren && children.Count > 0)
+            RecalculateLoDParameters();
+            CheckMaterial();
+
+            if (Input.GetKeyUp(KeyCode.I) || needsChildren)
             {
-                RemoveChildren();
+                LoadChildren();
+            }
+
+            if (needsChildren && children.Count == 0)
+            {
+                LoadChildren();
+            }
+            else
+            {
+                if (!needsChildren && children.Count > 0)
+                {
+                    RemoveChildren();
+                }
             }
         }
 
     }
+
 
     private void OnDestroy()
     {
@@ -85,10 +101,10 @@ public class GeoPCNode : MonoBehaviour
         this.viewer = viewer;
         this.meshManager = meshManager;
 
-        StartCoroutine(LoadGeometryCoroutine(data.pcFile,
-                                            meshManager,
-                                            viewer.GetColorForClass,
-                                            100));
+        meshJob = meshManager.GetMeshLoaderJob(data.pcFile,
+            viewer.GetColorForClass,
+                                            100);
+        state = State.FETCHING_MESH;
 
         double deltaH = data.cellData.maxHeight - data.cellData.minHeight;
         Vector3d degreesToMeters = new Vector3d(viewer.metersPerDegree, 1, viewer.metersPerDegree);
@@ -107,18 +123,17 @@ public class GeoPCNode : MonoBehaviour
         worldSpaceBounds = new Bounds((Vector3)(pointsBoundCenter + worldPosition), (Vector3)pointsBoundSize);
     }
 
-    private IEnumerator LoadGeometryCoroutine(FileInfo fi, MeshManager meshManager, MeshLoaderJob.GetColorForClass getColorForClass, int priority)
+    private void FetchMesh()
     {
-        Mesh mesh01 = null;
-        while (mesh01 == null)
+        Mesh mesh01 = meshManager.GetMeshFromJob(meshJob);
+        if (mesh01 != null)
         {
-            mesh01 = meshManager.CreateMesh(fi, getColorForClass, priority);
-            yield return null;
+            meshFilter.mesh = mesh01;
+            meshRenderer.material = farMat;
+            creationTime = Time.time;
+            meshJob = null;
+            state = State.RENDERING;
         }
-
-        meshFilter.mesh = mesh01;
-        meshRenderer.material = farMat;
-        creationTime = Time.time;
     }
 
     #endregion

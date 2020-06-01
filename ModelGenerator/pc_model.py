@@ -103,7 +103,7 @@ class PointCloudModel:
             min_xyz = np.min(xyzc[:, 0:3], axis=0)
             max_xyz = np.max(xyzc[:, 0:3], axis=0)
 
-            node_points, remaining_points = pc_utils.random_subsampling(xyzc, self._max_node_points)
+            node_points, remaining_points = pc_utils.balanced_subsampling(xyzc, self._max_node_points)
             file_name, file_path = self._get_file_path(indices, out_folder)
             encoding.matrix_to_file(node_points, file_path)
 
@@ -120,7 +120,7 @@ class PointCloudModel:
             xyzc = remaining_points
 
         # Creating children
-        voxel_index["children"] = self._get_children(xyzc, indices, out_folder)
+        voxel_index["children"] = self._get_children(xyzc, indices, out_folder) if xyzc is not None else []
         return voxel_index
 
     def _get_children(self, xyzc, indices, out_folder):

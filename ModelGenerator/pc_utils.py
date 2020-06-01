@@ -122,7 +122,7 @@ def split_longest_axis(xyzc):
 def random_subsampling(xyzc, n_selected_points):
     n_points = xyzc.shape[0]
     if n_points < n_selected_points:
-        return xyzc, np.array([0, 4])
+        return xyzc, None
 
     selection = np.random.choice(n_points, size=n_selected_points, replace=False)
     inverse_mask = np.ones(n_points, np.bool)
@@ -166,3 +166,39 @@ def split_octree(xyzc, level):
 def get_las_paths_from_directory(las_dir):
     file_paths = [os.path.join(las_dir, f) for f in os.listdir(las_dir) if ".las" in f]
     return file_paths
+
+
+def split_by_class(xyzc):
+    cs = np.unique(xyzc[:, 3])
+    ls = []
+    for c in cs:
+        index = xyzc[:, 3] == c
+        ls += [xyzc[index, :]]
+    return ls
+
+
+def balanced_subsampling(xyzc, n_selected_points):
+
+    n_points = xyzc.shape[0]
+    if n_points < n_selected_points:
+        return xyzc, None
+
+    cs, count = np.unique(xyzc[:, 3], return_counts=True)
+    max_n_points_class = n_selected_points / cs.shape[0]
+    order_classes = np.argsort(count)
+
+    selection = np.array((0,1))
+    for i in order_classes:
+        indices = np.where(xyzc[:, 3] == cs[i])
+        if indices.shape[0] < max_n_points_class:
+            selection = np.vstack(selection, indices)
+        else:
+            s = np.random.choice(indices, size=max_n_points_class, replace=False)
+            selection = np.vstack(selection, s)
+
+    selection = xyzc[selection, :]
+    inverse_mask = np.ones(n_points, dtype='bool')
+    inverse_mask[selection] = False
+
+    non_selected = xyzc[inverse_mask, :]
+    return selection, non_selected

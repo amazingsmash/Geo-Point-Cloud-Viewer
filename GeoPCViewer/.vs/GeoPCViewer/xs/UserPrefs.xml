@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GeoPCViewer/GeoPCNode.cs">
     <Files>
       <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="12" Column="18" />
-      <File FileName="Assets/GeoPCViewer/GeoPCNode.cs" Line="223" Column="31" />
+      <File FileName="Assets/GeoPCViewer/GeoPCNode.cs" Line="209" Column="23" />
       <File FileName="Assets/GeoPCViewer/GeoPCViewer.cs" />
       <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" />
       <File FileName="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" />

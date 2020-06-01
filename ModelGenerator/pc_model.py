@@ -11,6 +11,7 @@ import seaborn as sns
 import encoding
 import json_utils
 import pc_utils
+from pc_node import PCNode
 
 
 class PointCloudModel:
@@ -56,18 +57,19 @@ class PointCloudModel:
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
-        xyzc = cell["xyzc"]
-        point_classes = np.unique(xyzc[:, 3]).tolist()
-        print("\n%d points. %d classes." % (xyzc.shape[0], len(point_classes)))
+        points_by_class = cell["points"]
+        point_classes = list(points_by_class.keys())
+        n_points = pc_utils.num_points_by_class(points_by_class)
+        print("\n%d points. %d classes." % (n_points, len(point_classes)))
         self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
 
         index_file_name = "cell.json"
         index_path = os.path.join(directory, index_file_name)
 
-        self.n_generation_points = xyzc.shape[0]
+        self.n_generation_points = n_points
         self.n_generation_stored_points = 0
 
-        vi = self._save_tree(xyzc, [0], out_folder=directory)
+        vi = self._save_tree(PCNode(points_by_class), [0], out_folder=directory)
 
         cell_data = {"directory": folder_name,
                      "cell_index": cell["cell_index"],
@@ -93,31 +95,36 @@ class PointCloudModel:
         path = os.path.join(self._parent_directory, self._name, "pc_model.json")
         json_utils.write_json(desc_model, path)
 
-    def _save_tree(self, xyzc, indices, out_folder):
-        n_points = xyzc.shape[0]
+    def _save_tree(self, node: PCNode, indices, out_folder):
+        n_points = node.n_points
 
         if n_points == 0:
             return
 
         if self._parent_subsampling or n_points < self._max_node_points:
-            min_xyz = np.min(xyzc[:, 0:3], axis=0)
-            max_xyz = np.max(xyzc[:, 0:3], axis=0)
+            xyz_points = node.get_all_xyz_points()
 
-            node_points, remaining_points = pc_utils.balanced_subsampling(xyzc, self._max_node_points)
+            min_xyz = np.min(xyz_points, axis=0)
+            max_xyz = np.max(xyz_points, axis=0)
+
+            node_points_by_class, remaining_points_by_class = node.balanced_subsampling(self._max_node_points)
+
             file_name, file_path = self._get_file_path(indices, out_folder)
-            encoding.matrix_to_file(node_points, file_path)
+            xyz_selected_points = node.get_all_xyz_points()
+            encoding.matrix_to_file(xyz_selected_points, file_path)
 
-            self.n_generation_stored_points += node_points.shape[0]
+            self.n_generation_stored_points += node_points_by_class.shape[0]
             self._print_generation_state()
 
             voxel_index = {"min": min_xyz.tolist(),
                            "max": max_xyz.tolist(),
                            "indices": indices,
                            "filename": file_name,
-                           "npoints": node_points.shape[0],
-                           "avgDistance": pc_utils.aprox_average_distance(node_points[:, 0:3])}
+                           "npoints": node_points_by_class.shape[0],
+                           "avgDistance": pc_utils.aprox_average_distance(node_points_by_class[:, 0:3]),
+                           "class_count": pc_utils.get_class_count(node_points_by_class)}
 
-            xyzc = remaining_points
+        xyzc = remaining_points_by_class
 
         # Creating children
         voxel_index["children"] = self._get_children(xyzc, indices, out_folder) if xyzc is not None else []

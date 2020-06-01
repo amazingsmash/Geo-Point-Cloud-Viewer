@@ -98,9 +98,20 @@ def split_xyzc_in_wgs84_normalized_cells(xyzc, dgg_cell_size):
                 "cell_max_lon_lat": cell_max_lon_lat.tolist(),
                 "min_lon_lat_height": min_lon_lat_height.tolist(),
                 "max_lon_lat_height": max_lon_lat_height.tolist(),
-                "xyzc": cell_xyzc}
+                "points": divide_by_class(cell_xyzc)}
         cells += [cell]
     return cells
+
+
+def divide_by_class(xyzc):
+    classes = np.unique(xyzc[:, 3])
+
+    points = {}
+    for c in classes:
+        xyz = xyzc[c == xyzc[:, 3], 0:3]
+        points[c] = xyz
+
+    return points
 
 
 def split_longest_axis(xyzc):
@@ -119,17 +130,17 @@ def split_longest_axis(xyzc):
     return res
 
 
-def random_subsampling(xyzc, n_selected_points):
-    n_points = xyzc.shape[0]
-    if n_points < n_selected_points:
-        return xyzc, None
+def random_subsampling(points, n_selected_points):
+    n_points = points.shape[0]
+    if n_points <= n_selected_points:
+        return points, None
 
     selection = np.random.choice(n_points, size=n_selected_points, replace=False)
     inverse_mask = np.ones(n_points, np.bool)
     inverse_mask[selection] = 0
 
-    selection = xyzc[selection, :]
-    non_selected = xyzc[inverse_mask, :]
+    selection = points[selection, :]
+    non_selected = points[inverse_mask, :]
     return selection, non_selected
 
 
@@ -149,7 +160,6 @@ def split_octree(xyzc, level):
 
     indices = np.clip(np.floor(xyzc[:, 0:3] * n_level_partitions), 0, n_level_partitions-1).astype(int)
     indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions**2
-
 
     children = []
     for i, index in enumerate(np.unique(indices)):
@@ -202,3 +212,51 @@ def balanced_subsampling(xyzc, n_selected_points):
 
     non_selected = xyzc[inverse_mask, :]
     return selection, non_selected
+
+
+def num_points_by_class(points_by_class):
+    n_points = sum([n.shape[0] for n in points_by_class.values()])
+    return n_points
+
+
+def get_all_xyz_points(points_by_class):
+    t = tuple([n for n in points_by_class.values()])
+    return np.vstack(t)
+
+
+def get_class_count(points_by_class):
+    cc = {}
+    for c in points_by_class.items():
+        cc[c[0]] = c[1].shape[0]
+    return cc
+
+
+def cell_balanced_subsampling(points_by_class, n_selected_points):
+    """Returns balanced subsample and remaining points by class"""
+
+    counts = np.array([n.shape[0] for n in points_by_class.values()])
+    n_points = np.sum(counts)
+
+    if n_points < n_selected_points:
+        return points_by_class, None
+
+    classes = np.array(list(points_by_class.keys()))
+    ordered_classes = classes[np.argsort(counts)]
+
+    sampled = {}
+    remaining = {}
+    remaining_points = n_points
+    remaining_classes = ordered_classes.shape[0]
+    for c in ordered_classes:
+        n_taken = min(remaining_points / remaining_classes, points_by_class[c].shape[0]) if remaining_classes > 1 else remaining_points
+        remaining_points -= n_taken
+        remaining_classes -= 1
+        sampled_points, not_sampled_points = random_subsampling(points_by_class[c], n_taken)
+        sampled[c] = sampled_points
+        if not_sampled_points is not None:
+            remaining[c] = not_sampled_points
+
+    assert num_points_by_class(sampled) + num_points_by_class(remaining) == num_points_by_class(points_by_class)
+
+    return sampled, remaining
+

@@ -5,7 +5,6 @@ import sys
 import time
 from datetime import datetime
 from enum import Enum
-
 import numpy as np
 import seaborn as sns
 import encoding
@@ -15,6 +14,7 @@ from pc_node import PCNode
 
 
 class PointCloudModel:
+
     class Partitioning(Enum):
         LONGEST_AXIS_BINTREE = 0
         REGULAR_OCTREE = 1
@@ -107,41 +107,42 @@ class PointCloudModel:
             min_xyz = np.min(xyz_points, axis=0)
             max_xyz = np.max(xyz_points, axis=0)
 
-            node_points_by_class, remaining_points_by_class = node.balanced_subsampling(self._max_node_points)
+            sampled_node, remaining_node = node.balanced_subsampling(self._max_node_points)
 
             file_name, file_path = self._get_file_path(indices, out_folder)
-            xyz_selected_points = node.get_all_xyz_points()
+            xyz_selected_points = sampled_node.get_all_xyz_points()
             encoding.matrix_to_file(xyz_selected_points, file_path)
 
-            self.n_generation_stored_points += node_points_by_class.shape[0]
+            self.n_generation_stored_points += sampled_node.n_points
             self._print_generation_state()
 
             voxel_index = {"min": min_xyz.tolist(),
                            "max": max_xyz.tolist(),
                            "indices": indices,
                            "filename": file_name,
-                           "npoints": node_points_by_class.shape[0],
-                           "avgDistance": pc_utils.aprox_average_distance(node_points_by_class[:, 0:3]),
-                           "class_count": pc_utils.get_class_count(node_points_by_class)}
+                           "n_points": sampled_node.n_points,
+                           "avg_distance": pc_utils.aprox_average_distance(xyz_selected_points),
+                           "sorted_class_count": sampled_node.sorted_class_count}
 
-        xyzc = remaining_points_by_class
+            node = remaining_node
 
         # Creating children
-        voxel_index["children"] = self._get_children(xyzc, indices, out_folder) if xyzc is not None else []
+        voxel_index["children"] = self._save_children(node, indices, out_folder)
         return voxel_index
 
-    def _get_children(self, xyzc, indices, out_folder):
+    def _save_children(self, node, indices, out_folder):
         children = []
-        if xyzc.shape[0] >= self._max_node_points:
 
+        if node is not None:
             if self._partitioning_method == PointCloudModel.Partitioning.REGULAR_OCTREE:
-                pcs = pc_utils.split_octree(xyzc, level=len(indices))
+                nodes = node.split_octree(level=len(indices))
             else:
-                pcs = pc_utils.split_longest_axis(xyzc)
+                nodes = node.split_bintree_longest_axis()
 
-            for i, pc in enumerate(pcs):
-                vi = self._save_tree(pc, indices + [i], out_folder=out_folder)
+            for i, node in enumerate(nodes):
+                vi = self._save_tree(node, indices + [i], out_folder=out_folder)
                 children += [vi]
+
         return children
 
     @staticmethod

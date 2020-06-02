@@ -7,7 +7,7 @@ class PCNode:
     def __init__(self, points_by_class_dictionary):
         self.points_by_class = points_by_class_dictionary
         self.n_points_by_class = sum([n.shape[0] for n in self.points_by_class.values()])
-        self.n_points = np.sum(self.n_points_by_class)
+        self.n_points = int(np.sum(self.n_points_by_class))
 
         counts = np.array([n.shape[0] for n in self.points_by_class.values()])
         classes = np.array(list(self.points_by_class.keys()))
@@ -44,4 +44,46 @@ class PCNode:
         return sampled, remaining
 
     def split_octree(self, level):
-        pass
+        n_level_partitions = int(2 ** level)
+        children = [{} for _ in range(8)]
+
+        for c in self.sorted_class_count.keys():
+            xyz = self.points_by_class[c]
+
+            indices = np.clip(np.floor(xyz * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+            indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions ** 2
+
+            for i, index in enumerate(np.unique(indices)):
+                ps = indices == index
+                points = xyz[ps, :]
+                if points.shape[0] > 0:
+                    children[i][c] = xyz[ps, :]
+
+        children = [PCNode(c) for c in children if bool(c)] # removing empty's
+
+        assert len(children) <= 8
+        return children
+
+    def split_bintree_longest_axis(self):
+
+        children = [{}, {}]
+
+        for c in self.sorted_class_count.keys():
+            xyz = self.points_by_class[c]
+            min_xyz = np.min(xyz, axis=0)
+            max_xyz = np.max(xyz, axis=0)
+            size = max_xyz - min_xyz
+            max_dim = np.argmax(size)
+            m = np.median(xyz[:, max_dim])
+            division = xyz[:, max_dim] > m
+
+            s_div = sum(division)
+            if s_div == 0 or s_div == xyz.shape[0]:
+                division = xyz[:, max_dim] >= m
+
+            children[0][c] = xyz[division, :]
+            children[1][c] = xyz[np.logical_not(division), :]
+
+        children = [PCNode(c) for c in children if bool(c)]  # removing empty's
+
+        return children

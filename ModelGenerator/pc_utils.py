@@ -109,7 +109,7 @@ def divide_by_class(xyzc):
     points = {}
     for c in classes:
         xyz = xyzc[c == xyzc[:, 3], 0:3]
-        points[c] = xyz
+        points[float(c)] = xyz
 
     return points
 

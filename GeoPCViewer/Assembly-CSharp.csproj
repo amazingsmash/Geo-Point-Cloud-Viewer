@@ -63,7 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GeoPCViewer\AsyncJobManager.cs" />
     <Compile Include="Assets\GeoPCViewer\GeoPCNode.cs" />
+    <Compile Include="Assets\GeoPCViewer\GeoPCNodeMeshLoadingJob.cs" />
     <Compile Include="Assets\GeoPCViewer\GeoPCViewer.cs" />
     <Compile Include="Assets\GeoPCViewer\MathD\Mathd.cs" />
     <Compile Include="Assets\GeoPCViewer\MathD\Vector2d.cs" />

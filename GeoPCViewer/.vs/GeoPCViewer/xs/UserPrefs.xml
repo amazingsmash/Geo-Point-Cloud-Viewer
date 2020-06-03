@@ -1,20 +1,13 @@
 ﻿<Properties StartupConfiguration="{DB5BD49D-9187-36BE-03EA-2A3DFFC31A45}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GeoPCViewer/GeoPCNode.cs">
     <Files>
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PCNode.cs" Line="12" Column="18" />
-      <File FileName="Assets/GeoPCViewer/GeoPCNode.cs" Line="209" Column="23" />
-      <File FileName="Assets/GeoPCViewer/GeoPCViewer.cs" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudLeafNode.cs" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PointCloudViewer.cs" />
-      <File FileName="Assets/Scripts/PointCloudViewer/Subsampled_Version/PointCloud.cs" />
-      <File FileName="Assets/Scripts/PointCloudViewer/PC_Interfaces.cs" />
-      <File FileName="Assets/GeoPCViewer/MathD/Vector3d.cs" />
-      <File FileName="Assets/Scripts/OLD/CSVManager.cs" />
-      <File FileName="Assets/GeoPCViewer/PointHighlighter.cs" />
-      <File FileName="Assets/Materials/Rounded Points/PointCloud.shader" />
-      <File FileName="Assets/Materials/Rounded Points/PointCloud_Dot.shader" />
-      <File FileName="Assets/Materials/Rounded Points/PointCloud_Multipass.shader" />
-      <File FileName="Assets/Scripts/PointCloudViewer/MeshManager.cs" Line="74" Column="51" />
+      <File FileName="Assets/GeoPCViewer/NewClass.cs" Line="51" Column="12" />
+      <File FileName="Assets/GeoPCViewer/GeoPCNode.cs" Line="134" Column="1" />
+      <File FileName="Assets/GeoPCViewer/NewClass.cs" Line="12" Column="39" />
+      <File FileName="Assets/Scripts/PointCloudViewer/Utils/Matrix2D.cs" Line="25" Column="5" />
+      <File FileName="Assets/GeoPCViewer/GeoPCViewer.cs" Line="186" Column="6" />
+      <File FileName="Assets/Scripts/PointCloudViewer/MeshManager.cs" Line="70" Column="26" />
+      <File FileName="Assets/Scripts/OLD/CSVManager.cs" Line="34" Column="50" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -44,11 +37,12 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="7d9a445e-826d-47ed-a6af-f3b75f0e137c" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="e8aa44d0-ac96-4036-86c5-fc312b49eea1" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" relfile="Assets/GeoPCViewer/GeoPCNode.cs" line="233" column="1" />
-      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" relfile="Assets/GeoPCViewer/GeoPCNode.cs" line="218" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" relfile="Assets/GeoPCViewer/GeoPCNode.cs" line="235" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Assets/GeoPCViewer/GeoPCNode.cs" relfile="Assets/GeoPCViewer/GeoPCNode.cs" line="220" column="1" />
+      <Breakpoint file="/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Assets/GeoPCViewer/GeoPCViewer.cs" relfile="Assets/GeoPCViewer/GeoPCViewer.cs" line="81" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

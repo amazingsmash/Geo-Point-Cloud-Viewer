@@ -6,7 +6,7 @@ using SimpleJSON;
 using UnityEngine;
 using static GeoPCViewer;
 
-public class GeoPCNode : MonoBehaviour
+public partial class GeoPCNode : MonoBehaviour
 {
     public enum RenderType
     {
@@ -35,7 +35,9 @@ public class GeoPCNode : MonoBehaviour
     private State state = State.NOT_INIT;
 
     private List<GeoPCNode> children = new List<GeoPCNode>();
-    private MeshLoaderJob meshJob = null;
+    private GeoPCNodeMeshLoadingJob meshJob = null;
+
+    private static AsyncJobManager meshLoaderJM = new AsyncJobManager();
 
     #region Life Cycle
 
@@ -90,6 +92,11 @@ public class GeoPCNode : MonoBehaviour
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        meshLoaderJM.Stop();
+    }
+
     #endregion
 
     #region Initialization
@@ -127,16 +134,15 @@ public class GeoPCNode : MonoBehaviour
             case State.NOT_INIT:
                 break;
             case State.INIT:
-                meshJob = meshManager.GetMeshLoaderJob(data.pcFile,
-                                                       viewer.GetColorForClass,
-                                                       100);
+                meshJob = new GeoPCNodeMeshLoadingJob(this);
+                meshLoaderJM.RunJob(meshJob, 100);
                 state = meshJob != null? State.FETCHING_MESH : State.INIT;
                 break;
             case State.FETCHING_MESH:
-                Mesh mesh01 = meshManager.GetMeshFromJob(meshJob);
-                if (mesh01 != null)
+
+                if (meshJob.IsDone)
                 {
-                    meshFilter.mesh = mesh01;
+                    meshFilter.mesh = meshJob.resultMesh;
                     meshRenderer.material = farMat;
                     creationTime = Time.time;
                     meshJob = null;
@@ -146,8 +152,6 @@ public class GeoPCNode : MonoBehaviour
             case State.RENDERING:
                 break;
         }
-
-
     }
 
     #endregion

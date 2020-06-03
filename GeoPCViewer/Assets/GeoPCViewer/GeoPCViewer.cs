@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using SimpleJSON;
@@ -40,10 +41,13 @@ public class GeoPCViewer : MonoBehaviour
         public readonly double avgPointDistance;
         public readonly Vector3d minPoints;
         public readonly Vector3d maxPoints;
+        public readonly int nPoints;
         public readonly FileInfo pcFile;
         public readonly int[] indices;
         public readonly NodeData[] children;
         public readonly string name;
+        public readonly Dictionary<int, int> sortedClassCount;
+
         public NodeData(JSONNode nodeJSON, CellData cellData)
         {
             this.cellData = cellData;
@@ -52,7 +56,8 @@ public class GeoPCViewer : MonoBehaviour
             filename = nodeJSON["filename"].Value;
             pcFile = cellData.directoryInfo.GetFiles(filename)[0];
 
-            avgPointDistance = nodeJSON["avgDistance"].AsDouble;
+            nPoints = nodeJSON["n_points"].AsInt;
+            avgPointDistance = nodeJSON["avg_distance"].AsDouble;
             minPoints = JSONToVector3d(nodeJSON["min"].AsArray);
             maxPoints = JSONToVector3d(nodeJSON["max"].AsArray);
 
@@ -63,6 +68,14 @@ public class GeoPCViewer : MonoBehaviour
             {
                 indices[i] = ind[i].AsInt;
                 name += "_" + indices[i];
+            }
+
+            sortedClassCount = new Dictionary<int, int>();
+            var sortedClassCountJSON = nodeJSON["sorted_class_count"];
+            foreach (string c in sortedClassCountJSON.Keys)
+            {
+                int pointClass = (int)float.Parse(c);
+                sortedClassCount[pointClass] = sortedClassCountJSON[c].AsInt;
             }
 
             var cs = nodeJSON["children"].AsArray;
@@ -80,12 +93,29 @@ public class GeoPCViewer : MonoBehaviour
             }
 
         }
+
+        public Color[] GetPointColors(Dictionary<int, Color> classColor)
+        {
+            var colors = new Color[nPoints];
+            int p = 0;
+            foreach(int pointClass in sortedClassCount.Keys)
+            {
+                int n = sortedClassCount[pointClass];
+                Color color = classColor.TryGetValue(pointClass, out Color dictColor) ? dictColor : Color.white;
+                for (int i = 0; i < n; i++)
+                {
+                    colors[p++] = color;
+                }
+            }
+            return colors;
+        }
     }
 
 
     [SerializeField] private GameObject nodePrefab;
     [SerializeField] private string directory;
-    [SerializeField] private Dictionary<int, Color> classColor = null;
+    public Dictionary<int, Color> classColor { get; set; } = new Dictionary<int, Color>();
+
     public int numberOfMeshes = 400;
     public int numberOfMeshLoadingJobs = 20;
     public double metersPerDegree = 11111.11;
@@ -177,6 +207,7 @@ public class GeoPCViewer : MonoBehaviour
         classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
     }
 
+    [Obsolete]
     public Color GetColorForClass(int c)
     {
         return classColor.TryGetValue(c, out Color color) ? color : Color.white;
@@ -205,7 +236,6 @@ public class GeoPCViewer : MonoBehaviour
     {
         UnityEngine.Debug.Log("Finding selected point.");
 
-        MeshFilter[] mf = GetComponentsInChildren<MeshFilter>();
         float maxDist = 10000000.0f;
 
         Vector3 closestHit = Vector3.negativeInfinity;

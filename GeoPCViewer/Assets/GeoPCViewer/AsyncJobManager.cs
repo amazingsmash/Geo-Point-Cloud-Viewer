@@ -7,15 +7,23 @@ using System;
 public abstract class Job
 {
     public bool IsDone { get; protected set; } = false;
+    public int priority = 0;
 
     public abstract void Execute();
 }
 
+public class PriorityComparer : IComparer<int>
+{
+    public int Compare(int x, int y)
+    {
+        return x < y ? -1 : 1;
+    }
+}
 
 public class AsyncJobManager
 {
     private System.Threading.Thread thread = null;
-    private readonly SortedList jobs = new SortedList();
+    private readonly SortedList<int, Job> jobs = new SortedList<int, Job>(new PriorityComparer());
     private readonly object mutex = new object();
     private bool running = false;
 
@@ -25,7 +33,7 @@ public class AsyncJobManager
         {
             if (jobs.Count > 0)
             {
-                Job job = (Job)jobs.GetByIndex(0);
+                Job job = (Job)jobs.Values[0];
                 jobs.RemoveAt(0);
                 return job;
             }

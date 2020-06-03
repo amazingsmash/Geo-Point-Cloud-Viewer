@@ -83,15 +83,6 @@ public partial class GeoPCNode : MonoBehaviour
 
     }
 
-    private void OnDestroy()
-    {
-        Mesh mesh = meshFilter.mesh;
-        if (mesh != null)
-        {
-            meshManager.ReleaseMesh(mesh);
-        }
-    }
-
     private void OnApplicationQuit()
     {
         meshLoaderJM.Stop();
@@ -142,7 +133,7 @@ public partial class GeoPCNode : MonoBehaviour
 
                 if (meshJob.IsDone)
                 {
-                    meshFilter.mesh = meshJob.resultMesh;
+                    meshFilter.mesh = meshJob.GenerateMesh();
                     meshRenderer.material = farMat;
                     creationTime = Time.time;
                     meshJob = null;

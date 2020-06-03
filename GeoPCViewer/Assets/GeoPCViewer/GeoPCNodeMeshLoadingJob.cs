@@ -6,8 +6,10 @@ public partial class GeoPCNode : MonoBehaviour
 {
     class GeoPCNodeMeshLoadingJob : Job
     {
-        public Mesh resultMesh = null;
         private readonly GeoPCNode node;
+        private Vector3[] points;
+        private int[] indices;
+        private Color[] colors;
 
         public GeoPCNodeMeshLoadingJob(GeoPCNode node)
         {
@@ -19,9 +21,9 @@ public partial class GeoPCNode : MonoBehaviour
             byte[] buffer = File.ReadAllBytes(node.data.pcFile.FullName);
             float[,] matrix = Matrix2D.ReadFromBytes(buffer);
             int nPoints = matrix.GetLength(0);
-            var points = new Vector3[nPoints];
-            var indices = new int[nPoints];
-            var colors = node.data.GetPointColors(node.viewer.classColor);
+            points = new Vector3[nPoints];
+            indices = new int[nPoints];
+            colors = node.data.GetPointColors(node.viewer.classColor);
 
             for (int i = 0; i < nPoints; i++)
             {
@@ -29,14 +31,18 @@ public partial class GeoPCNode : MonoBehaviour
                 indices[i] = i;
             }
 
-            resultMesh = new Mesh
+            IsDone = true;
+        }
+
+        public Mesh GenerateMesh()
+        {
+            var resultMesh = new Mesh
             {
                 vertices = points,
                 colors = colors
             };
             resultMesh.SetIndices(indices, MeshTopology.Points, 0);
-
-            IsDone = true;
+            return resultMesh;
         }
     }
 }

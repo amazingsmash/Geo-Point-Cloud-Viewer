@@ -7,9 +7,9 @@ public partial class GeoPCNode : MonoBehaviour
     class GeoPCNodeMeshLoadingJob : Job
     {
         private readonly GeoPCNode node;
-        private Vector3[] points;
-        private int[] indices;
-        private Color[] colors;
+        public Vector3[] points;
+        public int[] indices;
+        public Color[] colors;
 
         public GeoPCNodeMeshLoadingJob(GeoPCNode node)
         {

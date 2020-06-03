@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using SimpleJSON;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static GeoPCViewer;
 
 public partial class GeoPCNode : MonoBehaviour
@@ -42,39 +43,54 @@ public partial class GeoPCNode : MonoBehaviour
     #region Life Cycle
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
+        Assert.IsNotNull(viewer, "GeoPCNode not initilized"); 
+
         meshRenderer = GetComponent<MeshRenderer>();
         meshFilter = GetComponent<MeshFilter>();
 
         meshRenderer.material = new Material(meshRenderer.material);
+
+        //Mesh Loading
+        yield return null;
+        GeoPCNodeMeshLoadingJob meshJob = new GeoPCNodeMeshLoadingJob(this);
+        meshLoaderJM.RunJob(meshJob, 100);
+        state = State.FETCHING_MESH;
+        while (!meshJob.IsDone)
+        {
+            yield return null;
+        }
+        meshFilter.mesh = new Mesh(){
+            vertices = meshJob.points,
+            colors = meshJob.colors
+        };
+        yield return null;
+        meshFilter.mesh.SetIndices(meshJob.indices, MeshTopology.Points, 0);
+        yield return null;
+        meshRenderer.material = farMat;
+        creationTime = Time.time;
+        state = State.RENDERING;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (state == State.FETCHING_MESH || state == State.INIT)
-        {
-            FetchMesh();
-        }
-
         if (state == State.RENDERING)
         {
             RecalculateLoDParameters();
             CheckMaterial();
 
-            if (Input.GetKeyUp(KeyCode.I) || needsChildren)
-            {
-                LoadChildren();
-            }
+            bool increaseLoD = viewer.LoDControlKeys ? Input.GetKeyUp(KeyCode.I) : needsChildren;
+            bool decreaseLoD = viewer.LoDControlKeys ? Input.GetKeyUp(KeyCode.O) : !needsChildren;
 
-            if (needsChildren && children.Count == 0)
+            if (increaseLoD && children.Count == 0)
             {
                 LoadChildren();
             }
             else
             {
-                if (!needsChildren && children.Count > 0)
+                if (decreaseLoD && children.Count > 0)
                 {
                     RemoveChildren();
                 }

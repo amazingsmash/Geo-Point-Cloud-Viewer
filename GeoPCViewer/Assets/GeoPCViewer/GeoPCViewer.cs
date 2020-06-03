@@ -122,6 +122,8 @@ public class GeoPCViewer : MonoBehaviour
     public float distanceThreshold;
     private MeshManager meshManager;
     public Vector3d XYZOffset { get; private set; } = default;
+    public bool LoDControlKeys = false;
+
     public float nearMatDistance = 100;
     public float pointPhysicalSize = 0.1f; //Round point size
 

@@ -118,7 +118,7 @@ public class GeoPCViewer : MonoBehaviour
     public double metersPerDegree = 11111.11;
     public float distanceThreshold;
     public Vector3d XYZOffset { get; private set; } = default;
-    public bool LoDControlKeys = false;
+    public bool DetailControlKeys = false;
 
     public float nearMatDistance = 100;
     public float pointPhysicalSize = 0.1f; //Round point size

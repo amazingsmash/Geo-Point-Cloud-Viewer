@@ -70,13 +70,13 @@ public partial class GeoPCNode : MonoBehaviour
             meshFilter.mesh.SetIndices(meshJob.indices, MeshTopology.Points, 0);
             yield return null;
             meshRenderer.material = farMat;
-            creationTime = Time.time;
         }
         else
         {
             meshRenderer.enabled = false;
         }
         state = State.RENDERING;
+        creationTime = Time.time;
     }
 
     // Update is called once per frame
@@ -87,8 +87,8 @@ public partial class GeoPCNode : MonoBehaviour
             RecalculateLoDParameters();
             CheckMaterial();
 
-            bool increaseLoD = viewer.LoDControlKeys ? Input.GetKeyUp(KeyCode.I) : needsChildren;
-            bool decreaseLoD = viewer.LoDControlKeys ? Input.GetKeyUp(KeyCode.O) : !needsChildren;
+            bool increaseLoD = viewer.DetailControlKeys ? Input.GetKeyUp(KeyCode.I) : needsChildren;
+            bool decreaseLoD = viewer.DetailControlKeys ? Input.GetKeyUp(KeyCode.O) : !needsChildren;
 
             if (increaseLoD && children.Count == 0)
             {
@@ -135,33 +135,6 @@ public partial class GeoPCNode : MonoBehaviour
         worldSpaceBounds = new Bounds((Vector3)(pointsBoundCenter + worldPosition), (Vector3)pointsBoundSize);
 
         state = State.INIT;
-    }
-
-    private void FetchMesh()
-    {
-        switch (state)
-        {
-            case State.NOT_INIT:
-                break;
-            case State.INIT:
-                meshJob = new GeoPCNodeMeshLoadingJob(this);
-                meshLoaderJM.RunJob(meshJob, 100);
-                state = meshJob != null? State.FETCHING_MESH : State.INIT;
-                break;
-            case State.FETCHING_MESH:
-
-                if (meshJob.IsDone)
-                {
-                    meshFilter.mesh = meshJob.GenerateMesh();
-                    meshRenderer.material = farMat;
-                    creationTime = Time.time;
-                    meshJob = null;
-                    state = State.RENDERING;
-                }
-                break;
-            case State.RENDERING:
-                break;
-        }
     }
 
     #endregion

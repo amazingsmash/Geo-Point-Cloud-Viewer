@@ -137,13 +137,14 @@ public class GeoPCViewer : MonoBehaviour
         distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
 
         meshManager = new MeshManager(numberOfMeshes, numberOfMeshLoadingJobs);
-        InitIPointCloudManager();
 
         DirectoryInfo modelDir = new DirectoryInfo(directory);
         FileInfo index = modelDir.GetFiles("pc_model.json")[0];
         StreamReader reader = new StreamReader(index.FullName);
         string s = reader.ReadToEnd();
         JSONNode json = JSON.Parse(s);
+
+        InitColorPalette(json["classes"].AsArray);
 
         int cellCounter = 0;
         foreach(JSONNode c in json["cells"].AsArray)
@@ -194,25 +195,18 @@ public class GeoPCViewer : MonoBehaviour
 
     #region Colors
 
-    private void InitIPointCloudManager()
-    {
-        //Class colors
-        classColor = new Dictionary<int, Color>();
-        classColor[3] = new Color(178.0f / 255.0f, 149.0f / 255.0f, 82.0f / 255.0f);
-        classColor[23] = new Color(139.0f / 255.0f, 196.0f / 255.0f, 60.0f / 255.0f);
-        classColor[16] = Color.blue;
-        classColor[19] = Color.blue;
-        classColor[17] = Color.red;
-        classColor[20] = Color.green;
-        classColor[31] = new Color(244.0f / 255.0f, 191.0f / 255.0f, 66.0f / 255.0f);
-        classColor[29] = Color.black;
-        classColor[30] = new Color(244.0f / 255.0f, 65.0f / 255.0f, 244.0f / 255.0f);
-    }
 
-    [Obsolete]
-    public Color GetColorForClass(int c)
+    private void InitColorPalette(JSONArray classes)
     {
-        return classColor.TryGetValue(c, out Color color) ? color : Color.white;
+        classColor = new Dictionary<int, Color>();
+        foreach (JSONNode c in classes)
+        {
+            int pointClass = (int)c["class"].AsFloat;
+            double[] v = c["color"].AsArray.AsDoubles();
+            classColor[pointClass] = new Color((float)v[0],
+                                            (float)v[1],
+                                            (float)v[2]);
+        }
     }
 
     float GetClassCodeForColor(Color color)

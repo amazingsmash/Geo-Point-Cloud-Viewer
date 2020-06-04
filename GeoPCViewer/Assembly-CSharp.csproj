@@ -63,14 +63,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GeoPCViewer\AsyncJobManager.cs" />
-    <Compile Include="Assets\GeoPCViewer\GeoPCNode.cs" />
-    <Compile Include="Assets\GeoPCViewer\GeoPCNodeMeshLoadingJob.cs" />
-    <Compile Include="Assets\GeoPCViewer\GeoPCViewer.cs" />
     <Compile Include="Assets\GeoPCViewer\MathD\Mathd.cs" />
     <Compile Include="Assets\GeoPCViewer\MathD\Vector2d.cs" />
     <Compile Include="Assets\GeoPCViewer\MathD\Vector3d.cs" />
-    <Compile Include="Assets\GeoPCViewer\PointHighlighter.cs" />
+    <Compile Include="Assets\GeoPCViewer\Scripts\AsyncJobManager.cs" />
+    <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCNode.cs" />
+    <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCNodeMeshLoadingJob.cs" />
+    <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCViewer.cs" />
+    <Compile Include="Assets\GeoPCViewer\Scripts\PointHighlighter.cs" />
     <Compile Include="Assets\Scripts\Camera Control\CameraControl.cs" />
     <Compile Include="Assets\Scripts\Camera Control\FlyCam.cs" />
     <Compile Include="Assets\Scripts\Communications\CanvasPointCloudListener.cs" />
@@ -92,11 +92,11 @@
     <Compile Include="Assets\Scripts\PointCloudViewer\Utils\Matrix2D.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Utils\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\PointCloudViewer\Utils\SimpleJSON.cs" />
-    <None Include="Assets\Materials\Rounded Points\PointCloud_Dot.shader" />
-    <None Include="Assets\Materials\Rounded Points\PointCloud_Multipass.shader" />
-    <None Include="Assets\Materials\Point Selected Billboard\BillBoard_ZTest_Off.shader" />
-    <None Include="Assets\Materials\Rounded Points\PointCloud.shader" />
-    <None Include="Assets\Materials\Rounded Points\PointCloud_Dot_Transparency.shader" />
+    <None Include="Assets\GeoPCViewer\Materials\Rounded Points\PointCloud_Dot.shader" />
+    <None Include="Assets\GeoPCViewer\Materials\Rounded Points\PointCloud_Multipass.shader" />
+    <None Include="Assets\GeoPCViewer\Materials\Point Selected Billboard\BillBoard_ZTest_Off.shader" />
+    <None Include="Assets\GeoPCViewer\Materials\Rounded Points\PointCloud.shader" />
+    <None Include="Assets\GeoPCViewer\Materials\Rounded Points\PointCloud_Dot_Transparency.shader" />
     <Reference Include="UnityEngine">
       <HintPath>/Applications/Unity/Hub/Editor/2019.3.13f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

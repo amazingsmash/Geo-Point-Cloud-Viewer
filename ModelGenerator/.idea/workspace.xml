@@ -4,11 +4,12 @@
     <list default="true" id="abe32653-d01b-4287-a51e-b2e5b1ece8a0" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/UserPrefs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/.vs/GeoPCViewer/xs/UserPrefs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/ArtifactDB" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/ArtifactDB" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/Artifacts/cd/cd54f30f726f14f317fd87bb64c1241e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentLayout-default.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/CurrentLayout-default.dwlt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/LastSceneManagerSetup.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/LastSceneManagerSetup.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/SourceAssetDB" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/SourceAssetDB" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/Hierarchy/4e17a6-mainStage.json" beforeDir="false" afterPath="$PROJECT_DIR$/../GeoPCViewer/Library/StateCache/Hierarchy/4e17a6-mainStage.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/json_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pc_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,10 +135,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Python3" />
       <item itemvalue="Python.PointCloudModelGenerator" />
       <item itemvalue="Python.PointCloudModelGenerator_Subsampling" />
       <item itemvalue="Python.pc_utils" />
+      <item itemvalue="Python.Python3" />
     </list>
     <recent_temporary>
       <list>
@@ -254,10 +255,10 @@
       <screen x="0" y="23" width="2560" height="1057" />
     </state>
     <state x="211" y="190" key="SettingsEditor/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1589287139745" />
-    <state x="633" y="384" key="com.intellij.ide.util.TipDialog" timestamp="1591085091351">
-      <screen x="0" y="23" width="2560" height="1057" />
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog" timestamp="1591690650286">
+      <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1591011109619" />
+    <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1591690650286" />
     <state x="633" y="384" key="com.intellij.ide.util.TipDialog/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1591085091351" />
     <state x="853" y="283" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1591104690781">
       <screen x="0" y="0" width="2560" height="1080" />

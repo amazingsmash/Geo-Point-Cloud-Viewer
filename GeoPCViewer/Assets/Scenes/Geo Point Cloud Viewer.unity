@@ -1045,6 +1045,11 @@ PrefabInstance:
       propertyPath: LoDControlKeys
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1365491589282927177, guid: 535babe55e6e74556b406b75d29c2b53,
+        type: 3}
+      propertyPath: DetailControlKeys
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4808590389130428745, guid: 535babe55e6e74556b406b75d29c2b53,
         type: 3}
       propertyPath: m_LocalPosition.x

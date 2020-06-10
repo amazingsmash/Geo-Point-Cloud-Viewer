@@ -83,7 +83,7 @@ class GeoPointCloudModel:
     def _save_model_descriptor(self):
 
         desc_model = {"model_name": self._name,
-                      "dgg_cell_side_length": self._dgg_cell_side_length,
+                      "global_grid": self._global_grid.get_descriptor(),
                       "max_node_points": self._max_node_points,
                       "parent_sampling": self._parent_sampling,
                       "partitioning_method": self._partitioning_method.name,

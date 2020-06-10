@@ -61,7 +61,7 @@ if __name__ == "__main__":
                                partitioning_method=method,
                                max_node_points=args.node_points,
                                parent_sampling=args.sample,
-                               balanced_sampling=args.unbalanced_sampling)
+                               balanced_sampling=not args.unbalanced_sampling)
 
     t0 = datetime.now()
 

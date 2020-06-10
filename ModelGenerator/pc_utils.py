@@ -10,7 +10,15 @@ def get_sector(lat, lon):
     return sector
 
 
-def convert_las_to_wgs84(las_x, las_y, epsg_num=32733, show_map=True):
+def open_sector_in_googlemaps(sector):
+    webbrowser.open(get_sector_googlemaps_url(sector))
+
+
+def get_sector_googlemaps_url(sector):
+    return "http://maps.google.com/maps?q=%f,%f" % ((sector[0] + sector[2]) / 2, (sector[1] + sector[3]) / 2)
+
+
+def convert_las_to_wgs84(las_x, las_y, epsg_num=32733):
     if epsg_num is 4326:
         return las_x, las_y
 
@@ -20,11 +28,30 @@ def convert_las_to_wgs84(las_x, las_y, epsg_num=32733, show_map=True):
 
     lat, lon = transformer.transform(las_x, las_y)
 
-    if show_map:
-        url = "http://maps.google.com/maps?q=%f,%f" % ((np.min(lat) + np.max(lat)) / 2, (np.min(lon) + np.max(lon)) / 2)
-        webbrowser.open(url)
-
     return lat, lon
+
+
+def convert_crs(lasx, lasy, epsg_num_in, epsg_num_out):
+    if epsg_num_in is epsg_num_out:
+        return lasx, lasy
+
+    crs_in = CRS.from_epsg(epsg_num_in)
+    crs_out = CRS.from_epsg(epsg_num_out)
+    transformer = Transformer.from_crs(crs_from=crs_in, crs_to=crs_out)
+
+    nx, ny = transformer.transform(lasx, lasy)
+    return nx, ny
+
+
+def show_wgs84_data(x, y, espg_num):
+    if espg_num != 4326:
+        crs_in = CRS.from_epsg(espg_num)
+        t_wgs84 = Transformer.from_crs(crs_from=crs_in, crs_to=CRS.from_epsg(4326))
+        lat, lon = t_wgs84.transform(x, y)
+
+    sector = get_sector(lat, lon)
+    print("Coordinates in WGS84 Sector [%f, %f - %f, %f]" % sector)
+    print("Google Maps: %s" % get_sector_googlemaps_url(sector))
 
 
 def discover_epsg(las_x, las_y):
@@ -52,21 +79,74 @@ def discover_epsg(las_x, las_y):
             pass
 
 
-def read_las_as_wgs84_xyzc(las_path, epsg_num):
+def read_las_as_wgs84_lonlathc(las_path, epsg_num):
     in_file = File(las_path, mode='r')
-    lat, lon = convert_las_to_wgs84(in_file.x, in_file.y, epsg_num, show_map=False)
+    lat, lon = convert_crs(in_file.x, in_file.y, epsg_num_in=epsg_num, epsg_num_out=4326)
     h = in_file.z
 
-    sector = get_sector(lat, lon)
-    print("LAS WGS84 Sector [%f, %f - %f, %f]" % sector)
+    show_wgs84_data(lat, lon, espg_num=4326)
 
-    xyzc = np.transpose(np.array([lat, lon, h,
-                                  in_file.Classification.astype(float)]))
+    lonlathc = np.transpose(np.array([lon, lat, h, in_file.Classification.astype(float)]))
+    in_file.close()
+    return lonlathc
+
+
+def read_las_as_spherical_mercator_xyzc(las_path, epsg_num):
+
+    in_file = File(las_path, mode='r')
+    x, y = convert_crs(in_file.x, in_file.y, epsg_num_in=epsg_num, epsg_num_out=3857)
+    h = in_file.z
+
+    show_wgs84_data(in_file.x, in_file.y, epsg_num)
+
+    xyzc = np.transpose(np.array([x, y, h, in_file.Classification.astype(float)]))
     in_file.close()
     return xyzc
 
 
-def split_xyzc_in_wgs84_normalized_cells(xyzc, dgg_cell_size):
+def print_spherical_mercator_limits():
+    x, y = convert_crs(np.array([-85.05112878, 85.05112878]), np.array([-180, 180]), epsg_num_in=4326, epsg_num_out=3857)
+    print("Spherical Mercator Limits: %f, %f - %f, %f" % (x[0], y[0], x[1], y[1]))
+
+
+def split_xyzc_into_TMS_tile_cells(xyzc, level):
+    dimension_n_tiles = (level ** 2)
+    tile_size_meters = 156543.0339 / dimension_n_tiles
+    tx = np.floor(xyzc[:, 0] / tile_size_meters)
+    ty = np.floor(xyzc[:, 1] / tile_size_meters)
+
+    indices = tx * dimension_n_tiles + ty
+    unique_indices = np.unique(indices)
+
+    cells = []
+    for i in unique_indices:
+        points = np.where(indices == i)[0]
+        xy_index = [tx[points[0]], ty[points[0]]]
+        cell_min_lon_lat = np.array(xy_index) * dgg_cell_size
+        cell_max_lon_lat = cell_min_lon_lat + np.array([dgg_cell_size, dgg_cell_size])
+        cell_xyzc = xyzc[points, :]
+        min_lon_lat_height = np.min(cell_xyzc[:, 0:3], axis=0)
+        max_lon_lat_height = np.max(cell_xyzc[:, 0:3], axis=0)
+
+        cell_xyzc[:, 0:2] = (cell_xyzc[:, 0:2] - cell_min_lon_lat) / dgg_cell_size
+        min_h = min_lon_lat_height[2]
+        max_h = max_lon_lat_height[2]
+        cell_xyzc[:, 2] = (cell_xyzc[:, 2] - min_h) / (max_h - min_h)
+
+        cell = {"cell_index": tuple(xy_index),
+                "cell_min_lon_lat": cell_min_lon_lat.tolist(),
+                "cell_max_lon_lat": cell_max_lon_lat.tolist(),
+                "min_lon_lat_height": min_lon_lat_height.tolist(),
+                "max_lon_lat_height": max_lon_lat_height.tolist(),
+                "points": divide_by_class(cell_xyzc)}
+        cells += [cell]
+    return cells
+
+
+    return tx, ty
+
+
+def split_lonlathc_in_wgs84_normalized_cells(xyzc, dgg_cell_size):
     """Returns voxels of points encapuslated in WGS84 zero-centered cells
     all dimensions being normalized between 0 and 1"""
     lon_indices = np.floor(xyzc[:, 0] / dgg_cell_size)
@@ -114,6 +194,17 @@ def divide_by_class(xyzc):
     return points
 
 
+def divide_points_by_class(points, classes) -> dict:
+    unique_classes = np.unique(classes)
+
+    points_by_class = {}
+    for c in unique_classes:
+        xyz = points[c == classes, :]
+        points_by_class[float(c)] = xyz
+
+    return points_by_class
+
+
 def split_longest_axis(xyzc):
     min_xyz = np.min(xyzc[:, 0:3], axis=0)
     max_xyz = np.max(xyzc[:, 0:3], axis=0)
@@ -130,7 +221,7 @@ def split_longest_axis(xyzc):
     return res
 
 
-def random_subsampling(points, n_selected_points):
+def random_sampling(points, n_selected_points):
     n_points = points.shape[0]
     if n_points <= n_selected_points:
         return points, None
@@ -158,8 +249,8 @@ def split_octree(xyzc, level):
 
     n_level_partitions = int(2 ** level)
 
-    indices = np.clip(np.floor(xyzc[:, 0:3] * n_level_partitions), 0, n_level_partitions-1).astype(int)
-    indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions**2
+    indices = np.clip(np.floor(xyzc[:, 0:3] * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+    indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions ** 2
 
     children = []
     for i, index in enumerate(np.unique(indices)):
@@ -187,8 +278,7 @@ def split_by_class(xyzc):
     return ls
 
 
-def balanced_subsampling(xyzc, n_selected_points):
-
+def balanced_sampling(xyzc, n_selected_points):
     n_points = xyzc.shape[0]
     if n_points < n_selected_points:
         return xyzc, None
@@ -197,7 +287,7 @@ def balanced_subsampling(xyzc, n_selected_points):
     max_n_points_class = n_selected_points / cs.shape[0]
     order_classes = np.argsort(count)
 
-    selection = np.array((0,1))
+    selection = np.array((0, 1))
     for i in order_classes:
         indices = np.where(xyzc[:, 3] == cs[i])
         if indices.shape[0] < max_n_points_class:
@@ -231,7 +321,7 @@ def get_class_count(points_by_class):
     return cc
 
 
-def cell_balanced_subsampling(points_by_class, n_selected_points):
+def cell_balanced_sampling(points_by_class, n_selected_points):
     """Returns balanced subsample and remaining points by class"""
 
     counts = np.array([n.shape[0] for n in points_by_class.values()])
@@ -248,10 +338,11 @@ def cell_balanced_subsampling(points_by_class, n_selected_points):
     remaining_points = n_points
     remaining_classes = ordered_classes.shape[0]
     for c in ordered_classes:
-        n_taken = min(remaining_points / remaining_classes, points_by_class[c].shape[0]) if remaining_classes > 1 else remaining_points
+        n_taken = min(remaining_points / remaining_classes,
+                      points_by_class[c].shape[0]) if remaining_classes > 1 else remaining_points
         remaining_points -= n_taken
         remaining_classes -= 1
-        sampled_points, not_sampled_points = random_subsampling(points_by_class[c], n_taken)
+        sampled_points, not_sampled_points = random_sampling(points_by_class[c], n_taken)
         sampled[c] = sampled_points
         if not_sampled_points is not None:
             remaining[c] = not_sampled_points
@@ -259,4 +350,3 @@ def cell_balanced_subsampling(points_by_class, n_selected_points):
     assert num_points_by_class(sampled) + num_points_by_class(remaining) == num_points_by_class(points_by_class)
 
     return sampled, remaining
-

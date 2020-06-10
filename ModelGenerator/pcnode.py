@@ -18,7 +18,7 @@ class PCNode:
         t = tuple([self.points_by_class[c] for c in self.sorted_class_count.keys()])
         return np.vstack(t)
 
-    def balanced_subsampling(self, n_selected_points):
+    def sample(self, n_selected_points, balanced=True):
         """Returns balanced subsample and remaining points by class"""
 
         if self.n_points <= n_selected_points:
@@ -29,10 +29,13 @@ class PCNode:
         remaining_points = n_selected_points
         remaining_classes = len(self.sorted_class_count)
         for c, n in self.sorted_class_count.items():
-            n_taken = int(min(remaining_points / remaining_classes, n)) if remaining_classes > 1 else remaining_points
+            n_taken = remaining_points / remaining_classes if balanced \
+                else n_selected_points * (self.points_by_class[c].shape[0] / self.n_points)  # not balanced
+            n_taken = int(min(n_taken, n)) if remaining_classes > 1 else remaining_points
             remaining_points -= n_taken
             remaining_classes -= 1
-            sampled_points, not_sampled_points = pc_utils.random_subsampling(self.points_by_class[c], n_taken)
+
+            sampled_points, not_sampled_points = pc_utils.random_sampling(self.points_by_class[c], n_taken)
             sampled[c] = sampled_points
             if not_sampled_points is not None:
                 remaining[c] = not_sampled_points

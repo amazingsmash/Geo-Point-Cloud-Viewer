@@ -7,30 +7,139 @@ using UnityEngine;
 
 public class GeoPCViewer : MonoBehaviour
 {
-    public struct CellData
+    #region Model Parsing
+
+    public abstract class GlobalGrid
     {
-        public readonly Vector2d minLonLat, maxLonLat, lonLatDelta;
-        public readonly double minHeight, maxHeight;
-        public readonly DirectoryInfo directoryInfo;
-        public Vector3d lonHLatDelta;
-        public Vector3d lonHLatMin;
-
-        public CellData(JSONNode cellJSON, DirectoryInfo modelDir)
+        public static GlobalGrid Parse(JSONNode json)
         {
+            switch (json["type"].Value)
+            {
+                case "TileMapServiceGG":
+                    return new TileMapServiceGG(json);
+                default:
+                    return null;
+            }
+        }
+    }
+
+    public class TileMapServiceGG : GlobalGrid {
+        public readonly int level;
+        public readonly int nSideTiles;
+        public TileMapServiceGG(JSONNode json)
+        {
+            level = json["level"].AsInt;
+            nSideTiles = (int)Math.Pow(2, level);
+        }
+
+        public Vector2Int GetGoogleMapsIndex(Vector2Int tmsIndex)
+        {
+            return new Vector2Int(tmsIndex.x,
+                nSideTiles + 1 - tmsIndex.y);
+        }
+    }
+
+    public struct Box{
+        public readonly Vector3d Min, Max;
+        public Box(Vector3d min, Vector3d max)
+        {
+            this.Min = min;
+            this.Max = max;
+        }
+
+        public Vector3d Center { get => (Max + Min) / 2; }
+        public Vector3d Size { get => (Max - Min); }
+    }
+
+    public class ModelData
+    {
+        public readonly DirectoryInfo directory;
+        public readonly string name;
+        public readonly GlobalGrid globalGrid;
+        public readonly int maxNodePoints;
+        public readonly bool parentSampling;
+        public readonly string partitioningMethod;
+        public readonly CellData[] cells;
+        public readonly Dictionary<int, Color> classColor;
+        public readonly Box pcBounds;
+
+        public ModelData(JSONNode modelJSON, DirectoryInfo modelDir)
+        {
+            directory = modelDir;
+            name = modelJSON["model_name"].Value;
+            globalGrid = GlobalGrid.Parse( modelJSON["global_grid"] );
+            maxNodePoints = modelJSON["max_node_points"].AsInt;
+            parentSampling = modelJSON["parent_sampling"].AsBool;
+            partitioningMethod = modelJSON["partitioning_method"].Value;
+
+            var classesJSON = modelJSON["classes"].AsArray;
+            classColor = new Dictionary<int, Color>();
+            foreach (JSONNode c in classesJSON)
+            {
+                int pointClass = (int)c["class"].AsFloat;
+                double[] v = c["color"].AsArray.AsDoubles();
+                classColor[pointClass] = new Color((float)v[0],
+                                                (float)v[1],
+                                                (float)v[2]);
+            }
+
+            var cellDataJSONs = modelJSON["cells"].AsArray;
+            cells = new CellData[cellDataJSONs.Count];
+
+            var pcBoundsMin = new Vector3d(double.MaxValue, double.MaxValue, double.MaxValue);
+            var pcBoundsMax = new Vector3d(double.MinValue, double.MinValue, double.MinValue);
+            for (int i = 0; i < cells.Length; i++)
+            {
+                cells[i] = new CellData(cellDataJSONs[i], this);
+                pcBoundsMin = Vector3d.Min(pcBoundsMin, cells[i].pcBounds.Min);
+                pcBoundsMax = Vector3d.Min(pcBoundsMax, cells[i].pcBounds.Max);
+            }
+
+            pcBounds = new Box(pcBoundsMin, pcBoundsMax);
+        }
+    }
+
+    public class CellData
+    {
+        public readonly Box pcBounds, extent;
+        public readonly Vector2Int index;
+        public readonly DirectoryInfo directoryInfo;
+        public readonly ModelData modelData;
+
+        public CellData(JSONNode cellJSON, ModelData modelData)
+        {
+            this.modelData = modelData;
             string cn = cellJSON["directory"].Value;
-            directoryInfo = modelDir.GetDirectories(cn)[0];
+            index = JSON_XY_ToVector2Int(cellJSON["cell_index"].AsArray);
+            directoryInfo = modelData.directory.GetDirectories(cn)[0];
 
-            minLonLat = JSONToVector2d(cellJSON["cell_min_lon_lat"].AsArray);
-            maxLonLat = JSONToVector2d(cellJSON["cell_max_lon_lat"].AsArray);
-            lonLatDelta = maxLonLat - minLonLat;
+            extent = new Box(JSON_XZY_ToVector3d(cellJSON["cell_extent_min"].AsArray),
+                JSON_XZY_ToVector3d(cellJSON["cell_extent_max"].AsArray));
 
-            minHeight = cellJSON["min_lon_lat_height"][2].AsDouble;
-            maxHeight = cellJSON["max_lon_lat_height"][2].AsDouble;
+            pcBounds = new Box(JSON_XZY_ToVector3d(cellJSON["pc_bounds_min"].AsArray),
+                JSON_XZY_ToVector3d(cellJSON["pc_bounds_max"].AsArray));
+        }
 
-            double deltaH = maxHeight - minHeight;
-            lonHLatDelta = new Vector3d(lonLatDelta.x, deltaH, lonLatDelta.y);
-            lonHLatMin =new Vector3d(minLonLat[0], minHeight, minLonLat[1]);
+        public string GetOSMTileURL()
+        {
+            if (modelData.globalGrid is TileMapServiceGG gg)
+            {
+                var i = gg.GetGoogleMapsIndex(index);
+                return $"https://b.tile.openstreetmap.org/{gg.level}/{i.x}/{i.y}.png";
+            }
+            return null;
+        }
 
+        public string GetARCGISWorldImageryTileURL()
+        {
+            if (modelData.globalGrid is TileMapServiceGG gg)
+            {
+                var i = gg.GetGoogleMapsIndex(index);
+                return $"https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{gg.level}/{i.y}/{i.x}.png";
+            }
+            return null;
+
+        
         }
     }
 
@@ -38,8 +147,7 @@ public class GeoPCViewer : MonoBehaviour
     {
         public readonly CellData cellData;
         public readonly double avgPointDistance;
-        public readonly Vector3d minPoints;
-        public readonly Vector3d maxPoints;
+        public readonly Box pcBounds;
         public readonly int nPoints;
         public readonly FileInfo pcFile;
         public readonly int[] indices;
@@ -56,8 +164,12 @@ public class GeoPCViewer : MonoBehaviour
 
             nPoints = nodeJSON["n_points"].AsInt;
             avgPointDistance = nodeJSON["avg_distance"].AsDouble;
-            minPoints = JSONToVector3d(nodeJSON["min"].AsArray);
-            maxPoints = JSONToVector3d(nodeJSON["max"].AsArray);
+
+            var min01 = JSON_XZY_ToVector3d(nodeJSON["min"].AsArray);
+            var max01 = JSON_XZY_ToVector3d(nodeJSON["max"].AsArray);
+
+            pcBounds = new Box( Vector3d.Scale(min01, cellData.extent.Size) + cellData.extent.Min,
+                                Vector3d.Scale(max01, cellData.extent.Size) + cellData.extent.Min);
 
             var ind = nodeJSON["indices"].AsArray;
             indices = new int[ind.Count];
@@ -106,24 +218,48 @@ public class GeoPCViewer : MonoBehaviour
             }
             return colors;
         }
+
     }
 
+    public static Vector3d JSON_XZY_ToVector3d(JSONArray v)
+    {
+        return new Vector3d(v[0].AsDouble,
+                            v[2].AsDouble,
+                            v[1].AsDouble);
+    }
+
+    public static Vector2d JSON_XY_ToVector2d(JSONArray v)
+    {
+        return new Vector2d(v[0].AsDouble, v[1].AsDouble);
+    }
+
+    public static Vector2Int JSON_XY_ToVector2Int(JSONArray v)
+    {
+        return new Vector2Int(v[0].AsInt, v[1].AsInt);
+    }
+
+    #endregion
 
     [SerializeField] private GameObject nodePrefab;
+    [SerializeField] private FlatTile flatTilePrefab;
     [SerializeField] private string directory;
-    public Dictionary<int, Color> classColor { get; set; } = new Dictionary<int, Color>();
 
     public int numberOfMeshes = 400;
     public int numberOfMeshLoadingJobs = 20;
-    public double metersPerDegree = 11111.11;
     public float distanceThreshold;
     public Vector3d XYZOffset { get; private set; } = default;
     public bool DetailControlKeys = false;
 
     public float nearMatDistance = 100;
     public float pointPhysicalSize = 0.1f; //Round point size
+    public ModelData Model { private set; get; } = null;
+    public Dictionary<int, Color> ClassColorDictionary
+    {
+        get => Model.classColor;
+        private set { }
+    }
 
-    private List<GeoPCNode> cellNodes = new List<GeoPCNode>();
+    private List<GeoPCNode> visibleTopLevelNodes = new List<GeoPCNode>();
 
     #region Life cycle
 
@@ -137,29 +273,28 @@ public class GeoPCViewer : MonoBehaviour
         StreamReader reader = new StreamReader(index.FullName);
         string s = reader.ReadToEnd();
         JSONNode json = JSON.Parse(s);
-
-        InitColorPalette(json["classes"].AsArray);
+        Model = new ModelData(json, modelDir);
 
         int cellCounter = 0;
-        foreach(JSONNode c in json["cells"].AsArray)
+        foreach (CellData cellData in Model.cells)
         {
-            CellData cellData = new CellData(c, modelDir);
             InitCell(cellData, cellCounter++);
+
+            if (flatTilePrefab != null)
+            {
+                var t = Instantiate(flatTilePrefab.gameObject).GetComponent<FlatTile>();
+                t.viewer = this;
+                //t.url = cellData.GetOSMTileURL();
+                t.url = cellData.GetARCGISWorldImageryTileURL();
+                t.cellExtentMin = cellData.extent.Min;
+                t.cellExtentMax = cellData.extent.Max;
+            }
         }
     }
 
     #endregion
 
     #region Init
-    public static Vector3d JSONToVector3d(JSONArray lonLatHeigth)
-    {
-        return new Vector3d(lonLatHeigth[0], lonLatHeigth[2], lonLatHeigth[1]);
-    }
-
-    public static Vector2d JSONToVector2d(JSONArray lonLat)
-    {
-        return new Vector2d(lonLat[0], lonLat[1]);
-    }
 
     private void InitCell(CellData cellData, int nodeNumber)
     {
@@ -170,13 +305,12 @@ public class GeoPCViewer : MonoBehaviour
 
         if (nodeNumber == 0)
         {
-            XYZOffset = new Vector3d(cellData.minLonLat[0] * metersPerDegree,
-                                    cellData.minHeight,
-                                    cellData.minLonLat[1] * metersPerDegree);
+            Vector3d min = cellData.extent.Min;
+            XYZOffset = new Vector3d(min.x, 0, min.z);
         }
         NodeData nodeData = new NodeData(json, cellData);
         GeoPCNode n = CreateNode(nodeData);
-        cellNodes.Add(n);
+        visibleTopLevelNodes.Add(n);
     }
 
 
@@ -192,23 +326,9 @@ public class GeoPCViewer : MonoBehaviour
 
     #region Colors
 
-
-    private void InitColorPalette(JSONArray classes)
-    {
-        classColor = new Dictionary<int, Color>();
-        foreach (JSONNode c in classes)
-        {
-            int pointClass = (int)c["class"].AsFloat;
-            double[] v = c["color"].AsArray.AsDoubles();
-            classColor[pointClass] = new Color((float)v[0],
-                                            (float)v[1],
-                                            (float)v[2]);
-        }
-    }
-
     float GetClassCodeForColor(Color color)
     {
-        foreach (var entry in classColor)
+        foreach (var entry in Model.classColor)
         {
             if (entry.Value.IsEqualsTo(color))
             {
@@ -235,7 +355,7 @@ public class GeoPCViewer : MonoBehaviour
         Color colorClosestHit = Color.black;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        foreach(GeoPCNode node in cellNodes)
+        foreach(GeoPCNode node in visibleTopLevelNodes)
         {
             UnityEngine.Debug.Log("Finding selected point on node.");
             node.GetClosestPointOnRay(ray,
@@ -250,6 +370,22 @@ public class GeoPCViewer : MonoBehaviour
         pointClass = hit ? GetClassCodeForColor(colorClosestHit) : default;
         point = hit? closestHit : default;
         return hit;
+    }
+
+    #endregion
+
+    #region Gizmos
+
+    private void OnDrawGizmos()
+    {
+        if (Model != null && Model.cells != null)
+        {
+            foreach (var c in Model.cells)
+            {
+                Gizmos.color = Color.white;
+                Gizmos.DrawWireCube((Vector3)(c.extent.Center - XYZOffset), (Vector3)c.extent.Size);
+            }
+        }
     }
 
     #endregion

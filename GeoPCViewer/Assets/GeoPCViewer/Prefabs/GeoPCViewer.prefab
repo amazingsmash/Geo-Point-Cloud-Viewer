@@ -45,7 +45,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 503510670843157193, guid: 19971c62eed9742f8a5aae25d8d59077,
     type: 3}
+  flatTilePrefab: {fileID: 4532230531202847470, guid: 25782d2313f7d4bb0b91fccc892a3a76,
+    type: 3}
   directory: ../Models/LAS_MODEL_GRID
   numberOfMeshes: 400
   numberOfMeshLoadingJobs: 20
-  metersPerDegree: 111111
+  distanceThreshold: 0
+  DetailControlKeys: 0
+  nearMatDistance: 100
+  pointPhysicalSize: 0.1

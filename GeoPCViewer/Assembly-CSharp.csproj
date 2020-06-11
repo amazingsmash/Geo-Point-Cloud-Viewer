@@ -67,6 +67,7 @@
     <Compile Include="Assets\GeoPCViewer\MathD\Vector2d.cs" />
     <Compile Include="Assets\GeoPCViewer\MathD\Vector3d.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\AsyncJobManager.cs" />
+    <Compile Include="Assets\GeoPCViewer\Scripts\FlatTile.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCNode.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCNodeMeshLoadingJob.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCViewer.cs" />

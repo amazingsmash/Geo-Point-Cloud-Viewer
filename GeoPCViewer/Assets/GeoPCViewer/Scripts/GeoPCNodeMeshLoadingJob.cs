@@ -23,7 +23,7 @@ public partial class GeoPCNode : MonoBehaviour
             int nPoints = matrix.GetLength(0);
             points = new Vector3[nPoints];
             indices = new int[nPoints];
-            colors = node.data.GetPointColors(node.viewer.classColor);
+            colors = node.data.GetPointColors(node.viewer.ClassColorDictionary);
 
             for (int i = 0; i < nPoints; i++)
             {

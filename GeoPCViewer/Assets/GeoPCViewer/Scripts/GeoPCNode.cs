@@ -119,20 +119,13 @@ public partial class GeoPCNode : MonoBehaviour
         this.data = data;
         this.viewer = viewer;
 
-        Vector3d degreesToMeters = new Vector3d(viewer.metersPerDegree, 1, viewer.metersPerDegree);
-        Vector3d disp = Vector3d.Scale(data.cellData.lonHLatMin, degreesToMeters);
-
-        Vector3d worldPosition = disp - viewer.XYZOffset;
-        Vector3d size = Vector3d.Scale(data.cellData.lonHLatDelta, degreesToMeters);
+        CellData cell = data.cellData;
+        Vector3d worldPosition = cell.extent.Min - viewer.XYZOffset;
 
         transform.position = (Vector3)worldPosition;
-        transform.localScale = (Vector3)size;
+        transform.localScale = (Vector3)cell.extent.Size;
 
-        Vector3d pointsBoundMin = Vector3d.Scale(data.minPoints, size);
-        Vector3d pointsBoundMax = Vector3d.Scale(data.maxPoints, size);
-        Vector3d pointsBoundSize = pointsBoundMax - pointsBoundMin;
-        Vector3d pointsBoundCenter = (pointsBoundMax + pointsBoundMin) / 2;
-        worldSpaceBounds = new Bounds((Vector3)(pointsBoundCenter + worldPosition), (Vector3)pointsBoundSize);
+        worldSpaceBounds = new Bounds((Vector3)(data.pcBounds.Center - viewer.XYZOffset), (Vector3)data.pcBounds.Size);
 
         state = State.INIT;
     }
@@ -174,15 +167,8 @@ public partial class GeoPCNode : MonoBehaviour
         minDistanceToCam = camInside ? 0 : worldSpaceBounds.MinDistance(camPos);
         maxDistanceToCam = worldSpaceBounds.MaxDistance(camPos);
 
-        if (camInside)
-        {
-            needsChildren = true;
-        }
-        else
-        {
-            double worldSpaceAvgDist = viewer.metersPerDegree * data.avgPointDistance;
-            needsChildren = (worldSpaceAvgDist * lodFactor) > minDistanceToCam;
-        }
+        needsChildren = camInside ? true :
+            (data.avgPointDistance * lodFactor) > minDistanceToCam;
     }
 
     private void CheckMaterial()

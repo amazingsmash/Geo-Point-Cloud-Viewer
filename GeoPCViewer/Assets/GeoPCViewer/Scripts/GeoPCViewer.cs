@@ -39,18 +39,6 @@ public class GeoPCViewer : MonoBehaviour
         }
     }
 
-    public struct Box{
-        public readonly Vector3d Min, Max;
-        public Box(Vector3d min, Vector3d max)
-        {
-            this.Min = min;
-            this.Max = max;
-        }
-
-        public Vector3d Center { get => (Max + Min) / 2; }
-        public Vector3d Size { get => (Max - Min); }
-    }
-
     public class ModelData
     {
         public readonly DirectoryInfo directory;
@@ -244,14 +232,14 @@ public class GeoPCViewer : MonoBehaviour
     [SerializeField] private FlatTile flatTilePrefab;
     [SerializeField] private string directory;
 
-    public int numberOfMeshes = 400;
-    public int numberOfMeshLoadingJobs = 20;
-    public float distanceThreshold;
+    public float DistanceThreshold { get; private set; }
     public Vector3d XYZOffset { get; private set; } = default;
     public bool DetailControlKeys = false;
 
-    public float nearMatDistance = 100;
-    public float pointPhysicalSize = 0.1f; //Round point size
+    public enum MapType { NONE, ARCGIS, OSM}
+    public MapType cellMapType = MapType.NONE;
+
+    public float PointPhysicalSize = 0.1f; //Round point size
     public ModelData Model { private set; get; } = null;
     public Dictionary<int, Color> ClassColorDictionary
     {
@@ -266,7 +254,7 @@ public class GeoPCViewer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        distanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(pointPhysicalSize, 1);
+        DistanceThreshold = Camera.main.GetDistanceForLenghtToScreenSize(PointPhysicalSize, 1);
 
         DirectoryInfo modelDir = new DirectoryInfo(directory);
         FileInfo index = modelDir.GetFiles("pc_model.json")[0];
@@ -282,12 +270,26 @@ public class GeoPCViewer : MonoBehaviour
 
             if (flatTilePrefab != null)
             {
-                var t = Instantiate(flatTilePrefab.gameObject).GetComponent<FlatTile>();
-                t.viewer = this;
-                //t.url = cellData.GetOSMTileURL();
-                t.url = cellData.GetARCGISWorldImageryTileURL();
-                t.cellExtentMin = cellData.extent.Min;
-                t.cellExtentMax = cellData.extent.Max;
+                string url = null;
+                switch (cellMapType)
+                {
+                    case MapType.NONE:
+                        break;
+                    case MapType.ARCGIS:
+                        url = cellData.GetARCGISWorldImageryTileURL();
+                        break;
+                    case MapType.OSM:
+                        url = cellData.GetOSMTileURL();
+                        break;
+                }
+
+                if (url != null)
+                {
+                    var t = Instantiate(flatTilePrefab.gameObject).GetComponent<FlatTile>();
+                    t.viewer = this;
+                    t.url = url;
+                    t.extent = cellData.extent;
+                }
             }
         }
     }

@@ -6,18 +6,18 @@ using UnityEngine.Networking;
 public class FlatTile : MonoBehaviour
 {
     public GeoPCViewer viewer;
-    public Vector3d cellExtentMin;
-    public Vector3d cellExtentMax;
+    //public Vector3d cellExtentMin;
+    //public Vector3d cellExtentMax;
+    public Box extent;
     public string url;
 
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        Vector3 center = (Vector3)(((cellExtentMin + cellExtentMax) / 2) - viewer.XYZOffset);
+        Vector3 center = (Vector3)(extent.Center - viewer.XYZOffset);
         center.y = (float)viewer.Model.pcBounds.Min.y; //On floor
         transform.position = center;
-        Vector3d extent = cellExtentMax - cellExtentMin;
-        transform.localScale = (Vector3)extent;
+        transform.localScale = (Vector3)extent.Size;
 
         Debug.Log(url);
 

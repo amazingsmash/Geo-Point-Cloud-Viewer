@@ -704,6 +704,7 @@
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
       <HintPath>/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
     </Reference>
+    <Compile Include="Assets\GeoPCViewer\Scripts\Box.cs" />
   </ItemGroup>
   <ItemGroup></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

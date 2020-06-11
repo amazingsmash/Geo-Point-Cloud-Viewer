@@ -44,7 +44,9 @@ public partial class GeoPCNode : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        Assert.IsNotNull(viewer, "GeoPCNode not initilized"); 
+        Assert.IsNotNull(viewer, "GeoPCNode not initilized");
+
+        nearMat.SetFloat("_Size", viewer.PointPhysicalSize);
 
         meshRenderer = GetComponent<MeshRenderer>();
         meshFilter = GetComponent<MeshFilter>();
@@ -234,11 +236,11 @@ public partial class GeoPCNode : MonoBehaviour
             return RenderType.MIXED;
         }
 
-        if (minDistanceToCam > viewer.distanceThreshold) //Closest Point too far
+        if (minDistanceToCam > viewer.DistanceThreshold) //Closest Point too far
         {
             return RenderType.FAR;
         }
-        else if (maxDistanceToCam < viewer.distanceThreshold)
+        else if (maxDistanceToCam < viewer.DistanceThreshold)
         {
             return RenderType.NEAR;
         }

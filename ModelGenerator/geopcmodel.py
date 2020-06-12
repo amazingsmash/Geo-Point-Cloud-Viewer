@@ -3,13 +3,11 @@ import os
 import sys
 import time
 from enum import Enum
-
 import numpy as np
 import seaborn as sns
-
 import encoding
-import json_utils
-import pc_utils
+import jsonutils
+import pcutils
 from globalgrid import GlobalGrid, GlobalGridCell
 from pcnode import PCNode
 
@@ -43,10 +41,11 @@ class GeoPointCloudModel:
         self.n_generation_points = 0
         self.generation_file = 0
 
-    def store_las_file(self, las_path, epsg_num):
-        print("Storing file %s." % las_path)
+    def store_las_files(self, las_paths, epsg_num):
+        for las_path in las_paths:
+            print("Storing file %s." % las_path)
 
-        cells = self._global_grid.generate_cells_from_las(las_path, epsg_num)
+        cells = self._global_grid.generate_cells_from_las(las_paths, epsg_num)
 
         for c in cells:
             self._store_cell(c)
@@ -60,7 +59,7 @@ class GeoPointCloudModel:
             os.makedirs(directory)
 
         point_classes = list(cell.points_by_class.keys())
-        n_points = pc_utils.num_points_by_class(cell.points_by_class)
+        n_points = pcutils.num_points_by_class(cell.points_by_class)
         print("\n%d points. %d classes." % (n_points, len(point_classes)))
         self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
 
@@ -76,7 +75,7 @@ class GeoPointCloudModel:
         cell_data["directory"] = folder_name
 
         self._cells += [cell_data]
-        json_utils.write_json(vi, index_path)
+        jsonutils.write_json(vi, index_path)
 
         gc.collect()  # Forcing garbage collection
 
@@ -91,7 +90,7 @@ class GeoPointCloudModel:
                       "classes": GeoPointCloudModel._generate_color_palette(self._point_classes)}
 
         path = os.path.join(self._parent_directory, self._name, "pc_model.json")
-        json_utils.write_json(desc_model, path)
+        jsonutils.write_json(desc_model, path)
 
     def _save_tree(self, node: PCNode, indices, out_folder):
         n_points = node.n_points
@@ -119,7 +118,7 @@ class GeoPointCloudModel:
                            "indices": indices,
                            "filename": file_name,
                            "n_points": sampled_node.n_points,
-                           "avg_distance": pc_utils.aprox_average_distance(xyz_selected_points),
+                           "avg_distance": pcutils.aprox_average_distance(xyz_selected_points),
                            "sorted_class_count": sampled_node.sorted_class_count}
 
             node = remaining_node

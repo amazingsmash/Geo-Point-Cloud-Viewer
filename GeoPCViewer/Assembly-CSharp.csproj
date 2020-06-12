@@ -67,6 +67,7 @@
     <Compile Include="Assets\GeoPCViewer\MathD\Vector2d.cs" />
     <Compile Include="Assets\GeoPCViewer\MathD\Vector3d.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\AsyncJobManager.cs" />
+    <Compile Include="Assets\GeoPCViewer\Scripts\Box.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\FlatTile.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCNode.cs" />
     <Compile Include="Assets\GeoPCViewer\Scripts\GeoPCNodeMeshLoadingJob.cs" />
@@ -704,7 +705,6 @@
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
       <HintPath>/Users/josemiguelsn/Desktop/repos/LASViewer/GeoPCViewer/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
     </Reference>
-    <Compile Include="Assets\GeoPCViewer\Scripts\Box.cs" />
   </ItemGroup>
   <ItemGroup></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

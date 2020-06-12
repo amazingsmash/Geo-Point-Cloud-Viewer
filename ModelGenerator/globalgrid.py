@@ -1,6 +1,6 @@
 import math
 
-import pc_utils
+import pcutils
 import numpy as np
 
 
@@ -29,7 +29,7 @@ class GlobalGridCell:
 
         assert np.min(np.min(cell_xyz_normalized)) >= 0 and np.max(np.max(cell_xyz_normalized)) <= 1
 
-        self.points_by_class = pc_utils.divide_points_by_class(cell_xyz_normalized, point_classes)
+        self.points_by_class = pcutils.divide_points_by_class(cell_xyz_normalized, point_classes)
 
     def get_descriptor(self) -> dict:
         return {"cell_index": tuple(self.xy_index),
@@ -51,9 +51,13 @@ class TileMapServiceGG(GlobalGrid):
         self.side_n_tiles = 2 ** self.level
         self.tile_size_meters = TileMapServiceGG.MAP_SIDE_LENGTH_METERS / self.side_n_tiles
 
-    def generate_cells_from_las(self, las_path: str, epsg_num: int) -> list:
-        # coordinates in spherical mercator
-        xyzc = pc_utils.read_las_as_spherical_mercator_xyzc(las_path, epsg_num=epsg_num)
+    def generate_cells_from_las(self, las_paths: list, epsg_num: int) -> list:
+        xyzc = np.zeros((0,4));
+
+        for las_path in las_paths:
+            # coordinates in spherical mercator
+            l_xyzc = pcutils.read_las_as_spherical_mercator_xyzc(las_path, epsg_num=epsg_num)
+            xyzc = np.vstack((xyzc, l_xyzc))
 
         tile_indices = np.floor((xyzc[:, 0:2] + (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)) / self.tile_size_meters)
         tile_flat_indices = tile_indices[:, 0] * self.side_n_tiles + tile_indices[:, 1]

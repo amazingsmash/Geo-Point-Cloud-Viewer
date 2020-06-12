@@ -1,9 +1,7 @@
 import argparse
 import sys
 from datetime import datetime
-
-import pc_utils
-
+import pcutils
 from geopcmodel import GeoPointCloudModel
 from globalgrid import TileMapServiceGG
 
@@ -17,7 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("pc_model", help="Creates a hierarchical model of the given name of a multi LAS point cloud "
                                          "designed for efficient out-of-core processing and rendering.")
     parser.add_argument("-d", "--directory", help="Folder with LAS files inside")
-    parser.add_argument("-f", "--files", nargs="+", help="Paths to LAS files")
+    parser.add_argument("-f", "--files", nargs="+", help="Paths to LAS files", default=[])
     parser.add_argument("-o", "--out", help="Path to output folder (default wd)", default="")
     parser.add_argument("-e", "--epsg", help="EPSG reference system number of input data (default 32631)",
                         type=int, default=32631)
@@ -41,7 +39,7 @@ if __name__ == "__main__":
 
     las_files = args.files
     if args.directory is not None:
-        las_files += pc_utils.get_las_paths_from_directory(args.directory)
+        las_files += pcutils.get_las_paths_from_directory(args.directory)
 
     if len(las_files) == 0:
         print("No input LAS found.")
@@ -65,8 +63,7 @@ if __name__ == "__main__":
 
     t0 = datetime.now()
 
-    for f in las_files:
-        model.store_las_file(f, args.epsg)
+    model.store_las_files(las_files, args.epsg)
 
     t1 = datetime.now()
     td = t1 - t0

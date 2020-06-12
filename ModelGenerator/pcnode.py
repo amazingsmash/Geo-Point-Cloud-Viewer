@@ -1,4 +1,4 @@
-import pc_utils
+import pcutils
 import numpy as np
 
 
@@ -35,7 +35,7 @@ class PCNode:
             remaining_points -= n_taken
             remaining_classes -= 1
 
-            sampled_points, not_sampled_points = pc_utils.random_sampling(self.points_by_class[c], n_taken)
+            sampled_points, not_sampled_points = pcutils.random_sampling(self.points_by_class[c], n_taken)
             sampled[c] = sampled_points
             if not_sampled_points is not None:
                 remaining[c] = not_sampled_points

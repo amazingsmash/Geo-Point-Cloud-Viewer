@@ -31,6 +31,23 @@ class GlobalGridCell:
 
         self.points_by_class = pcutils.divide_points_by_class(cell_xyz_normalized, point_classes)
 
+    @staticmethod
+    def test_precision_loss(point_xyz, cell_xy_min, cell_side_length):
+        pc_bounds_min = np.min(point_xyz, axis=0)
+        h_min = pc_bounds_min[2]
+        cell_extent_min = np.hstack((cell_xy_min, h_min))
+        cell_extent = np.array([cell_side_length, cell_side_length, cell_side_length])
+
+        cell_xyz_normalized = (point_xyz - cell_extent_min) / cell_extent
+        cell_xyz_normalized_float = cell_xyz_normalized.astype(np.single)
+
+        points = cell_xyz_normalized_float.astype(np.double)
+        points = points * cell_extent + cell_extent_min
+
+        ds = point_xyz - points
+        ds = np.linalg.norm(ds, axis=1)
+        print("Precision Loss due to Double To Float Conversion  = %d m." % np.max(ds))
+
     def get_descriptor(self) -> dict:
         return {"cell_index": tuple(self.xy_index),
                 "cell_extent_min": self.cell_extent_min.tolist(),
@@ -73,6 +90,8 @@ class TileMapServiceGG(GlobalGrid):
             point_indices = np.where(tile_flat_indices == i)[0]
             cell_point_classes = xyzc[point_indices, 3]
             cell_point_xyz = xyzc[point_indices, 0:3]
+
+            # GlobalGridCell.test_precision_loss(cell_point_xyz, cell_xy_min, self.tile_size_meters)
 
             cells += [GlobalGridCell(xy_index, cell_point_xyz, cell_point_classes, cell_xy_min, self.tile_size_meters)]
 

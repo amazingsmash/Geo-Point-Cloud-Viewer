@@ -350,3 +350,38 @@ def cell_balanced_sampling(points_by_class, n_selected_points):
     assert num_points_by_class(sampled) + num_points_by_class(remaining) == num_points_by_class(points_by_class)
 
     return sampled, remaining
+
+
+def test_float_mercator_numerical_precision(las_path, las_epsg):
+
+    def get_point(xs,ys,zs, i):
+        return np.array([xs[i], ys[i], zs[i]])
+
+    def dist(points, i, j):
+        return np.linalg.norm(points[i,:] - points[j,:])
+
+    in_file = File(las_path, mode='r')
+
+
+    points_utm = np.transpose(np.array([in_file.x, in_file.y, in_file.z, in_file.Classification.astype(float)]))
+
+    DELTA_LAT = 25
+    if DELTA_LAT != 0:
+        lat, lon = convert_crs(points_utm[:, 0], points_utm[:, 1], epsg_num_in=las_epsg, epsg_num_out=4326)
+        lat += DELTA_LAT
+        points_utm = np.transpose(np.array([lat, lon, in_file.z, in_file.Classification.astype(float)]))
+        las_epsg = 4326
+
+    print("Distancia UTM: %f m." % dist(points_utm, 100, 200))
+
+    x, y = convert_crs(points_utm[:, 0], points_utm[:, 1], epsg_num_in=las_epsg, epsg_num_out=3857)
+    points_mercator = np.transpose(np.array([x, y, in_file.z, in_file.Classification.astype(float)]))
+    print("Distancia Mercator: %f m." % dist(points_mercator, 100, 200))
+
+    utm_x, utm_y = convert_crs(x, y, epsg_num_in=3857, epsg_num_out=las_epsg)
+    points_utm_reproj = np.transpose(np.array([utm_x, utm_y, in_file.z, in_file.Classification.astype(float)]))
+    print("Distancia UTM Double: %f m." % dist(points_utm_reproj, 100, 200))
+
+    error = points_utm - points_utm_reproj
+    error = np.linalg.norm(error, axis=1)
+    print("Error %d meters." % np.max(error))

@@ -25,6 +25,7 @@ class GlobalGridCell:
         self.cell_extent_max = self.cell_extent_min + cell_side_length
         cell_extent = np.array([cell_side_length, cell_side_length, cell_side_length])
 
+        # Normalizing points in 0 - 1 space
         cell_xyz_normalized = (point_xyz - self.cell_extent_min) / cell_extent
 
         assert np.min(np.min(cell_xyz_normalized)) >= 0 and np.max(np.max(cell_xyz_normalized)) <= 1

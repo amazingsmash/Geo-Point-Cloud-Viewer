@@ -5,7 +5,7 @@
       <File FileName="Assets/Scripts/PointCloudViewer/MeshManager.cs" />
       <File FileName="Assets/GeoPCViewer/Scripts/GeoPCNode.cs" />
       <File FileName="Assets/GeoPCViewer/Scripts/GeoPCNodeMeshLoadingJob.cs" />
-      <File FileName="Assets/GeoPCViewer/Scripts/GeoPCViewer.cs" Line="92" Column="26" />
+      <File FileName="Assets/GeoPCViewer/Scripts/GeoPCViewer.cs" Line="159" Column="16" />
       <File FileName="Assets/GeoPCViewer/Scripts/FlatTile.cs" />
     </Files>
     <Pads>
@@ -38,7 +38,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="9d0638c9-476f-41e5-abbe-3d2ce7c22b35" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d7efdea2-69e5-4fff-8a91-4ecc8ce14e43" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Catchpoint exceptionName="System.Exception" includeSubclasses="True" />

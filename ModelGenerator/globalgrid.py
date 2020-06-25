@@ -25,10 +25,12 @@ class GlobalGridCell:
         self.cell_extent_max = self.cell_extent_min + cell_side_length
         cell_extent = np.array([cell_side_length, cell_side_length, cell_side_length])
 
-        # Normalizing points in 0 - 1 space
-        cell_xyz_normalized = (point_xyz - self.cell_extent_min) / cell_extent
-
-        assert np.min(np.min(cell_xyz_normalized)) >= 0 and np.max(np.max(cell_xyz_normalized)) <= 1
+        # Normalizing points in -1 - 1 space
+        cell_center = (self.cell_extent_min + self.cell_extent_max) / 2
+        cell_xyz_normalized = (point_xyz - cell_center) / (cell_extent / 2)
+        epsilon = 1e-6
+        assert np.min(np.min(cell_xyz_normalized)) >= -1-epsilon and np.max(np.max(cell_xyz_normalized)) <= 1+epsilon
+        cell_xyz_normalized = np.clip(cell_xyz_normalized, -1, 1)
 
         self.points_by_class = pcutils.divide_points_by_class(cell_xyz_normalized, point_classes)
 

@@ -53,16 +53,17 @@ class PCNode:
         for c in self.sorted_class_count.keys():
             xyz = self.points_by_class[c]
 
-            indices = np.clip(np.floor(xyz * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+            xyz01 = (xyz + 1) / 2  # Re-normalizing to 0 - 1
+            indices = np.clip(np.floor(xyz01 * n_level_partitions), 0, n_level_partitions - 1).astype(int)
             indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions ** 2
 
             for i, index in enumerate(np.unique(indices)):
                 ps = indices == index
                 points = xyz[ps, :]
                 if points.shape[0] > 0:
-                    children[i][c] = xyz[ps, :]
+                    children[i][c] = xyz[ps, :]  # Storing -1 - 1 points
 
-        children = [PCNode(c) for c in children if bool(c)] # removing empty's
+        children = [PCNode(c) for c in children if bool(c)]  # Removing empty's
 
         assert len(children) <= 8
         return children

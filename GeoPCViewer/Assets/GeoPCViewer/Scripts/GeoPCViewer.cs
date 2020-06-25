@@ -156,8 +156,9 @@ public class GeoPCViewer : MonoBehaviour
             var min01 = JSON_XZY_ToVector3d(nodeJSON["min"].AsArray);
             var max01 = JSON_XZY_ToVector3d(nodeJSON["max"].AsArray);
 
-            pcBounds = new Box( Vector3d.Scale(min01, cellData.extent.Size) + cellData.extent.Min,
-                                Vector3d.Scale(max01, cellData.extent.Size) + cellData.extent.Min);
+            Vector3d halfCellSize = cellData.extent.Size / 2;
+            pcBounds = new Box(Vector3d.Scale(min01, halfCellSize) + cellData.extent.Center,
+                                Vector3d.Scale(max01, halfCellSize) + cellData.extent.Center);
 
             var ind = nodeJSON["indices"].AsArray;
             indices = new int[ind.Count];

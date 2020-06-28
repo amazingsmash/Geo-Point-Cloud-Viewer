@@ -46,7 +46,7 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit()
 
-    global_grid = TileMapServiceGG(level=12)
+    global_grid = TileMapServiceGG(level=14)
 
     if args.binary:
         method = GeoPointCloudModel.Partitioning.LONGEST_AXIS_BINTREE

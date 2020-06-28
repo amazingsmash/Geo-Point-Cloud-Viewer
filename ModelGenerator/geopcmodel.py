@@ -10,6 +10,7 @@ import jsonutils
 import pcutils
 from globalgrid import GlobalGrid, GlobalGridCell
 from pcnode import PCNode
+import shutil
 
 
 class GeoPointCloudModel:
@@ -41,16 +42,17 @@ class GeoPointCloudModel:
         self.n_generation_points = 0
         self.generation_file = 0
 
-    def store_las_files(self, las_paths, epsg_num):
-        for las_path in las_paths:
-            print("Storing file %s." % las_path)
+        shutil.rmtree(self.model_directory(), ignore_errors=True)
 
-        cells = self._global_grid.generate_cells_from_las(las_paths, epsg_num)
+    def store_las_files(self, las_paths, epsg_num):
+        cells = self._global_grid.generate_cells_from_las(self.model_directory(), las_paths, epsg_num)
 
         for c in cells:
             self._store_cell(c)
 
         self._save_model_descriptor()
+
+    def model_directory(self): return os.path.join(self._parent_directory, self._name)
 
     def _store_cell(self, cell: GlobalGridCell):
         folder_name = "Cell_%d_%d" % tuple(cell.xy_index)

@@ -3,6 +3,8 @@ import numpy as np
 from pyproj import CRS, Transformer, exceptions
 from laspy.file import File
 import os
+import pathlib
+import encoding
 
 
 def get_sector(lat, lon):
@@ -385,3 +387,7 @@ def test_float_mercator_numerical_precision(las_path, las_epsg):
     error = points_utm - points_utm_reproj
     error = np.linalg.norm(error, axis=1)
     print("Error %d meters." % np.max(error))
+
+
+
+

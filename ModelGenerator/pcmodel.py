@@ -48,10 +48,8 @@ if __name__ == "__main__":
 
     global_grid = TileMapServiceGG(level=14)
 
-    if args.binary:
-        method = GeoPointCloudModel.Partitioning.LONGEST_AXIS_BINTREE
-    else:
-        method = GeoPointCloudModel.Partitioning.REGULAR_OCTREE
+    method = GeoPointCloudModel.Partitioning.LONGEST_AXIS_BINTREE if args.binary \
+        else GeoPointCloudModel.Partitioning.REGULAR_OCTREE
 
     model = GeoPointCloudModel(name=args.pc_model,
                                global_grid=global_grid,

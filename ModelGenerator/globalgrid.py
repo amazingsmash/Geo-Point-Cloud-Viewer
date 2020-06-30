@@ -1,9 +1,11 @@
+import gc
 import math
 
 import pcutils
 import numpy as np
 import os
 import encoding
+from typing import Tuple
 
 
 class GlobalGrid:
@@ -85,6 +87,35 @@ class GlobalGridCell:
     #     encoding.append_rows_to_file(GlobalGridCell.descriptor_path(modelpath, xy_index), points)
 
     @staticmethod
+    def store_points_double(modelpath, xy_index, points):
+        print("Storing data for Cell %d x %d" % (xy_index[0], xy_index[1]))
+        n = 0
+        while True:
+            path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "points_%d.bytes" % n)
+            if not os.path.exists(path):
+                break
+            else:
+                n = n + 1
+
+        encoding.matrix_to_file_double(points, path)
+
+
+    @staticmethod
+    def get_all_points(modelpath, xy_index):
+        points = None
+        n = 0
+        while True:
+            path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "points_%d.bytes" % n)
+            if not os.path.exists(path):
+                break
+
+            ps = encoding.file_to_matrix_double(path)
+            points = ps if points is None else np.vstack((points, ps))
+            n = n + 1
+
+        return points
+
+    @staticmethod
     def test_precision_loss(point_xyz, cell_xy_min, cell_side_length):
         pc_bounds_min = np.min(point_xyz, axis=0)
         h_min = pc_bounds_min[2]
@@ -121,13 +152,26 @@ class TileMapServiceGG(GlobalGrid):
         self.side_n_tiles = 2 ** self.level
         self.cell_side_lenght_meters = TileMapServiceGG.MAP_SIDE_LENGTH_METERS / self.side_n_tiles
 
+    def get_bounds_from_cell_indices(self, cell_indices: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        cell_xy_mins = cell_indices * self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
+        cell_xy_maxs = cell_xy_mins + self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
+        return cell_xy_mins, cell_xy_maxs
+
     def generate_cells_from_las(self, modelpath, las_paths: list, epsg_num: int) -> list:
         # Separating point sets
-        for las_path in las_paths:
+        cell_indices_set = set()
+        las_index = 0
+        while las_index < len(las_paths):
             # coordinates in spherical mercator
             try:
-                print("Processing LAS %s" % las_path)
-                las_points = pcutils.read_las_as_spherical_mercator_xyzc(las_path, epsg_num=epsg_num)
+                las_points = np.zeros((0, 4))
+                while las_points.nbytes <  2 * 1024 * 1024 * 1024 and las_index < len(las_paths): # 2 GB
+                    las_path = las_paths[las_index]
+                    las_index = las_index + 1                      # next
+                    print("Processing LAS %s" % las_path)
+                    las_points_i = pcutils.read_las_as_spherical_mercator_xyzc(las_path, epsg_num=epsg_num)
+                    las_points = np.vstack((las_points, las_points_i))
+
             except Exception:
                 print("Problem reading LAS %s" % las_path)
                 continue
@@ -138,33 +182,28 @@ class TileMapServiceGG(GlobalGrid):
             unique_indices, cell_indices = np.unique(tile_flat_indices, return_index=True)
 
             cell_indices = tile_indices[cell_indices, :]
-            cell_xy_mins = cell_indices * self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
-            cell_xy_maxs = cell_xy_mins + self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
+            cell_xy_mins, cell_xy_maxs = self.get_bounds_from_cell_indices(cell_indices)
 
-            # cells = []
-            cell_indices_set = set()
             for i, xy_index, cell_xy_min, cell_xy_max in zip(unique_indices, cell_indices, cell_xy_mins, cell_xy_maxs):
                 cell_indices_set.add((xy_index[0], xy_index[1]))
                 point_indices = np.where(tile_flat_indices == i)[0]
                 ps = las_points[point_indices, :]
+                GlobalGridCell.store_points_double(modelpath, xy_index, ps)
 
-                #GlobalGridCell.store_points_in_folder(modelpath, las_points[point_indices, :], xy_index, cell_xy_min,
-                 #                                     self.cell_side_lenght_meters)
-                print("Storing data for Cell %d x %d" % (xy_index[0], xy_index[1]))
-                encoding.append_rows_to_file_double(GlobalGridCell.all_points_path(modelpath, xy_index), ps)
+            gc.collect()
 
         # Creating cells
         cell_indices = np.array(list(cell_indices_set))
-        cell_xy_mins = cell_indices * self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
-        cell_xy_maxs = cell_xy_mins + self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
+        print("Identified Cells: ", cell_indices)
+        cell_xy_mins, cell_xy_maxs = self.get_bounds_from_cell_indices(cell_indices)
         cells = []
         for xy_index, cell_xy_min, cell_xy_max in zip(cell_indices, cell_xy_mins, cell_xy_maxs):
             print("Generating Cell %d x %d" % (xy_index[0], xy_index[1]))
-
-            ps = encoding.file_to_matrix_double(GlobalGridCell.all_points_path(modelpath, xy_index))
+            ps = GlobalGridCell.get_all_points(modelpath, xy_index)
             point_xyz = ps[:, 0:3]
             point_classes = ps[:, 3]
             cells += [GlobalGridCell(xy_index, point_xyz, point_classes, cell_xy_min, self.cell_side_lenght_meters)]
+            gc.collect()
 
         return cells
 

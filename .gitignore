@@ -12,3 +12,4 @@ GeoPCViewer/[Uu]ser[Ss]ettings/
 .DS_Store
 *.bytes
 *.DS_Store
+ModelGenerator/__pycache__/*

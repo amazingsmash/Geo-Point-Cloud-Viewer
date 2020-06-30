@@ -45,9 +45,10 @@ class GeoPointCloudModel:
         shutil.rmtree(self.model_directory(), ignore_errors=True)
 
     def store_las_files(self, las_paths, epsg_num):
-        cells = self._global_grid.generate_cells_from_las(self.model_directory(), las_paths, epsg_num)
-
-        for c in cells:
+        modelpath = self.model_directory()
+        cell_indices = self._global_grid.store_points_in_cell_folders(modelpath, las_paths, epsg_num)
+        cell_generator = self._global_grid.cell_generator(modelpath, cell_indices)
+        for c in cell_generator:
             self._store_cell(c)
 
         self._save_model_descriptor()

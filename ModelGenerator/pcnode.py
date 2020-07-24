@@ -14,9 +14,25 @@ class PCNode:
         sorted_classes = classes[np.argsort(counts)]
         self.sorted_class_count = {c: self.points_by_class[c].shape[0] for c in sorted_classes}
 
-    def get_all_xyz_points(self):
+    def get_all_points_shuffled(self):
         t = tuple([self.points_by_class[c] for c in self.sorted_class_count.keys()])
+
+        for m in t:
+            np.random.shuffle(m)
+
         return np.vstack(t)
+
+    def get_extent(self):
+        mins = [np.min(self.points_by_class[c], axis=0) for c in self.sorted_class_count.keys()]
+        mins = np.vstack(tuple(mins))
+
+        maxs = [np.max(self.points_by_class[c], axis=0) for c in self.sorted_class_count.keys()]
+        maxs = np.vstack(tuple(maxs))
+
+        min_xyz = np.min(mins, axis=0)
+        max_xyz = np.max(maxs, axis=0)
+
+        return min_xyz, max_xyz
 
     def sample(self, n_selected_points, balanced=True):
         """Returns balanced subsample and remaining points by class"""

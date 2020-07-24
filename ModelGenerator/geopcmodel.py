@@ -101,15 +101,12 @@ class GeoPointCloudModel:
             return
 
         if self._parent_sampling or n_points < self._max_node_points:
-            xyz_points = node.get_all_xyz_points()
-
-            min_xyz = np.min(xyz_points, axis=0)
-            max_xyz = np.max(xyz_points, axis=0)
+            min_xyz, max_xyz = node.get_extent()
 
             sampled_node, remaining_node = node.sample(self._max_node_points, balanced=self._balanced_sampling)
 
             file_name, file_path = self._get_file_path(indices, out_folder)
-            xyz_selected_points = sampled_node.get_all_xyz_points()
+            xyz_selected_points = sampled_node.get_all_points_shuffled()
             encoding.matrix_to_file(xyz_selected_points, file_path)
 
             self.n_generation_stored_points += sampled_node.n_points
@@ -119,7 +116,8 @@ class GeoPointCloudModel:
                            "max": max_xyz.tolist(),
                            "indices": indices,
                            "filename": file_name,
-                           "n_points": sampled_node.n_points,
+                           "n_node_points": sampled_node.n_points,
+                           "n_subtree_points": node.n_points,
                            "avg_distance": pcutils.aprox_average_distance(xyz_selected_points),
                            "sorted_class_count": sampled_node.sorted_class_count}
 

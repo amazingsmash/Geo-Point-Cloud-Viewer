@@ -10,6 +10,12 @@ from typing import Tuple
 
 class GlobalGrid:
 
+    def store_points_in_cell_folders(self, modelpath, las_paths: list, epsg_num: int) -> np.ndarray:
+        pass
+
+    def cell_generator(self, modelpath, cell_indices: np.ndarray):
+        pass
+
     def generate_cells_from_las(self, las_path, las_epsg) -> list:
         pass
 
@@ -157,7 +163,7 @@ class TileMapServiceGG(GlobalGrid):
         cell_xy_maxs = cell_xy_mins + self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
         return cell_xy_mins, cell_xy_maxs
 
-    def generate_cells_from_las(self, modelpath, las_paths: list, epsg_num: int) -> list:
+    def store_points_in_cell_folders(self, modelpath, las_paths: list, epsg_num: int) -> np.ndarray:
         # Separating point sets
         cell_indices_set = set()
         las_index = 0
@@ -165,7 +171,7 @@ class TileMapServiceGG(GlobalGrid):
             # coordinates in spherical mercator
             try:
                 las_points = np.zeros((0, 4))
-                while las_points.nbytes <  2 * 1024 * 1024 * 1024 and las_index < len(las_paths): # 2 GB
+                while las_points.nbytes <  1 * 1024 * 1024 * 1024 and las_index < len(las_paths): # 1 GB
                     las_path = las_paths[las_index]
                     las_index = las_index + 1                      # next
                     print("Processing LAS %s" % las_path)
@@ -189,11 +195,14 @@ class TileMapServiceGG(GlobalGrid):
                 point_indices = np.where(tile_flat_indices == i)[0]
                 ps = las_points[point_indices, :]
                 GlobalGridCell.store_points_double(modelpath, xy_index, ps)
+                gc.collect()
 
-            gc.collect()
-
-        # Creating cells
+        print("Point disk storage completed")
         cell_indices = np.array(list(cell_indices_set))
+        return cell_indices
+
+    def cell_generator(self, modelpath, cell_indices: np.ndarray):
+        gc.collect()
         print("Identified Cells: ", cell_indices)
         cell_xy_mins, cell_xy_maxs = self.get_bounds_from_cell_indices(cell_indices)
         cells = []
@@ -202,10 +211,8 @@ class TileMapServiceGG(GlobalGrid):
             ps = GlobalGridCell.get_all_points(modelpath, xy_index)
             point_xyz = ps[:, 0:3]
             point_classes = ps[:, 3]
-            cells += [GlobalGridCell(xy_index, point_xyz, point_classes, cell_xy_min, self.cell_side_lenght_meters)]
-            gc.collect()
-
-        return cells
+            c = GlobalGridCell(xy_index, point_xyz, point_classes, cell_xy_min, self.cell_side_lenght_meters)
+            yield c
 
     def get_descriptor(self) -> dict:
         return {

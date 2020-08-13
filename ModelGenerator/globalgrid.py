@@ -30,6 +30,7 @@ class GlobalGridCell:
     def __init__(self, xy_index, point_xyz, point_classes, cell_xy_min, cell_side_length):
 
         self.xy_index = xy_index
+        self.n_points = point_xyz.shape[0]
         self._pc_bounds_min = np.min(point_xyz, axis=0)
         self._pc_bounds_max = np.max(point_xyz, axis=0)
         h_min = self._pc_bounds_min[2]
@@ -181,11 +182,11 @@ class TileMapServiceGG(GlobalGrid):
 
     def cell_generator(self, modelpath, cell_indices: np.ndarray):
         gc.collect()
-        print("Identified Cells: ", cell_indices)
+        # print("Identified Cells: ", cell_indices)
         cell_xy_mins, cell_xy_maxs = self.get_bounds_from_cell_indices(cell_indices)
-        cells = []
+
         for xy_index, cell_xy_min, cell_xy_max in zip(cell_indices, cell_xy_mins, cell_xy_maxs):
-            print("Generating Cell %d x %d" % (xy_index[0], xy_index[1]))
+            print("\nGenerating Cell %d x %d" % (xy_index[0], xy_index[1]))
             ps = GlobalGridCell.get_all_points(modelpath, xy_index)
             point_xyz = ps[:, 0:3]
             point_classes = ps[:, 3]

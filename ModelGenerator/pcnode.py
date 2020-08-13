@@ -1,9 +1,14 @@
+import sys
+import encoding
 import pcutils
 import numpy as np
 from globalgrid import GlobalGridCell
+import os
 
 
 class PCNode:
+
+    n_generation_stored_points = 0
 
     def __init__(self, indices, point_indices_by_class, cell: GlobalGridCell):
         """point_indices_by_class is a dict of classes -> point indices.
@@ -66,26 +71,6 @@ class PCNode:
 
         return sampled, remaining
 
-    # def split_octree(self, level):
-    #     n_level_partitions = int(2 ** level)
-    #     children = [{} for _ in range(8)]
-    #
-    #     for c in self.sorted_class_count.keys():
-    #         xyz01 = (self._cell.cell_xyz_normalized[self.point_indices_by_class[c]] + 1) / 2  # Re-normalizing to 0 - 1
-    #
-    #         indices = np.clip(np.floor(xyz01 * n_level_partitions), 0, n_level_partitions - 1).astype(int)
-    #         indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions ** 2
-    #
-    #         for i, index in enumerate(np.unique(indices)):
-    #             ps = np.where(indices == index)[0]
-    #             if ps.shape[0] > 0:
-    #                 children[i][c] = ps  # Storing indices
-    #
-    #     children = [PCNode(c, self._cell) for c in children if bool(c)]  # Removing empty's
-    #
-    #     assert len(children) <= 8
-    #     return children
-
     def split_octree(self):
         children = [{} for _ in range(8)]
 
@@ -112,3 +97,53 @@ class PCNode:
 
         assert len(children) <= 8
         return children
+
+    def save_tree(self, parent_sampling: bool, max_node_points: int, balanced_sampling: bool, out_folder: str):
+        if self.n_points == 0:
+            return
+
+        if parent_sampling or self.n_points < max_node_points:
+            min_xyz, max_xyz = self.get_extent()
+
+            sampled_node, remaining_node = self.balanced_sampling(max_node_points, balanced=balanced_sampling)
+
+            file_name, file_path = self._get_file_path(out_folder)
+            selected_xyz_normalized = sampled_node.get_normalized_xyz_intra_class_shuffled()
+            encoding.matrix_to_file(selected_xyz_normalized, file_path)
+
+            PCNode.n_generation_stored_points += sampled_node.n_points
+            self._print_generation_state()
+
+            voxel_index = {"min": min_xyz.tolist(),
+                           "max": max_xyz.tolist(),
+                           "indices": self._indices,
+                           "filename": file_name,
+                           "n_node_points": sampled_node.n_points,
+                           "n_subtree_points": self.n_points,
+                           "avg_distance": pcutils.aprox_average_distance(selected_xyz_normalized),
+                           "sorted_class_count": sampled_node.sorted_class_count}
+        else:
+            remaining_node = self
+
+        # Creating children
+        voxel_index["children"] = []
+        if remaining_node is not None:
+            nodes = remaining_node.split_octree()
+            for i, node in enumerate(nodes):
+                vi = node.save_tree(parent_sampling,
+                                      max_node_points,
+                                      balanced_sampling,
+                                      out_folder)
+                voxel_index["children"] += [vi]
+
+        return voxel_index
+
+    def _get_file_path(self, out_folder):
+        file_name = "Node-" + "_".join([str(n) for n in self._indices]) + ".bytes"
+        file_path = os.path.join(out_folder, file_name)
+        return file_name, file_path
+
+    def _print_generation_state(self):
+        msg = "Processed %f%%." % (PCNode.n_generation_stored_points / self._cell.n_points * 100)
+        sys.stdout.write('\r' + msg)
+        sys.stdout.flush()

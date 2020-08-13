@@ -5,6 +5,9 @@ import pcutils
 from geopcmodel import GeoPointCloudModel
 from globalgrid import TileMapServiceGG
 
+
+
+
 if __name__ == "__main__":
 
     # example: pc_model PC_MODEL_NAME -d path/to/las/folder -o path/to/out -p 32631 -n MAX_POINTS_NODE -s
@@ -25,9 +28,6 @@ if __name__ == "__main__":
     parser.add_argument("-g", "--grid_cell_size", help="Divide model in a Rectangular WGS84 Discrete Global Grid with "
                                                        "the given cell side length in degrees. (default 0.1º)",
                         type=float, default=0.1)
-    parser.add_argument("-b", "--binary", help="Creates a binary tree, where nodes split by their longest axis,"
-                                               "Otherwise, it creates a regular octree where the root node is the size of a cell",
-                        action='store_true')
     parser.add_argument("-u", "--unbalanced_sampling", help="Do not sample parent nodes attending to class.",
                         action='store_true')
 
@@ -48,22 +48,27 @@ if __name__ == "__main__":
 
     global_grid = TileMapServiceGG(level=16)
 
-    method = GeoPointCloudModel.Partitioning.LONGEST_AXIS_BINTREE if args.binary \
-        else GeoPointCloudModel.Partitioning.REGULAR_OCTREE
-
     model = GeoPointCloudModel(name=args.pc_model,
                                global_grid=global_grid,
                                parent_directory=args.out,
-                               partitioning_method=method,
                                max_node_points=args.node_points,
                                parent_sampling=args.sample,
                                balanced_sampling=not args.unbalanced_sampling)
 
+    trace_memory = True
+
+    if trace_memory:
+        import tracemalloc
+        tracemalloc.start()
+
     t0 = datetime.now()
-
     model.store_las_files(las_files, args.epsg)
-
     t1 = datetime.now()
     td = t1 - t0
+
+    if trace_memory:
+        current, peak = tracemalloc.get_traced_memory()
+        print(f"Peak Memory Usage was {peak / 10 ** 6}MB")
+        tracemalloc.stop()
 
     print("\nModel generated in %f sec." % td.total_seconds())

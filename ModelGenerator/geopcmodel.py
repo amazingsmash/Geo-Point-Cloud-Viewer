@@ -15,15 +15,10 @@ import shutil
 
 class GeoPointCloudModel:
 
-    class Partitioning(Enum):
-        LONGEST_AXIS_BINTREE = 0
-        REGULAR_OCTREE = 1
-
     def __init__(self,
                  name,
                  global_grid: GlobalGrid,
                  parent_directory="",
-                 partitioning_method: Partitioning = Partitioning.REGULAR_OCTREE,
                  max_node_points=65000,
                  parent_sampling=True,
                  balanced_sampling=True):
@@ -35,11 +30,7 @@ class GeoPointCloudModel:
         self._parent_sampling = parent_sampling
         self._balanced_sampling = balanced_sampling
         self._point_classes = []
-        self._partitioning_method = partitioning_method
         self._cells = []
-
-        self.n_generation_stored_points = 0
-        self.n_generation_points = 0
         self.generation_file = 0
 
         shutil.rmtree(self.model_directory(), ignore_errors=True)
@@ -62,17 +53,18 @@ class GeoPointCloudModel:
             os.makedirs(directory)
 
         point_classes = list(cell.point_indices_by_class.keys())
-        n_points = pcutils.num_points_by_class(cell.point_indices_by_class)
-        print("\n%d points. %d classes." % (n_points, len(point_classes)))
+        print("\n%d points. %d classes." % (cell.n_points, len(point_classes)))
         self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
 
         index_file_name = "cell.json"
         index_path = os.path.join(directory, index_file_name)
 
-        self.n_generation_points = n_points
-        self.n_generation_stored_points = 0
-
-        vi = self._save_tree(PCNode([0], cell.point_indices_by_class, cell), out_folder=directory)
+        root_node = PCNode([0], cell.point_indices_by_class, cell)
+        PCNode.n_generation_stored_points = 0
+        vi = root_node.save_tree(self._parent_directory,
+                                 self._max_node_points,
+                                 self._balanced_sampling,
+                                 out_folder=directory)
 
         cell_data = cell.get_descriptor()
         cell_data["directory"] = folder_name
@@ -88,74 +80,14 @@ class GeoPointCloudModel:
                       "global_grid": self._global_grid.get_descriptor(),
                       "max_node_points": self._max_node_points,
                       "parent_sampling": self._parent_sampling,
-                      "partitioning_method": self._partitioning_method.name,
                       "cells": self._cells,
                       "classes": GeoPointCloudModel._generate_color_palette(self._point_classes)}
 
         path = os.path.join(self._parent_directory, self._name, "pc_model.json")
         jsonutils.write_json(desc_model, path)
 
-    def _save_tree(self, node: PCNode, out_folder):
-        n_points = node.n_points
-
-        if n_points == 0:
-            return
-
-        if self._parent_sampling or n_points < self._max_node_points:
-            min_xyz, max_xyz = node.get_extent()
-
-            sampled_node, remaining_node = node.balanced_sampling(self._max_node_points, balanced=self._balanced_sampling)
-
-            file_name, file_path = self._get_file_path(node._indices, out_folder)
-            selected_xyz_normalized = sampled_node.get_normalized_xyz_intra_class_shuffled()
-            encoding.matrix_to_file(selected_xyz_normalized, file_path)
-
-            self.n_generation_stored_points += sampled_node.n_points
-            self._print_generation_state()
-
-            voxel_index = {"min": min_xyz.tolist(),
-                           "max": max_xyz.tolist(),
-                           "indices": node._indices,
-                           "filename": file_name,
-                           "n_node_points": sampled_node.n_points,
-                           "n_subtree_points": node.n_points,
-                           "avg_distance": pcutils.aprox_average_distance(selected_xyz_normalized),
-                           "sorted_class_count": sampled_node.sorted_class_count}
-
-            node = remaining_node
-
-        # Creating children
-        voxel_index["children"] = self._save_children(node, out_folder)
-        return voxel_index
-
-    def _save_children(self, node, out_folder):
-        children = []
-
-        if node is not None:
-            if self._partitioning_method == GeoPointCloudModel.Partitioning.REGULAR_OCTREE:
-                nodes = node.split_octree()
-            else:
-                nodes = node.split_bintree_longest_axis()
-
-            for i, node in enumerate(nodes):
-                vi = self._save_tree(node, out_folder=out_folder)
-                children += [vi]
-
-        return children
-
-    @staticmethod
-    def _get_file_path(indices, out_folder):
-        file_name = "Node-" + "_".join([str(n) for n in indices]) + ".bytes"
-        file_path = os.path.join(out_folder, file_name)
-        return file_name, file_path
-
     @staticmethod
     def _generate_color_palette(point_classes):
         palette = sns.color_palette(None, len(point_classes))
         return [{"class": c, "color": list(palette[i])} for i, c in enumerate(point_classes)]
 
-    def _print_generation_state(self):
-        msg = "Processed %f%%." % (self.n_generation_stored_points / self.n_generation_points * 100)
-        sys.stdout.write('\r' + msg)
-        sys.stdout.flush()
-        time.sleep(0.0000000000001)

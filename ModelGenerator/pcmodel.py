@@ -55,7 +55,7 @@ if __name__ == "__main__":
                                parent_sampling=args.sample,
                                balanced_sampling=not args.unbalanced_sampling)
 
-    trace_memory = True
+    trace_memory = False
 
     if trace_memory:
         import tracemalloc

@@ -61,8 +61,8 @@ class GeoPointCloudModel:
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
-        point_classes = list(cell.points_by_class.keys())
-        n_points = pcutils.num_points_by_class(cell.points_by_class)
+        point_classes = list(cell.point_indices_by_class.keys())
+        n_points = pcutils.num_points_by_class(cell.point_indices_by_class)
         print("\n%d points. %d classes." % (n_points, len(point_classes)))
         self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
 
@@ -72,7 +72,7 @@ class GeoPointCloudModel:
         self.n_generation_points = n_points
         self.n_generation_stored_points = 0
 
-        vi = self._save_tree(PCNode(cell.points_by_class), [0], out_folder=directory)
+        vi = self._save_tree(PCNode([0], cell.point_indices_by_class, cell), out_folder=directory)
 
         cell_data = cell.get_descriptor()
         cell_data["directory"] = folder_name
@@ -95,7 +95,7 @@ class GeoPointCloudModel:
         path = os.path.join(self._parent_directory, self._name, "pc_model.json")
         jsonutils.write_json(desc_model, path)
 
-    def _save_tree(self, node: PCNode, indices, out_folder):
+    def _save_tree(self, node: PCNode, out_folder):
         n_points = node.n_points
 
         if n_points == 0:
@@ -104,41 +104,41 @@ class GeoPointCloudModel:
         if self._parent_sampling or n_points < self._max_node_points:
             min_xyz, max_xyz = node.get_extent()
 
-            sampled_node, remaining_node = node.sample(self._max_node_points, balanced=self._balanced_sampling)
+            sampled_node, remaining_node = node.balanced_sampling(self._max_node_points, balanced=self._balanced_sampling)
 
-            file_name, file_path = self._get_file_path(indices, out_folder)
-            xyz_selected_points = sampled_node.get_all_points_shuffled()
-            encoding.matrix_to_file(xyz_selected_points, file_path)
+            file_name, file_path = self._get_file_path(node._indices, out_folder)
+            selected_xyz_normalized = sampled_node.get_normalized_xyz_intra_class_shuffled()
+            encoding.matrix_to_file(selected_xyz_normalized, file_path)
 
             self.n_generation_stored_points += sampled_node.n_points
             self._print_generation_state()
 
             voxel_index = {"min": min_xyz.tolist(),
                            "max": max_xyz.tolist(),
-                           "indices": indices,
+                           "indices": node._indices,
                            "filename": file_name,
                            "n_node_points": sampled_node.n_points,
                            "n_subtree_points": node.n_points,
-                           "avg_distance": pcutils.aprox_average_distance(xyz_selected_points),
+                           "avg_distance": pcutils.aprox_average_distance(selected_xyz_normalized),
                            "sorted_class_count": sampled_node.sorted_class_count}
 
             node = remaining_node
 
         # Creating children
-        voxel_index["children"] = self._save_children(node, indices, out_folder)
+        voxel_index["children"] = self._save_children(node, out_folder)
         return voxel_index
 
-    def _save_children(self, node, indices, out_folder):
+    def _save_children(self, node, out_folder):
         children = []
 
         if node is not None:
             if self._partitioning_method == GeoPointCloudModel.Partitioning.REGULAR_OCTREE:
-                nodes = node.split_octree(level=len(indices))
+                nodes = node.split_octree()
             else:
                 nodes = node.split_bintree_longest_axis()
 
             for i, node in enumerate(nodes):
-                vi = self._save_tree(node, indices + [i], out_folder=out_folder)
+                vi = self._save_tree(node, out_folder=out_folder)
                 children += [vi]
 
         return children

@@ -21,7 +21,7 @@ def get_sector_googlemaps_url(sector):
 
 
 def convert_las_to_wgs84(las_x, las_y, epsg_num=32733):
-    if epsg_num is 4326:
+    if epsg_num == 4326:
         return las_x, las_y
 
     crs_in = CRS.from_epsg(epsg_num)
@@ -196,14 +196,19 @@ def divide_by_class(xyzc):
     return points
 
 
-def divide_points_by_class(points, classes) -> dict:
+# def divide_points_by_class(points, classes) -> dict:
+#     unique_classes = np.unique(classes)
+#
+#     points_by_class = {}
+#     for c in unique_classes:
+#         xyz = points[c == classes, :]
+#         points_by_class[float(c)] = xyz
+#
+#     return points_by_class
+
+def get_indices_by_class(classes) -> dict:
     unique_classes = np.unique(classes)
-
-    points_by_class = {}
-    for c in unique_classes:
-        xyz = points[c == classes, :]
-        points_by_class[float(c)] = xyz
-
+    points_by_class = {float(c): np.where(c == classes)[0] for c in unique_classes}
     return points_by_class
 
 
@@ -235,6 +240,16 @@ def random_sampling(points, n_selected_points):
     selection = points[selection, :]
     non_selected = points[inverse_mask, :]
     return selection, non_selected
+
+
+def random_split(vector, n_selected):
+    if vector.shape[0] <= n_selected:
+        return vector, None
+    else:
+        selected = np.random.choice(vector.shape[0], size=n_selected, replace=False)
+        mask_not_selected = np.ones(vector.shape[0], np.bool)
+        mask_not_selected[selected] = 0
+        return vector[selected], vector[mask_not_selected]
 
 
 def aprox_average_distance(xyz):
@@ -387,6 +402,116 @@ def test_float_mercator_numerical_precision(las_path, las_epsg):
     error = points_utm - points_utm_reproj
     error = np.linalg.norm(error, axis=1)
     print("Error %d meters." % np.max(error))
+
+
+
+def split_octree(xyzc, level):
+    """Split point cloud in an regular octree space partitioning with a top node size of 1x1x1"""
+
+    n_level_partitions = int(2 ** level)
+
+    indices = np.clip(np.floor(xyzc[:, 0:3] * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+    indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions ** 2
+
+    children = []
+    for i, index in enumerate(np.unique(indices)):
+        ps = indices == index
+        points = xyzc[ps, :]
+        if points.shape[0] > 0:
+            children += [xyzc[ps, :]]
+
+    assert len(children) <= 8
+
+    return children
+
+
+def balanced_sampling(point_classes, n_selected_points) -> map:
+
+    unique_classes, unique_c_inv, unique_c_count = np.unique(point_classes,
+                                                             return_counts=True,
+                                                             return_inverse=True)
+
+    selected_points_by_class = {}
+    n_left_to_take = int(n_selected_points)
+    for i in range(unique_classes.shape[0]):
+        point_class = unique_classes[i]
+        remaining_classes = unique_classes.shape[0] - i
+        n_taken = int(min(n_left_to_take / remaining_classes, unique_c_count[i])) if remaining_classes > 1 else n_left_to_take
+        n_left_to_take -= n_taken
+
+        class_pos = np.where(unique_c_inv == i)[0]
+        sampled_point_classes = np.random.choice(class_pos, n_taken)
+        selected_points_by_class[point_class] = sampled_point_classes
+
+    return selected_points_by_class
+
+
+def generate_balanced_octree__(normalized_xyz, classes, max_node_points=65000) -> (list, list):
+    not_taken = np.ones((normalized_xyz.shape[0],), dtype=bool) # all false
+    level_linear_indices = []
+    level_balanced_node_samplings = []
+    level = 0
+
+    xyz01 = normalized_xyz * 0.5 + 0.5  # -1, 1 -> 0, 1
+    while np.any(not_taken):
+        #Calculating partitioning
+        n_level_partitions = int(2 ** level)
+        indices = np.clip(np.floor(xyz01[:, 0:3] * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+        linear_indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] * (n_level_partitions ** 2)
+        level += 1
+        level_linear_indices += [linear_indices]
+
+        #Sampling balanced
+        unique_ind, unique_inv_ind = np.unique(linear_indices, return_inverse=True)
+        node_sampling = {}
+        for i in range(unique_ind.shape[0]):
+            node_index = unique_ind[i]
+            node_point_indices = np.where(np.logical_and(unique_inv_ind == i, not_taken))[0] # node points
+            if node_point_indices.shape[0] > 0:
+                selected_points_by_class = balanced_sampling(classes[node_point_indices], max_node_points)
+
+                # remapping to whole set
+                for s in selected_points_by_class:
+                    s_index = selected_points_by_class[s]
+                    s_index = node_point_indices[s_index]
+                    selected_points_by_class[s] = s_index
+                    not_taken[s_index] = False
+
+                n_selected = sum([s.shape[0] for s in selected_points_by_class.values()])
+                assert n_selected <= max_node_points
+
+            node_sampling[node_index] = selected_points_by_class # storing node selection as map
+
+        level_balanced_node_samplings += [node_sampling]
+
+        print(np.sum(not_taken))
+
+    return level_linear_indices, level_balanced_node_samplings
+
+
+def generate_balanced_octree(normalized_xyz, classes, max_node_points=65000) -> (list, list):
+    level_linear_indices = []
+    level_balanced_node_samplings = []
+    level = 0
+
+    xyz01 = normalized_xyz * 0.5 + 0.5  # -1, 1 -> 0, 1
+
+    while True:
+        #Calculating partitioning
+        n_level_partitions = int(2 ** level)
+        indices = np.clip(np.floor(xyz01[:, 0:3] * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+        linear_indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] * (n_level_partitions ** 2)
+        level += 1
+        level_linear_indices += [linear_indices]
+
+        # Sampling balanced
+        unique_ind, counts = np.unique(linear_indices, return_counts=True)
+        if max(counts) <= max_node_points:
+            break
+
+    not_taken = np.ones((normalized_xyz.shape[0],), dtype=bool) # all false
+
+    return level_linear_indices, level_balanced_node_samplings
 
 
 

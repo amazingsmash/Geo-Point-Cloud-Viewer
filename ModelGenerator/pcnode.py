@@ -1,40 +1,43 @@
 import pcutils
 import numpy as np
+from globalgrid import GlobalGridCell
 
 
 class PCNode:
 
-    def __init__(self, points_by_class_dictionary):
-        self.points_by_class = points_by_class_dictionary
-        self.n_points_by_class = sum([n.shape[0] for n in self.points_by_class.values()])
+    def __init__(self, indices, point_indices_by_class, cell: GlobalGridCell):
+        """point_indices_by_class is a dict of classes -> point indices.
+        cell_points is a reference to a matrix with all the points with the form XYZCPPPPP..."""
+        self._indices = indices
+        self._cell = cell
+        self.point_indices_by_class = point_indices_by_class
+        self.n_points_by_class = sum([n.shape[0] for n in self.point_indices_by_class.values()])
         self.n_points = int(np.sum(self.n_points_by_class))
 
-        counts = np.array([n.shape[0] for n in self.points_by_class.values()])
-        classes = np.array(list(self.points_by_class.keys()))
+        counts = np.array([n.shape[0] for n in self.point_indices_by_class.values()])
+        classes = np.array(list(self.point_indices_by_class.keys()))
         sorted_classes = classes[np.argsort(counts)]
-        self.sorted_class_count = {c: self.points_by_class[c].shape[0] for c in sorted_classes}
+        self.sorted_class_count = {c: self.point_indices_by_class[c].shape[0] for c in sorted_classes}
 
-    def get_all_points_shuffled(self):
-        t = tuple([self.points_by_class[c] for c in self.sorted_class_count.keys()])
 
+    def _get_point_indices_intra_class_shuffled(self) -> np.ndarray:
+        t = tuple([self.point_indices_by_class[c] for c in self.sorted_class_count.keys()])
         for m in t:
             np.random.shuffle(m)
+        return np.hstack(t)
 
-        return np.vstack(t)
+    def get_normalized_xyz_intra_class_shuffled(self) -> np.ndarray:
+        indices = self._get_point_indices_intra_class_shuffled()
+        return self._cell.cell_xyz_normalized[indices]
 
     def get_extent(self):
-        mins = [np.min(self.points_by_class[c], axis=0) for c in self.sorted_class_count.keys()]
-        mins = np.vstack(tuple(mins))
-
-        maxs = [np.max(self.points_by_class[c], axis=0) for c in self.sorted_class_count.keys()]
-        maxs = np.vstack(tuple(maxs))
-
-        min_xyz = np.min(mins, axis=0)
-        max_xyz = np.max(maxs, axis=0)
-
+        indices = np.hstack([self.point_indices_by_class[c] for c in self.sorted_class_count.keys()])
+        node_points = self._cell.cell_xyz_normalized[indices]
+        min_xyz = np.min(node_points, axis=0)
+        max_xyz = np.max(node_points, axis=0)
         return min_xyz, max_xyz
 
-    def sample(self, n_selected_points, balanced=True):
+    def balanced_sampling(self, n_selected_points, balanced=True):
         """Returns balanced subsample and remaining points by class"""
 
         if self.n_points <= n_selected_points:
@@ -46,64 +49,66 @@ class PCNode:
         remaining_classes = len(self.sorted_class_count)
         for c, n in self.sorted_class_count.items():
             n_taken = remaining_points / remaining_classes if balanced \
-                else n_selected_points * (self.points_by_class[c].shape[0] / self.n_points)  # not balanced
+                else n_selected_points * (self.point_indices_by_class[c].shape[0] / self.n_points)  # not balanced
             n_taken = int(min(n_taken, n)) if remaining_classes > 1 else remaining_points
             remaining_points -= n_taken
             remaining_classes -= 1
 
-            sampled_points, not_sampled_points = pcutils.random_sampling(self.points_by_class[c], n_taken)
-            sampled[c] = sampled_points
-            if not_sampled_points is not None:
-                remaining[c] = not_sampled_points
+            sampled[c], class_remaining = pcutils.random_split(self.point_indices_by_class[c], n_taken)
+            if class_remaining is not None:
+                remaining[c] = class_remaining
 
-        sampled = PCNode(sampled)
-        remaining = PCNode(remaining)
-        assert sampled.n_points + remaining.n_points == self.n_points and sampled.n_points <= n_selected_points
+        sampled = PCNode(self._indices, sampled, self._cell)
+        remaining = PCNode(self._indices, remaining, self._cell) if len(remaining) > 0 else None
+
+        rP = remaining.n_points if remaining is not None else 0
+        assert sampled.n_points + rP == self.n_points and sampled.n_points <= n_selected_points
 
         return sampled, remaining
 
-    def split_octree(self, level):
-        n_level_partitions = int(2 ** level)
+    # def split_octree(self, level):
+    #     n_level_partitions = int(2 ** level)
+    #     children = [{} for _ in range(8)]
+    #
+    #     for c in self.sorted_class_count.keys():
+    #         xyz01 = (self._cell.cell_xyz_normalized[self.point_indices_by_class[c]] + 1) / 2  # Re-normalizing to 0 - 1
+    #
+    #         indices = np.clip(np.floor(xyz01 * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+    #         indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions ** 2
+    #
+    #         for i, index in enumerate(np.unique(indices)):
+    #             ps = np.where(indices == index)[0]
+    #             if ps.shape[0] > 0:
+    #                 children[i][c] = ps  # Storing indices
+    #
+    #     children = [PCNode(c, self._cell) for c in children if bool(c)]  # Removing empty's
+    #
+    #     assert len(children) <= 8
+    #     return children
+
+    def split_octree(self):
         children = [{} for _ in range(8)]
 
+        level = len(self._indices) - 1
+        node_indices = self._cell.get_octree_node_indices(level)
+
         for c in self.sorted_class_count.keys():
-            xyz = self.points_by_class[c]
 
-            xyz01 = (xyz + 1) / 2  # Re-normalizing to 0 - 1
-            indices = np.clip(np.floor(xyz01 * n_level_partitions), 0, n_level_partitions - 1).astype(int)
-            indices = indices[:, 0] + indices[:, 1] * n_level_partitions + indices[:, 0] ** n_level_partitions ** 2
+            point_indices = self.point_indices_by_class[c]
 
-            for i, index in enumerate(np.unique(indices)):
-                ps = indices == index
-                points = xyz[ps, :]
-                if points.shape[0] > 0:
-                    children[i][c] = xyz[ps, :]  # Storing -1 - 1 points
+            class_node_indices = node_indices[point_indices]
+            unique_class_node_indices = np.unique(class_node_indices)
 
-        children = [PCNode(c) for c in children if bool(c)]  # Removing empty's
+            assert len(unique_class_node_indices) <= 8
+
+            for i, index in enumerate(unique_class_node_indices):
+                ps = np.where(class_node_indices == index)[0]
+                ps = point_indices[ps]
+
+                if ps.shape[0] > 0:
+                    children[i][c] = ps  # Storing indices
+
+        children = [PCNode(self._indices + [i], c, self._cell) for i, c in enumerate(children) if bool(c)]  # Removing empty
 
         assert len(children) <= 8
-        return children
-
-    def split_bintree_longest_axis(self):
-
-        children = [{}, {}]
-
-        for c in self.sorted_class_count.keys():
-            xyz = self.points_by_class[c]
-            min_xyz = np.min(xyz, axis=0)
-            max_xyz = np.max(xyz, axis=0)
-            size = max_xyz - min_xyz
-            max_dim = np.argmax(size)
-            m = np.median(xyz[:, max_dim])
-            division = xyz[:, max_dim] > m
-
-            s_div = sum(division)
-            if s_div == 0 or s_div == xyz.shape[0]:
-                division = xyz[:, max_dim] >= m
-
-            children[0][c] = xyz[division, :]
-            children[1][c] = xyz[np.logical_not(division), :]
-
-        children = [PCNode(c) for c in children if bool(c)]  # removing empty's
-
         return children

@@ -7,6 +7,8 @@ import os
 import encoding
 from typing import Tuple
 
+from functools import lru_cache
+
 
 class GlobalGrid:
 
@@ -39,29 +41,24 @@ class GlobalGridCell:
         cell_center = (self._cell_extent_min + self._cell_extent_max) / 2
         cell_xyz_normalized = (point_xyz - cell_center) / (cell_extent / 2)
         epsilon = 1e-6
+
         assert np.min(np.min(cell_xyz_normalized)) >= -1-epsilon and np.max(np.max(cell_xyz_normalized)) <= 1+epsilon
-        cell_xyz_normalized = np.clip(cell_xyz_normalized, -1, 1)
 
-        self.points_by_class = pcutils.divide_points_by_class(cell_xyz_normalized, point_classes)
+        self.cell_xyz_normalized = np.clip(cell_xyz_normalized, -1, 1)  # All points in range -1, 1
+        self._xyz01 = (self.cell_xyz_normalized + 1) / 2
+        assert np.min(self._xyz01) >= 0 and np.max(self._xyz01) <= 1
 
-    # MIN_HEIGHT = -1000 # Min Representable Height
-    #
-    # def __init__(self, modelpath, xy_index, cell_xy_min, cell_side_length):
-    #
-    #     points = encoding.file_to_matrix(GlobalGridCell.descriptor_path(modelpath, xy_index))
-    #     cell_xyz_normalized = points[:, 0:3]
-    #     point_classes = points[:, 3]
-    #
-    #     self.cell_extent_min = np.hstack((cell_xy_min, GlobalGridCell.MIN_HEIGHT))
-    #     self.cell_extent_max = self.cell_extent_min + cell_side_length
-    #     cell_center = (self.cell_extent_min + self.cell_extent_max) / 2
-    #     cell_extent = np.array([cell_side_length, cell_side_length, cell_side_length])
-    #
-    #     self.xy_index = xy_index
-    #     self.pc_bounds_min = np.min(cell_xyz_normalized, axis=0) * (cell_extent / 2) + cell_center
-    #     self.pc_bounds_max = np.max(cell_xyz_normalized, axis=0) * (cell_extent / 2) + cell_center
-    #
-    #     self.points_by_class = pcutils.divide_points_by_class(cell_xyz_normalized, point_classes)
+        self.point_indices_by_class = pcutils.get_indices_by_class(point_classes)  # All point indices by class
+
+    @lru_cache(maxsize=20)
+    def get_octree_node_indices(self, level):
+        n_level_partitions = int(2 ** level)
+        indices3 = np.clip(np.floor(self._xyz01 * n_level_partitions), 0, n_level_partitions - 1).astype(int)
+        indices = indices3[:, 0] + indices3[:, 1] * n_level_partitions + indices3[:, 2] * n_level_partitions ** 2
+
+        assert np.min(indices) >= 0 and np.max(indices) < (n_level_partitions ** 3)
+
+        return indices
 
     @staticmethod
     def folder_path(xy_index): return "Cell_%d_%d" % tuple(xy_index)
@@ -73,24 +70,6 @@ class GlobalGridCell:
     @staticmethod
     def all_points_path(modelpath, xy_index):
         return os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "points.bytes")
-
-    # @staticmethod
-    # def store_points_in_folder(modelpath, points, xy_index, cell_xy_min, cell_side_length):
-    #     point_xyz = points[:, 0:3]
-    #
-    #     cell_extent_min = np.hstack((cell_xy_min, GlobalGridCell.MIN_HEIGHT))
-    #     cell_extent_max = cell_extent_min + cell_side_length
-    #     cell_extent = np.array([cell_side_length, cell_side_length, cell_side_length])
-    #
-    #     # Normalizing points in -1 - 1 space
-    #     cell_center = (cell_extent_min + cell_extent_max) / 2
-    #     cell_xyz_normalized = (point_xyz - cell_center) / (cell_extent / 2)
-    #     epsilon = 1e-6
-    #     assert np.min(np.min(cell_xyz_normalized)) >= -1-epsilon and np.max(np.max(cell_xyz_normalized)) <= 1+epsilon
-    #     cell_xyz_normalized = np.clip(cell_xyz_normalized, -1, 1)
-    #     points[:, 0:3] = cell_xyz_normalized
-    #
-    #     encoding.append_rows_to_file(GlobalGridCell.descriptor_path(modelpath, xy_index), points)
 
     @staticmethod
     def store_points_double(modelpath, xy_index, points):
@@ -104,7 +83,6 @@ class GlobalGridCell:
                 n = n + 1
 
         encoding.matrix_to_file_double(points, path)
-
 
     @staticmethod
     def get_all_points(modelpath, xy_index):

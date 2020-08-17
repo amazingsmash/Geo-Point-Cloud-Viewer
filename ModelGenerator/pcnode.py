@@ -33,11 +33,11 @@ class PCNode:
 
     def get_normalized_xyz_intra_class_shuffled(self) -> np.ndarray:
         indices = self._get_point_indices_intra_class_shuffled()
-        return self._cell.cell_xyz_normalized[indices]
+        return self._cell.cell_points_normalized[indices]
 
     def get_extent(self):
         indices = np.hstack([self.point_indices_by_class[c] for c in self.sorted_class_count.keys()])
-        node_points = self._cell.cell_xyz_normalized[indices]
+        node_points = self._cell.cell_points_normalized[indices]
         min_xyz = np.min(node_points, axis=0)
         max_xyz = np.max(node_points, axis=0)
         return min_xyz, max_xyz

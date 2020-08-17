@@ -1,6 +1,7 @@
 import gc
 import math
 
+import jsonutils
 import pcutils
 import numpy as np
 import os
@@ -28,7 +29,13 @@ class GlobalGrid:
 
 class GlobalGridCell:
 
-    def __init__(self, xy_index, point_xyz, point_classes, cell_xy_min, cell_side_length):
+    def __init__(self,
+                 xy_index: np.ndarray,
+                 point_xyz: np.ndarray,
+                 point_classes: np.ndarray,
+                 point_metadata: dict,
+                 cell_xy_min: np.ndarray,
+                 cell_side_length: float):
 
         self.xy_index = xy_index
         self.n_points = point_xyz.shape[0]
@@ -46,9 +53,13 @@ class GlobalGridCell:
 
         assert np.min(np.min(cell_xyz_normalized)) >= -1-epsilon and np.max(np.max(cell_xyz_normalized)) <= 1+epsilon
 
-        self.cell_xyz_normalized = np.clip(cell_xyz_normalized, -1, 1)  # All points in range -1, 1
-        self._xyz01 = (self.cell_xyz_normalized + 1) / 2
+        self.cell_points_normalized = np.clip(cell_xyz_normalized, -1, 1)  # All points in range -1, 1
+        self._xyz01 = (self.cell_points_normalized + 1) / 2
         assert np.min(self._xyz01) >= 0 and np.max(self._xyz01) <= 1
+
+        for m in point_metadata.values():
+            m = np.reshape(m, (m.shape[0], 1))
+            self.cell_points_normalized = np.hstack((self.cell_points_normalized, m))
 
         self.point_indices_by_class = pcutils.get_indices_by_class(point_classes)  # All point indices by class
 
@@ -74,7 +85,7 @@ class GlobalGridCell:
         return os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "points.bytes")
 
     @staticmethod
-    def store_points_double(modelpath, xy_index, points):
+    def store_points_double(modelpath, xy_index, points, metadata_columns):
         print("Storing data for Cell %d x %d" % (xy_index[0], xy_index[1]))
 
         cell_path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index))
@@ -88,8 +99,15 @@ class GlobalGridCell:
             else:
                 n = n + 1
 
-
         encoding.matrix_to_file_double(points, path)
+
+        path = os.path.join(cell_path, "metadata_columns.json")
+        jsonutils.write_json(metadata_columns, path)
+
+    @staticmethod
+    def read_metadata_columns(modelpath, xy_index):
+        path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "metadata_columns.json")
+        return jsonutils.read_json(path)
 
     @staticmethod
     def get_all_points(modelpath, xy_index):
@@ -148,20 +166,27 @@ class TileMapServiceGG(GlobalGrid):
         cell_xy_maxs = cell_xy_mins + self.cell_side_lenght_meters - (TileMapServiceGG.MAP_SIDE_LENGTH_METERS / 2)
         return cell_xy_mins, cell_xy_maxs
 
-    def store_points_in_cell_folders(self, modelpath, las_paths: list, epsg_num: int) -> np.ndarray:
+    def store_points_in_cell_folders(self,
+                                     modelpath: str,
+                                     las_paths: list,
+                                     epsg_num: int,
+                                     included_metadata: list = ["intensities"]) -> np.ndarray:
         # Separating point sets
         cell_indices_set = set()
         las_index = 0
         while las_index < len(las_paths):
             # coordinates in spherical mercator
             try:
-                las_points = np.zeros((0, 4))
-                while las_points.nbytes <  1 * 1024 * 1024 * 1024 and las_index < len(las_paths): # 1 GB
+                las_points = None
+                mem_limit = 1 * 1024 * 1024 * 1024 # 1 GB
+                while (las_points is None or las_points.nbytes < mem_limit) and las_index < len(las_paths):
                     las_path = las_paths[las_index]
-                    las_index = las_index + 1                      # next
+                    las_index = las_index + 1  # next
                     print("Processing LAS %s" % las_path)
-                    las_points_i = pcutils.read_las_as_spherical_mercator_xyzc(las_path, epsg_num=epsg_num)
-                    las_points = np.vstack((las_points, las_points_i))
+                    las_points_i, metadata_columns = pcutils.read_las_as_spherical_mercator_xyzc(las_path,
+                                                                                   epsg_num=epsg_num,
+                                                                                   included_metadata=included_metadata)
+                    las_points = np.vstack((las_points, las_points_i)) if las_points is not None else las_points_i
 
             except Exception:
                 print("Problem reading LAS %s" % las_path)
@@ -179,24 +204,37 @@ class TileMapServiceGG(GlobalGrid):
                 cell_indices_set.add((xy_index[0], xy_index[1]))
                 point_indices = np.where(tile_flat_indices == i)[0]
                 ps = las_points[point_indices, :]
-                GlobalGridCell.store_points_double(modelpath, xy_index, ps)
+                GlobalGridCell.store_points_double(modelpath, xy_index, ps, metadata_columns)
                 gc.collect()
 
         print("Point disk storage completed")
         cell_indices = np.array(list(cell_indices_set))
         return cell_indices
 
-    def cell_generator(self, modelpath, cell_indices: np.ndarray):
+    def cell_generator(self,
+                       model_path: str,
+                       cell_indices: np.ndarray):
         gc.collect()
         # print("Identified Cells: ", cell_indices)
         cell_xy_mins, cell_xy_maxs = self.get_bounds_from_cell_indices(cell_indices)
 
         for xy_index, cell_xy_min, cell_xy_max in zip(cell_indices, cell_xy_mins, cell_xy_maxs):
             print("\n\nGenerating Cell %d x %d" % (xy_index[0], xy_index[1]))
-            ps = GlobalGridCell.get_all_points(modelpath, xy_index)
+            ps = GlobalGridCell.get_all_points(model_path, xy_index)
             point_xyz = ps[:, 0:3]
             point_classes = ps[:, 3]
-            c = GlobalGridCell(xy_index, point_xyz, point_classes, cell_xy_min, self.cell_side_lenght_meters)
+
+            metadata_column_names = GlobalGridCell.read_metadata_columns(model_path, xy_index)
+
+            point_metadata = {name: ps[:, 4 + int(column)] for (column, name) in metadata_column_names.items()}
+
+            c = GlobalGridCell(xy_index,
+                               point_xyz,
+                               point_classes,
+                               point_metadata,
+                               cell_xy_min,
+                               self.cell_side_lenght_meters)
+
             yield c
 
     def get_descriptor(self) -> dict:

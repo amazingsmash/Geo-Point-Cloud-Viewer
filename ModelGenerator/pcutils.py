@@ -93,7 +93,7 @@ def read_las_as_wgs84_lonlathc(las_path, epsg_num):
     return lonlathc
 
 
-def read_las_as_spherical_mercator_xyzc(las_path, epsg_num):
+def read_las_as_spherical_mercator_xyzc(las_path, epsg_num, included_metadata):
 
     in_file = File(las_path, mode='r')
     x, y = convert_crs(in_file.x, in_file.y, epsg_num_in=epsg_num, epsg_num_out=3857)
@@ -101,9 +101,20 @@ def read_las_as_spherical_mercator_xyzc(las_path, epsg_num):
 
     show_wgs84_data(in_file.x, in_file.y, epsg_num)
 
-    xyzc = np.transpose(np.array([x, y, h, in_file.Classification.astype(float)]))
+    xyz_c = np.transpose(np.array([x, y, h, in_file.Classification.astype(float)]))
+
+    metadata_columns = {}
+    metadata = None
+    if "intensities" in included_metadata:
+        intensities = in_file.intensity
+        intensities = np.reshape(intensities, (intensities.shape[0],1))
+        metadata = intensities
+        metadata_columns[0] = "intensities"
+
+    points = np.hstack((xyz_c, metadata)) if metadata is not None else xyz_c
+
     in_file.close()
-    return xyzc
+    return points, metadata_columns
 
 
 def print_spherical_mercator_limits():

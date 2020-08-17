@@ -1,6 +1,5 @@
 import argparse
 import sys
-from datetime import datetime
 import pcutils
 from geopcmodel import GeoPointCloudModel
 from globalgrid import TileMapServiceGG
@@ -56,19 +55,27 @@ if __name__ == "__main__":
                                balanced_sampling=not args.unbalanced_sampling)
 
     trace_memory = False
+    profile = False
 
     if trace_memory:
         import tracemalloc
         tracemalloc.start()
-
-    t0 = datetime.now()
-    model.store_las_files(las_files, args.epsg)
-    t1 = datetime.now()
-    td = t1 - t0
-
-    if trace_memory:
+        model.store_las_files(las_files, args.epsg)
         current, peak = tracemalloc.get_traced_memory()
         print(f"Peak Memory Usage was {peak / 10 ** 6}MB")
         tracemalloc.stop()
+    else:
+        if profile:
+            import cProfile
+            import pstats
+            profile = cProfile.Profile()
 
-    print("\nModel generated in %f sec." % td.total_seconds())
+            def profile_func():
+                model.store_las_files(las_files, args.epsg)
+
+            profile.runcall(profile_func)
+            ps = pstats.Stats(profile)
+            ps.sort_stats('tottime', 'calls')
+            ps.print_stats()
+        else:
+            model.store_las_files(las_files, args.epsg)

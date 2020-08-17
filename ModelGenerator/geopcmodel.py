@@ -1,16 +1,12 @@
 import gc
 import os
-import sys
-import time
-from enum import Enum
-import numpy as np
 import seaborn as sns
-import encoding
 import jsonutils
-import pcutils
 from globalgrid import GlobalGrid, GlobalGridCell
 from pcnode import PCNode
 import shutil
+from datetime import datetime
+from pathlib import Path
 
 
 class GeoPointCloudModel:
@@ -36,6 +32,8 @@ class GeoPointCloudModel:
         shutil.rmtree(self.model_directory(), ignore_errors=True)
 
     def store_las_files(self, las_paths, epsg_num):
+        t0 = datetime.now()
+
         modelpath = self.model_directory()
         cell_indices = self._global_grid.store_points_in_cell_folders(modelpath, las_paths, epsg_num)
         cell_generator = self._global_grid.cell_generator(modelpath, cell_indices)
@@ -44,16 +42,22 @@ class GeoPointCloudModel:
 
         self._save_model_descriptor()
 
+        t1 = datetime.now()
+        td = t1 - t0
+        print("\nLAS added to model generated in %f sec." % td.total_seconds())
+
     def model_directory(self): return os.path.join(self._parent_directory, self._name)
 
     def _store_cell(self, cell: GlobalGridCell):
         folder_name = "Cell_%d_%d" % tuple(cell.xy_index)
         directory = os.path.join(self._parent_directory, self._name, folder_name)
+        Path(directory).mkdir(parents=True, exist_ok=True)
+
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
         point_classes = list(cell.point_indices_by_class.keys())
-        print("\n%d points. %d classes." % (cell.n_points, len(point_classes)))
+        print("%d points. %d classes." % (cell.n_points, len(point_classes)))
         self._point_classes = list(dict.fromkeys(point_classes + self._point_classes))  # add new classes
 
         index_file_name = "cell.json"

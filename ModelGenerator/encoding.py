@@ -18,10 +18,6 @@ def doubles_to_binary(array):
 
 
 def matrix_to_file(matrix, file_path):
-
-    folder = os.path.dirname(file_path)
-    Path(folder).mkdir(parents=True, exist_ok=True)
-
     values = matrix.flatten().tolist()
     values = list(matrix.shape) + values
 
@@ -52,7 +48,7 @@ def append_rows_to_file(path, rows):
 ################
 
 
-def matrix_to_file_double(matrix, file_path):
+def ___matrix_to_file_double(matrix, file_path):
     folder = os.path.dirname(file_path)
     Path(folder).mkdir(parents=True, exist_ok=True)
 
@@ -64,19 +60,25 @@ def matrix_to_file_double(matrix, file_path):
     file.write(buf)
     file.close()
 
+def matrix_to_file_double(matrix, file_path):
+    values = np.array(list(matrix.shape) + matrix.flatten().tolist(), dtype=np.double)
+    values.tofile(file_path)
 
-def file_to_matrix_double(file_path):
+
+def ___file_to_matrix_double(file_path):
     f = open(file_path, 'rb')
     raw = f.read()
     n_doubles = int(len(raw) / 8)
     buf = struct.unpack('d'*n_doubles, raw)
-
     assert len(buf) == n_doubles
-
     mat = np.reshape(buf[2:], newshape=(int(buf[0]), int(buf[1]))).astype(np.double)
 
     return mat
 
+def file_to_matrix_double(file_path):
+    mat = np.fromfile(file_path, dtype=np.double)
+    mat = np.reshape(mat[2:], newshape=(int(mat[0]), int(mat[1])))
+    return mat
 
 def append_rows_to_file_double(path, rows):
     if os.path.exists(path):

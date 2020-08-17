@@ -8,6 +8,7 @@ import encoding
 from typing import Tuple
 
 from functools import lru_cache
+from pathlib import Path
 
 
 class GlobalGrid:
@@ -75,13 +76,18 @@ class GlobalGridCell:
     @staticmethod
     def store_points_double(modelpath, xy_index, points):
         print("Storing data for Cell %d x %d" % (xy_index[0], xy_index[1]))
+
+        cell_path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index))
+        Path(cell_path).mkdir(parents=True, exist_ok=True)
+
         n = 0
         while True:
-            path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "points_%d.bytes" % n)
+            path = os.path.join(cell_path, "points_%d.bytes" % n)
             if not os.path.exists(path):
                 break
             else:
                 n = n + 1
+
 
         encoding.matrix_to_file_double(points, path)
 
@@ -186,7 +192,7 @@ class TileMapServiceGG(GlobalGrid):
         cell_xy_mins, cell_xy_maxs = self.get_bounds_from_cell_indices(cell_indices)
 
         for xy_index, cell_xy_min, cell_xy_max in zip(cell_indices, cell_xy_mins, cell_xy_maxs):
-            print("\nGenerating Cell %d x %d" % (xy_index[0], xy_index[1]))
+            print("\n\nGenerating Cell %d x %d" % (xy_index[0], xy_index[1]))
             ps = GlobalGridCell.get_all_points(modelpath, xy_index)
             point_xyz = ps[:, 0:3]
             point_classes = ps[:, 3]

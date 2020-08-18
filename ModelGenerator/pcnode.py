@@ -31,7 +31,7 @@ class PCNode:
             np.random.shuffle(m)
         return np.hstack(t)
 
-    def get_normalized_xyz_intra_class_shuffled(self) -> np.ndarray:
+    def get_normalized_points_intra_class_shuffled(self) -> np.ndarray:
         indices = self._get_point_indices_intra_class_shuffled()
         return self._cell.cell_points_normalized[indices]
 
@@ -108,8 +108,8 @@ class PCNode:
             sampled_node, remaining_node = self.balanced_sampling(max_node_points, balanced=balanced_sampling)
 
             file_name, file_path = self._get_file_path(out_folder)
-            selected_xyz_normalized = sampled_node.get_normalized_xyz_intra_class_shuffled()
-            encoding.matrix_to_file(selected_xyz_normalized, file_path)
+            selected_points_normalized = sampled_node.get_normalized_points_intra_class_shuffled()
+            encoding.matrix_to_file(selected_points_normalized, file_path)
 
             PCNode.n_generation_stored_points += sampled_node.n_points
             self._print_generation_state()
@@ -120,7 +120,7 @@ class PCNode:
                            "filename": file_name,
                            "n_node_points": sampled_node.n_points,
                            "n_subtree_points": self.n_points,
-                           "avg_distance": pcutils.aprox_average_distance(selected_xyz_normalized),
+                           "avg_distance": pcutils.aprox_average_distance(selected_points_normalized),
                            "sorted_class_count": sampled_node.sorted_class_count}
         else:
             remaining_node = self

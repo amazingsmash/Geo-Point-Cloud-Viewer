@@ -17,8 +17,10 @@ class GeoPointCloudModel:
                  parent_directory="",
                  max_node_points=65000,
                  parent_sampling=True,
-                 balanced_sampling=True):
+                 balanced_sampling=True,
+                 included_metadata=[]):
 
+        self._model_version = "2.0"
         self._global_grid = global_grid
         self._name = name
         self._parent_directory = parent_directory
@@ -28,6 +30,7 @@ class GeoPointCloudModel:
         self._point_classes = []
         self._cells = []
         self.generation_file = 0
+        self.included_metadata = included_metadata
 
         shutil.rmtree(self.model_directory(), ignore_errors=True)
 
@@ -35,7 +38,10 @@ class GeoPointCloudModel:
         t0 = datetime.now()
 
         modelpath = self.model_directory()
-        cell_indices = self._global_grid.store_points_in_cell_folders(modelpath, las_paths, epsg_num)
+        cell_indices = self._global_grid.store_points_in_cell_folders(modelpath,
+                                                                      las_paths,
+                                                                      epsg_num,
+                                                                      self.included_metadata)
         cell_generator = self._global_grid.cell_generator(modelpath, cell_indices)
         for c in cell_generator:
             self._store_cell(c)
@@ -81,6 +87,7 @@ class GeoPointCloudModel:
     def _save_model_descriptor(self):
 
         desc_model = {"model_name": self._name,
+                      "model_version": self._model_version,
                       "global_grid": self._global_grid.get_descriptor(),
                       "max_node_points": self._max_node_points,
                       "parent_sampling": self._parent_sampling,

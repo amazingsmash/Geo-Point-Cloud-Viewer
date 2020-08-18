@@ -14,7 +14,11 @@ from pathlib import Path
 
 class GlobalGrid:
 
-    def store_points_in_cell_folders(self, modelpath, las_paths: list, epsg_num: int) -> np.ndarray:
+    def store_points_in_cell_folders(self,
+                                     modelpath: str,
+                                     las_paths: list,
+                                     epsg_num: int,
+                                     included_metadata: list = ["intensities"]) -> np.ndarray:
         pass
 
     def cell_generator(self, modelpath, cell_indices: np.ndarray):
@@ -60,6 +64,7 @@ class GlobalGridCell:
         for m in point_metadata.values():
             m = np.reshape(m, (m.shape[0], 1))
             self.cell_points_normalized = np.hstack((self.cell_points_normalized, m))
+        self._metadata_columns = list(point_metadata.keys())
 
         self.point_indices_by_class = pcutils.get_indices_by_class(point_classes)  # All point indices by class
 
@@ -146,7 +151,8 @@ class GlobalGridCell:
                 "cell_extent_min": self._cell_extent_min.tolist(),
                 "cell_extent_max": self._cell_extent_max.tolist(),
                 "pc_bounds_min": self._pc_bounds_min.tolist(),
-                "pc_bounds_max": self._pc_bounds_max.tolist()}
+                "pc_bounds_max": self._pc_bounds_max.tolist(),
+                "metadata_columns": self._metadata_columns}
 
 
 class TileMapServiceGG(GlobalGrid):

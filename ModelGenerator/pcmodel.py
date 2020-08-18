@@ -29,6 +29,8 @@ if __name__ == "__main__":
                         type=float, default=0.1)
     parser.add_argument("-u", "--unbalanced_sampling", help="Do not sample parent nodes attending to class.",
                         action='store_true')
+    parser.add_argument("-i", "--add_point_intensity", help="Add point intensity to model.",
+                        action='store_true')
 
     args = parser.parse_args()  # getting optionals
 
@@ -52,7 +54,8 @@ if __name__ == "__main__":
                                parent_directory=args.out,
                                max_node_points=args.node_points,
                                parent_sampling=args.sample,
-                               balanced_sampling=not args.unbalanced_sampling)
+                               balanced_sampling=not args.unbalanced_sampling,
+                               included_metadata=["intensities"] if args.add_point_intensity else [])
 
     trace_memory = False
     profile = False

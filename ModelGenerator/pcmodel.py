@@ -3,6 +3,7 @@ import sys
 import pcutils
 from geopcmodel import GeoPointCloudModel
 from globalgrid import TileMapServiceGG
+from pointattribute import PointAttribute
 
 
 
@@ -55,7 +56,7 @@ if __name__ == "__main__":
                                max_node_points=args.node_points,
                                parent_sampling=args.sample,
                                balanced_sampling=not args.unbalanced_sampling,
-                               included_metadata=["intensities"] if args.add_point_intensity else [])
+                               point_attributes=[PointAttribute.INTENSITY] if args.add_point_intensity else [])
 
     trace_memory = False
     profile = False

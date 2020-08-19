@@ -10,6 +10,7 @@ from typing import Tuple
 
 from functools import lru_cache
 from pathlib import Path
+from pointattribute import PointAttribute
 
 
 class GlobalGrid:
@@ -18,7 +19,7 @@ class GlobalGrid:
                                      modelpath: str,
                                      las_paths: list,
                                      epsg_num: int,
-                                     included_metadata: list = ["intensities"]) -> np.ndarray:
+                                     point_attributes: list = ["intensities"]) -> np.ndarray:
         pass
 
     def cell_generator(self, modelpath, cell_indices: np.ndarray):
@@ -61,10 +62,11 @@ class GlobalGridCell:
         self._xyz01 = (self.cell_points_normalized + 1) / 2
         assert np.min(self._xyz01) >= 0 and np.max(self._xyz01) <= 1
 
-        for m in point_metadata.values():
-            m = np.reshape(m, (m.shape[0], 1))
-            self.cell_points_normalized = np.hstack((self.cell_points_normalized, m))
-        self._metadata_columns = list(point_metadata.keys())
+        for attribute, values in point_metadata.items():
+            values = np.reshape(values, (values.shape[0], 1))
+            values = PointAttribute.normalizeValues(attribute, values)
+            self.cell_points_normalized = np.hstack((self.cell_points_normalized, values))
+        self._node_data_signature = "_".join(["XYZ"] + [a.value for a in point_metadata.keys()])
 
         self.point_indices_by_class = pcutils.get_indices_by_class(point_classes)  # All point indices by class
 
@@ -90,7 +92,7 @@ class GlobalGridCell:
         return os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "points.bytes")
 
     @staticmethod
-    def store_points_double(modelpath, xy_index, points, metadata_columns):
+    def store_points_double(modelpath, xy_index, points, attribute_columns):
         print("Storing data for Cell %d x %d" % (xy_index[0], xy_index[1]))
 
         cell_path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index))
@@ -106,13 +108,16 @@ class GlobalGridCell:
 
         encoding.matrix_to_file_double(points, path)
 
-        path = os.path.join(cell_path, "metadata_columns.json")
-        jsonutils.write_json(metadata_columns, path)
+        path = os.path.join(cell_path, "attribute_columns.json")
+        attribute_columns = {c: a.value for c, a in attribute_columns.items()}
+        jsonutils.write_json(attribute_columns, path)
 
     @staticmethod
-    def read_metadata_columns(modelpath, xy_index):
-        path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "metadata_columns.json")
-        return jsonutils.read_json(path)
+    def read_attribute_columns(modelpath, xy_index):
+        path = os.path.join(modelpath, GlobalGridCell.folder_path(xy_index), "attribute_columns.json")
+        attribute_columns = jsonutils.read_json(path)
+        attribute_columns = {c: PointAttribute(a) for c, a in attribute_columns.items()}
+        return attribute_columns
 
     @staticmethod
     def get_all_points(modelpath, xy_index):
@@ -152,7 +157,7 @@ class GlobalGridCell:
                 "cell_extent_max": self._cell_extent_max.tolist(),
                 "pc_bounds_min": self._pc_bounds_min.tolist(),
                 "pc_bounds_max": self._pc_bounds_max.tolist(),
-                "metadata_columns": self._metadata_columns}
+                "node_data_signature": self._node_data_signature}
 
 
 class TileMapServiceGG(GlobalGrid):
@@ -176,7 +181,7 @@ class TileMapServiceGG(GlobalGrid):
                                      modelpath: str,
                                      las_paths: list,
                                      epsg_num: int,
-                                     included_metadata: list = ["intensities"]) -> np.ndarray:
+                                     point_attributes: list) -> np.ndarray:
         # Separating point sets
         cell_indices_set = set()
         las_index = 0
@@ -189,9 +194,9 @@ class TileMapServiceGG(GlobalGrid):
                     las_path = las_paths[las_index]
                     las_index = las_index + 1  # next
                     print("Processing LAS %s" % las_path)
-                    las_points_i, metadata_columns = pcutils.read_las_as_spherical_mercator_xyzc(las_path,
-                                                                                   epsg_num=epsg_num,
-                                                                                   included_metadata=included_metadata)
+                    las_points_i, attribute_columns = pcutils.read_las_as_spherical_mercator(las_path,
+                                                                                             epsg_num=epsg_num,
+                                                                                             point_attributes=point_attributes)
                     las_points = np.vstack((las_points, las_points_i)) if las_points is not None else las_points_i
 
             except Exception:
@@ -210,7 +215,7 @@ class TileMapServiceGG(GlobalGrid):
                 cell_indices_set.add((xy_index[0], xy_index[1]))
                 point_indices = np.where(tile_flat_indices == i)[0]
                 ps = las_points[point_indices, :]
-                GlobalGridCell.store_points_double(modelpath, xy_index, ps, metadata_columns)
+                GlobalGridCell.store_points_double(modelpath, xy_index, ps, attribute_columns)
                 gc.collect()
 
         print("Point disk storage completed")
@@ -230,14 +235,14 @@ class TileMapServiceGG(GlobalGrid):
             point_xyz = ps[:, 0:3]
             point_classes = ps[:, 3]
 
-            metadata_column_names = GlobalGridCell.read_metadata_columns(model_path, xy_index)
+            attribute_columns = GlobalGridCell.read_attribute_columns(model_path, xy_index)
 
-            point_metadata = {name: ps[:, 4 + int(column)] for (column, name) in metadata_column_names.items()}
+            point_attributes = {att: ps[:, 4 + int(column_index)] for (column_index, att) in attribute_columns.items()}
 
             c = GlobalGridCell(xy_index,
                                point_xyz,
                                point_classes,
-                               point_metadata,
+                               point_attributes,
                                cell_xy_min,
                                self.cell_side_lenght_meters)
 

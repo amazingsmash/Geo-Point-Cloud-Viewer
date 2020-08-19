@@ -3,8 +3,7 @@ import numpy as np
 from pyproj import CRS, Transformer, exceptions
 from laspy.file import File
 import os
-import pathlib
-import encoding
+from pointattribute import PointAttribute
 
 
 def get_sector(lat, lon):
@@ -115,6 +114,30 @@ def read_las_as_spherical_mercator_xyzc(las_path, epsg_num, included_metadata):
 
     in_file.close()
     return points, metadata_columns
+
+def read_las_as_spherical_mercator(las_path, epsg_num, point_attributes):
+
+    in_file = File(las_path, mode='r')
+    x, y = convert_crs(in_file.x, in_file.y, epsg_num_in=epsg_num, epsg_num_out=3857)
+    h = in_file.z
+
+    show_wgs84_data(in_file.x, in_file.y, epsg_num)
+
+    xyz_c = np.transpose(np.array([x, y, h, in_file.Classification.astype(float)]))
+
+    attribute_columns = {}
+    attribute_matrix = None
+    if PointAttribute.INTENSITY in point_attributes:
+        intensities = in_file.intensity
+        intensities = np.reshape(intensities, (intensities.shape[0],1))
+        attribute_matrix = intensities
+        attribute_columns[0] = PointAttribute.INTENSITY
+        PointAttribute.adjustRange(PointAttribute.INTENSITY, intensities) # important for renormalization
+
+    points = np.hstack((xyz_c, attribute_matrix)) if attribute_matrix is not None else xyz_c
+
+    in_file.close()
+    return points, attribute_columns
 
 
 def print_spherical_mercator_limits():

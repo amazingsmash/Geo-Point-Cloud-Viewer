@@ -7,7 +7,7 @@ from pcnode import PCNode
 import shutil
 from datetime import datetime
 from pathlib import Path
-
+from pointattribute import PointAttribute
 
 class GeoPointCloudModel:
 
@@ -18,7 +18,7 @@ class GeoPointCloudModel:
                  max_node_points=65000,
                  parent_sampling=True,
                  balanced_sampling=True,
-                 included_metadata=[]):
+                 point_attributes=[]):
 
         self._model_version = "2.0"
         self._global_grid = global_grid
@@ -30,8 +30,7 @@ class GeoPointCloudModel:
         self._point_classes = []
         self._cells = []
         self.generation_file = 0
-        self.included_metadata = included_metadata
-
+        self.point_attributes = point_attributes
         shutil.rmtree(self.model_directory(), ignore_errors=True)
 
     def store_las_files(self, las_paths, epsg_num):
@@ -41,7 +40,7 @@ class GeoPointCloudModel:
         cell_indices = self._global_grid.store_points_in_cell_folders(modelpath,
                                                                       las_paths,
                                                                       epsg_num,
-                                                                      self.included_metadata)
+                                                                      self.point_attributes)
         cell_generator = self._global_grid.cell_generator(modelpath, cell_indices)
         for c in cell_generator:
             self._store_cell(c)
@@ -92,7 +91,8 @@ class GeoPointCloudModel:
                       "max_node_points": self._max_node_points,
                       "parent_sampling": self._parent_sampling,
                       "cells": self._cells,
-                      "classes": GeoPointCloudModel._generate_color_palette(self._point_classes)}
+                      "classes": GeoPointCloudModel._generate_color_palette(self._point_classes),
+                      "point_attributes": PointAttribute.get_registered_attributes_descriptor()}
 
         path = os.path.join(self._parent_directory, self._name, "pc_model.json")
         jsonutils.write_json(desc_model, path)

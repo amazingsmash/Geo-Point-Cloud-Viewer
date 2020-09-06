@@ -40,7 +40,28 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.PointCloudModelGenerator Directory">
+  <component name="RunManager" selected="Python.PointCloudModelGenerator Directory Short">
+    <configuration name="PointCloudModelGenerator Directory Short" type="PythonConfigurationType" factoryName="Python">
+      <module name="ModelGenerator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pcmodel.py" />
+      <option name="PARAMETERS" value="CORRIDOR_MODEL_META_SHORT -o $PROJECT_DIR$/../../../CORRIDOR_MODELS -d $PROJECT_DIR$/../../../LAS_CORREDOR_EPSG_32631_SHORT -e 32631 -s -g 0.1" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="PointCloudModelGenerator Directory" type="PythonConfigurationType" factoryName="Python">
       <module name="ModelGenerator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -48,13 +69,13 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pcmodel.py" />
-      <option name="PARAMETERS" value="CORRIDOR_MODEL_LARGE -o /Volumes/ESD-USB/CORRIDOR_MODELS -d $PROJECT_DIR$/../../../LAS_CORREDOR_EPSG_32631 -e 32631 -s -g 0.1" />
+      <option name="PARAMETERS" value="CORRIDOR_MODEL_META -o $PROJECT_DIR$/../../../CORRIDOR_MODELS -d $PROJECT_DIR$/../../../LAS_CORREDOR_EPSG_32631 -e 32631 -s -g 0.1" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -169,6 +190,7 @@
     </configuration>
     <list>
       <item itemvalue="Python.Python3" />
+      <item itemvalue="Python.PointCloudModelGenerator Directory Short" />
       <item itemvalue="Python.PointCloudModelGenerator Directory" />
       <item itemvalue="Python.PointCloudModelGenerator" />
       <item itemvalue="Python.encoding" />
@@ -206,11 +228,11 @@
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
     <state x="880" y="205" width="800" height="717" key="#Intentions/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1591791980020" />
-    <state x="263" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593516594083">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="421" y="157" width="1893" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595584657156">
+      <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="263" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1593516594083" />
-    <state x="468" y="168" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1593502367386" />
+    <state x="421" y="157" width="1893" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1595584657156" />
     <state x="671" y="400" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1591896108145" />
     <state x="1021" y="350" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590410741044">
       <screen x="0" y="0" width="2560" height="1080" />
@@ -263,11 +285,11 @@
     <state width="1419" height="249" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1592479456610" />
     <state width="2539" height="317" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.0.0.0" timestamp="1591743638930" />
     <state width="2539" height="317" key="GridCell.Tab.0.left/0.23.2560.1057/549.1103.1440.877@0.23.2560.1057" timestamp="1591878052380" />
-    <state width="1419" height="255" key="GridCell.Tab.0.right" timestamp="1594031440536">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="2539" height="283" key="GridCell.Tab.0.right" timestamp="1595584708757">
+      <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1419" height="255" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1594031440536" />
-    <state width="2539" height="347" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1593512305759" />
+    <state width="1419" height="267" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1593543845159" />
+    <state width="2539" height="283" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1595584708757" />
     <state width="2539" height="317" key="GridCell.Tab.0.right/0.0.2560.1080/549.1080.1440.900@0.0.2560.1080" timestamp="1591896706896" />
     <state width="2539" height="187" key="GridCell.Tab.0.right/0.0.2560.1080/549.1103.1440.813@0.0.2560.1080" timestamp="1589999379635" />
     <state width="2539" height="206" key="GridCell.Tab.0.right/0.0.2560.1080/549.1103.1440.877@0.0.2560.1080" timestamp="1589996232975" />

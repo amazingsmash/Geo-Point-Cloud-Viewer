@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lodFactor: 0.0001
-  farMat: {fileID: 2100000, guid: c6a1cd753df0e4dd1b847e93242221ad, type: 2}
-  nearMat: {fileID: 2100000, guid: f7fc92549d5be4a14aca735f545a92ef, type: 2}
+  farMat: {fileID: 2100000, guid: ca395f552058b984cbf2f5aa3616d575, type: 2}
+  nearMat: {fileID: 2100000, guid: 85cca72358d9d3443a3ee2667cca2ea0, type: 2}
 --- !u!33 &3978115480158434403
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -71,10 +71,11 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bb83d6c314bd44737a4a6b779b715a3c, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,3 +96,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

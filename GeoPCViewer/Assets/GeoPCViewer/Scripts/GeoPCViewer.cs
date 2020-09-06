@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using SimpleJSON;
 using UnityEngine;
+using System.Globalization;
 
 public class GeoPCViewer : MonoBehaviour
 {
@@ -150,7 +151,7 @@ public class GeoPCViewer : MonoBehaviour
             JSONNode fn = nodeJSON["filename"];
             pcFile = fn == null? null : cellData.directoryInfo.GetFiles(fn.Value)[0];
 
-            nPoints = nodeJSON["n_points"].AsInt;
+            nPoints = nodeJSON["n_node_points"].AsInt;
             avgPointDistance = nodeJSON["avg_distance"].AsDouble;
 
             var min01 = JSON_XZY_ToVector3d(nodeJSON["min"].AsArray);
@@ -172,7 +173,7 @@ public class GeoPCViewer : MonoBehaviour
             var sortedClassCountJSON = nodeJSON["sorted_class_count"];
             foreach (string c in sortedClassCountJSON.Keys)
             {
-                int pointClass = (int)float.Parse(c);
+                int pointClass = (int)float.Parse(c, CultureInfo.InvariantCulture.NumberFormat);
                 sortedClassCount[pointClass] = sortedClassCountJSON[c].AsInt;
             }
 
@@ -199,7 +200,8 @@ public class GeoPCViewer : MonoBehaviour
             foreach(int pointClass in sortedClassCount.Keys)
             {
                 int n = sortedClassCount[pointClass];
-                Color color = classColor.TryGetValue(pointClass, out Color dictColor) ? dictColor : Color.white;
+                bool registeredColor = classColor.TryGetValue(pointClass, out Color dictColor);
+                Color color = registeredColor ? dictColor : Color.white;
                 for (int i = 0; i < n; i++)
                 {
                     colors[p++] = color;

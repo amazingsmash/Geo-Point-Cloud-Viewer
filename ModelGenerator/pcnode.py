@@ -40,6 +40,7 @@ class PCNode:
             if not_sampled_points is not None:
                 remaining[c] = not_sampled_points
 
+        # TODO return sampled point indices not node
         sampled = PCNode(sampled)
         remaining = PCNode(remaining)
         assert sampled.n_points + remaining.n_points == self.n_points and sampled.n_points <= n_selected_points

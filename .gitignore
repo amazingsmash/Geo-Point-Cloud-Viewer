@@ -6,7 +6,6 @@ GeoPCViewer/[Bb]uild/
 GeoPCViewer/[Bb]uilds/
 GeoPCViewer/[Ll]ogs/
 GeoPCViewer/[Uu]ser[Ss]ettings/
-*.mat
 *.las
 *.m~
 .DS_Store

@@ -48,7 +48,7 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit()
 
-    global_grid = TileMapServiceGG(level=16)
+    global_grid = TileMapServiceGG(level=18)
 
     model = GeoPointCloudModel(name=args.pc_model,
                                global_grid=global_grid,

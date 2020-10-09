@@ -115,6 +115,7 @@ def read_las_as_spherical_mercator_xyzc(las_path, epsg_num, included_metadata):
     in_file.close()
     return points, metadata_columns
 
+
 def read_las_as_spherical_mercator(las_path, epsg_num, point_attributes):
 
     in_file = File(las_path, mode='r')

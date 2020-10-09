@@ -6,7 +6,51 @@ from globalgrid import TileMapServiceGG
 from pointattribute import PointAttribute
 
 
+def generate_geopointcloud_model(
+        model_name: str,
+        parent_directory: str,
+        las_files: list,
+        epsg_num: int,
+        tms_level: int = 15,
+        max_node_points: int = 65000,
+        parent_sampling: bool = True,
+        balanced_sampling: bool = True,
+        point_attributes_list: list = [PointAttribute.INTENSITY],
+        trace_memory: bool = False,
+        profile:bool = False,
+):
+    global_grid = TileMapServiceGG(level=tms_level)
 
+    model = GeoPointCloudModel(name=model_name,
+                               global_grid=global_grid,
+                               parent_directory=parent_directory,
+                               max_node_points=max_node_points,
+                               parent_sampling=parent_sampling,
+                               balanced_sampling=balanced_sampling,
+                               point_attributes=point_attributes_list)
+
+    if trace_memory:
+        import tracemalloc
+        tracemalloc.start()
+        model.store_las_files(las_files, args.epsg)
+        current, peak = tracemalloc.get_traced_memory()
+        print(f"Peak Memory Usage was {peak / 10 ** 6}MB")
+        tracemalloc.stop()
+    else:
+        if profile:
+            import cProfile
+            import pstats
+            profile = cProfile.Profile()
+
+            def profile_func():
+                model.store_las_files(las_files, epsg_num)
+
+            profile.runcall(profile_func)
+            ps = pstats.Stats(profile)
+            ps.sort_stats('tottime', 'calls')
+            ps.print_stats()
+        else:
+            model.store_las_files(las_files, epsg_num)
 
 if __name__ == "__main__":
 
@@ -32,6 +76,8 @@ if __name__ == "__main__":
                         action='store_true')
     parser.add_argument("-i", "--add_point_intensity", help="Add point intensity to model.",
                         action='store_true')
+    parser.add_argument("-l", "--tms_level", help="Cell sizes match this TMS Level (default 15)",
+                        type=int, default=15)
 
     args = parser.parse_args()  # getting optionals
 
@@ -48,38 +94,62 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit()
 
-    global_grid = TileMapServiceGG(level=18)
+    #     model_name: str,
+    #     parent_directory: str,
+    #     tms_level: int = 15,
+    #     max_node_points: int = 65000,
+    #     parent_sampling: bool = True,
+    #     balanced_sampling: bool = True,
+    #     point_attributes_list: list = [PointAttribute.INTENSITY],
+    #     trace_memory: bool = False,
+    #     profile: bool = False,
+    # ):
 
-    model = GeoPointCloudModel(name=args.pc_model,
-                               global_grid=global_grid,
-                               parent_directory=args.out,
-                               max_node_points=args.node_points,
-                               parent_sampling=args.sample,
-                               balanced_sampling=not args.unbalanced_sampling,
-                               point_attributes=[PointAttribute.INTENSITY] if args.add_point_intensity else [])
+    generate_geopointcloud_model(model_name=args.pc_model,
+                                 parent_directory=args.out,
+                                 las_files=las_files,
+                                 epsg_num=args.epsg,
+                                 tms_level=args.tms_level,
+                                 max_node_points=args.node_points,
+                                 parent_sampling=args.sample,
+                                 balanced_sampling=not args.unbalanced_sampling,
+                                 point_attributes_list=[PointAttribute.INTENSITY] if args.add_point_intensity else [],
+                                 trace_memory=False,
+                                 profile=False)
 
-    trace_memory = False
-    profile = False
 
-    if trace_memory:
-        import tracemalloc
-        tracemalloc.start()
-        model.store_las_files(las_files, args.epsg)
-        current, peak = tracemalloc.get_traced_memory()
-        print(f"Peak Memory Usage was {peak / 10 ** 6}MB")
-        tracemalloc.stop()
-    else:
-        if profile:
-            import cProfile
-            import pstats
-            profile = cProfile.Profile()
-
-            def profile_func():
-                model.store_las_files(las_files, args.epsg)
-
-            profile.runcall(profile_func)
-            ps = pstats.Stats(profile)
-            ps.sort_stats('tottime', 'calls')
-            ps.print_stats()
-        else:
-            model.store_las_files(las_files, args.epsg)
+    # global_grid = TileMapServiceGG(level=15)
+    #
+    # model = GeoPointCloudModel(name=args.pc_model,
+    #                            global_grid=global_grid,
+    #                            parent_directory=args.out,
+    #                            max_node_points=args.node_points,
+    #                            parent_sampling=args.sample,
+    #                            balanced_sampling=not args.unbalanced_sampling,
+    #                            point_attributes=[PointAttribute.INTENSITY] if args.add_point_intensity else [])
+    #
+    # trace_memory = False
+    # profile = False
+    #
+    # if trace_memory:
+    #     import tracemalloc
+    #     tracemalloc.start()
+    #     model.store_las_files(las_files, args.epsg)
+    #     current, peak = tracemalloc.get_traced_memory()
+    #     print(f"Peak Memory Usage was {peak / 10 ** 6}MB")
+    #     tracemalloc.stop()
+    # else:
+    #     if profile:
+    #         import cProfile
+    #         import pstats
+    #         profile = cProfile.Profile()
+    #
+    #         def profile_func():
+    #             model.store_las_files(las_files, args.epsg)
+    #
+    #         profile.runcall(profile_func)
+    #         ps = pstats.Stats(profile)
+    #         ps.sort_stats('tottime', 'calls')
+    #         ps.print_stats()
+    #     else:
+    #         model.store_las_files(las_files, args.epsg)

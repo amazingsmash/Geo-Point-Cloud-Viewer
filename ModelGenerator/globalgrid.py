@@ -54,8 +54,8 @@ class GlobalGridCell:
         # Normalizing points in -1 - 1 space
         cell_center = (self._cell_extent_min + self._cell_extent_max) / 2
         cell_xyz_normalized = (point_xyz - cell_center) / (cell_extent / 2)
-        epsilon = 1e-6
 
+        epsilon = 1e-6
         assert np.min(np.min(cell_xyz_normalized)) >= -1-epsilon and np.max(np.max(cell_xyz_normalized)) <= 1+epsilon
 
         self.cell_points_normalized = np.clip(cell_xyz_normalized, -1, 1)  # All points in range -1, 1
@@ -239,6 +239,27 @@ class TileMapServiceGG(GlobalGrid):
 
             point_attributes = {att: ps[:, 4 + int(column_index)] for (column_index, att) in attribute_columns.items()}
 
+            # Checking cell height
+            heights = point_xyz[:,2]
+            cell_height = np.max(heights) - np.min(heights)
+            if cell_height > self.cell_side_lenght_meters:
+                h_mean = np.mean(heights)
+                dist_mean = -np.abs(heights - h_mean)
+                furthest_points = np.argsort(dist_mean) # Furthests points first
+
+                while cell_height > self.cell_side_lenght_meters:
+                    furthest_points = furthest_points[1:]
+                    cell_height = np.max(heights[furthest_points]) - np.min(heights[furthest_points])
+
+                print("Removing %d possible outlier point(s) from cell due to excessive cell height!" % (point_xyz.shape[0] - furthest_points.shape[0]))
+                np.random.shuffle(furthest_points)
+                point_xyz = point_xyz[furthest_points, :]
+                point_classes = point_classes[furthest_points]
+                point_attributes = {attribute: values[furthest_points] for attribute, values in point_attributes.items()}
+
+            assert len(point_xyz.shape) == 2 and point_xyz.shape[1] == 3 and point_classes.shape[0] == point_xyz.shape[0]
+
+            # Cell generation
             c = GlobalGridCell(xy_index,
                                point_xyz,
                                point_classes,

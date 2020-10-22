@@ -1,5 +1,6 @@
 import os
 
+import jsonutils
 import pcutils
 from pcmodel import generate_geopointcloud_model
 
@@ -12,6 +13,7 @@ if __name__ == "__main__":
     # out_folder = "C:/Users/amazi/Desktop/CORRIDOR_MODELS"
     out_folder = "C:/Users/amazi/Desktop/repos/project-megaboard/Models/PointClouds"
     epsg_num = 32630
+    point_info_path = "C:/Users/amazi/Desktop/repos/project-megaboard/Models/point_class_definition.json"
 
     models = [d for d in os.listdir(base_folder_path) if os.path.isdir(os.path.join(base_folder_path, d))]
     existing_models = [d for d in os.listdir(out_folder) if os.path.isdir(os.path.join(out_folder, d))]
@@ -19,6 +21,8 @@ if __name__ == "__main__":
     max_n_models = 1
     models = [m for m in models if m not in existing_models]
     models = models[0:max_n_models]
+
+    point_class_info = jsonutils.read_json(point_info_path) if point_info_path is not None else None
 
     for model in models:
 
@@ -30,4 +34,5 @@ if __name__ == "__main__":
         generate_geopointcloud_model(model_name=model,
                                      parent_directory=out_folder,
                                      las_files=las_files,
-                                     epsg_num=epsg_num)
+                                     epsg_num=epsg_num,
+                                     point_class_info=point_class_info)

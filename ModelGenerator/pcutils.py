@@ -356,6 +356,52 @@ def balanced_sampling(xyzc, n_selected_points):
     return selection, non_selected
 
 
+def pseudo_balanced_sampling(xyzc, n_selected_points):
+    n_points = xyzc.shape[0]
+    if n_points < n_selected_points:
+        return xyzc, None
+
+    cs, count = np.unique(xyzc[:, 3], return_counts=True)
+    order_classes = np.argsort(count)
+
+    # Calculating ratios
+    class_indices = []
+    class_ratios = []
+    for i in order_classes:
+        class_indices[i] = np.where(xyzc[:, 3] == cs[i])
+        class_ratios[i] = n_points / class_indices[i].shape[0]
+
+    # Balancing ratios
+    min_ratio = (1 / cs.shape[0]) * 0.3
+    for i, r in enumerate(class_ratios):
+        if r < min_ratio:
+            diff = min_ratio - r
+            big_classes = [j for j, br in enumerate(class_ratios) if br-diff > min_ratio]
+            class_ratios[i] = min_ratio
+            for b in big_classes:
+                class_ratios[b] -= diff / len(big_classes)
+
+            assert sum(class_ratios) == 1
+
+    # Getting class n points
+    n_points_per_class = [r * n_points for r in class_ratios]
+    offset = sum(n_points_per_class) - n_points
+    n_points_per_class[-1] - offset
+
+    # Selecting Randomly
+    selection = np.array((0, 1))
+    for ind, nppc in zip(class_indices, n_points_per_class):
+        s = np.random.choice(ind, size=nppc, replace=False) if nppc < ind.shape[0] else ind
+        selection = np.vstack(selection, s)
+
+    selection = xyzc[selection, :]
+    inverse_mask = np.ones(n_points, dtype='bool')
+    inverse_mask[selection] = False
+
+    non_selected = xyzc[inverse_mask, :]
+    return selection, non_selected
+
+
 def num_points_by_class(points_by_class):
     n_points = sum([n.shape[0] for n in points_by_class.values()])
     return n_points
@@ -503,7 +549,7 @@ def generate_balanced_octree__(normalized_xyz, classes, max_node_points=65000) -
             node_index = unique_ind[i]
             node_point_indices = np.where(np.logical_and(unique_inv_ind == i, not_taken))[0] # node points
             if node_point_indices.shape[0] > 0:
-                selected_points_by_class = balanced_sampling(classes[node_point_indices], max_node_points)
+                selected_points_by_class = pseudo_balanced_sampling(classes[node_point_indices], max_node_points)
 
                 # remapping to whole set
                 for s in selected_points_by_class:

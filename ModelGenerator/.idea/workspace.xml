@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="abe32653-d01b-4287-a51e-b2e5b1ece8a0" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batchpcmodelgenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/batchpcmodelgenerator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/geopcmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/geopcmodel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcmodel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcnode.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcnode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcutils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcutils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +41,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.batchpcmodelgenerator">
+  <component name="RunManager" selected="Python.PointCloudModelGenerator Directory Short">
     <configuration name="PointCloudModelGenerator Directory Short No-Meta" type="PythonConfigurationType" factoryName="Python">
       <module name="ModelGenerator" />
       <option name="INTERPRETER_OPTIONS" value="-O" />
@@ -311,58 +311,58 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="320" y="212" width="1893" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603098260156">
+    <state x="320" y="212" width="1893" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603459125118">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="320" y="212" width="1893" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1603098260156" />
+    <state x="320" y="212" width="1893" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1603459125118" />
     <state x="984" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1597837524145">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="984" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597837524145" />
-    <state x="1138" y="218" width="1112" height="621" key="#xdebugger.evaluate" timestamp="1602243400967">
+    <state x="958" y="419" width="1112" height="621" key="#xdebugger.evaluate" timestamp="1603458750853">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="1138" y="218" width="1112" height="621" key="#xdebugger.evaluate/0.0.2560.1040@0.0.2560.1040" timestamp="1602243400967" />
+    <state x="958" y="419" width="1112" height="621" key="#xdebugger.evaluate/0.0.2560.1040@0.0.2560.1040" timestamp="1603458750853" />
     <state x="390" y="91" key="CommitChangelistDialog2" timestamp="1603106801924">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="390" y="91" key="CommitChangelistDialog2/0.0.2560.1040@0.0.2560.1040" timestamp="1603106801924" />
-    <state width="1665" height="466" key="DebuggerActiveHint" timestamp="1597233060505">
+    <state width="1665" height="466" key="DebuggerActiveHint" timestamp="1603458342251">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1665" height="466" key="DebuggerActiveHint/0.0.2560.1040@0.0.2560.1040" timestamp="1597233060505" />
-    <state width="1351" height="208" key="GridCell.Tab.0.bottom" timestamp="1603182671239">
+    <state width="1665" height="466" key="DebuggerActiveHint/0.0.2560.1040@0.0.2560.1040" timestamp="1603458342251" />
+    <state width="2539" height="210" key="GridCell.Tab.0.bottom" timestamp="1603460002229">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="208" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671239" />
-    <state width="1351" height="208" key="GridCell.Tab.0.center" timestamp="1603182671239">
+    <state width="2539" height="210" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603460002229" />
+    <state width="2539" height="210" key="GridCell.Tab.0.center" timestamp="1603460002229">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="208" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671239" />
-    <state width="1351" height="208" key="GridCell.Tab.0.left" timestamp="1603182671239">
+    <state width="2539" height="210" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603460002229" />
+    <state width="2539" height="210" key="GridCell.Tab.0.left" timestamp="1603460002229">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="208" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671239" />
-    <state width="1351" height="208" key="GridCell.Tab.0.right" timestamp="1603182671239">
+    <state width="2539" height="210" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603460002229" />
+    <state width="2539" height="210" key="GridCell.Tab.0.right" timestamp="1603460002229">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="208" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671239" />
-    <state width="1351" height="281" key="GridCell.Tab.1.bottom" timestamp="1603182671222">
+    <state width="2539" height="210" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603460002229" />
+    <state width="2539" height="146" key="GridCell.Tab.1.bottom" timestamp="1603459126741">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="281" key="GridCell.Tab.1.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671222" />
-    <state width="1351" height="281" key="GridCell.Tab.1.center" timestamp="1603182671222">
+    <state width="2539" height="146" key="GridCell.Tab.1.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1603459126741" />
+    <state width="2539" height="146" key="GridCell.Tab.1.center" timestamp="1603459126741">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="281" key="GridCell.Tab.1.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671222" />
-    <state width="1351" height="281" key="GridCell.Tab.1.left" timestamp="1603182671222">
+    <state width="2539" height="146" key="GridCell.Tab.1.center/0.0.2560.1040@0.0.2560.1040" timestamp="1603459126741" />
+    <state width="2539" height="146" key="GridCell.Tab.1.left" timestamp="1603459126741">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="281" key="GridCell.Tab.1.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671222" />
-    <state width="1351" height="281" key="GridCell.Tab.1.right" timestamp="1603182671222">
+    <state width="2539" height="146" key="GridCell.Tab.1.left/0.0.2560.1040@0.0.2560.1040" timestamp="1603459126741" />
+    <state width="2539" height="146" key="GridCell.Tab.1.right" timestamp="1603459126741">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="1351" height="281" key="GridCell.Tab.1.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603182671222" />
+    <state width="2539" height="146" key="GridCell.Tab.1.right/0.0.2560.1040@0.0.2560.1040" timestamp="1603459126741" />
     <state x="339" y="156" key="SettingsEditor" timestamp="1599651721115">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -375,10 +375,10 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="853" y="273" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.2560.1040@0.0.2560.1040" timestamp="1602250032936" />
-    <state x="702" y="163" key="refactoring.ChangeSignatureDialog" timestamp="1597667873926">
+    <state x="702" y="163" key="refactoring.ChangeSignatureDialog" timestamp="1603455123201">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="702" y="163" key="refactoring.ChangeSignatureDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1597667873926" />
+    <state x="702" y="163" key="refactoring.ChangeSignatureDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1603455123201" />
     <state x="945" y="232" width="672" height="651" key="search.everywhere.popup" timestamp="1602155542051">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -394,17 +394,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/pcutils.py</url>
-          <line>428</line>
+          <line>474</line>
           <option name="timeStamp" value="74" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/pcutils.py</url>
-          <line>504</line>
+          <line>550</line>
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/pcutils.py</url>
-          <line>546</line>
+          <line>592</line>
           <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -422,7 +422,22 @@
           <line>122</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pcnode.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pcnode.py</url>
+          <line>110</line>
+          <option name="timeStamp" value="121" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

@@ -118,7 +118,7 @@ class GeoPointCloudModel:
 
         class_info = []
         for i, c in enumerate(point_classes):
-            cpi = next((x for x in point_info if x["class"] == c), None)
+            cpi = next((x for x in point_info if x["class"] == c), None) if point_info is not None else None
 
             class_info += [{
                  "class": c,

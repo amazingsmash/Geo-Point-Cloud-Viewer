@@ -71,6 +71,51 @@ class PCNode:
 
         return sampled, remaining
 
+    def pseudo_balanced_sampling(self, n_selected_points, min_ratio=0.3):
+        """Returns pseudo-balanced subsample and remaining points by class
+        min_ratio = 0 -> no balancing
+        min_ratio = 1 -> perfect balancing"""
+
+        if self.n_points <= n_selected_points:
+            return self, None
+
+        # Calculating ratios
+        class_ratios = [self.point_indices_by_class[c].shape[0] / self.n_points for c, n in self.sorted_class_count.items()]
+        assert sum(class_ratios) == 1
+
+        # Balancing ratios
+        min_ratio = (1 / len(self.point_indices_by_class)) * min_ratio
+        for i, r in enumerate(class_ratios):
+            if r < min_ratio:
+                diff = min_ratio - r
+                big_classes = [j for j, br in enumerate(class_ratios) if br - diff > min_ratio]
+                class_ratios[i] = min_ratio
+                for b in big_classes:
+                    class_ratios[b] -= diff / len(big_classes)
+
+                assert sum(class_ratios) == 1
+
+        # Getting class n points
+        n_points_per_class = [int(r * self.n_points) for r in class_ratios]
+        n_points_per_class[-1] -= (sum(n_points_per_class) - self.n_points)  # adjusting
+        assert sum(n_points_per_class) == self.n_points
+
+        # Selecting Randomly
+        sampled = {}
+        remaining = {}
+        for c, nppc in zip(self.sorted_class_count.keys(), n_points_per_class):
+            sampled[c], class_remaining = pcutils.random_split(self.point_indices_by_class[c], nppc)
+            if class_remaining is not None:
+                remaining[c] = class_remaining
+
+        sampled = PCNode(self._indices, sampled, self._cell)
+        remaining = PCNode(self._indices, remaining, self._cell) if len(remaining) > 0 else None
+
+        rP = remaining.n_points if remaining is not None else 0
+        assert sampled.n_points + rP == self.n_points and sampled.n_points <= n_selected_points
+
+        return sampled, remaining
+
     def split_octree(self):
         children = [{} for _ in range(8)]
 
@@ -105,7 +150,7 @@ class PCNode:
         if parent_sampling or self.n_points < max_node_points:
             min_xyz, max_xyz = self.get_extent()
 
-            sampled_node, remaining_node = self.balanced_sampling(max_node_points, balanced=balanced_sampling)
+            sampled_node, remaining_node = self.pseudo_balanced_sampling(max_node_points, min_ratio=0.3)
 
             file_name, file_path = self._get_file_path(out_folder)
             selected_points_normalized = sampled_node.get_normalized_points_intra_class_shuffled()
